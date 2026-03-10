@@ -1,12 +1,22 @@
 # .gitignore
+
+# Python
 venv/
 __pycache__/
+*.pyc
+.env
+
+# SQLite database files
 *.db
 *.db-journal
 *.db-wal
 *.db-shm
-.env
+
+# macOS
 .DS_Store
+
+# Logs
 logs/
-*.pyc
-ml_pipeline/__pycache__/
+
+# Deployed service (contains local absolute paths — use polymarket.plist template instead)
+com.polymarket.collector.plist

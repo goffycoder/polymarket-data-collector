@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  polymarket.plist — macOS launchd agent for Polymarket data collector.
+
+  This file is TEMPLATE — setup.sh injects the real paths.
+  __PROJECT_DIR__ and __PYTHON_PATH__ are replaced by setup.sh.
+
+  Manual control:
+    Install:   launchctl load ~/Library/LaunchAgents/com.polymarket.collector.plist
+    Uninstall: launchctl unload ~/Library/LaunchAgents/com.polymarket.collector.plist
+    Status:    launchctl list | grep polymarket
+    Logs:      tail -f __PROJECT_DIR__/logs/collector.log
+-->
+<plist version="1.0">
+<dict>
+    <!-- Unique service name -->
+    <key>Label</key>
+    <string>com.polymarket.collector</string>
+
+    <!-- What to run -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>__PYTHON_PATH__</string>
+        <string>__PROJECT_DIR__/run_collector.py</string>
+    </array>
+
+    <!-- Working directory -->
+    <key>WorkingDirectory</key>
+    <string>__PROJECT_DIR__</string>
+
+    <!-- Auto-start on login -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Auto-restart on crash -->
+    <key>KeepAlive</key>
+    <true/>
+
+    <!-- Throttle restart attempts (wait 60s before retrying on crash) -->
+    <!-- This prevents DB lock fights from rapid restart avalanches -->
+    <key>ThrottleInterval</key>
+    <integer>60</integer>
+
+    <!-- Log stdout to file -->
+    <key>StandardOutPath</key>
+    <string>__PROJECT_DIR__/logs/launchd_stdout.log</string>
+
+    <!-- Log stderr to file -->
+    <key>StandardErrorPath</key>
+    <string>__PROJECT_DIR__/logs/launchd_stderr.log</string>
+
+    <!-- Lower CPU priority for background process -->
+    <key>ProcessType</key>
+    <string>Background</string>
+
+    <!-- Nice level: 5 = slightly lower priority than user processes -->
+    <key>Nice</key>
+    <integer>5</integer>
+</dict>
+</plist>
