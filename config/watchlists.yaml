@@ -1,0 +1,10 @@
+watchlists:
+  finance_economy:
+    tag_ids: [2, 15] 
+    min_liquidity: 1000
+  geopolitics:
+    tag_ids: [504]
+    min_liquidity: 5000
+  elections:
+    tag_ids: [1001]
+    min_liquidity: 10000

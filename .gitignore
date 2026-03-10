@@ -1,0 +1,12 @@
+# .gitignore
+venv/
+__pycache__/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+.env
+.DS_Store
+logs/
+*.pyc
+ml_pipeline/__pycache__/
