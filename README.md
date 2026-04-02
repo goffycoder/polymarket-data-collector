@@ -182,7 +182,7 @@ launchctl unload ~/Library/LaunchAgents/com.polymarket.collector.plist
 pkill -9 -f run_collector.py
 
 # ── DATA HEALTH CHECK ─────────────────────────────────────────────
-python audit_v2.py
+python Old-content/audit_v2.py
 
 # ── HISTORICAL TRADE BACKFILL ─────────────────────────────────────
 python -m collectors.backfill               # all history, all T1 markets
