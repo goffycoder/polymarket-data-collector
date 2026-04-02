@@ -173,7 +173,7 @@ async def sync_markets() -> dict[str, str]:
                         last_updated_at     = excluded.last_updated_at
                 """, {
                     "market_id":        mid,
-                    "event_id":         str(m.get("eventId") or ""),
+                    "event_id":         str(m.get("events", [{}])[0].get("id") or "") if m.get("events") else "",
                     "question":         m.get("question"),
                     "description":      m.get("description"),
                     "slug":             m.get("slug"),

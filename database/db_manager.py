@@ -79,6 +79,7 @@ _MARKETS_NEW_COLS = [
     ("neg_risk",         "INTEGER DEFAULT 0"),
     ("restricted",       "INTEGER DEFAULT 0"),
     ("automated",        "INTEGER DEFAULT 0"),
+    ("outcome",          "TEXT"),
     ("start_date",       "TEXT"),
     ("end_date",         "TEXT"),
     ("tier",             "INTEGER DEFAULT 3"),

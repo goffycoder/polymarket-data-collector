@@ -25,7 +25,14 @@ log = get_logger("ws_listener")
 
 WS_URL = "wss://ws-subscriptions-clob.polymarket.com/ws/market"
 RECONNECT_BASE = 2.0
-RECONNECT_MAX = 60.0
+RECONNECT_MAX  = 60.0
+
+# Hard cap on simultaneous WS connections.
+# Beyond ~8 concurrent TLS handshakes the Cloudflare layer starts dropping
+# them (observed: 18 connections → 380 handshake timeout errors in logs).
+# 5 connections × 500 tokens = 2,500 markets live — the safe maximum.
+MAX_BATCHES     = 5
+WS_STAGGER_SECS = 3.0   # seconds between opening each new connection
 
 
 def _safe_float(val) -> float | None:
@@ -69,20 +76,34 @@ class MarketWebSocketListener:
             return
 
         batches = [token_ids[i:i+500] for i in range(0, len(token_ids), 500)]
-        log.info(f"📡 WS: Subscribing to {len(token_ids)} tokens in {len(batches)} batch(es)")
+
+        # Enforce the hard cap — caller should already pass ≤ MAX_BATCHES×500 tokens
+        # but guard here in case _load_tiers cap is bypassed.
+        if len(batches) > MAX_BATCHES:
+            log.warning(
+                f"WS: {len(batches)} batches requested but capping at {MAX_BATCHES} "
+                f"({MAX_BATCHES * 500} tokens) to prevent handshake saturation"
+            )
+            batches = batches[:MAX_BATCHES]
+
+        log.info(
+            f"📡 WS: Subscribing to {sum(len(b) for b in batches)} tokens "
+            f"in {len(batches)} stream(s) "
+            f"(stagger={WS_STAGGER_SECS:.0f}s each)"
+        )
 
         while True:
             try:
-                # Connect one WS per batch (250 token limit per connection)
-                # Stagger connections 200ms apart to avoid simultaneous
-                # TCP/TLS handshakes overloading the server
+                # One persistent WS connection per batch.
+                # Stagger by WS_STAGGER_SECS so at most ~1 TLS handshake per window
+                # — fixes the 380-error handshake storm seen with 200ms stagger.
                 tasks = []
                 for i, batch in enumerate(batches):
                     tasks.append(asyncio.create_task(
-                        self._listen_batch(batch, token_to_market)
+                        self._listen_batch(batch_id=i, token_ids=batch, token_to_market=token_to_market)
                     ))
                     if i < len(batches) - 1:
-                        await asyncio.sleep(0.2)  # 200ms stagger
+                        await asyncio.sleep(WS_STAGGER_SECS)
                 await asyncio.gather(*tasks)
 
             except Exception as e:
@@ -90,7 +111,7 @@ class MarketWebSocketListener:
                 await asyncio.sleep(self._reconnect_delay)
                 self._reconnect_delay = min(self._reconnect_delay * 2, RECONNECT_MAX)
 
-    async def _listen_batch(self, token_ids: list[str], token_to_market: dict[str, str]):
+    async def _listen_batch(self, batch_id: int, token_ids: list[str], token_to_market: dict[str, str]):
         """Connect and listen for one batch of token_ids."""
         delay = RECONNECT_BASE
         while True:
@@ -124,13 +145,18 @@ class MarketWebSocketListener:
                         conn.close()
 
             except (ConnectionClosed, WebSocketException) as e:
-                log.warning(f"WS disconnected: {e}. Reconnecting in {delay:.0f}s")
-                await asyncio.sleep(delay)
+                # Add deterministic stagger based on batch_id so if all connections
+                # drop simultaneously, they don't all attempt to reconnect simultaneously
+                # and trigger the Cloudflare handshake storm.
+                staggered_delay = delay + (batch_id * WS_STAGGER_SECS)
+                log.warning(f"WS disconnected: {e}. Reconnecting in {staggered_delay:.0f}s (batch {batch_id})")
+                await asyncio.sleep(staggered_delay)
                 delay = min(delay * 2, RECONNECT_MAX)
 
             except Exception as e:
-                log.error(f"WS unexpected error: {e}. Reconnecting in {delay:.0f}s")
-                await asyncio.sleep(delay)
+                staggered_delay = delay + (batch_id * WS_STAGGER_SECS)
+                log.error(f"WS unexpected error: {e}. Reconnecting in {staggered_delay:.0f}s (batch {batch_id})")
+                await asyncio.sleep(staggered_delay)
                 delay = min(delay * 2, RECONNECT_MAX)
 
     async def _handle_message(self, raw: str, token_to_market: dict, conn):
@@ -297,23 +323,66 @@ class MarketWebSocketListener:
         conn.commit()
 
     async def _handle_market_resolved(self, msg: dict, token_to_market: dict, conn):
-        """Market resolved — mark as closed in DB."""
-        market_id = str(msg.get("market") or "")
-        # The WS sends the conditionId as 'market' field — try to find by condition_id
+        """Market resolved — mark as closed and record YES/NO outcome for ML labels."""
+        condition_id = str(msg.get("market") or "")
         now = datetime.now(timezone.utc).isoformat()
 
-        # Try exact match first (if market_id was in token_to_market)
-        if market_id not in token_to_market.values():
-            # Try matching by condition_id stored in markets table
+        # Determine outcome from winning token price
+        # WS sends: {market: condition_id, asset_id: winning_token, price: "1" or "0"}
+        asset_id = str(msg.get("asset_id") or "")
+        final_price = _safe_float(msg.get("price"))
+
+        # YES token won if its final price == 1.0, NO token won if 0.0
+        if final_price is not None:
+            # asset_id is the YES token that resolved
+            # price 1.0 → this token won → YES. price 0.0 → this token lost → NO
+            if final_price >= 0.99:
+                outcome = "YES"
+            elif final_price <= 0.01:
+                outcome = "NO"
+            else:
+                outcome = "N/A"  # ambiguous / multi-outcome
+        else:
+            outcome = "N/A"
+
+        # Find the market row — try condition_id match first, then token match
+        market_row = conn.execute("""
+            SELECT market_id, condition_id FROM markets
+            WHERE condition_id = ? AND status = 'active'
+            LIMIT 1
+        """, (condition_id,)).fetchone()
+
+        if not market_row and asset_id:
+            market_row = conn.execute("""
+                SELECT market_id, condition_id FROM markets
+                WHERE (yes_token_id = ? OR no_token_id = ?) AND status = 'active'
+                LIMIT 1
+            """, (asset_id, asset_id)).fetchone()
+
+        if market_row:
+            market_id = market_row[0]
+            stored_condition_id = market_row[1] or condition_id
+
+            # Update market row: status + outcome
+            conn.execute("""
+                UPDATE markets
+                SET status = 'closed', closed_at = ?, outcome = ?
+                WHERE market_id = ? AND status = 'active'
+            """, (now, outcome, market_id))
+
+            # Insert into resolutions archive (ground truth for ML)
+            conn.execute("""
+                INSERT INTO market_resolutions
+                    (market_id, condition_id, outcome, final_price, resolved_at, source)
+                VALUES (?, ?, ?, ?, ?, 'ws')
+            """, (market_id, stored_condition_id, outcome, final_price, now))
+
+        else:
+            # Fallback: close by condition_id even if we can't determine outcome
             conn.execute("""
                 UPDATE markets SET status = 'closed', closed_at = ?
                 WHERE condition_id = ? AND status = 'active'
-            """, (now, market_id))
-        else:
-            conn.execute("""
-                UPDATE markets SET status = 'closed', closed_at = ?
-                WHERE market_id = ? AND status = 'active'
-            """, (now, market_id))
+            """, (now, condition_id))
 
         conn.commit()
-        log.info(f"✅ WS: Market resolved: {market_id}")
+        log.info(f"✅ WS: Market resolved — {condition_id[:16]}… → {outcome}")

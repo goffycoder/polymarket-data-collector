@@ -15,7 +15,7 @@ from utils.logger import get_logger
 log = get_logger("trades_collector")
 
 DATA_API_URL = "https://data-api.polymarket.com"
-SEMAPHORE = asyncio.Semaphore(5)
+SEMAPHORE = asyncio.Semaphore(3)
 TRADES_PER_MARKET = 50  # Recent trades to fetch per market
 
 
@@ -30,7 +30,7 @@ async def _fetch_market_trades(client, market_id: str, token_id: str, conn):
     """Fetch and insert recent trades for a single market."""
     async with SEMAPHORE:
         url = f"{DATA_API_URL}/trades"
-        params = {"token_id": token_id, "limit": TRADES_PER_MARKET}
+        params = {"market": token_id, "limit": TRADES_PER_MARKET}
         data = await safe_get(client, url, params=params)
 
         if not data:

@@ -39,8 +39,17 @@ TRADES_INTERVAL = 300       # Trades every 5 min for Tier 1
 SYNC_INTERVAL   = 1800      # Full metadata re-sync every 30 min
 TTL_INTERVAL    = 1800      # TTL cleanup every 30 min
 
+# --- WebSocket stream cap (derived from Polymarket Cloudflare limits) ---
+# Max safe concurrent WS connections: 5  (beyond ~8 simultaneous handshakes
+# the server throttles / drops connections — observed in collector.log)
+# Each connection holds up to 500 token subscriptions.
+MAX_WS_STREAMS  = 5
+TOKENS_PER_STREAM = 500
+MAX_WS_TOKENS   = MAX_WS_STREAMS * TOKENS_PER_STREAM   # = 2,500
+
 # --- Shared state (refreshed each sync cycle) ---
-_tier1_map: dict[str, str] = {}
+_tier0_map: dict[str, str] = {}              # top MAX_WS_TOKENS vol>$500 → real-time WS
+_tier1_map: dict[str, str] = {}             # all vol>$500 (superset of T0) → book poll
 _tier2_map: dict[str, str] = {}
 _all_token_to_market: dict[str, str] = {}     # {token_id: market_id}
 _ws_listener = MarketWebSocketListener()
@@ -49,28 +58,64 @@ _shutdown = asyncio.Event()
 
 
 def _load_tiers():
-    """Reload tiered markets from DB into shared state."""
-    global _tier1_map, _tier2_map, _all_token_to_market
+    """Reload tiered markets from DB into shared state.
+
+    Tier 0 is a runtime-only promotion: the top MAX_WS_TOKENS markets from
+    the Tier 1 pool (volume > $500), sorted by volume DESC, that get
+    dedicated real-time WebSocket coverage.  The DB tier column is unchanged.
+
+    SPORTS FILTER IN EFFECT: Only markets tagged with sports keywords are 
+    loaded into the system priority queues. All other APIs (CLOB books, 
+    WebSockets, trades) strictly follow these queues.
+    """
+    global _tier0_map, _tier1_map, _tier2_map, _all_token_to_market
+    
+    SPORTS_KEYWORDS = [
+        'Sport', 'Soccer', 'Basketball', 'Hockey', 'Football', 'Baseball', 
+        'Tennis', 'Cricket', 'Golf', 'Boxing', 'MMA', 'UFC', 'F1', 
+        'Olympics', 'Esports', 'Games', 'NFL', 'NBA', 'MLB', 'NHL'
+    ]
+    tag_conditions = " OR ".join(f"e.tags LIKE '%{kw}%'" for kw in SPORTS_KEYWORDS)
+
     conn = get_conn()
-    rows = conn.execute(
-        "SELECT market_id, yes_token_id, tier FROM markets WHERE status='active' AND yes_token_id IS NOT NULL"
-    ).fetchall()
+    rows = conn.execute(f"""
+        SELECT m.market_id, m.yes_token_id, m.tier
+        FROM markets m
+        JOIN events e ON m.event_id = e.event_id
+        WHERE m.status='active' 
+          AND m.yes_token_id IS NOT NULL
+          AND ({tag_conditions})
+        ORDER BY m.volume DESC
+    """).fetchall()
     conn.close()
 
-    t1, t2 = {}, {}
+    t0, t1, t2 = {}, {}, {}
     tok_map = {}
+    tier1_candidates = []   # all vol>$500 markets in volume-DESC order
+
     for r in rows:
         mid, tok, tier = r[0], r[1], r[2]
         tok_map[tok] = mid
         if tier == 1:
+            tier1_candidates.append((mid, tok))
             t1[mid] = tok
         elif tier == 2:
             t2[mid] = tok
 
+    # Tier 0 = top MAX_WS_TOKENS by volume (already sorted DESC above)
+    for mid, tok in tier1_candidates[:MAX_WS_TOKENS]:
+        t0[mid] = tok
+
+    _tier0_map = t0
     _tier1_map = t1
     _tier2_map = t2
     _all_token_to_market = tok_map
-    log.info(f"🗂  Tiers loaded: T1={len(t1)}, T2={len(t2)}, total_tokens={len(tok_map)}")
+    log.info(
+        f"🗂  Tiers loaded: "
+        f"T0(WS)={len(t0)}/{MAX_WS_TOKENS}, "
+        f"T1(poll)={len(t1)}, T2={len(t2)}, "
+        f"total_tokens={len(tok_map)}"
+    )
 
 
 # ---- BACKGROUND LOOPS ----
@@ -113,12 +158,19 @@ async def tier2_loop():
 
 
 async def trades_loop():
-    """Fetch recent trades for Tier 1 every 5 minutes."""
+    """Fetch recent trades for top Tier 1 markets every 5 minutes.
+    
+    Limited to top 500 by volume — sending all 8,700 individual calls
+    exceeds the data-api 200 req/10s rate limit.
+    """
     await asyncio.sleep(60)  # Stagger start
     while not _shutdown.is_set():
         try:
             if _tier1_map:
-                await collect_trades(_tier1_map)
+                # Sort by... we only have token_ids in the map; take first 500
+                # (already loaded in volume-DESC order from _load_tiers)
+                top_500 = dict(list(_tier1_map.items())[:500])
+                await collect_trades(top_500)
         except Exception as e:
             log.error(f"Trades loop error: {e}")
         await asyncio.sleep(TRADES_INTERVAL)
@@ -136,16 +188,26 @@ async def ttl_loop():
 
 
 async def ws_loop():
-    """WebSocket real-time feed — persistent, auto-reconnects."""
+    """WebSocket real-time feed for Tier 0 markets — persistent, auto-reconnects.
+
+    Subscribes to the top MAX_WS_TOKENS (2,500) volume>$500 markets across
+    MAX_WS_STREAMS (5) concurrent connections.  Capped here so we never
+    trigger the Cloudflare handshake-drop observed at 18+ simultaneous streams.
+    """
     # Wait for first sync to populate tiers
     await asyncio.sleep(10)
     while not _shutdown.is_set():
         try:
-            t1_tokens = list(_tier1_map.values())
-            if t1_tokens:
-                await _ws_listener.run(t1_tokens, _all_token_to_market)
+            t0_tokens = list(_tier0_map.values())
+            if t0_tokens:
+                log.info(
+                    f"📡 WS: Starting Tier 0 feed — "
+                    f"{len(t0_tokens)} tokens across "
+                    f"{min(MAX_WS_STREAMS, -(-len(t0_tokens)//TOKENS_PER_STREAM))} stream(s)"
+                )
+                await _ws_listener.run(t0_tokens, _all_token_to_market)
             else:
-                log.info("WS: No Tier 1 tokens yet, waiting 60s...")
+                log.info("WS: No Tier 0 tokens yet, waiting 60s...")
                 await asyncio.sleep(60)
         except Exception as e:
             log.error(f"WS loop top error: {e}")

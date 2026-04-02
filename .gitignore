@@ -4,6 +4,9 @@
 venv/
 __pycache__/
 *.pyc
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
 .env
 
 # SQLite database files
@@ -12,11 +15,25 @@ __pycache__/
 *.db-wal
 *.db-shm
 
+# Local data exports / temp files
+database/*.csv
+database/*.csv.*
+*.tmp
+
 # macOS
 .DS_Store
 
 # Logs
 logs/
+
+# Generated documentation artifacts
+Documentation/*.pdf
+Documentation/*.synctex.gz
+Documentation/*.aux
+Documentation/*.fdb_latexmk
+Documentation/*.fls
+Documentation/*.log
+Documentation/*.out
 
 # Deployed service (contains local absolute paths — use polymarket.plist template instead)
 com.polymarket.collector.plist

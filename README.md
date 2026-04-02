@@ -1,257 +1,260 @@
 # Polymarket High-Resolution Data Collector
 
-A production-grade, always-on data pipeline that captures the full state of the Polymarket prediction market at maximum resolution — events, markets, order books, trades, and real-time price feeds — into a local SQLite database for ML model training and research.
+> Capturing Polymarket prediction markets at **182 snapshots/second** — real-time WebSocket feed, full order book depth, matched trades, and automatic outcome labels — all in a local SQLite database ready for ML.
 
 ---
 
-## What This Does
+## What This Is
 
-Polymarket is a binary prediction market. Every question ("Will X happen?") is an **event** containing one or more **markets** (YES/NO token pairs). Prices are probabilities in $0.00–$1.00.
+Polymarket is a binary prediction market. Every question ("Will X happen by Y date?") is an **event** with one or more **markets** (YES/NO token pairs trading at $0.00–$1.00, where price = probability).
 
-This collector runs continuously in the background and captures:
+This collector runs as a background service and captures the complete state of **35,000+ markets** across all resolution timelines into a structured database — designed for ML model training and quantitative research.
 
-| Data Type | Source | Frequency |
-|---|---|---|
-| Event metadata | Gamma REST API | Every 30 min |
-| Market metadata + prices | Gamma REST API | Every 30 min |
-| Tier 1 full order books | CLOB REST API | Every 60s |
-| Tier 2 best prices | CLOB REST API | Every 5 min |
-| Matched trades | CLOB REST API | Every 5 min |
-| Real-time price/book events | CLOB WebSocket | Continuous push |
+**Current collection rate:** ~182 snapshots/second (88% real-time WebSocket push)
 
 ---
 
 ## Architecture
 
 ```
-run_collector.py               ← single entry point, manages all loops
-├── PHASE 1: apply_schema()    ← idempotent SQLite schema on every startup
-├── PHASE 2: initial sync      ← full events + markets pull on startup
-└── PHASE 3: concurrent loops
-    ├── ws_loop()              ← WebSocket real-time feed (Tier 1)
-    ├── tier1_loop()           ← CLOB /books every 60s
-    ├── tier2_loop()           ← CLOB /prices every 5 min
-    ├── trades_loop()          ← CLOB /trades every 5 min
-    ├── sync_loop()            ← full Gamma re-sync every 30 min
-    └── ttl_loop()             ← 1-day decay cleanup every 30 min
+run_collector.py
+├── PHASE 1  apply_schema()         idempotent SQLite schema on every start
+├── PHASE 2  initial full sync      all events + markets from Gamma API
+└── PHASE 3  concurrent loops
+    ├── ws_loop()       WebSocket real-time feed    (continuous push)
+    ├── tier1_loop()    CLOB full order books        every 60s
+    ├── tier2_loop()    CLOB best prices             every 5 min
+    ├── trades_loop()   CLOB matched trades          every 5 min
+    ├── sync_loop()     full Gamma re-sync           every 30 min
+    └── ttl_loop()      1-day decay cleanup          every 30 min
+```
 
+```
 collectors/
-├── events_collector.py        ← Gamma /events pagination
-├── markets_collector.py       ← Gamma /markets pagination + Tier 3 snapshots
-├── price_collector.py         ← CLOB /books (Tier 1) and /prices (Tier 2)
-├── trades_collector.py        ← CLOB /trades
-├── ws_listener.py             ← WebSocket subscriber (18 connections × 500 tokens)
-└── ttl_manager.py             ← 1-day decay for closed market data
+├── events_collector.py    Gamma /events pagination
+├── markets_collector.py   Gamma /markets pagination + Tier 3 snapshots
+├── price_collector.py     CLOB /books (T1) and /prices (T2)
+├── trades_collector.py    CLOB /trades — recent trades every 5 min
+├── ws_listener.py         WebSocket (18 connections × 500 tokens)
+├── ttl_manager.py         24h decay for closed market data
+└── backfill.py            Historical trade backfill from Data API
 
 database/
-├── schema.sql                 ← canonical schema, applied idempotently on startup
-└── db_manager.py              ← SQLite connection pool + schema applier
+├── schema.sql             canonical schema, applied idempotently
+├── db_manager.py          connection pool + schema migration
+└── polymarket_state.db    ← your database (gitignored)
 
 utils/
-├── http_client.py             ← async httpx wrapper with retry, rate-limit handling
-└── logger.py                  ← structured logging to logs/collector.log
+├── http_client.py         async httpx with retry + backoff
+└── logger.py              structured output to logs/collector.log
 ```
 
 ---
 
 ## Market Tiering
 
-Every market is assigned a tier based on total USD volume traded, re-evaluated every 30 minutes:
+Re-evaluated every 30 minutes based on total USD volume:
 
-```
-Tier 1 (volume > $500)   → 8,700+ markets  → WebSocket + CLOB order books + trades
-Tier 2 ($50–$500)        → 2,000+ markets  → REST price poll every 5 min
-Tier 3 (< $50)           → 25,000+ markets → Gamma metadata sync every 30 min only
-```
+| Tier | Volume Threshold | Markets | Data Collected |
+|------|-----------------|---------|----------------|
+| 1 | > $500 | ~8,700 | WebSocket push + order books (60s) + trades (5 min) |
+| 2 | $50 – $500 | ~2,000 | Best price REST poll every 5 min |
+| 3 | < $50 | ~25,000 | Metadata sync every 30 min only |
 
 ---
 
-## Database Schema
+## Database — `database/polymarket_state.db`
 
-**5 tables** — all in `database/polymarket_state.db`
+Six tables, single SQLite file, WAL mode.
 
-### `events`
-Top-level question containers (e.g. "2024 US Election").
-```
-event_id PK | title | description | tags | category
-volume | volume_24hr | liquidity | open_interest
-start_date | end_date | status ('active'|'closed')
-neg_risk | featured | first_seen_at | last_updated_at | closed_at
-```
+### `events` — question containers
+| Column | Type | Description |
+|--------|------|-------------|
+| `event_id` | TEXT PK | Polymarket event UUID |
+| `title` | TEXT | Question text |
+| `category`, `tags` | TEXT | Classification |
+| `volume`, `volume_24hr` | REAL | Total USD traded |
+| `liquidity`, `open_interest` | REAL | Market depth |
+| `start_date`, `end_date` | TEXT | Resolution timeline |
+| `status` | TEXT | `active` \| `closed` |
+| `neg_risk` | INT | Multi-outcome market flag |
 
-### `markets`
-Individual YES/NO tradeable instruments inside an event.
-```
-market_id PK | event_id FK | question | condition_id
-yes_token_id | no_token_id    ← ERC-1155 token IDs on Polygon
-outcomes | outcome_prices     ← JSON arrays
-volume | liquidity | best_bid | best_ask | spread | last_trade_price
-tier (1|2|3) | status ('active'|'closed')
-start_date | end_date | first_seen_at | last_updated_at | closed_at
-```
+### `markets` — tradeable YES/NO instruments
+| Column | Type | Description |
+|--------|------|-------------|
+| `market_id` | TEXT PK | Polymarket market UUID |
+| `event_id` | TEXT | Parent event |
+| `question` | TEXT | Market question |
+| `yes_token_id`, `no_token_id` | TEXT | ERC-1155 token IDs on Polygon |
+| `condition_id` | TEXT | CLOB condition identifier |
+| `volume`, `liquidity` | REAL | Trading activity |
+| `best_bid`, `best_ask`, `spread` | REAL | Current book top |
+| `tier` | INT | `1` / `2` / `3` |
+| `status` | TEXT | `active` \| `closed` |
+| `outcome` | TEXT | **`YES` \| `NO` \| `N/A`** — set on resolution |
+| `closed_at` | DATETIME | Resolution timestamp |
 
-### `snapshots`
-Time-series price observations — the ML training data.
-```
-id AUTOINCREMENT | market_id | captured_at
-yes_price | no_price | last_trade_price | mid_price
-best_bid | best_ask | spread
-volume_total | volume_24hr | liquidity
-price_change_1d | price_change_1wk
-source ('ws'|'clob'|'gamma')
-```
+### `snapshots` — price time-series (ML training data)
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | INT AUTOINCREMENT | Row ID |
+| `market_id` | TEXT | Which market |
+| `captured_at` | DATETIME | Exact timestamp |
+| `mid_price` | REAL | (best_bid + best_ask) / 2 |
+| `best_bid`, `best_ask`, `spread` | REAL | Order book top |
+| `yes_price`, `last_trade_price` | REAL | Alternative price signals |
+| `volume_24hr`, `liquidity` | REAL | Activity metrics |
+| `source` | TEXT | `ws` \| `clob` \| `gamma` |
 
-### `order_book_snapshots`
-Full order book depth for Tier 1 markets (WebSocket + 60s CLOB poll).
-```
-id | market_id | token_id | captured_at
-bids_json | asks_json          ← full JSON depth arrays
-best_bid | best_ask | spread
-depth_bids | depth_asks        ← count of price levels
-bid_volume | ask_volume        ← total liquidity each side
-source ('ws'|'clob')
-```
+### `order_book_snapshots` — full depth (Tier 1 only)
+| Column | Type | Description |
+|--------|------|-------------|
+| `bids_json`, `asks_json` | TEXT | Full price\|size depth arrays |
+| `depth_bids`, `depth_asks` | INT | Number of price levels |
+| `bid_volume`, `ask_volume` | REAL | Total liquidity each side |
+| `source` | TEXT | `ws` \| `clob` |
 
-### `trades`
-Individual matched transactions for Tier 1 markets.
-```
-trade_id PK | market_id | token_id
-side ('BUY'|'SELL') | price | size
-trade_time | captured_at
-source ('ws'|'clob')
-```
+### `trades` — matched transactions
+| Column | Type | Description |
+|--------|------|-------------|
+| `trade_id` | TEXT PK | Deduplicated trade ID |
+| `side` | TEXT | `BUY` \| `SELL` |
+| `price`, `size` | REAL | Execution details |
+| `trade_time` | DATETIME | On-chain timestamp |
+| `source` | TEXT | `ws` \| `clob` \| `clob_backfill` |
+
+### `market_resolutions` — ground truth labels for ML
+| Column | Type | Description |
+|--------|------|-------------|
+| `market_id` | TEXT | Resolved market |
+| `outcome` | TEXT | **`YES` \| `NO` \| `N/A`** |
+| `final_price` | REAL | 1.0 = YES won, 0.0 = NO won |
+| `resolved_at` | DATETIME | Resolution timestamp |
+| `source` | TEXT | `ws` \| `api` |
 
 ---
 
 ## 1-Day Decay (TTL)
 
-The collector maintains a **live + recent** database — not an archive:
+The database stays lean while preserving all live market history:
 
-- **Active market data**: kept forever (full price history for ML)
-- **Closed market data**: snapshots, order books, and trades older than 24 hours are deleted every 30 minutes
-- **Market/event metadata rows**: never deleted (status = `'closed'` is preserved)
-
-This keeps the DB lean while retaining the complete history of everything currently tradeable.
+- **Active markets** → all data kept indefinitely
+- **Closed markets** → snapshots, order books, and trades older than 24h are deleted every 30 min
+- **Market metadata + outcome labels** → never deleted (permanently archived)
 
 ---
 
-## Quick Start
+## Setup
 
 ```bash
-# 1. Install dependencies
-python -m venv venv && source venv/bin/activate
+# 1. Clone and install
+git clone <repo-url> && cd polymarket_arbitrage
+python -m venv venv && source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
-# 2. Run directly (interactive, for testing)
+# 2. Run interactively (for testing)
 python run_collector.py
 
-# 3. Register as background service (auto-starts on login)
+# 3. Register as macOS background service
 sed -e "s|__PROJECT_DIR__|$(pwd)|g" \
     -e "s|__PYTHON_PATH__|$(pwd)/venv/bin/python|g" \
     polymarket.plist > ~/Library/LaunchAgents/com.polymarket.collector.plist
 launchctl load ~/Library/LaunchAgents/com.polymarket.collector.plist
 ```
 
-## Service Management
+---
+
+## Process Control
 
 ```bash
-# Status
-launchctl list | grep polymarket     # shows PID + exit code
+# ── STATUS ────────────────────────────────────────────────────────
+launchctl list | grep polymarket          # PID + last exit code (0 = running OK)
 
-# Logs
-tail -f logs/collector.log           # live log stream
-tail -100 logs/launchd_stderr.log    # crash tracebacks
+# ── LOGS ──────────────────────────────────────────────────────────
+tail -f logs/collector.log                # live log stream (Ctrl+C just stops watching)
+tail -100 logs/launchd_stderr.log         # crash tracebacks
 
-# Stop / start
+# ── START / STOP ──────────────────────────────────────────────────
+launchctl load   ~/Library/LaunchAgents/com.polymarket.collector.plist
 launchctl unload ~/Library/LaunchAgents/com.polymarket.collector.plist
-launchctl load  ~/Library/LaunchAgents/com.polymarket.collector.plist
 
-# Force-kill if stuck
+# ── FORCE KILL (if unresponsive) ──────────────────────────────────
 pkill -9 -f run_collector.py
-```
 
-## Data Verification
+# ── DATA HEALTH CHECK ─────────────────────────────────────────────
+python audit_v2.py
 
-```bash
-python audit_v2.py      # full health check with date ranges + TTL validation
-```
+# ── HISTORICAL TRADE BACKFILL ─────────────────────────────────────
+python -m collectors.backfill               # all history, all T1 markets
+python -m collectors.backfill --days 30     # last 30 days only
+python -m collectors.backfill --limit 10    # test on 10 markets first
 
----
-
-## API Rate Limits (Polymarket)
-
-| Endpoint | Limit | Our Usage |
-|---|---|---|
-| Gamma REST | 500 req/10s | ~3 req/s (well under) |
-| CLOB REST | 500 req/10s | ~8 concurrent, Semaphore-capped |
-| CLOB WebSocket | No documented limit | 18 persistent connections |
-
-The collector uses exponential backoff on 429s and timeouts. It will **never** get banned under normal operation.
-
----
-
-## Project Structure
-
-```
-polymarket_arbitrage/
-├── run_collector.py         ← entry point
-├── audit_v2.py              ← data health check
-├── requirements.txt
-├── polymarket.plist         ← launchd service template
-├── setup.sh                 ← one-time setup helper
-│
-├── collectors/              ← data pipeline modules
-│   ├── events_collector.py
-│   ├── markets_collector.py
-│   ├── price_collector.py
-│   ├── trades_collector.py
-│   ├── ws_listener.py
-│   └── ttl_manager.py
-│
-├── database/
-│   ├── schema.sql           ← canonical schema
-│   ├── db_manager.py        ← connection + schema applier
-│   └── polymarket_state.db  ← SQLite database (gitignored)
-│
-├── utils/
-│   ├── http_client.py       ← async HTTP with retry
-│   └── logger.py
-│
-├── logs/                    ← gitignored
-│   ├── collector.log
-│   └── launchd_stderr.log
-│
-├── Documentation/           ← Polymarket API docs reference
-└── Old-content/             ← archived v1 scripts (reference only)
+# ── GIT ───────────────────────────────────────────────────────────
+git add -A && git commit -m "chore: ..." && git push
 ```
 
 ---
 
-## Data for ML
-
-Each `snapshots` row is one timestamped observation of a market's price state. To build a price history for a market:
+## Query Examples
 
 ```python
 import sqlite3, pandas as pd
-
 conn = sqlite3.connect('database/polymarket_state.db')
-df = pd.read_sql("""
-    SELECT s.captured_at, s.mid_price, s.best_bid, s.best_ask, s.spread,
-           s.volume_24hr, s.source, m.question, m.tier
-    FROM snapshots s
-    JOIN markets m ON m.market_id = s.market_id
-    WHERE m.tier = 1 AND s.captured_at > datetime('now', '-7 days')
-    ORDER BY s.market_id, s.captured_at
-""", conn)
-```
 
-Order book depth (for spread/liquidity features):
-```python
-df_books = pd.read_sql("""
+# Price history for a specific market
+df = pd.read_sql("""
+    SELECT captured_at, mid_price, best_bid, best_ask, spread, source
+    FROM snapshots
+    WHERE market_id = '<market_id>'
+    ORDER BY captured_at
+""", conn, parse_dates=['captured_at'])
+
+# All resolved markets with their outcomes (ML ground truth)
+labels = pd.read_sql("""
+    SELECT m.market_id, m.question, m.volume, m.tier,
+           r.outcome, r.final_price, r.resolved_at
+    FROM market_resolutions r
+    JOIN markets m ON m.market_id = r.market_id
+    ORDER BY r.resolved_at DESC
+""", conn)
+
+# Order book depth over time (T1 only)
+books = pd.read_sql("""
     SELECT market_id, captured_at, best_bid, best_ask, spread,
-           depth_bids, depth_asks, bid_volume, ask_volume, bids_json, asks_json
+           depth_bids, depth_asks, bid_volume, ask_volume
     FROM order_book_snapshots
     WHERE captured_at > datetime('now', '-1 day')
     ORDER BY market_id, captured_at
 """, conn)
 ```
+
+---
+
+## Collaboration
+
+The **code** is fully cross-platform. The **database** is local to each machine.
+
+| Platform | How to run |
+|----------|-----------|
+| macOS | `launchctl load ...` (background service) |
+| Windows | `python run_collector.py` in terminal, or Task Scheduler |
+| Linux | `nohup python run_collector.py &` or systemd unit |
+
+To share data: export CSVs from one machine, or set up a shared server.
+
+---
+
+## API Limits
+
+| Endpoint | Polymarket Limit | Our Usage |
+|----------|-----------------|-----------|
+| Gamma REST | 500 req/10s | ~3 req/s |
+| CLOB REST | 500 req/10s | 8 concurrent (Semaphore-capped) |
+| Data API `/trades` | 200 req/10s | 4 concurrent (backfill) |
+| CLOB WebSocket | — | 18 persistent connections |
+
+Exponential backoff on all timeout/rate-limit responses. No risk of ban.
+
+---
+
+*Last updated: March 2026*

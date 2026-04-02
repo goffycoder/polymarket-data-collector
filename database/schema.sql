@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS markets (
     neg_risk            INTEGER DEFAULT 0,
     restricted          INTEGER DEFAULT 0,
     automated           INTEGER DEFAULT 0,
+    outcome             TEXT NULL,          -- 'YES' | 'NO' | 'N/A' — set on resolution
     start_date          TEXT,
     end_date            TEXT,
     tier                INTEGER DEFAULT 3,
@@ -85,6 +86,22 @@ CREATE INDEX IF NOT EXISTS idx_markets_status ON markets(status);
 CREATE INDEX IF NOT EXISTS idx_markets_tier ON markets(tier);
 CREATE INDEX IF NOT EXISTS idx_markets_volume ON markets(volume DESC);
 CREATE INDEX IF NOT EXISTS idx_markets_yes_token ON markets(yes_token_id);
+
+-- -----------------------------------------------------------------
+-- 2b. MARKET_RESOLUTIONS — ground truth labels for ML
+-- -----------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS market_resolutions (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    market_id       TEXT NOT NULL,
+    condition_id    TEXT,
+    outcome         TEXT NOT NULL,      -- 'YES' | 'NO' | 'N/A'
+    final_price     REAL,              -- 1.0 = YES won, 0.0 = NO won
+    resolved_at     DATETIME NOT NULL,
+    source          TEXT DEFAULT 'ws'  -- 'ws' | 'api'
+);
+
+CREATE INDEX IF NOT EXISTS idx_resolutions_market ON market_resolutions(market_id);
+CREATE INDEX IF NOT EXISTS idx_resolutions_time ON market_resolutions(resolved_at DESC);
 
 -- -----------------------------------------------------------------
 -- 3. SNAPSHOTS — rich ML time-series
