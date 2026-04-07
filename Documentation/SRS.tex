@@ -1,0 +1,808 @@
+\documentclass[12pt, letterpaper]{article}
+
+% ── Packages ──────────────────────────────────────────────────────
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{parskip}
+\usepackage{caption}
+\usepackage{float}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=blue!70!black,
+    urlcolor=blue!60!black,
+}
+
+\lstset{
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!8},
+    keywordstyle=\color{blue!70!black},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{red!60!black},
+    showstringspaces=false,
+    tabsize=2,
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Polymarket Insider-Signal SRS}
+\lhead{CSE 520 --- Quantitative Finance}
+\cfoot{\thepage}
+
+\title{
+    \textbf{Software Requirements Specification} \\[0.5em]
+    \Large Polymarket Insider-Signal Detection \\
+    \Large \& Leading Indicator Engine
+}
+\author{
+    Vraj Patel \\
+    M.S.\ Data Science, Stony Brook University \\
+    CSE 520 --- Quantitative Finance \\
+    \texttt{vraj.patel@stonybrook.edu}
+}
+\date{March 31, 2026 \quad\textbar\quad Version 2.1}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+\tableofcontents
+\newpage
+
+\noindent\textbf{Document note:} This LaTeX SRS is the formal companion to the working markdown brief in \texttt{Documentation/polymarket\_research\_srs.md}.  It incorporates the current project-state assessment, the professor reference-repo review, and the system requirements needed for the next 3--6 months of work.
+
+\vspace{0.8em}
+
+%===================================================================
+\section{Current Project State and Reference Repo Assessment}
+%===================================================================
+
+\subsection{Current Project State}
+
+The active codebase is a layered Polymarket data collector---not yet a full detection engine.  The live path is \texttt{run\_collector.py} plus the \texttt{collectors/} modules; older prototype logic remains under \texttt{core/} and \texttt{Old-content/}.
+
+\begin{lstlisting}[title={Active Architecture}]
+run_collector.py
+  -> apply schema
+  -> full Gamma event sync
+  -> full Gamma market sync
+  -> concurrent loops
+     -> websocket market listener
+     -> tier-1 order-book polling
+     -> tier-2 price polling
+     -> trades polling
+     -> metadata resync
+     -> TTL cleanup
+\end{lstlisting}
+
+\textbf{What the active pipeline does well:} captures market metadata from Gamma at scale; captures high-frequency snapshots (${\sim}182$/sec); stores full order book depth for hot markets; archives resolved outcomes for supervised labels; uses a clean collector split by source and task; has enough historical data volume to support serious research.
+
+\subsubsection{Observed Local Database State}
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+\textbf{Table / Metric} & \textbf{Value} \\
+\midrule
+SQLite database size   & $\sim$11\,GB \\
+\texttt{snapshots}     & 17,605,043 rows \\
+\texttt{order\_book\_snapshots} & 1,294,573 rows \\
+\texttt{trades}        & 31,184 rows \\
+\texttt{markets}       & 89,478 rows \\
+\texttt{events}        & 33,383 rows \\
+\texttt{market\_resolutions} & 353 rows \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Snapshot source breakdown:}} \\
+\quad WebSocket (\texttt{ws}) & 13,822,437 \\
+\quad Gamma REST         & 2,882,316 \\
+\quad CLOB REST          & 900,290 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Critical Operational Findings}
+
+\begin{enumerate}[nosep]
+    \item \textbf{Dataset is stale.} Latest snapshot is from 2026-03-19; collector was stopped by \texttt{SIGTERM} on March~18 during a long market sync.
+    \item \textbf{Sports-only filter.} \texttt{\_load\_tiers()} hard-filters to sports tags---only 699 of 9,389 active tier-1 markets are eligible. Geopolitics, policy, macro, energy, and corporate-information categories are excluded.
+    \item \textbf{Incomplete trade capture.} All 31,184 trades are \texttt{source='ws'}; zero \texttt{clob} or \texttt{clob\_backfill} rows. The \texttt{/trades} endpoint expects \texttt{conditionId}, but the collector passes \texttt{yes\_token\_id}.
+    \item \textbf{No wallet identity data.}  \texttt{trades} schema has no \texttt{proxy\_wallet}, \texttt{transaction\_hash}, \texttt{condition\_id}, \texttt{outcome}, or profile fields.
+    \item \textbf{One-sided asset coverage.} WebSocket subscribes only to YES token IDs, missing half of two-sided order flow.
+    \item \textbf{Research-hostile retention.} 24-hour TTL deletes closed-market data, blocking event studies and post-resolution training labels.
+    \item \textbf{ML pipeline is a stub.} \texttt{feature\_builder.py} is empty.
+\end{enumerate}
+
+\textbf{Bottom line:} The repo is a strong market-data foundation, but not yet collecting the identity-aware, event-linked, continuously scored data required for insider-activity detection or leading-indicator research.
+
+\subsection{Reference Repo Assessment (\texttt{last30days-skill})}
+
+The professor reference repo is not a market collector. It is a modular multi-source research engine that: researches a topic over the last 30 days; queries Reddit, X, YouTube, Hacker News, Polymarket, web search, and other sources; normalizes all sources into a common schema; scores for relevance, recency, and engagement; deduplicates across sources; supports a watchlist with scheduled reruns; and renders compact briefings with citations.  A detailed companion review is maintained in \texttt{Documentation/reference\_repo\_analysis.tex}.
+
+\begin{lstlisting}[title={Reference Architecture}]
+last30days.py orchestrator
+  -> source connectors
+  -> normalization
+  -> scoring
+  -> dedupe
+  -> rendering
+  -> optional watchlist/store
+\end{lstlisting}
+
+\subsubsection{Applicability to This Project}
+
+\textbf{What the repo is doing well:} it is an external-evidence orchestration system.  The strongest pieces are not the source connectors themselves, but the methodology around them: common schemas, ranked evidence, repeatable watchlists, stored findings, explainable summaries, and explicit evaluation of retrieval quality.
+
+\textbf{Directly reusable patterns:} watchlist and recurring-run database pattern (\texttt{store.py}); CLI task routing (\texttt{watchlist.py}); canonical-schema normalization (\texttt{normalize.py}); scoring pipeline structure (\texttt{score.py}); dedupe and cross-reference pattern; query expansion and topic enrichment; structured briefing generation (\texttt{briefing.py}); retrieval evaluation harness (\texttt{evaluate\_search\_quality.py}).
+
+\textbf{Reusable with adaptation:} Polymarket connector from \texttt{polymarket.py}; evidence fusion across market + X + web; research-memory schema; alert ranking logic.
+
+\textbf{Needs major adaptation:} The reference is topic-centric; this system must be market-centric, wallet-centric, and event-timestamp-centric.  Its scoring is built for content relevance; ours must score microstructure anomalies and order-flow coordination.  Its data model is item-based; ours needs wallets, clusters, episodes, event windows, and alerts.
+
+\textbf{Practical synthesis:}
+\begin{lstlisting}[title={Mental Model}]
+Current repo   = sensing layer (Polymarket microstructure)
+Reference repo = intelligence layer (external context fusion)
+Target system  = real-time anomaly + evidence fusion + alerting
+\end{lstlisting}
+
+\subsubsection{Sequential Reuse Map for the Highest-Value Files}
+
+\begin{center}
+\begin{tabular}{@{}p{3.4cm}p{4.7cm}p{5.0cm}@{}}
+\toprule
+\textbf{Reference File} & \textbf{What It Does There} & \textbf{How It Helps Here} \\
+\midrule
+\texttt{scripts/store.py} & Stores topics, runs, and findings with WAL and FTS & Adapt into a signal/evidence store for alerts, analyst feedback, and replayable signal history \\
+\texttt{scripts/watchlist.py} & Reruns stored topics on a schedule & Adapt into recurring monitored market/event groups or wallet-cluster watchlists \\
+\texttt{scripts/briefing.py} & Builds structured briefing payloads from stored runs & Reuse as the pattern for alert packets, daily summaries, and postmortems \\
+\texttt{scripts/lib/schema.py} & Defines canonical multi-source item types & Reuse to normalize X/news/web evidence tied to flagged markets \\
+\texttt{scripts/lib/normalize.py} & Converts raw source output to canonical records & Reuse as the evidence normalization layer \\
+\texttt{scripts/lib/score.py} & Ranks evidence by relevance, recency, engagement & Reuse the structure, but replace weights/features with event-aware ones \\
+\texttt{scripts/lib/dedupe.py} & Links duplicate or overlapping items across sources & Reuse to collapse repeated headlines/posts into one evidence cluster \\
+\texttt{scripts/lib/render.py} & Produces compact, explainable summaries & Reuse for human-readable signal explanations \\
+\texttt{scripts/evaluate\_search\_quality.py} & Benchmarks retrieval quality and stability & Reuse as the model for validating the external-evidence layer \\
+\texttt{scripts/lib/polymarket.py} & Searches Polymarket events through Gamma & Useful only as a reference for search/query expansion, not for core collection \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Concrete Way To Use the Professor Repo in This Project}
+
+The right move is \textbf{not} to import the professor repo wholesale into the collector.  Instead:
+\begin{enumerate}[nosep]
+    \item keep this repo as the authoritative market-data and wallet-flow layer,
+    \item create a new \texttt{evidence/} or \texttt{context\_engine/} package inspired by the professor repo's normalization, scoring, dedupe, store, and briefing patterns,
+    \item trigger that evidence engine only after a market, wallet cluster, or abnormal episode has been flagged,
+    \item store all retrieved external evidence point-in-time so backtests can reconstruct what was knowable when the alert fired.
+\end{enumerate}
+
+In short: \texttt{last30days-skill} is usable for your situation as the \emph{template for the evidence plane}, while your existing collector remains the \emph{template for the sensing plane}.
+
+
+%===================================================================
+\section{Executive Summary}
+%===================================================================
+
+This project builds a real-time information-crunching engine for prediction markets, designed to detect when market prices move for reasons that appear better informed than the public narrative.
+
+The core research contribution is not simply ``predict Polymarket.''  It is to estimate whether specific kinds of order flow---especially concentrated activity from apparently new or previously inactive wallets---can identify information arrival earlier than conventional public signals.
+
+The strongest research framing is:
+\begin{enumerate}[nosep]
+    \item detect anomalous coordinated order flow,
+    \item estimate whether it is informed rather than noisy,
+    \item test whether it leads public information discovery,
+    \item convert the result into ranked, explainable alerts.
+\end{enumerate}
+
+This is potentially novel because it combines prediction market microstructure, wallet-level behavioral signatures, external evidence retrieval, and tradable event-study validation.
+
+It also has a built-in research tension: if the signal becomes widely watched, its alpha may decay, but its calibration or social usefulness may improve.  That tension is the right way to frame the Goodhart question.
+
+
+%===================================================================
+\section{System Overview}
+%===================================================================
+
+\subsection{Target Architecture}
+
+The system is organized in six layers: Ingestion (Polymarket APIs), Storage (PostgreSQL + object storage), Detection (wallet and anomaly models), Evidence (X + web/news), Alerting (Telegram + dashboard), and Research (backtests + paper-trading).
+
+\subsection{Component Map}
+
+\begin{enumerate}[nosep]
+    \item \textbf{Market ingestion service} --- Gamma sync, WebSocket listener, trades/activity pull, positions pull.
+    \item \textbf{Normalization and feature service} --- raw payloads $\to$ market, wallet, cluster, episode tables; rolling features.
+    \item \textbf{Detection engine} --- anomaly scores, leadership scores, signal confidence.
+    \item \textbf{External evidence engine} --- X and web/news search after candidate anomaly; public-explanation classification.
+    \item \textbf{Alerting and analyst interface} --- ranked alerts; alert outcome tracking.
+    \item \textbf{Backtesting environment} --- point-in-time reconstruction; predictive, statistical, and economic evaluation.
+\end{enumerate}
+
+\subsection{Core Entity Model}
+
+Required primary entities: \texttt{events}, \texttt{markets}, \texttt{market\_snapshots}, \texttt{order\_book\_snapshots}, \texttt{trades\_raw}, \texttt{wallets}, \texttt{wallet\_profiles}, \texttt{wallet\_market\_positions}, \texttt{wallet\_activity}, \texttt{wallet\_clusters}, \texttt{signal\_episodes}, \texttt{external\_evidence}, \texttt{alerts}, \texttt{alert\_outcomes}.
+
+
+%===================================================================
+\section{Research Hypotheses}
+%===================================================================
+
+\subsection{Terminology Correction}
+
+The phrase ``confidence intervals rise'' needs tightening.  A wider confidence interval means more uncertainty, not stronger conviction.  The system must separately track:
+
+\begin{itemize}[nosep]
+    \item $p_t$: market-implied probability (mid-price).
+    \item $u_t$: uncertainty or credible-interval width.
+    \item $c_t$: confidence score derived from liquidity, order-flow consistency, and external corroboration.
+\end{itemize}
+
+The economically interesting pattern is: a fast move in~$p_t$, accompanied by strong or coordinated order flow, with stable or narrowing~$u_t$, and rising~$c_t$.
+
+%--- H1 ---
+\subsection{H1: Goodhart's Law Immunity Test}
+
+\textbf{Research question:} Does a Polymarket-derived signal lose predictive or tradable value once it becomes widely observed and operationalized by others?
+
+\textbf{$H_{1,0}$:} Conditional on event type and liquidity, wider public observability of a market signal does not change its predictive value, calibration, or post-signal alpha.
+
+\textbf{$H_{1,A}$:} As observability rises, at least one of the following deteriorates: predictive lead over public information, post-signal alpha, calibration quality, or signal-to-noise ratio.
+
+\textbf{Critical challenge:} Goodhart may not show up as worse calibration.  It may show up as lower tradable edge because the market becomes more efficient after being watched.  The test must separate forecast quality, market quality, and extractable alpha.
+
+\textbf{Recommended test design:}
+\begin{enumerate}[nosep]
+    \item \textbf{Define observability shocks:} market embedded in widely viewed dashboards; large media citation volume; repeated mentions by major X accounts; internal alert launch date; public leaderboard/dashboard publication.
+    \item \textbf{Build matched treatment/control:} Match on category, liquidity, age, resolution horizon, and baseline volatility.
+    \item \textbf{Measure pre/post differences in:} Brier score and log loss at fixed horizons; price impact of new public information; spread and depth; order-flow toxicity; abnormal returns after signal; alert precision.
+    \item \textbf{Use difference-in-differences} or staggered event-study design.
+    \item \textbf{Run placebo shocks} on unaffected markets.
+\end{enumerate}
+
+\textbf{Success criterion:} If calibration improves but alpha decays, the market is not ``immune''; it is becoming more efficient under observation.
+
+%--- H2 ---
+\subsection{H2: Insider Activity Detection via New Wallet Signatures}
+
+\textbf{Research question:} Do newly observed wallets, especially those making large first trades and converging on the same event, contain predictive information about near-term event repricing?
+
+\textbf{$H_{2,0}$:} New-wallet large-trade flow has no incremental predictive value after controlling for price momentum, liquidity, and generic order imbalance.
+
+\textbf{$H_{2,A}$:} Coordinated new-wallet flow predicts subsequent repricing or public-information arrival beyond baseline market microstructure features.
+
+\textbf{Operational definitions:}
+\begin{itemize}[nosep]
+    \item \textbf{New wallet:} First appearance in local history within lookback window~$L$; low or zero prior footprint (\texttt{traded} count near zero, minimal public profile history).
+    \item \textbf{Large first trade:} Notional $> \$10{,}000$ \textit{and} $> p_{95}$ of first-trade size in that market bucket.
+    \item \textbf{Coordinated flow episode:} $\geq N$ new wallets, same condition or event family, within time window~$T$, showing same directional exposure.
+\end{itemize}
+
+\textbf{Critical challenge:} New proxy wallet $\neq$ new human.  Polymarket supports proxy/safe wallet structures.  This project must never equate ``new wallet'' with ``new insider.''  Use: \textit{anomalous wallet}, \textit{previously unseen wallet}, \textit{coordinated fresh-wallet flow}, \textit{potential informed flow}.
+
+\textbf{Required detection features:}
+\begin{itemize}[nosep]
+    \item first-trade notional; cumulative notional over 5m, 15m, 1h
+    \item number of fresh wallets entering event; concentration ratio of top fresh wallets
+    \item directional order imbalance; share of market volume from fresh wallets
+    \item sequence density and synchronization
+    \item persistence of position growth after first trade
+    \item overlap across related markets
+    \item external-public-silence score
+\end{itemize}
+
+\textbf{Key public endpoints enabling H2:}
+\begin{center}
+\begin{tabular}{@{}lp{9cm}@{}}
+\toprule
+\textbf{Endpoint} & \textbf{Fields Returned} \\
+\midrule
+\texttt{/trades}         & \texttt{proxyWallet}, \texttt{conditionId}, \texttt{asset}, \texttt{price}, \texttt{size}, \texttt{timestamp}, \texttt{transactionHash} \\
+\texttt{/activity}       & \texttt{proxyWallet}, \texttt{type}, \texttt{size}, \texttt{usdcSize}, \texttt{price}, \texttt{side}, \texttt{conditionId} \\
+\texttt{/positions}      & Current wallet exposure per market \\
+\texttt{/public-profile} & Profile creation date, metadata \\
+\texttt{/traded}         & Total markets traded by user \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%--- H3 ---
+\subsection{H3: Leading Indicator Construction}
+
+\textbf{Research question:} Can insider-activity-weighted Polymarket signals lead real-world events or lead public recognition of those events?
+
+\textbf{$H_{3,0}$:} Signals built from fresh-wallet and coordinated-flow features do not forecast subsequent public information arrival or profitable market repricing better than naive Polymarket momentum.
+
+\textbf{$H_{3,A}$:} Signals built from wallet-aware order flow lead: future Polymarket repricing, cross-market spillovers, or external-public evidence arrival, with meaningful economic value.
+
+\textbf{Validation targets:} time to first major public corroboration; time to cross-market repricing; time to realized event occurrence; short-horizon abnormal returns after signal; alert precision at top-$k$.
+
+%--- H4-H8 ---
+\subsection{Additional Hypotheses}
+
+\begin{description}[nosep]
+    \item[H4 --- Order-Flow Toxicity:] Markets with abnormal buy-side imbalance from large trades and shrinking passive depth exhibit larger next-interval price moves than markets with similar momentum but healthier depth.
+    \item[H5 --- Cross-Market Leakage:] Information often enters narrower or derivative markets before repricing broader headline markets.
+    \item[H6 --- Public-Silence:] An anomaly is more predictive when market flow intensifies before comparable growth in X/news discussion.
+    \item[H7 --- Attention-Alpha Tradeoff:] Higher market observability improves liquidity and calibration but reduces post-alert alpha.
+    \item[H8 --- Yes-Bias Correction:] Prediction markets may exhibit systematic ``Yes'' overtrading; signals that adjust for this bias outperform raw flow signals.
+\end{description}
+
+%--- Quant Finance ---
+\subsection{Where Classic Quantitative Finance Applies and Fails}
+
+\textbf{Applies well:} market microstructure; order imbalance; price impact; point-process models (Hawkes); state-space filtering; change-point detection; toxicity metrics (PIN/VPIN); event studies; lead-lag analysis; graph clustering of flow.
+
+\textbf{Applies with adaptation:} factor-style decomposition across event families; latent-state models for macro regime and event urgency; cross-sectional ranking models.
+
+\textbf{Fails or weakens:} classic DCF intuition; standard equity factor models; assumptions of stationary returns; assumptions of continuous unbounded prices; assumptions that contracts represent the same economic claim over long windows.
+
+\textbf{Why:} prices are bounded $[0,1]$; resolution causes hard terminal jumps; contract lifetimes are finite and heterogeneous; market creation/resolution rules dominate; exogenous event arrival drives most dynamics.
+
+
+%===================================================================
+\section{Data Pipeline Requirements}
+%===================================================================
+
+\subsection{Current Local Pipeline Limitations}
+
+\begin{enumerate}[nosep]
+    \item \textbf{Coverage mismatch} --- sports-only filtering excludes the research target universe.
+    \item \textbf{Identity blindness} --- no wallet/account tables, no profile metadata, no per-wallet positions.
+    \item \textbf{Incomplete trade capture} --- REST trade polling is misconfigured (passes \texttt{token\_id} instead of documented \texttt{conditionId}).
+    \item \textbf{One-sided asset coverage} --- only YES-token subscriptions in the live path.
+    \item \textbf{Research-hostile retention} --- closed-market data removed after 24 hours.
+    \item \textbf{Storage bottleneck} --- single 11\,GB SQLite; single-writer lock.
+    \item \textbf{No queueing or replay} --- raw events are not durably queued for reprocessing.
+    \item \textbf{No quality-control tables} --- no ingestion lag metrics, dead-letter queues, schema versioning, or alert audit tables.
+\end{enumerate}
+
+\subsection{Required Pipeline Upgrades}
+
+\textbf{Must-have ingestion changes:}
+\begin{itemize}[nosep]
+    \item Remove hard sports filter or make it configurable.
+    \item Fix trades endpoint to use documented \texttt{conditionId} parameter.
+    \item Subscribe to both YES and NO assets.
+    \item Store raw trades with: \texttt{proxy\_wallet}, \texttt{transaction\_hash}, \texttt{condition\_id}, \texttt{asset}, \texttt{outcome\_side}, \texttt{price}, \texttt{size}, \texttt{usdc\_notional}, \texttt{timestamp}, \texttt{source}.
+    \item Add wallet profile enrichment from \texttt{/public-profile} endpoint.
+    \item Add wallet activity and position snapshot pulls for flagged markets.
+    \item Preserve closed-market microstructure for 30--90 days in cloud cold storage.
+    \item Write raw payloads to append-only storage before normalization.
+\end{itemize}
+
+\textbf{Required schema additions:} \texttt{wallets}, \texttt{wallet\_profiles}, \texttt{wallet\_first\_seen}, \texttt{wallet\_activity}, \texttt{wallet\_positions}, \texttt{wallet\_market\_exposure\_rollups}, \texttt{signal\_candidates}, \texttt{signal\_features}, \texttt{signals\_validated}, \texttt{alerts\_sent}.
+
+\subsection{Storage Model}
+
+\textbf{Recommended split:}
+\begin{itemize}[nosep]
+    \item PostgreSQL for relational state and alerting.
+    \item Time-partitioned tables for trades, snapshots, and activity.
+    \item Object storage (GCS) for raw payload archives and backtest snapshots.
+    \item Redis for short-term caches, queues, and suppression windows.
+\end{itemize}
+
+\textbf{Recommended retention:}
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Data Type} & \textbf{Retention} \\
+\midrule
+Raw WebSocket/trade payloads & 30--90 days hot, 1+ year cold \\
+Normalized trades/activity   & 1+ year \\
+Feature tables               & 1+ year \\
+Alert outcomes and labels    & Permanent \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Cloud Migration}
+
+\textbf{Recommended platform: GCP Cloud Run.}
+
+\textbf{Why Cloud Run wins:} easier than AWS to stand up quickly; supports WebSockets; supports minimum instances for warm always-on services; works with Cloud Scheduler for recurring jobs; clean integration with managed Postgres and object storage.
+
+\textbf{Important caveat:} Cloud Run WebSockets are still HTTP requests and remain subject to request timeout.  Google documents a default of 5 minutes and a maximum under 60 minutes.  Long-lived stream workers must reconnect by design.
+
+\textbf{Recommended GCP deployment:}
+\begin{itemize}[nosep]
+    \item Cloud Run service \texttt{collector-realtime} --- WebSocket listener + lightweight pollers.
+    \item Cloud Run service \texttt{collector-batch} --- metadata sync, wallet enrichment, backfills.
+    \item Cloud Run service \texttt{detector} --- signal scoring and alert generation.
+    \item Cloud Scheduler --- periodic sync, integrity checks, retraining triggers.
+    \item Cloud SQL PostgreSQL --- normalized operational store.
+    \item Cloud Storage --- raw payload archive.
+    \item Redis / Memorystore --- caches, locks, suppression windows.
+\end{itemize}
+
+\textbf{Platform tradeoffs:}
+\begin{center}
+\begin{tabular}{@{}lp{4cm}p{4cm}l@{}}
+\toprule
+\textbf{Platform} & \textbf{Pros} & \textbf{Cons} & \textbf{Verdict} \\
+\midrule
+GCP Cloud Run & Best balance of ease, cost, operational maturity; min-instances; Cloud Scheduler & WS sessions must reconnect; cost if always warm & \textbf{Recommended} \\
+\midrule
+AWS Lambda+SQS & Excellent for decoupled async workers; strong retry & Poor fit for persistent WS; 15-min timeout; use ECS/Fargate instead & Auxiliary only \\
+\midrule
+Railway & Fastest MVP path; volumes for persistent storage & Cron is short-lived only; volume limitations; not thesis-grade & MVP only \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Estimated monthly cost:} Cloud Run (always-on, 1 vCPU, 1\,GB RAM) \$30--50; Cloud SQL (db-f1-micro) \$10--15; Cloud Storage \$1--2; Memorystore \$0--10.  \textbf{Total: \$40--75/mo.}
+
+
+%===================================================================
+\section{Real-Time Detection Engine}
+%===================================================================
+
+\subsection{Design Principle}
+
+The detection engine should be multi-stage, not monolithic.  Do not let one model directly emit final alerts from raw ticks.
+
+Staged pipeline:
+\begin{enumerate}[nosep]
+    \item Candidate generation.
+    \item Wallet-flow aggregation.
+    \item Anomaly scoring.
+    \item External-evidence check.
+    \item Alert ranking and suppression.
+\end{enumerate}
+
+\subsection{Agentic Workflow}
+
+Specialized agents, each with a clear role:
+\begin{enumerate}[nosep]
+    \item \textbf{Market anomaly agent} --- watches repricing speed, spread changes, depth imbalance, volatility jumps.
+    \item \textbf{Wallet-flow agent} --- tracks fresh wallets, first-trade notional, concentration, clustering, persistence.
+    \item \textbf{Market-linkage agent} --- checks neighboring markets, same event tree, related condition IDs.
+    \item \textbf{External-evidence agent} --- queries X and web/news; classifies: (a) public explanation already visible, (b) weak or ambiguous chatter, (c) no visible public explanation.
+    \item \textbf{Alert-composer agent} --- produces human-readable summary with ranked evidence and invalidation conditions.
+\end{enumerate}
+
+\subsection{X and Web/Google Integration}
+
+\textbf{X Recent Search API:} retrieves posts from the last 7 days; supports up to 100 results per request.  Good for near-term corroboration, not deep history.
+
+\textbf{Google Custom Search JSON API} is closing to new customers (transition by Jan 2027).  Do not design a core dependency around it.  Use a general web/news search provider with provider abstraction.
+
+\subsection{Candidate Signal Logic}
+
+\begin{lstlisting}[title={Example Candidate Rule}]
+Episode triggers when:
+  fresh_wallet_notional_15m > threshold_A
+  AND fresh_wallet_count_15m > threshold_B
+  AND probability_change_15m > threshold_C
+  AND external_public_explanation_score < threshold_D
+\end{lstlisting}
+
+\subsection{Core Signal Features}
+
+\textbf{Market-state:} implied probability change; bid-ask spread; depth imbalance; order-book resiliency; realized volatility; volume acceleration.
+
+\textbf{Wallet:} first seen timestamp; first trade size; number of markets traded historically; public profile age; concentration by wallet and cluster; repeated directional reinforcement.
+
+\textbf{Cross-context:} correlated market confirmation; event family breadth; X/news corroboration lag; contradiction score from public sources.
+
+\subsection{Signal Output Schema}
+
+Each signal emits: \texttt{signal\_id}; event and market identifiers; direction; anomaly score; confidence score; supporting wallets and concentration stats; market microstructure summary; external evidence summary; invalidation conditions.
+
+
+%===================================================================
+\section{Alert and Notification System}
+%===================================================================
+
+\subsection{Channel Evaluation}
+
+\begin{center}
+\begin{tabular}{@{}llp{5cm}l@{}}
+\toprule
+\textbf{Channel} & \textbf{Best Use} & \textbf{Key Tradeoff} & \textbf{Role} \\
+\midrule
+Telegram Bot & Primary 24/7 hotline & Free; rich text; buttons; mobile push & Primary \\
+Discord      & Team archive, debugging & Easy embeds; alerts can get buried & Secondary \\
+Twilio SMS   & Highest urgency        & Direct cost; anti-spam burden      & Escalation \\
+ntfy.sh      & Dev notifications      & Simple HTTP; less institutional    & Fallback \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Recommended Alert Stack}
+
+The recommended production stack is:
+\begin{enumerate}[nosep]
+    \item \textbf{Telegram Bot} as the primary real-time human notification channel,
+    \item \textbf{Discord webhook} as the secondary archive/debug surface,
+    \item \textbf{Twilio SMS} only for rare escalation-worthy alerts,
+    \item \textbf{database-backed alert history} so every notification is replayable and auditable.
+\end{enumerate}
+
+Telegram wins the primary slot because it is fast, free, reliable on mobile, supports rich message formatting, and is operationally much simpler than SMS.  Discord is valuable for team memory and debugging, but weaker as a personal hotline because important alerts can disappear into channel noise.  Twilio SMS should be reserved for genuinely high-cost misses.
+
+\subsection{Alert Severity Levels}
+
+\begin{description}[nosep]
+    \item[\texttt{INFO}:] Interesting but non-actionable.
+    \item[\texttt{WATCH}:] Monitor closely.
+    \item[\texttt{ACTIONABLE}:] High-confidence signal worth checking immediately.
+    \item[\texttt{CRITICAL}:] Repeated or multi-source-confirmed high-value signal.
+\end{description}
+
+\subsection{Alert Schema: Top 5 Things You Need to Know}
+
+Every alert surfaces five items first:
+\begin{enumerate}[nosep]
+    \item \textbf{What changed} --- event, market, direction, probability move, time window.
+    \item \textbf{Why it looks informed} --- fresh-wallet count, first-trade sizes, concentration, coordinated directionality.
+    \item \textbf{How strong the market evidence is} --- anomaly score, confidence score, volume share, spread/depth conditions.
+    \item \textbf{What public evidence exists already} --- top X/news hits, first-public-mention lag, contradictions, unresolved catalyst.
+    \item \textbf{What action framework follows} --- entry thesis, invalidation level, next catalyst, and urgency.
+\end{enumerate}
+
+\subsection{Alert Payload Example}
+
+\begin{lstlisting}[language={}]
+{
+  "signal_id": "sig_20260330_001",
+  "severity": "ACTIONABLE",
+  "event_title": "Will X happen by date Y?",
+  "direction": "YES",
+  "probability_change_15m": 0.11,
+  "current_probability": 0.67,
+  "fresh_wallet_count_15m": 4,
+  "fresh_wallet_notional_15m": 48250,
+  "largest_first_trade_usd": 18000,
+  "cluster_concentration": 0.71,
+  "external_public_explanation_score": 0.18,
+  "supporting_evidence": [
+    "4 fresh wallets entered within 11 minutes",
+    "92% of fresh-wallet notional is same-direction",
+    "No comparable X/news spike yet"
+  ],
+  "invalidation": "probability reverts below 0.59",
+  "next_check_eta_minutes": 10
+}
+\end{lstlisting}
+
+
+%===================================================================
+\section{ML Model Requirements}
+%===================================================================
+
+\subsection{Modeling Philosophy}
+
+Use a layered stack: heuristics for candidate generation; supervised ranking for alert priority; unsupervised anomaly detection for rare behaviors; sequence and graph models once the feature store is mature.
+
+\subsection{Required Model Classes}
+
+\begin{enumerate}[nosep]
+    \item \textbf{Baseline heuristic detector} --- threshold rules for fresh-wallet flow and probability acceleration.
+    \item \textbf{Supervised alert-ranking model} --- LightGBM or XGBoost over engineered features.
+    \item \textbf{Unsupervised anomaly detector} --- Isolation Forest, robust z-score stack, EVT tails, or one-class methods.
+    \item \textbf{Temporal sequence model} --- temporal CNN, transformer, or Hawkes/state-space model for event episodes.
+    \item \textbf{Graph clustering model} --- wallet-market bipartite graph for coordinated-flow communities.
+\end{enumerate}
+
+\subsection{Feature Families}
+
+\textbf{Microstructure:} price velocity; price acceleration; spread; depth imbalance; quote replenishment; large-trade share; buy/sell imbalance.
+
+\textbf{Wallet:} first appearance age; first-trade notional; total traded markets; profile metadata completeness; repeat participation across related events; realized and unrealized PnL persistence if available.
+
+\textbf{Context:} category; time to resolution; event popularity; public-discussion intensity; cross-market linkage strength.
+
+\textbf{External evidence:} X hit count; top-post engagement; web/news hit count; corroboration lag; contradiction score.
+
+\subsection{Labels}
+
+\textbf{Primary:} next-5m return; next-30m return; next-2h return; next-24h return.
+
+\textbf{Research:} time to first public corroboration; time to cross-market repricing; eventual event outcome; realized PnL from rule-based execution.
+
+\textbf{Operational:} analyst accepted / ignored / rejected; alert false positive / true positive.
+
+\subsection{Required Baselines}
+
+The wallet-aware model \textbf{must beat} these wallet-\textit{unaware} baselines to justify the project's novelty:
+\begin{enumerate}[nosep]
+    \item Raw Polymarket momentum only.
+    \item Order imbalance only.
+    \item Fresh-wallet heuristic only.
+    \item External-evidence only.
+    \item Combined wallet-unaware microstructure model.
+\end{enumerate}
+
+\subsection{Evaluation Metrics}
+
+\textbf{Statistical:} AUROC ($>0.70$); AUPRC ($>0.40$); precision at $k$ ($>0.60$ at $k{=}10$); calibration error (Brier $<0.20$).
+
+\textbf{Economic:} paper-trade PnL; Sharpe-like risk-adjusted return ($>1.5$); hit rate net of slippage ($>55\%$); average edge decay after alert; max drawdown ($<25\%$).
+
+\textbf{Operational:} median lead time to public corroboration ($>30$ min); alert volume per day ($<20$); false-alarm rate ($<40\%$); time from candidate to alert.
+
+\subsection{Model Benchmarks}
+
+Reasonable milestone benchmarks for the first research cycle are:
+\begin{enumerate}[nosep]
+    \item \textbf{Phase-1 baseline:} fresh-wallet heuristics outperform pure momentum on precision at top-$k$ alerts.
+    \item \textbf{Phase-2 ranking model:} wallet-aware supervised ranking beats all wallet-unaware baselines on precision at $k$, lead time, and paper-trade edge.
+    \item \textbf{Phase-3 evidence model:} alerts with external-evidence fusion show lower false-positive rates than market-only alerts.
+    \item \textbf{Phase-4 thesis result:} insider-activity-weighted signals produce statistically and economically meaningful lead time ahead of public corroboration.
+\end{enumerate}
+
+
+%===================================================================
+\section{Backtesting and Validation Framework}
+%===================================================================
+
+\subsection{Point-in-Time Reconstruction}
+
+The backtest environment must reconstruct the exact state available at decision time: raw event stream archive; feature materialization by timestamp; event-resolution timeline; external evidence timestamps; no forward-filled profile or outcome data.
+
+\subsection{Validation Designs}
+
+\begin{enumerate}[nosep]
+    \item \textbf{Time-split:} train on earlier windows, test on later windows.
+    \item \textbf{Category holdout:} test on unseen categories (e.g., geopolitics after training on politics/sports).
+    \item \textbf{Event-family holdout:} keep related contracts together to avoid leakage.
+    \item \textbf{Goodhart validation:} compare performance before and after signal publication or alert deployment.
+\end{enumerate}
+
+\subsection{Event-Study Framework}
+
+For each signal episode, estimate: abnormal repricing after signal; market-depth response; public-corroboration lag; cross-market propagation; eventual event realization.
+
+Suggested windows: $[-60\text{m},\,+5\text{m}]$; $[-60\text{m},\,+30\text{m}]$; $[-6\text{h},\,+24\text{h}]$; category-specific windows for macro and geopolitical events.
+
+\subsection{Paper-Trading Framework}
+
+Conservative execution simulator: use best ask for buys and best bid for sells; include slippage based on depth; cap size by market liquidity; stop new entries near resolution if liquidity is weak; separate model score from execution assumptions.
+
+\subsection{Success Criteria}
+
+Minimum thesis-quality standard:
+\begin{itemize}[nosep]
+    \item Statistically significant improvement over wallet-unaware baselines.
+    \item Positive paper-trading edge after slippage.
+    \item Meaningful lead time over public corroboration on a nontrivial subset of alerts.
+\end{itemize}
+
+
+%===================================================================
+\section{Risks, Limitations, and Ethical Considerations}
+%===================================================================
+
+\subsection{Identification Risk}
+Fresh wallets are not fresh humans.  Never label a wallet cluster as ``insider'' in product outputs.  Use: anomalous, coordinated, fresh-wallet, potential informed flow.
+
+\subsection{False Accusation Risk}
+Publicly naming wallets or implying illegal conduct creates legal and ethical risk.  Keep wallet identifiers internal; hash identifiers in user-facing alerts; separate anomaly detection from any legal conclusion.
+
+\subsection{Market-Impact Risk}
+If alerting becomes widely acted upon, it may move prices and partially destroy the signal.  This is not just a trading issue; it is part of H1.
+
+\subsection{Data and Platform Risk}
+API contracts may change; rate limits may tighten; WebSocket event formats may drift; public profile metadata may be incomplete or noisy.
+
+\subsection{Regulatory and Compliance Risk}
+Prediction-market execution legality varies by jurisdiction.  This SRS treats automated execution as a separate optional layer.  The core system is a research, monitoring, and alerting engine first.
+
+\subsection{Statistical Risk}
+Rare-event overfitting, selection bias, look-ahead leakage, and survivorship bias are major threats.
+
+\subsection{Ethical Framing}
+The project is framed as market intelligence, anomaly detection, and information-aggregation research---not as an accusation engine or surveillance system targeting individuals.
+
+
+%===================================================================
+\section{Development Roadmap}
+%===================================================================
+
+\begin{center}
+\begin{longtable}{@{}clp{7cm}l@{}}
+\toprule
+\textbf{Phase} & \textbf{Name} & \textbf{Deliverables} & \textbf{Duration} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Phase} & \textbf{Name} & \textbf{Deliverables} & \textbf{Duration} \\
+\midrule
+\endhead
+0 & Stabilize Collector & Remove sports filter; fix trades endpoint to use \texttt{conditionId}; add both-asset coverage; add ingestion health metrics; resume continuous 24/7 collection & 1--2 weeks \\
+\midrule
+1 & Wallet-Aware Ingestion & Extend schema for wallets, activity, positions; store \texttt{proxyWallet}, \texttt{conditionId}, \texttt{transactionHash}, \texttt{outcome}; add profile enrichment; archive raw payloads & 2--3 weeks \\
+\midrule
+2 & Signal Engine & Implement fresh-wallet detector; coordinated-flow episode builder; microstructure anomaly features; first ranked signal score & 3--4 weeks \\
+\midrule
+3 & Evidence \& Alerting & Integrate X recent search; web/news search; Telegram alerts; suppression and severity logic & 2--4 weeks \\
+\midrule
+4 & Backtesting & Point-in-time replay; event studies; baseline comparisons; conservative execution simulator & 4--6 weeks \\
+\midrule
+5 & Refinement \& Thesis & Supervised ranking model; graph clustering; ablations and robustness checks; final H1/H2/H3 results; research paper and visuals & 4--6 weeks \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{Immediate Engineering Priorities}
+
+\begin{enumerate}[nosep]
+    \item Fix the collector so it covers non-sports markets and stores documented trade fields.
+    \item Move from SQLite-only local storage to a cloud Postgres plus raw archive design.
+    \item Add wallet-aware tables before writing any serious anomaly model.
+    \item Preserve enough closed-market microstructure to run event studies.
+    \item Build the alerting and external-evidence layer only after the raw market data is trustworthy.
+\end{enumerate}
+
+
+%===================================================================
+\section*{References}
+\addcontentsline{toc}{section}{References}
+%===================================================================
+
+\subsection*{Platform Documentation}
+
+\begin{itemize}[nosep]
+    \item Polymarket trades: \url{https://docs.polymarket.com/api-reference/core/get-trades-for-a-user-or-markets}
+    \item Polymarket activity: \url{https://docs.polymarket.com/api-reference/core/get-user-activity}
+    \item Polymarket positions (user): \url{https://docs.polymarket.com/api-reference/core/get-current-positions-for-a-user}
+    \item Polymarket positions (market): \url{https://docs.polymarket.com/api-reference/core/get-positions-for-a-market}
+    \item Polymarket public profile: \url{https://docs.polymarket.com/api-reference/profiles/get-public-profile-by-wallet-address}
+    \item Polymarket traded count: \url{https://docs.polymarket.com/api-reference/misc/get-total-markets-a-user-has-traded}
+    \item Polymarket leaderboard: \url{https://docs.polymarket.com/api-reference/core/get-trader-leaderboard-rankings}
+    \item Polymarket WebSocket: \url{https://docs.polymarket.com/market-data/websocket/market-channel}
+\end{itemize}
+
+\subsection*{Cloud and Alerting Documentation}
+
+\begin{itemize}[nosep]
+    \item AWS Lambda with SQS: \url{https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html}
+    \item Cloud Run WebSockets: \url{https://cloud.google.com/run/docs/triggering/websockets}
+    \item Cloud Run min instances: \url{https://cloud.google.com/run/docs/configuring/min-instances}
+    \item Cloud Run request timeout: \url{https://cloud.google.com/run/docs/configuring/request-timeout}
+    \item Railway cron jobs: \url{https://docs.railway.com/reference/cron-jobs}
+    \item Telegram Bot API: \url{https://core.telegram.org/bots/api}
+    \item Discord webhooks: \url{https://discord.com/developers/docs/resources/webhook}
+    \item ntfy publishing: \url{https://docs.ntfy.sh/publish/}
+    \item Twilio messages: \url{https://www.twilio.com/docs/messaging/api/message-resource}
+    \item X recent search: \url{https://docs.x.com/x-api/posts/search-recent-posts}
+    \item Google Custom Search: \url{https://developers.google.com/custom-search/v1/overview}
+\end{itemize}
+
+\subsection*{Research References}
+
+\begin{enumerate}[label={[\arabic*]},nosep]
+    \item Wolfers, J.\ and Zitzewitz, E.\ ``Prediction Markets.'' NBER Working Paper 10504, 2004.
+    \item Wolfers, J.\ and Zitzewitz, E.\ ``Prediction Markets in Theory and Practice.'' NBER 12083, 2006.
+    \item Snowberg, E., Wolfers, J., Zitzewitz, E.\ ``How Prediction Markets Can Save Event Studies.'' NBER 16949, 2011.
+    \item Snowberg, E., Wolfers, J., Zitzewitz, E.\ ``Prediction Markets for Economic Forecasting.'' NBER 18222, 2012.
+    \item Oprea, R., Hanson, R., Porter, D.\ ``Affecting Policy by Manipulating Prediction Markets.'' \textit{J.\ Econ.\ Behav.\ Organ.}, 2012.
+    \item Yang, L.\ and Zhu, H.\ ``Back-Running: Seeking and Hiding Fundamental Information in Order Flows.'' SSRN 2583915, 2015.
+    \item Easley, D., L\'{o}pez de Prado, M., O'Hara, M.\ ``The Volume Clock: Insights into the High Frequency Paradigm.'' SSRN 2034858, 2012.
+    \item Reichenbach, T.\ and Walther, A.\ ``Exploring Decentralized Prediction Markets on Polymarket.'' SSRN 5910522, 2025.
+    \item Ng, J., Peng, C., Tao, L., Zhou, H.\ ``Price Discovery and Trading in Modern Prediction Markets.'' SSRN 5331995, 2024.
+    \item Burgi, C., Deng, S., Whelan, K.\ ``Makers and Takers: The Economics of the Kalshi Prediction Market.'' SSRN 5502658, 2025.
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textit{This SRS is a living document.  Update as architecture decisions are made and research findings emerge.}
+\end{center}
+
+\end{document}

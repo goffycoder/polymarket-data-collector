@@ -1,0 +1,414 @@
+\documentclass[11pt, letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{parskip}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    urlcolor=blue!60!black,
+}
+
+\lstset{
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!8},
+    showstringspaces=false,
+    tabsize=2,
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Professor Reference Repo Analysis}
+\rhead{\texttt{last30days-skill}}
+\cfoot{\thepage}
+
+\title{
+    \textbf{Professor Reference Repo Analysis} \\[0.4em]
+    \Large How \texttt{last30days-skill} Applies to the Polymarket Insider-Signal Project
+}
+\author{
+    Vraj Patel \\
+    M.S. Data Science, Stony Brook University \\
+    CSE 520 --- Quantitative Finance
+}
+\date{March 31, 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Executive Bottom Line}
+
+The professor repository at \texttt{Prof-refe/last30days-skill} is not a replacement for your Polymarket collector. It solves a different problem: turning a topic into a multi-source research brief by searching several public information sources, normalizing the returned items, ranking them, deduplicating them, saving them, and rendering reusable summaries.
+
+For your project, that means the repo is best understood as an \textbf{intelligence layer template}, not a \textbf{sensing layer template}. Your existing codebase already does the sensing-layer job better because it stores high-frequency Polymarket microstructure. The professor repo is useful because it shows how to:
+
+\begin{enumerate}[nosep]
+    \item normalize heterogeneous evidence into one schema,
+    \item score and rank evidence from multiple sources,
+    \item persist watchlists and repeated runs,
+    \item generate compact explainable briefings,
+    \item build an evaluation harness around retrieval quality.
+\end{enumerate}
+
+\textbf{Best practical use:} do not merge the professor repo wholesale into your collector. Instead, port its architectural patterns into a new evidence-orchestration subsystem that activates \emph{after} your Polymarket detector flags a market, wallet cluster, or suspicious episode.
+
+\section{What the Reference Repo Is Doing}
+
+\subsection{Core Purpose}
+
+\texttt{last30days-skill} is a topic-centric research engine. The user gives it a topic such as a company, person, tool, or event. The system then queries multiple sources from the recent past, scores what it finds, and returns a synthesized research package.
+
+\subsection{Functional Flow}
+
+\begin{lstlisting}[title={High-Level Runtime Flow}]
+User topic
+  -> query cleanup / query typing
+  -> parallel source search
+  -> normalization to a common schema
+  -> date filtering
+  -> scoring and ranking
+  -> dedupe and cross-source linking
+  -> render compact output
+  -> optionally save to watchlist/store/briefing DB
+\end{lstlisting}
+
+\subsection{Main Sources It Can Use}
+
+The repo supports a mix of connectors, including Reddit, X, YouTube, TikTok, Instagram, Hacker News, Polymarket, web search, Bluesky, Truth Social, and optional Xiaohongshu. Not every source is always active; the environment/config layer chooses what is available and what fallback path to use.
+
+\subsection{Main Methodological Ideas}
+
+\begin{enumerate}[nosep]
+    \item \textbf{Query expansion.} The system does not trust the raw user query alone; it extracts a core subject and expands the query for source search.
+    \item \textbf{Canonical normalization.} Source-specific data gets transformed into shared item types with common fields such as title/text, date, engagement, relevance, and score.
+    \item \textbf{Multi-factor scoring.} Results are ranked by a weighted mix of relevance, recency, and engagement.
+    \item \textbf{Cross-source evidence fusion.} The repo links near-duplicate items and marks when a story appears on multiple sources.
+    \item \textbf{Persistence and reruns.} Watchlists, stored findings, and briefings make the tool useful over repeated sessions rather than only as a one-shot search.
+    \item \textbf{Evaluation discipline.} Search-quality and synthesis-evaluation scripts show a habit of measuring retrieval quality rather than relying only on subjective impressions.
+\end{enumerate}
+
+\section{Why It Is Usable for Your Situation}
+
+\subsection{Where It Fits}
+
+Your current project needs two very different planes:
+
+\begin{enumerate}[nosep]
+    \item a \textbf{market-data plane} that captures prices, trades, order books, wallets, and timing, and
+    \item an \textbf{evidence plane} that explains what might be happening in the world around a flagged market.
+\end{enumerate}
+
+Your current codebase already targets the first plane. The professor repo is relevant because it shows how to implement the second plane cleanly.
+
+\subsection{Why This Matters for Your Hypotheses}
+
+\textbf{H1 (Goodhart's Law).} You need a public-information layer to test whether a market loses predictive power when it becomes highly observed and heavily discussed. The professor repo gives patterns for measuring public attention and discussion intensity.
+
+\textbf{H2 (new-wallet insider signatures).} A wallet-flow anomaly alone is not enough. You also need a context engine that asks: is there already public chatter on X, Google/web, or other channels? The reference repo gives the retrieval, scoring, and briefing logic for that context check.
+
+\textbf{H3 (leading indicator).} To claim that insider-weighted Polymarket signals lead real-world events, you need timestamped external evidence. The professor repo provides the template for collecting, normalizing, and ranking those outside signals.
+
+\subsection{Most Important Conceptual Translation}
+
+The professor repo is \textbf{topic-centric}. Your system must become \textbf{market-centric}, \textbf{wallet-centric}, and \textbf{episode-centric}. That means the reusable parts are mostly \emph{patterns}, not final schemas.
+
+\begin{lstlisting}[title={Mental Model}]
+Your collector            = market sensing
+Professor repo            = external evidence orchestration
+Target thesis system      = anomaly detection + evidence fusion + alerting
+\end{lstlisting}
+
+\section{Direct Reuse vs. Adaptation}
+
+\subsection{Directly Reusable Patterns}
+
+\begin{longtable}{p{3.6cm}p{5.0cm}p{5.0cm}}
+\toprule
+\textbf{Reference File} & \textbf{What It Already Does Well} & \textbf{How To Reuse It} \\
+\midrule
+\endhead
+\texttt{scripts/store.py} & SQLite accumulation, WAL mode, repeated runs, settings, dedup-friendly persistence & Rebuild as the signal/evidence store for alerts, episodes, briefings, analyst actions, and recurring monitored markets \\
+\texttt{scripts/watchlist.py} & Repeat-run orchestration and schedule semantics & Adapt into a watchlist for markets, event groups, or wallet clusters instead of free-form topics \\
+\texttt{scripts/briefing.py} & Converts stored findings into structured briefing data & Reuse the pattern for analyst briefs, morning summaries, and post-alert recap packets \\
+\texttt{scripts/lib/schema.py} & Shared item schema across heterogeneous sources & Reuse the normalization philosophy for X/news/web evidence tied to Polymarket events \\
+\texttt{scripts/lib/normalize.py} & Canonicalizes source outputs before downstream use & Reuse as the normalization layer in your evidence subsystem \\
+\texttt{scripts/lib/score.py} & Weighted ranking based on relevance/recency/engagement & Reuse the scoring framework, but change the features and weights to event- and signal-aware evidence ranking \\
+\texttt{scripts/lib/dedupe.py} & Near-duplicate detection and cross-source linking & Reuse to collapse repeated headlines/posts into one evidence cluster per event \\
+\texttt{scripts/lib/render.py} & Human-readable compact summaries with honesty about missing/fresh data & Reuse to generate explainable alerts and analyst-facing summaries \\
+\texttt{scripts/evaluate\_search\_quality.py} & Offline retrieval-evaluation harness & Reuse as the model for benchmarking your evidence retrieval and ranking layer \\
+\bottomrule
+\end{longtable}
+
+\subsection{Reusable Only With Adaptation}
+
+\begin{longtable}{p{3.6cm}p{4.8cm}p{5.2cm}}
+\toprule
+\textbf{Reference File} & \textbf{Value} & \textbf{Required Adaptation} \\
+\midrule
+\endhead
+\texttt{scripts/lib/polymarket.py} & Good example of free Polymarket search via Gamma plus query expansion & It is event search, not trade/order-flow capture; cannot detect wallets, coordinated entry, or real-time anomalies \\
+\texttt{scripts/lib/query.py} & Good heuristics for stripping noise from natural-language prompts & Needs to be replaced by event-title, market-tag, and entity extraction from your own detected episodes \\
+\texttt{scripts/lib/query\_type.py} & Useful for source routing based on query class & Must be reworked so routing depends on market category, anomaly type, and urgency rather than topic type alone \\
+\texttt{scripts/lib/entity\_extract.py} & Useful for extracting handles, hashtags, and communities from first-pass evidence & Needs event-specific seeding from market title, resolution text, tags, named entities, and related tickers/regions \\
+\texttt{scripts/lib/quality\_nudge.py} & Useful concept for measuring evidence completeness & Should become a confidence/completeness score for the alert package, not a setup nudge \\
+\texttt{scripts/lib/models.py} and source-search backends & Useful for choosing different LLM/search providers & Must be integrated behind your own evidence-agent interface with stronger reliability controls \\
+\bottomrule
+\end{longtable}
+
+\subsection{Should Not Be Reused for the Core Collector}
+
+\begin{longtable}{p{3.6cm}p{10.2cm}}
+\toprule
+\textbf{Reference Surface} & \textbf{Why It Should Not Be Reused Directly} \\
+\midrule
+\endhead
+\texttt{scripts/last30days.py} as a whole & The orchestrator is designed around ad hoc topic research, not always-on market surveillance or market microstructure ingestion \\
+\texttt{scripts/lib/polymarket.py} as a collector substitute & It only searches Polymarket events and markets; it does not capture order books, trades, wallet identity, or continuous snapshots \\
+\texttt{.claude-plugin/}, \texttt{agents/openai.yaml}, \texttt{gemini-extension.json} & Useful for packaging the skill, but not part of the detection logic itself \\
+\texttt{vendor/} and packaged Bird code & Third-party vendored dependency surface; useful operationally, but not something to treat as your research architecture \\
+\texttt{assets/}, launch copy, and marketing docs & Productization material rather than a modeling or data-engineering contribution \\
+\bottomrule
+\end{longtable}
+
+\section{Concrete Architecture You Can Build From It}
+
+\subsection{Recommended Combined Architecture}
+
+\begin{lstlisting}[title={Recommended Combined System}]
+Polymarket collector
+  -> market snapshots / order books / trades / wallets
+  -> anomaly detector
+  -> episode builder
+  -> evidence orchestrator
+       -> X search
+       -> web/news search
+       -> optional Reddit / YouTube / HN
+       -> normalize
+       -> score
+       -> dedupe
+       -> evidence summary
+  -> alert ranker
+  -> Telegram / Discord / SMS
+  -> archive / backtest / analyst feedback store
+\end{lstlisting}
+
+\subsection{Best Immediate Ports}
+
+\begin{enumerate}[nosep]
+    \item Create a new local package such as \texttt{evidence/} or \texttt{context\_engine/}.
+    \item Port the \texttt{schema.py}, \texttt{normalize.py}, \texttt{score.py}, \texttt{dedupe.py}, and \texttt{render.py} ideas into that package.
+    \item Replace the professor repo's ``topic'' unit with your own unit: \texttt{signal\_episode}.
+    \item Use your signal episode to seed source-specific searches: event title, region, entity names, market tags, and resolution text.
+    \item Save all external findings in a dedicated evidence store keyed by \texttt{signal\_id}, \texttt{event\_id}, and retrieval time.
+    \item Generate briefings only after the market detector has raised a candidate anomaly.
+\end{enumerate}
+
+\subsection{Best Data-Model Translation}
+
+\begin{longtable}{p{4.3cm}p{4.2cm}p{4.8cm}}
+\toprule
+\textbf{Professor Repo Concept} & \textbf{Current Meaning There} & \textbf{Meaning in Your Project} \\
+\midrule
+\endhead
+\texttt{topic} & User-supplied research subject & Market, event, event-group, or anomaly episode \\
+\texttt{research\_run} & One source-collection pass for a topic & One evidence retrieval pass for a flagged signal \\
+\texttt{finding} & Retrieved post/article/video/thread & External evidence item linked to a signal episode \\
+\texttt{briefing} & Daily or weekly topic digest & Analyst alert packet or periodic portfolio risk summary \\
+\texttt{score} & Relevance/recency/engagement rank & Evidence usefulness for validating or invalidating the anomaly \\
+\bottomrule
+\end{longtable}
+
+\section{Sequential File-by-File Review}
+
+\subsection{Top-Level Authored Files}
+
+\begin{longtable}{p{4.0cm}p{4.9cm}p{4.7cm}}
+\toprule
+\textbf{File} & \textbf{Role in Repo} & \textbf{Usefulness for Your Project} \\
+\midrule
+\endhead
+\texttt{README.md} & Product-level overview, supported sources, usage framing & High; good summary of intended architecture and source mix \\
+\texttt{CHANGELOG.md} & Evolution of features and source additions & Medium; reveals maturity and design priorities \\
+\texttt{CLAUDE.md} & Repo structure notes and implementation guidance & Medium; helps navigate architecture quickly \\
+\texttt{SPEC.md} & Formal module-level design intent & High; clearest architecture map in the repo \\
+\texttt{TASKS.md} & Build checklist and implementation milestones & Medium; useful for seeing what was considered essential \\
+\texttt{SKILL.md} & Main assistant-facing runtime instructions & Medium; helpful for routing and invocation design \\
+\texttt{SKILL-original.md} & Earlier version of the skill contract & Low; mainly historical context \\
+\texttt{release-notes.md} & Product-level summary of shipped capabilities & Low for code reuse; useful for understanding positioning \\
+\texttt{.claude-plugin/plugin.json} & Claude packaging manifest & Low for research logic \\
+\texttt{.claude-plugin/marketplace.json} & Claude marketplace metadata & Low for research logic \\
+\texttt{agents/openai.yaml} & OpenAI/agent interface metadata & Low for core system; useful only if you later package an assistant tool \\
+\texttt{gemini-extension.json} & Gemini packaging and env settings & Low for core system \\
+\texttt{hooks/scripts/check-config.sh} & Startup diagnostic and configuration banner & Medium; useful pattern for environment health checks \\
+\bottomrule
+\end{longtable}
+
+\subsection{Primary Scripts}
+
+\begin{longtable}{p{4.0cm}p{4.9cm}p{4.7cm}}
+\toprule
+\textbf{File} & \textbf{Role in Repo} & \textbf{Usefulness for Your Project} \\
+\midrule
+\endhead
+\texttt{scripts/last30days.py} & Main topic-research orchestrator, connector coordination, fallbacks & Medium as inspiration, low as direct code reuse \\
+\texttt{scripts/store.py} & Persistent research/watchlist database with FTS and migrations & Very high; strong pattern to adapt \\
+\texttt{scripts/watchlist.py} & Watchlist CLI and recurring rerun entrypoint & High; strong pattern to adapt \\
+\texttt{scripts/briefing.py} & Structured briefing-data generator & High; strong pattern to adapt \\
+\texttt{scripts/evaluate\_search\_quality.py} & Retrieval evaluation harness & High; directly useful as a benchmark pattern \\
+\texttt{scripts/evaluate-synthesis.py} & Manual synthesis-comparison framework & Medium; useful if you later compare alert narratives or analyst briefs \\
+\texttt{scripts/generate-synthesis-inputs.py} & Converts stored JSON to compact markdown for synthesis comparison & Medium; useful for your later prompt-evaluation workflow \\
+\texttt{scripts/sync.sh} & Installs/syncs the skill into assistant environments & Low for thesis system logic \\
+\texttt{scripts/test-v1-vs-v2.sh} & Comparison helper for older skill versions & Low; process artifact \\
+\bottomrule
+\end{longtable}
+
+\subsection{Library Modules}
+
+\begin{longtable}{p{4.0cm}p{4.6cm}p{5.0cm}}
+\toprule
+\textbf{File} & \textbf{Primary Role} & \textbf{Reuse Verdict} \\
+\midrule
+\endhead
+\texttt{scripts/lib/env.py} & Environment loading, key discovery, cookie-domain registry & Reuse pattern only \\
+\texttt{scripts/lib/cache.py} & Query-result and model cache helpers & Reuse pattern only \\
+\texttt{scripts/lib/http.py} & Retry-aware HTTP utilities & Reuse pattern only \\
+\texttt{scripts/lib/models.py} & Model/provider selection helpers & Reuse with adaptation \\
+\texttt{scripts/lib/query.py} & Query cleanup and core-subject extraction & Reuse with adaptation \\
+\texttt{scripts/lib/query\_type.py} & Query classification and source prioritization & Reuse with adaptation \\
+\texttt{scripts/lib/schema.py} & Canonical typed schema for normalized items & Strong reuse candidate \\
+\texttt{scripts/lib/dates.py} & Date parsing and recency helpers & Strong reuse candidate \\
+\texttt{scripts/lib/relevance.py} & Text-overlap relevance heuristics & Reuse with adaptation \\
+\texttt{scripts/lib/normalize.py} & Converts source-specific payloads to canonical types & Strong reuse candidate \\
+\texttt{scripts/lib/score.py} & Computes weighted ranking subscores and final scores & Strong reuse candidate \\
+\texttt{scripts/lib/dedupe.py} & Near-duplicate detection and cross-source linking & Strong reuse candidate \\
+\texttt{scripts/lib/render.py} & Compact human-readable rendering of normalized reports & Strong reuse candidate \\
+\texttt{scripts/lib/polymarket.py} & Gamma search over Polymarket events and markets & Limited use; not a collector substitute \\
+\texttt{scripts/lib/websearch.py} & Native web search parsing and normalization & Strong evidence-layer pattern \\
+\texttt{scripts/lib/parallel\_search.py} & Parallel AI web search backend wrapper & Optional provider adapter \\
+\texttt{scripts/lib/brave\_search.py} & Brave search backend adapter & Optional provider adapter \\
+\texttt{scripts/lib/exa\_search.py} & Exa search backend adapter & Optional provider adapter \\
+\texttt{scripts/lib/openrouter\_search.py} & OpenRouter/Perplexity web backend adapter & Optional provider adapter \\
+\texttt{scripts/lib/openai\_reddit.py} & Reddit discovery through OpenAI responses/web search & Optional source connector \\
+\texttt{scripts/lib/reddit\_public.py} & Free Reddit JSON search fallback & Optional source connector \\
+\texttt{scripts/lib/reddit.py} & ScrapeCreators-backed Reddit search & Optional source connector \\
+\texttt{scripts/lib/reddit\_enrich.py} & Fetches thread comments and extracts discussion insights & Strong pattern for evidence enrichment \\
+\texttt{scripts/lib/xai\_x.py} & X search via xAI & Strong evidence-layer pattern \\
+\texttt{scripts/lib/bird\_x.py} & Free local X search via bundled Bird client & Strong evidence-layer pattern \\
+\texttt{scripts/lib/scrapecreators\_x.py} & X search via ScrapeCreators API & Optional evidence connector \\
+\texttt{scripts/lib/youtube\_yt.py} & YouTube search and transcript extraction & Optional evidence connector \\
+\texttt{scripts/lib/tiktok.py} & TikTok search/normalize helpers & Optional, lower priority \\
+\texttt{scripts/lib/instagram.py} & Instagram search/normalize helpers & Optional, lower priority \\
+\texttt{scripts/lib/bluesky.py} & Bluesky connector & Optional, lower priority \\
+\texttt{scripts/lib/truthsocial.py} & Truth Social connector & Optional, lower priority \\
+\texttt{scripts/lib/hackernews.py} & Hacker News retrieval and scoring & Optional but interesting for tech-linked events \\
+\texttt{scripts/lib/entity\_extract.py} & Extracts handles, hashtags, subreddits from first-pass hits & Useful adaptation target \\
+\texttt{scripts/lib/quality\_nudge.py} & Coverage/completeness scoring and user nudge generation & Useful adaptation target \\
+\texttt{scripts/lib/setup\_wizard.py} & First-run setup helper & Low for thesis logic \\
+\texttt{scripts/lib/ui.py} & Terminal spinner/banner utilities & Low for thesis logic \\
+\texttt{scripts/lib/chrome\_cookies.py} & Chrome cookie extraction for auth bootstrap & Operational helper only \\
+\texttt{scripts/lib/cookie\_extract.py} & Cross-browser cookie extraction wrapper & Operational helper only \\
+\texttt{scripts/lib/safari\_cookies.py} & Safari cookie extraction & Operational helper only \\
+\texttt{scripts/lib/xiaohongshu\_api.py} & Xiaohongshu REST connector & Optional, low priority \\
+\bottomrule
+\end{longtable}
+
+\subsection{Open Variant and Reference Docs}
+
+\begin{longtable}{p{4.0cm}p{4.9cm}p{4.7cm}}
+\toprule
+\textbf{File} & \textbf{Role in Repo} & \textbf{Usefulness for Your Project} \\
+\midrule
+\endhead
+\texttt{variants/open/SKILL.md} & Multi-mode routing for research, watchlist, briefing, and history & Medium; useful for thinking about operator workflows \\
+\texttt{variants/open/context.md} & Lightweight persistent memory for preferences and source notes & Medium; could inspire analyst preference or strategy memory \\
+\texttt{variants/open/references/research.md} & Instructions for one-shot research mode & Medium; workflow reference only \\
+\texttt{variants/open/references/watchlist.md} & Watchlist behavior contract & Medium; workflow reference only \\
+\texttt{variants/open/references/briefing.md} & Briefing behavior contract & Medium; workflow reference only \\
+\texttt{variants/open/references/history.md} & History-query behavior contract & Medium; workflow reference only \\
+\texttt{docs/how-search-works.md} & Detailed explanation of Reddit/X search architecture & High; useful for understanding the repo's reasoning model \\
+\texttt{docs/search-quality-eval.md} & Describes retrieval-quality evaluation methodology & High; useful for adapting evaluation practices \\
+\texttt{docs/pr-credits.md} & Contribution/process notes & Low \\
+\texttt{docs/v2.1-launch-copy.md}, \texttt{docs/v2.1-tweets.md}, \texttt{docs/v2.5-launch-tweets.md} & Launch/marketing materials & Low \\
+\bottomrule
+\end{longtable}
+
+\subsection{Tests, Fixtures, and Supporting Surfaces}
+
+\begin{longtable}{p{4.0cm}p{9.8cm}}
+\toprule
+\textbf{Surface} & \textbf{What It Tells You} \\
+\midrule
+\endhead
+\texttt{tests/test\_schema\_roundtrip.py} and \texttt{tests/test\_normalize.py} & The repo takes canonical schema stability seriously; this is exactly the discipline your evidence subsystem should adopt \\
+\texttt{tests/test\_score.py}, \texttt{tests/test\_relevance.py}, \texttt{tests/test\_dedupe.py} & Ranking and deduplication are treated as first-class logic rather than ad hoc formatting \\
+\texttt{tests/test\_query.py}, \texttt{tests/test\_query\_type.py}, \texttt{tests/test\_entity\_extract.py} & Query formation and source routing are explicitly tested, which is important if you later build event-aware evidence search \\
+\texttt{tests/test\_evaluate\_search\_quality.py} & The evaluation harness itself is tested, which is a strong signal of engineering maturity \\
+\texttt{tests/test\_polymarket.py} & Confirms that the repo treats Polymarket as a search/discovery source rather than a market microstructure source \\
+\texttt{tests/test\_bird\_x.py}, \texttt{tests/test\_scrapecreators\_x.py}, \texttt{tests/test\_youtube\_yt.py}, \texttt{tests/test\_reddit\_public.py}, \texttt{tests/test\_reddit\_enrich.py}, and others & Connector-level tests show the external-source layer is modular and reasonably mature \\
+\texttt{fixtures/} & Sample payloads used for deterministic testing; useful pattern for your own evidence and alert fixtures \\
+\texttt{docs/plans/} and \texttt{docs/test-results/} & Historical planning and evaluation artifacts; good for repo context, but not runtime code to reuse \\
+\texttt{vendor/} & Third-party packaged Bird code and related assets; operational dependency, not your target design pattern \\
+\bottomrule
+\end{longtable}
+
+\section{What You Should Actually Do With It}
+
+\subsection{Recommended Implementation Strategy}
+
+\begin{enumerate}[nosep]
+    \item Keep your current Polymarket ingestion repo as the authoritative source for markets, trades, order books, and wallet-derived episodes.
+    \item Create a new evidence package inside your repo inspired by the professor repo's normalization, scoring, dedupe, storage, and briefing layers.
+    \item Use that package only after a detector identifies a candidate event or suspicious coordinated wallet pattern.
+    \item Store external evidence point-in-time so that backtests can replay what was known when the signal fired.
+    \item Borrow the professor repo's evaluation mindset and create a benchmark for evidence retrieval quality, alert relevance, and briefing usefulness.
+\end{enumerate}
+
+\subsection{Specific Modules Worth Re-Implementing First}
+
+\begin{enumerate}[nosep]
+    \item \textbf{Evidence schema} inspired by \texttt{schema.py}
+    \item \textbf{Evidence normalization} inspired by \texttt{normalize.py}
+    \item \textbf{Evidence ranking} inspired by \texttt{score.py}
+    \item \textbf{Evidence dedupe and cross-linking} inspired by \texttt{dedupe.py}
+    \item \textbf{Signal/evidence store} inspired by \texttt{store.py}
+    \item \textbf{Alert packet rendering} inspired by \texttt{render.py} and \texttt{briefing.py}
+    \item \textbf{Retrieval evaluation harness} inspired by \texttt{evaluate\_search\_quality.py}
+\end{enumerate}
+
+\subsection{What Not To Waste Time Porting Early}
+
+\begin{enumerate}[nosep]
+    \item assistant packaging files,
+    \item setup-wizard UX,
+    \item social sources beyond X and web/news,
+    \item the repo's own Polymarket search connector as a substitute for real market ingestion,
+    \item marketing and release-note materials.
+\end{enumerate}
+
+\section{Final Assessment}
+
+The professor repo is highly usable for your situation, but only if used in the right place. It should \textbf{not} replace your current Polymarket pipeline. It \textbf{should} shape the subsystem that turns a suspicious market episode into an explainable research object.
+
+That is the key takeaway:
+
+\begin{enumerate}[nosep]
+    \item your repo should own \textbf{market sensing},
+    \item the professor repo should inspire \textbf{context fusion},
+    \item your thesis system should combine both into \textbf{ranked real-time alerts}.
+\end{enumerate}
+
+\end{document}

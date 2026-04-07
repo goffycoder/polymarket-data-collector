@@ -1,0 +1,380 @@
+\documentclass[11pt, letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{parskip}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    urlcolor=blue!60!black,
+}
+
+\lstset{
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!8},
+    showstringspaces=false,
+    tabsize=2,
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{DataHacks 2026 Economics Track SRS}
+\rhead{Polymarket BTC Strategy System}
+\cfoot{\thepage}
+
+\title{
+    \textbf{Software Requirements Specification} \\[0.4em]
+    \Large Polymarket BTC Interval Market Trading System \\[0.2em]
+    \large DataHacks 2026 Economics Track
+}
+
+\author{
+    Vraj Patel \\
+    M.S. Data Science, Stony Brook University
+}
+
+\date{April 2, 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Executive Summary}
+
+This document defines a hackathon-scoped trading system for the DataHacks 2026 Economics Track. The project targets Polymarket BTC binary contracts on 5-minute, 15-minute, and 1-hour horizons. Each contract resolves to whether Bitcoin moves up or down over the specified interval.
+
+The objective is to build a lightweight but credible quantitative trading pipeline that:
+
+\begin{enumerate}[nosep]
+    \item ingests and aligns market data from Polymarket, Binance, and Chainlink,
+    \item engineers predictive signals from order flow, market microstructure, and external price dynamics,
+    \item generates executable trading decisions under realistic market constraints,
+    \item evaluates performance using risk-adjusted return metrics rather than raw win rate alone.
+\end{enumerate}
+
+The system is intentionally narrower than a full research platform. It is designed for hackathon execution, fast iteration, and clear presentation.
+
+\section{Problem Statement}
+
+The Economics Track focuses on alternative financial markets where trading decisions must be made under uncertainty, limited liquidity, bounded payoffs, and execution frictions. Polymarket BTC interval contracts are especially suitable because:
+
+\begin{enumerate}[nosep]
+    \item prices map naturally to event probabilities,
+    \item contracts have short horizons and frequent resolution,
+    \item order book dynamics are observable,
+    \item external reference prices exist through Binance and Chainlink,
+    \item trading quality can be judged through backtested P\&L.
+\end{enumerate}
+
+The project goal is therefore not only to forecast direction, but to determine when a forecast is strong enough to justify an actual trade after accounting for spread, slippage, position sizing, and resolution timing.
+
+\section{Scope}
+
+\subsection{In Scope}
+
+\begin{enumerate}[nosep]
+    \item Polymarket BTC up/down contracts for 5-minute, 15-minute, and 1-hour intervals.
+    \item Polymarket order book, top-of-book, trade, and market metadata ingestion.
+    \item Binance spot BTC price series and short-horizon return features.
+    \item Chainlink BTC oracle price as a slower but trusted reference.
+    \item Feature engineering for momentum, microstructure, volatility, and relative mispricing.
+    \item Backtesting with realistic assumptions for fills, fees, slippage, and position limits.
+    \item Strategy evaluation using Sharpe-like risk-adjusted metrics, drawdown, turnover, and hit rate.
+\end{enumerate}
+
+\subsection{Out of Scope}
+
+\begin{enumerate}[nosep]
+    \item Wallet-level forensic analytics.
+    \item Social-media evidence fusion or public-narrative retrieval.
+    \item Multi-market alerting infrastructure.
+    \item Full cloud deployment and production-grade distributed systems.
+    \item Generalized prediction-market coverage beyond BTC interval contracts.
+\end{enumerate}
+
+\section{System Objectives}
+
+The system must satisfy five core objectives:
+
+\begin{enumerate}[nosep]
+    \item \textbf{Market understanding:} represent the state of each BTC interval market using Polymarket microstructure and external reference prices.
+    \item \textbf{Signal generation:} identify short-horizon predictive edges using order imbalance, price deviations, volatility, and cross-market alignment.
+    \item \textbf{Decision discipline:} only take trades when expected edge exceeds estimated execution cost and confidence thresholds.
+    \item \textbf{Backtesting realism:} simulate resolution-based payoffs with transaction costs, fill assumptions, and exposure caps.
+    \item \textbf{Presentation quality:} produce outputs that clearly explain the strategy, assumptions, and economic validity.
+\end{enumerate}
+
+\section{Data Sources}
+
+\begin{longtable}{p{3.4cm}p{4.8cm}p{5.0cm}}
+\toprule
+\textbf{Source} & \textbf{Data} & \textbf{Purpose} \\
+\midrule
+\endhead
+Polymarket API & market metadata, order books, trades, best bid/ask, recent price state & primary prediction market signal source \\
+Polymarket WebSocket & live price and order-book updates where available & real-time market state changes \\
+Binance Spot BTC & price, returns, microstructure-derived momentum, realized volatility & external market anchor and lead-lag source \\
+Chainlink BTC Oracle & reference BTC price feed & slower trusted benchmark for fair-value alignment \\
+\bottomrule
+\end{longtable}
+
+\section{Functional Requirements}
+
+\subsection{Data Ingestion}
+
+The system shall:
+
+\begin{enumerate}[label=FR-\arabic*, nosep]
+    \item ingest the target Polymarket BTC interval contracts and store market identifiers, expiration/resolution times, and contract direction.
+    \item capture top-of-book and, where available, deeper order-book states for the selected markets.
+    \item capture recent trades including timestamp, side, size, and execution price.
+    \item ingest Binance BTC spot prices at a sufficiently fine cadence for 5-minute and 15-minute feature generation.
+    \item ingest Chainlink BTC reference prices for cross-source comparison.
+    \item align all records to a consistent UTC timestamp standard.
+\end{enumerate}
+
+\subsection{Feature Engineering}
+
+The system shall compute features including, but not limited to:
+
+\begin{enumerate}[label=FR-\arabic*, resume, nosep]
+    \item Polymarket mid-price, spread, depth, and book imbalance.
+    \item short-horizon price momentum on Polymarket and Binance.
+    \item realized volatility over rolling windows.
+    \item divergence between Polymarket implied probability and externally implied short-term direction.
+    \item market activity measures such as trade intensity, signed volume, and recent price acceleration.
+    \item contract-time features such as time-to-resolution and distance from interval close.
+\end{enumerate}
+
+\subsection{Signal and Strategy Logic}
+
+The system shall:
+
+\begin{enumerate}[label=FR-\arabic*, resume, nosep]
+    \item generate trade candidates from one or more transparent strategy families.
+    \item support at least one momentum-style strategy and at least one mean-reversion or mispricing strategy.
+    \item apply entry filters based on liquidity, spread, and minimum edge thresholds.
+    \item produce explicit long, short, or no-trade decisions.
+    \item size positions subject to fixed risk budgets and position caps.
+\end{enumerate}
+
+\subsection{Backtesting}
+
+The backtesting engine shall:
+
+\begin{enumerate}[label=FR-\arabic*, resume, nosep]
+    \item replay historical observations in timestamp order without future leakage.
+    \item simulate fills using bid/ask-aware assumptions instead of mid-price-only fills.
+    \item include transaction costs and slippage assumptions.
+    \item close positions at contract resolution or earlier if strategy rules require it.
+    \item compute cumulative P\&L, return volatility, Sharpe-like ratio, hit rate, drawdown, turnover, and average holding period.
+\end{enumerate}
+
+\section{Non-Functional Requirements}
+
+\begin{enumerate}[label=NFR-\arabic*, nosep]
+    \item \textbf{Reproducibility:} experiments shall be runnable end-to-end from stored historical data.
+    \item \textbf{Clarity:} strategy rules must be explainable in a short presentation.
+    \item \textbf{Speed:} the pipeline must support quick iteration within hackathon constraints.
+    \item \textbf{Robustness:} missing or delayed data from one source shall not crash the entire pipeline.
+    \item \textbf{Realism:} reported metrics must reflect market frictions and capital constraints.
+\end{enumerate}
+
+\section{System Architecture}
+
+\begin{lstlisting}[title={Hackathon Architecture}]
+Data ingestion
+  -> Polymarket BTC interval markets
+  -> Binance BTC spot
+  -> Chainlink BTC reference
+
+Storage
+  -> local SQLite / parquet snapshots
+  -> normalized feature tables
+
+Research layer
+  -> feature builder
+  -> strategy module
+  -> backtester
+  -> evaluation metrics
+
+Output layer
+  -> leaderboard metrics
+  -> strategy summary tables
+  -> plots / notebook / slides
+\end{lstlisting}
+
+\section{Strategy Families}
+
+The system should support several simple and defensible strategy families rather than one overfit model.
+
+\subsection{Momentum Strategy}
+
+Trade in the direction of recent price movement when:
+
+\begin{enumerate}[nosep]
+    \item Binance short-horizon return is strong,
+    \item Polymarket order imbalance supports the same direction,
+    \item spread and slippage estimates remain acceptable.
+\end{enumerate}
+
+\subsection{Mispricing / Mean-Reversion Strategy}
+
+Trade when Polymarket contract pricing diverges materially from an externally derived directional estimate based on Binance movement and time-to-resolution, especially when:
+
+\begin{enumerate}[nosep]
+    \item the contract appears temporarily overreactive,
+    \item market depth is thin enough to create short-lived dislocations,
+    \item expected reversion exceeds estimated execution cost.
+\end{enumerate}
+
+\subsection{Hybrid Filtered Strategy}
+
+Combine:
+
+\begin{enumerate}[nosep]
+    \item directional signal from Binance,
+    \item confidence filter from Polymarket depth and spread,
+    \item execution filter from liquidity and position-limit rules.
+\end{enumerate}
+
+This is likely the most practical hackathon candidate because it is easier to explain than a black-box model.
+
+\section{Core Features}
+
+\begin{longtable}{p{5.4cm}p{7.4cm}}
+\toprule
+\textbf{Feature Group} & \textbf{Examples} \\
+\midrule
+\endhead
+Market microstructure & spread, best bid/ask, mid-price, bid depth, ask depth, imbalance \\
+Order flow & signed trade volume, trade count, recent aggressor pressure, price impact proxy \\
+External market state & Binance return over 1m/5m/15m, realized volatility, acceleration \\
+Relative pricing & gap between Polymarket implied move probability and external directional estimate \\
+Time structure & time to expiry, time since market opened, interval type: 5m vs 15m vs 1h \\
+Risk filters & liquidity threshold, max spread, min depth, max open exposure \\
+\bottomrule
+\end{longtable}
+
+\section{Data Model}
+
+The minimum logical entities are:
+
+\begin{enumerate}[nosep]
+    \item \texttt{markets}
+    \item \texttt{snapshots}
+    \item \texttt{order\_book\_snapshots}
+    \item \texttt{trades}
+    \item \texttt{binance\_prices}
+    \item \texttt{chainlink\_prices}
+    \item \texttt{features}
+    \item \texttt{signals}
+    \item \texttt{backtest\_trades}
+    \item \texttt{backtest\_runs}
+\end{enumerate}
+
+\section{Backtesting Assumptions}
+
+To avoid misleading results, the system shall state assumptions explicitly:
+
+\begin{enumerate}[nosep]
+    \item trades are entered at bid or ask depending on direction, not at a frictionless midpoint,
+    \item slippage rises when depth is low or position size is large relative to available liquidity,
+    \item capital allocation per trade is capped,
+    \item simultaneous exposure across related contracts is constrained,
+    \item each contract has a bounded payoff between 0 and 1 at resolution.
+\end{enumerate}
+
+\section{Evaluation Metrics}
+
+The project shall report:
+
+\begin{enumerate}[nosep]
+    \item total P\&L,
+    \item average return per trade,
+    \item annualized or normalized Sharpe-style ratio where appropriate,
+    \item maximum drawdown,
+    \item win rate,
+    \item turnover,
+    \item average holding time,
+    \item performance by contract horizon: 5m, 15m, 1h.
+\end{enumerate}
+
+Secondary diagnostics may include calibration, profit factor, and slippage sensitivity.
+
+\section{Implementation Plan}
+
+\subsection{Phase 1: Data Alignment}
+
+\begin{enumerate}[nosep]
+    \item identify the exact BTC interval market set,
+    \item ingest Polymarket snapshots, trades, and order books,
+    \item ingest Binance and Chainlink reference data,
+    \item unify timestamps and market labels.
+\end{enumerate}
+
+\subsection{Phase 2: Feature Engineering}
+
+\begin{enumerate}[nosep]
+    \item compute rolling returns and realized volatility,
+    \item compute spread, imbalance, depth, and intensity features,
+    \item compute external-vs-Polymarket deviation measures.
+\end{enumerate}
+
+\subsection{Phase 3: Baseline Strategies}
+
+\begin{enumerate}[nosep]
+    \item momentum baseline,
+    \item mispricing baseline,
+    \item hybrid filtered strategy.
+\end{enumerate}
+
+\subsection{Phase 4: Backtesting and Selection}
+
+\begin{enumerate}[nosep]
+    \item evaluate all baselines under equal cost assumptions,
+    \item compare by risk-adjusted return and drawdown,
+    \item choose one primary strategy and one backup strategy for presentation.
+\end{enumerate}
+
+\section{Risks and Constraints}
+
+\begin{enumerate}[nosep]
+    \item \textbf{Data quality risk:} missing Polymarket trades or incomplete book states may bias backtests.
+    \item \textbf{Execution risk:} small theoretical edge can disappear after spread and slippage.
+    \item \textbf{Overfitting risk:} too many features on a small hackathon window can produce fragile results.
+    \item \textbf{Scope risk:} building a full research platform would dilute effort and hurt delivery.
+    \item \textbf{Time risk:} the team must prioritize a complete pipeline over perfect modeling sophistication.
+\end{enumerate}
+
+\section{Success Criteria}
+
+The hackathon project will be considered successful if it delivers:
+
+\begin{enumerate}[nosep]
+    \item a reproducible dataset for BTC interval contracts,
+    \item at least one functioning strategy with defensible logic,
+    \item a backtest with realistic assumptions,
+    \item clear risk-adjusted evaluation metrics,
+    \item a presentation that convincingly explains why the strategy has an economic edge.
+\end{enumerate}
+
+\section{Conclusion}
+
+This SRS defines a focused trading-system scope aligned with the DataHacks 2026 Economics Track. The emphasis is on disciplined quantitative trading over short-horizon BTC prediction markets, not on building a broad market-intelligence platform. That narrower scope is appropriate for a hackathon and is well matched to the existing Polymarket collector foundation already present in this repository.
+
+\end{document}

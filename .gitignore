@@ -26,8 +26,7 @@ database/*.csv.*
 # Logs
 logs/
 
-# Generated documentation artifacts
-Documentation/
+# Documentation (track sources; ignore build artifacts)
 Documentation/*.pdf
 Documentation/*.synctex.gz
 Documentation/*.aux
