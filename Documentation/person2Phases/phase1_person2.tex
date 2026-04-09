@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 1 Plan - Person 2 (Person B)}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4, ``Phase 1: Fix Ingestion Correctness''.
+\textbf{Interpretation note:} Phase 1 does not mean validating the full Polymarket exchange. Validation is scoped to the approved target-market universe so analysis stays compute-efficient and focused on markets that matter.
+
+\textbf{Phase duration:} 1-2 weeks\\
+\textbf{Phase goal:} Validate and operationalize wallet-aware trade correctness.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Write canonical entity and field validation spec for wallet-aware trades.
+\item Build validation scripts for:
+\begin{itemize}
+\item both-side asset coverage
+\item duplicate trade inflation
+\item null-rate of wallet fields
+\item \texttt{condition\_id} population rate
+\end{itemize}
+\item Define first version of:
+\begin{itemize}
+\item \texttt{first\_seen\_at}
+\item fresh-wallet flag logic
+\item trade-to-market episode linkage rules
+\end{itemize}
+\item Produce QA sample review over at least 20 manually inspected trade episodes.
+\end{enumerate}
+
+\section*{Concrete Execution Breakdown}
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
+\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
+Canonical validation spec & Field-level data contract document & Every required Phase 1 field has type, nullability, and semantic rule \\
+Universe-scoped coverage and inflation checks & Validation SQL/script suite & Only approved markets are measured, and both-side coverage plus duplicate inflation are reported for that universe \\
+Episode semantics & Spec for \texttt{first\_seen\_at}, fresh-wallet, linkage & Rules are deterministic and executable in validation queries \\
+Manual QA review & Reviewed sample sheet (>=20 episodes) & QA findings include pass/fail and failure pattern taxonomy \\
+\end{longtable}
+
+\section*{Execution Sequence (No Day Timeline)}
+\textbf{Block 1: Validation contract definition}
+\begin{itemize}
+\item Draft canonical wallet-aware entity/field validation spec.
+\item Align schema expectations and target-universe rules with Person 1 before migration lands.
+\item Finalize validation thresholds for null-rate and condition-id population.
+\end{itemize}
+
+\textbf{Block 2: Universe-scoped validation setup}
+\begin{itemize}
+\item Implement validation checks that confirm only approved markets are ingested.
+\item Implement data-validation scripts for both-side coverage and duplicates within the approved universe.
+\item Add checks for wallet-field null-rate and condition-id population.
+\item Start validation report template scoped to approved markets only.
+\end{itemize}
+
+\textbf{Block 3: Episode semantics validation}
+\begin{itemize}
+\item Define and test \texttt{first\_seen\_at}, fresh-wallet, and episode linkage logic.
+\item Validate rule stability on rolling live windows.
+\item Raise schema or ingestion mismatches to Person 1 immediately.
+\end{itemize}
+
+\textbf{Block 4: Manual QA and signoff pack}
+\begin{itemize}
+\item Execute manual QA review on at least 20 trade episodes.
+\item Produce a concise QA report with defects and severity.
+\item Prepare Gate 1 signoff package with evidence.
+\end{itemize}
+
+\section*{Handoffs to Person 1}
+\begin{itemize}
+\item Validation failures where excluded or nonsensical markets leaked into the ingestion set.
+\item Validation failures with concrete failing records and reason codes.
+\item Duplicate inflation and null-rate trends by source and market segment.
+\item Required schema or parser corrections discovered by QA.
+\item Gate 1 evidence packet for shared signoff.
+\end{itemize}
+
+\section*{Gate 1 Checklist (Person 2 Ownership)}
+\begin{itemize}
+\item Canonical validation spec is complete and versioned.
+\item Approved-market selector behavior is validated and leakage is zero or explicitly explained.
+\item Automated validation scripts run and produce reproducible outputs.
+\item Episode and fresh-wallet logic are deterministic.
+\item Manual review of >=20 episodes is complete with findings.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 1 Plan - Person 1 (Person A)}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4, ``Phase 1: Fix Ingestion Correctness''.
+\textbf{Interpretation note:} The SRS says to remove the hard-coded sports filter. For execution, this means removing brittle hard-coding, not removing filtering itself. Phase 1 should enforce a curated target-market universe so compute is spent only on markets with signal value.
+
+\textbf{Phase duration:} 1-2 weeks\\
+\textbf{Phase goal:} Make live data semantically usable for wallet-aware detection.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Replace the hard-coded sports-only filter with a configurable target-market selector and explicit exclusion policy.
+\item Update live subscription logic so both YES and NO assets are covered.
+\item Correct trade ingestion to capture condition-level identifiers.
+\item Expand schema and ingestion for:
+\begin{itemize}
+\item \texttt{proxy\_wallet}
+\item \texttt{transaction\_hash}
+\item \texttt{condition\_id}
+\item \texttt{asset\_id}
+\item \texttt{outcome\_side}
+\item \texttt{usdc\_notional}
+\end{itemize}
+\item Add dedupe keys and source-priority logic across WebSocket, REST, and backfill.
+\end{enumerate}
+
+\section*{Concrete Execution Breakdown}
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
+\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
+Target-market selector refactor & Config keys plus allowlist/blocklist filter update & No hard-coded category filter remains in ingestion path, and only approved markets are ingested \\
+YES/NO subscription coverage & Subscription code and coverage check output & Both outcome-side assets appear in live stream for sampled markets \\
+Identifier correctness fix & Parser and persistence updates & \texttt{condition\_id} is populated for valid incoming trades \\
+Schema expansion & DB migration and write-path update & All 6 required fields are non-null when source payload provides them \\
+Dedupe and source priority & Deterministic merge rule implementation & Duplicate inflation bounded and reproducible across WS/REST/backfill \\
+\end{longtable}
+
+\section*{Execution Sequence (No Day Timeline)}
+\textbf{Block 1: Target universe controls}
+\begin{itemize}
+\item Remove hard-coded sports-only logic and replace it with a configurable target-market selector.
+\item Define strict allowlist and blocklist rules so low-value or nonsensical markets are excluded by policy.
+\item Add config validation and safe defaults so the collector fails closed rather than ingesting the full exchange.
+\item Share the target-universe contract with Person 2 for validation scripts.
+\end{itemize}
+
+\textbf{Block 2: Market coverage correctness}
+\begin{itemize}
+\item Update subscription logic for both YES/NO assets inside the approved target universe only.
+\item Run sampling script to prove both-side coverage on approved live markets.
+\item Deliver coverage sample output to Person 2.
+\end{itemize}
+
+\textbf{Block 3: Field and schema integrity}
+\begin{itemize}
+\item Fix ingestion mapping for condition-level identifiers.
+\item Implement schema migration for required fields.
+\item Backfill recent window to validate post-migration writes.
+\end{itemize}
+
+\textbf{Block 4: Dedupe and stabilization}
+\begin{itemize}
+\item Implement dedupe keys and source-priority merge policy.
+\item Validate deterministic behavior across WebSocket, REST, backfill.
+\item Publish Phase 1 engineering handoff notes and runbook deltas.
+\end{itemize}
+
+\section*{Handoffs to Person 2}
+\begin{itemize}
+\item Final target-market selector rules, including allowlist and exclusion logic.
+\item Final canonical field map for all required Phase 1 columns.
+\item Source-priority and dedupe rule specification.
+\item Sample datasets before and after dedupe for QA review.
+\item SQL snippets for both-side asset coverage checks within the approved universe.
+\end{itemize}
+
+\section*{Gate 1 Checklist (Person 1 Ownership)}
+\begin{itemize}
+\item No hard-coded sports-only filter remains in the ingestion path.
+\item Approved-market selector is active and blocks out-of-scope markets.
+\item YES/NO live coverage proven with evidence.
+\item Required wallet and condition fields are persisted.
+\item Dedupe behavior documented and reproducible.
+\end{itemize}
+
+\end{document}

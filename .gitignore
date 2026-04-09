@@ -27,7 +27,7 @@ database/*.csv.*
 logs/
 
 # Documentation (track sources; ignore build artifacts)
-Documentation/*.pdf
+Documentation/build/
 Documentation/*.synctex.gz
 Documentation/*.aux
 Documentation/*.fdb_latexmk

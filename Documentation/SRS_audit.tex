@@ -1,0 +1,393 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{parskip}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{xcolor}
+\usepackage{tabularx}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!60!black,
+    urlcolor=blue!60!black
+}
+
+\setlength{\emergencystretch}{2em}
+
+\newcommand{\notready}{\textbf{\textcolor{red!75!black}{NOT READY}}}
+\newcommand{\ready}{\textbf{\textcolor{green!50!black}{READY}}}
+
+\title{\textbf{Ruthless Technical Audit of the Polymarket Insider-Signal SRS}}
+\author{Architecture and Machine Learning Readiness Review}
+\date{April 7, 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Executive Verdict}
+
+\textbf{Binary verdict: \notready.}
+
+This SRS is a strong research memo and a weak production build specification. It contains a credible research question, several useful implementation directions, and a correct instinct that wallet-aware flow matters. It is \emph{not} implementation-ready because it still hand-waves the three hardest parts of the system:
+
+\begin{enumerate}[nosep]
+    \item \textbf{data semantics} (what exactly is observable, replayable, and point-in-time valid),
+    \item \textbf{stream-state architecture} (how online state, dedupe, late events, and replay actually work), and
+    \item \textbf{operational economics} (API fan-out, storage growth, and always-on runtime cost).
+\end{enumerate}
+
+If you started coding directly from this SRS, the plan would fail in production for predictable reasons: incomplete identity semantics, non-replayable event handling, fragile serverless streaming assumptions, and a cost model that is materially understated.
+
+\textbf{Repository evidence that the plan is not close to model-ready:}
+\begin{itemize}[nosep]
+    \item \texttt{run\_collector.py} still hard-filters the market universe to sports tags.
+    \item \texttt{collectors/trades\_collector.py} still calls the trades API with a token-driven parameter path instead of the condition-level semantics described in the SRS.
+    \item \texttt{database/schema.sql} still stores trades without \texttt{proxy\_wallet}, \texttt{transaction\_hash}, \texttt{condition\_id}, or \texttt{outcome\_side}.
+    \item \texttt{collectors/ttl\_manager.py} still deletes closed-market trades and snapshots after 24 hours.
+    \item \texttt{ml\_pipeline/feature\_builder.py} is still a stub.
+\end{itemize}
+
+The most damaging strategic mistake in the document is this: it treats data collection, online detection, external evidence retrieval, and backtesting as one stack. They are not one stack. They are four systems with different latency, durability, and correctness requirements.
+
+\section{1. Reality Check: Assumptions vs.\ Concrete Steps}
+
+\subsection{Material Assumptions Extracted}
+
+The table below lists the material assumptions that affect buildability. These are the assumptions that will break the system, not merely stylistic or wording assumptions.
+
+\begingroup
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{p{0.7cm}p{3.7cm}p{5.0cm}p{5.0cm}}
+\toprule
+\textbf{ID} & \textbf{Assumption} & \textbf{Why This Is Fragile} & \textbf{Critical Missing Step} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Assumption} & \textbf{Why This Is Fragile} & \textbf{Critical Missing Step} \\
+\midrule
+\endhead
+A1 & Public Polymarket feeds provide enough information to estimate market microstructure toxicity, quote replenishment, and informed flow. & Public market data exposes price, trades, and book state, but not the full order lifecycle. You do not directly observe every cancel, repost, or queue-position event from the public side. & Separate ``observable from public feed'' features from ``unobservable without order lifecycle'' features and explicitly drop anything you cannot estimate honestly. \\
+\addlinespace
+A2 & A \texttt{proxyWallet} is a useful identity primitive. & Proxy wallets are not people. One human can use multiple wallets, and one wallet can represent delegated or shared execution patterns. & Define an entity-resolution layer and a strict policy that the system scores wallets or clusters, not humans. \\
+\addlinespace
+A3 & ``First seen in local history'' is a valid definition of a new wallet. & Collector downtime, stale history, partial market coverage, and TTL deletion all manufacture fake novelty. ``New to your database'' is not the same as ``new to the platform.'' & Formalize first-seen semantics over an immutable full archive and attach provenance to every first-seen claim. \\
+\addlinespace
+A4 & Condition-level enrichment via \texttt{/trades}, \texttt{/activity}, \texttt{/positions}, and profile endpoints can run online at scale. & The fan-out grows with markets, wallets, and event bursts. Full-universe enrichment will hit quotas, latency walls, and queue backlog. & Define enrichment budgets, caching policy, prioritization rules, and a deferred enrichment queue. \\
+\addlinespace
+A5 & REST and WebSocket timestamps are directly comparable. & Arrival time, source timestamps, retries, and API lag create out-of-order events. This destroys naive episode reconstruction. & Define event time, processing time, watermarks, clock-skew handling, and dedupe keys. \\
+\addlinespace
+A6 & ``Public silence'' is measurable from X plus web/news search. & Missing retrieval coverage, indexing lag, provider outages, and bad queries all look like silence. The score can end up measuring search blindness, not public ignorance. & Build a retrieval benchmark with timestamp normalization, source coverage accounting, and point-in-time caches. \\
+\addlinespace
+A7 & Cloud Run is an easy production host for a 24/7 stateful WebSocket collector. & Cloud Run WebSocket connections are still request-bounded, session affinity is only best effort, and open sockets are billed as active instance time.\footnote{\url{https://cloud.google.com/run/docs/triggering/websockets}}\footnote{\url{https://cloud.google.com/run/docs/configuring/request-timeout}}\footnote{\url{https://cloud.google.com/run/pricing}} & Design reconnect choreography, partition ownership, state externalization, and a real cost model before picking the runtime. \\
+\addlinespace
+A8 & PostgreSQL plus Redis is sufficient even without an append-only event log. & Neither database is a substitute for a durable replayable event stream. Without a log, failures become silent data holes and backtests become fiction. & Add a durable event log and explicit replay pipeline before any serious detector is built. \\
+\addlinespace
+A9 & Raw payload archival can be added later without hurting research quality. & If raw events are not archived from day one, you cannot reconstruct feature logic, drift, or point-in-time state later. & Define an immutable raw archive format now, including schema versioning and partitioning. \\
+\addlinespace
+A10 & The listed labels are operationally well-defined. & ``Next-5m return,'' ``public corroboration lag,'' and ``event outcome'' are different tasks with different censoring and leakage risks. & Write a formal label specification with horizons, censoring rules, boundary behavior, and market-state exclusions. \\
+\addlinespace
+A11 & The proposed metrics and thresholds are meaningful. & AUROC, Brier, precision@k, paper-trade PnL, and Sharpe-like ratios answer different questions. The SRS mixes ranking, classification, and trading objectives without priority. & Establish a metric hierarchy: first ranking utility, then calibration, then economic lift, then operational noise. \\
+\addlinespace
+A12 & A simple best-bid/best-ask simulator is enough for paper trading. & Queue position, partial fills, fees, slippage curvature, and adverse selection dominate short-horizon execution. & Build a conservative execution simulator that models fill probability, fees, partial fills, and liquidity caps. \\
+\addlinespace
+A13 & Graph models and sequence models belong early in the roadmap. & Complex models amplify garbage when identity semantics and replayability are not stable. Right now the data contract is not mature enough. & Delay complex sequence/graph models until the feature store, label taxonomy, and entity semantics are stable. \\
+\addlinespace
+A14 & The infrastructure cost is approximately \$40--75/month. & This is materially understated. Open WebSocket Cloud Run services are billed as active compute, a 1 GiB Basic Redis instance alone is already far above the document's \$0--10 estimate, and the smallest Cloud SQL shared-core instances are explicitly not production-oriented.\footnote{\url{https://cloud.google.com/memorystore/pricing}}\footnote{\url{https://cloud.google.com/sql/docs/postgres/instance-settings}} & Rebuild the cost model to include active compute, Redis floor cost, storage growth, logging, network egress, API spend, and backfill jobs. \\
+\addlinespace
+A15 & The development roadmap is realistic. & The roadmap treats ingestion correctness, stateful streaming, external evidence retrieval, backtesting, and thesis-grade validation as a linear sequence with optimistic durations. They are overlapping projects with dependencies. & Replace the roadmap with hard stage gates and explicit exit criteria. \\
+\addlinespace
+A16 & The Google Custom Search dependency is correctly understood. & The SRS appears to conflate different Google search APIs. Google's current documentation still describes the Programmable Search JSON API; the deprecation note in the SRS is not a safe foundation for architecture decisions.\footnote{\url{https://developers.google.com/custom-search/v1/overview}} & Make vendor dependency claims only from current vendor docs and record the exact API being referenced. \\
+\addlinespace
+A17 & Current repository state is close enough to justify immediate modeling work. & It is not. The collector still has sports-only filtering, one-sided live coverage, missing wallet fields, TTL deletion, and no feature builder. & Finish the data-correctness phase before writing nontrivial ML code. \\
+\addlinespace
+A18 & Legal/compliance risk is mostly a wording problem. & It is also an access-control, audit-log, retention, and operational-governance problem. & Add security, secret-management, access-control, and auditability requirements. \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{What Is Actually Concrete}
+
+The SRS is not devoid of implementation detail. The following items are concrete enough to start engineering from:
+
+\begin{itemize}[nosep]
+    \item Remove the sports-only universe filter or make it configurable.
+    \item Fix trade ingestion so the collector uses condition-level identifiers correctly.
+    \item Subscribe to both YES and NO assets instead of only one side.
+    \item Add wallet-linked trade fields: \texttt{proxy\_wallet}, \texttt{transaction\_hash}, \texttt{condition\_id}, \texttt{asset}, \texttt{outcome\_side}, \texttt{price}, \texttt{size}, \texttt{usdc\_notional}, \texttt{timestamp}, and \texttt{source}.
+    \item Archive raw payloads before normalization.
+    \item Preserve closed-market microstructure long enough to support event studies and label construction.
+    \item Add wallet/profile/activity/position tables and alert outcome tables.
+    \item Separate candidate generation, wallet aggregation, anomaly scoring, evidence retrieval, and alert ranking into explicit stages.
+    \item Keep external evidence retrieval off the hot path until a candidate episode exists.
+    \item Use point-in-time replay and holdout-based validation instead of random train/test splits.
+    \item Use Telegram as primary notification and keep alert history in the database.
+\end{itemize}
+
+Those are real steps. They are just not sufficient. They solve feature checklist problems, not system correctness.
+
+\subsection{Where Assumptions Are Masking Missing Engineering Work}
+
+\begin{enumerate}[leftmargin=1.5em]
+    \item \textbf{``Fresh-wallet episode'' masks an identity problem.} You cannot operationalize this until you define what a wallet entity is, how you cluster proxies, how you treat re-appearing wallets after downtime, and how you separate ``new to us'' from ``new to market.'' Right now the phrase is statistically seductive and operationally underspecified.
+    \item \textbf{``Public-silence score'' masks a retrieval-quality problem.} The missing step is a benchmarked retrieval stack with cached point-in-time results and timestamp provenance. Without that, silence is just missing data with a more flattering name.
+    \item \textbf{``Point-in-time reconstruction'' masks an event-log problem.} You need immutable raw archives, event-time watermarks, model-version tracking, feature-version tracking, and replay tooling. None of that is specified.
+    \item \textbf{``Cloud migration'' masks a runtime-selection problem.} The document names services, but it does not define partition ownership, failover behavior, dedupe semantics, or where streaming state lives during reconnects.
+    \item \textbf{``Alert ranking'' masks a labeling problem.} Ranking requires analyst feedback loops, clear rejection reasons, and calibrated false-positive accounting. The SRS names \texttt{accepted/ignored/rejected} labels but does not specify the workflow that produces them.
+    \item \textbf{``Paper trading'' masks a market-impact problem.} The document does not specify fill simulation, fee treatment, or exposure caps. Without those, paper-trade performance will be fantasy.
+    \item \textbf{``Goodhart validation'' masks an observability instrumentation problem.} You cannot test observability shocks unless you explicitly record dashboard publication, alert publication, media exposure, and audience reach.
+    \item \textbf{``Sequence/graph models later'' masks a data-contract maturity problem.} These models require stable semantics. Today the data contract is still missing the fields that would make the graphs and sequences meaningful.
+\end{enumerate}
+
+\section{2. Implementation Feasibility}
+
+\subsection{Architecture Critique}
+
+\textbf{Is the proposed system buildable with current technology?} Yes, but \emph{not} in the exact form implied by the SRS. It is buildable only if you separate the architecture into four planes:
+
+\begin{enumerate}[nosep]
+    \item \textbf{Sensing plane} --- durable raw market ingestion,
+    \item \textbf{State plane} --- online rolling state and entity state,
+    \item \textbf{Decision plane} --- candidate scoring and ranking,
+    \item \textbf{Research plane} --- replay, validation, and training.
+\end{enumerate}
+
+The SRS currently compresses those planes into a list of services, but a list of services is not an architecture. What is missing is the contract between them.
+
+\textbf{What is structurally wrong with the proposed workflow:}
+
+\begin{itemize}[nosep]
+    \item \textbf{PostgreSQL is being treated like a stream processor.} It is an operational store, not your replay log and not your low-latency feature state engine.
+    \item \textbf{The evidence engine is underspecified as a real-time component.} X/web retrieval is seconds-scale and quota-limited. It must be asynchronous and best-effort, not part of a sub-second scoring path.
+    \item \textbf{The data model names entities but does not define their keys or update semantics.} There is no specification for uniqueness, late-arriving updates, dedupe between REST and WebSocket sources, or replay idempotency.
+    \item \textbf{The SRS assumes a hot-path detector can be built before state semantics are formalized.} That is backwards. You need trustworthy state before you need a model.
+    \item \textbf{The deployment recommendation is too serverless by default.} Cloud Run can host stateless detectors and batch jobs. It is a compromised choice for a persistent streaming collector because timeouts, reconnects, and best-effort affinity force you to externalize more state than the SRS accounts for.\footnote{\url{https://cloud.google.com/run/docs/triggering/websockets}}
+\end{itemize}
+
+\textbf{Corrected architecture that is actually buildable:}
+
+\begin{enumerate}[nosep]
+    \item \textbf{Collector worker} writes every raw WebSocket and REST event to immutable object storage and publishes normalized envelopes to a durable queue.
+    \item \textbf{Stream state worker} maintains rolling market, wallet, and event-family state in Redis or another explicit online state store.
+    \item \textbf{Candidate detector} runs deterministic rules plus lightweight anomaly scores on streaming features.
+    \item \textbf{Ranker} loads a calibrated gradient-boosted model in-process and scores only candidate episodes.
+    \item \textbf{Evidence worker} asynchronously enriches candidates with X/web/news evidence and writes a versioned evidence snapshot.
+    \item \textbf{Alert worker} applies suppression, severity policy, and human-readable rendering.
+    \item \textbf{Replay/training jobs} rebuild features from raw archives, never from mutable live tables alone.
+\end{enumerate}
+
+\textbf{Brutal truth:} the collector is still in the ``make the data trustworthy'' phase. The SRS is written as if the project is already in the ``rank and alert'' phase.
+
+\subsection{Primary Bottlenecks and Failure Points}
+
+\begin{enumerate}[leftmargin=1.5em]
+    \item \textbf{API fan-out and rate limits.} Wallet activity, positions, profiles, and external evidence calls cannot be naively executed for every active market. Selective enrichment is mandatory.
+    \item \textbf{State management hot spots.} ``Fresh wallet count in last 15 minutes'' and ``cluster concentration'' require online keyed state with expiry, not ad hoc SQL queries over hot tables.
+    \item \textbf{Out-of-order and duplicate events.} The same economic event can appear via WebSocket, REST trade pulls, and later backfills. Without source-priority rules and event ids, you will double count or mis-time signals.
+    \item \textbf{Storage write amplification.} You are already sitting on a large local SQLite database while still deleting closed-market data aggressively. Full-universe collection plus raw archives plus wallet enrichments will multiply storage, not add to it incrementally.
+    \item \textbf{Backtest leakage.} Wallet profiles, traded counts, and public evidence are slowly changing and time-sensitive. If you do not version them point-in-time, the backtest will leak future information.
+    \item \textbf{External evidence latency.} Public search is not millisecond infrastructure. Treating it like a real-time feature source will cause either timeout pressure or silent skipping.
+    \item \textbf{Alert fatigue.} The SRS names severity levels but does not define dedupe, cooldowns, escalation policy, or analyst acknowledgment. That produces spam, not monitoring.
+    \item \textbf{Cost drift.} The document's operating-cost estimate does not survive contact with always-on active compute, Redis floor cost, storage growth, log volume, and paid external APIs.
+\end{enumerate}
+
+\subsection{Implementation Verdict}
+
+\textbf{Verdict: \notready.}
+
+\textbf{Justification:}
+
+\begin{itemize}[nosep]
+    \item The system boundary between ingestion, online state, and offline research is not specified rigorously enough to build without rework.
+    \item The current repository state is missing the wallet-linked data fields that the core hypotheses depend on.
+    \item The document overstates what is measurable from public market data and understates the engineering needed for replayability and latency control.
+    \item The runtime and cost assumptions are materially optimistic.
+    \item The ML section jumps to models before the data contract, label semantics, and evaluation contract are stable.
+\end{itemize}
+
+This is not a ``small polish missing'' situation. This is a ``requirements document still one major layer too high-level'' situation.
+
+\section{3. Machine Learning Strategy and Utilization}
+
+\subsection{What Models You Should Actually Use}
+
+\textbf{Do not start with transformers, graph neural networks, or generic one-class anomaly detectors in production.}
+
+They are tempting because they sound sophisticated. They are the wrong first move here because your real bottleneck is semantic correctness, not expressive model capacity.
+
+\textbf{Recommended model stack by stage:}
+
+\begin{enumerate}[leftmargin=1.5em]
+    \item \textbf{Online candidate generation: deterministic rules + robust streaming statistics.}
+
+    Use rolling median/MAD, exponentially weighted z-scores, CUSUM-style changepoint logic, and extreme-value tail thresholds over episode features such as:
+    \begin{itemize}[nosep]
+        \item fresh-wallet notional share,
+        \item fresh-wallet count,
+        \item directional imbalance,
+        \item probability velocity and acceleration,
+        \item depth collapse and spread widening,
+        \item concentration ratio and event-family spread.
+    \end{itemize}
+
+    \textbf{Reason:} this gives you online recall with interpretable failure modes. It is also robust to label scarcity.
+
+    \item \textbf{Primary alert ranker: LightGBM or CatBoost over episode-level features.}
+
+    The first serious learned model should be a tabular ranker/classifier over candidate episodes, not raw ticks. Use separate horizons or multi-head outputs for 5m, 30m, and 2h forward movement; then calibrate per liquidity bucket and market family.
+
+    \textbf{Use:}
+    \begin{itemize}[nosep]
+        \item LightGBM if you want maximum training speed and straightforward feature importance,
+        \item CatBoost if categorical handling and missing-value behavior become dominant.
+    \end{itemize}
+
+    \textbf{Do not use:} raw deep transformers as the first production ranker.
+
+    \item \textbf{Temporal dynamics model: marked Hawkes process first, TCN second.}
+
+    This domain is bursty, event-driven, and irregularly timed. A marked Hawkes process is a better conceptual fit for trade-arrival intensity and coordinated bursts than a generic transformer. Once the data contract is stable, a temporal convolutional network (TCN) over 1s or 5s aggregated sequences is the sensible next step.
+
+    \textbf{Do not start with:} generic sequence transformers. They are expensive, hard to calibrate, and unnecessary at this maturity level.
+
+    \item \textbf{Graph layer: graph features and community detection before any GNN.}
+
+    Build temporal wallet-market graphs and compute:
+    \begin{itemize}[nosep]
+        \item degree, weighted degree, and concentration features,
+        \item event-family overlap,
+        \item co-trade synchronization,
+        \item repeated same-direction participation,
+        \item cluster persistence across markets.
+    \end{itemize}
+
+    Use Leiden or Louvain-style community detection, or HDBSCAN over graph-derived embeddings or pairwise features, before even thinking about GraphSAGE or TGN.
+
+    \item \textbf{External evidence layer: retrieval and reranking, not LLM-first scoring.}
+
+    Use a classic retrieval stack:
+    \begin{itemize}[nosep]
+        \item lexical retrieval (BM25 or equivalent),
+        \item dense retrieval or embeddings for semantic expansion,
+        \item cross-encoder or reranker for top documents,
+        \item optional small LLM only for summary generation after ranking.
+    \end{itemize}
+
+    The LLM should explain a candidate, not decide whether the candidate exists.
+\end{enumerate}
+
+\subsection{How the ML Stack Should Integrate With the Backend}
+
+\textbf{Critical design rule: no heavyweight ML model belongs on the raw-event hot path.}
+
+The integration should look like this:
+
+\begin{enumerate}[nosep]
+    \item \textbf{Ingestion worker} receives raw market events and writes immutable raw records.
+    \item \textbf{Feature-state worker} updates rolling features in memory/Redis keyed by market, event family, wallet, and wallet-cluster.
+    \item \textbf{Candidate detector} emits an episode only when deterministic and anomaly thresholds pass.
+    \item \textbf{Episode ranker} loads the LightGBM/CatBoost model in-process and scores the episode in milliseconds on CPU.
+    \item \textbf{Evidence worker} performs X/web/news retrieval asynchronously and enriches the candidate. It does not block the initial WATCH-level alert if the evidence fetch is slow.
+    \item \textbf{Alert composer} renders the final packet with evidence, invalidation conditions, and confidence calibration.
+\end{enumerate}
+
+\textbf{Recommended latency budget:}
+
+\begin{center}
+\begin{tabular}{@{}p{4.8cm}p{3.2cm}p{6.0cm}@{}}
+\toprule
+\textbf{Stage} & \textbf{Budget} & \textbf{Notes} \\
+\midrule
+Raw event ingest to durable log & $< 250$ ms median & This is a systems problem, not an ML problem. \\
+Feature-state update & $< 1$ s median & Online rolling windows and keyed state only. \\
+Candidate rule + anomaly score & $< 50$ ms & CPU only. \\
+Episode ranker inference & $< 10$ ms & LightGBM/CatBoost in-process. \\
+Evidence retrieval & 2--10 s best-effort & Async, timeout-bounded, not on the critical path for candidate creation. \\
+Alert dispatch & $< 1$ s & Telegram/Discord webhook class latency. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Serving recommendation:}
+\begin{itemize}[nosep]
+    \item Keep the ranker inside the detector process until throughput proves otherwise.
+    \item Retrain offline on replayed episodes, not live mutable tables.
+    \item Version every model artifact, feature schema, and threshold set.
+    \item Store every emitted score with the feature vector hash or feature-schema version needed to reproduce it later.
+\end{itemize}
+
+\subsection{Hidden Data, Compute, and Cost Requirements the SRS Ignores}
+
+\begin{enumerate}[leftmargin=1.5em]
+    \item \textbf{Streaming state is the main compute cost, not the ranker.} A LightGBM model is cheap. Maintaining rolling wallet and market state with correctness is not.
+    \item \textbf{Storage growth is already warning you.} The local SQLite database is already large while coverage is incomplete and TTL deletion is aggressive. Full-universe, wallet-aware, raw-archived collection will produce materially higher storage and I/O costs.
+    \item \textbf{Cloud Run active WebSocket cost is not idle-cost math.} Open WebSocket connections are billed as active time, not as a sleepy cron job.\footnote{\url{https://cloud.google.com/run/docs/triggering/websockets}}\footnote{\url{https://cloud.google.com/run/pricing}}
+    \item \textbf{Redis is not a rounding error.} The SRS estimate of \$0--10/month for Redis-class infrastructure is not credible given current Memorystore pricing.\footnote{\url{https://cloud.google.com/memorystore/pricing}}
+    \item \textbf{Shared-core Cloud SQL is not thesis-grade ingestion infrastructure.} Google's own docs position the smallest shared-core instances as non-production-oriented.\footnote{\url{https://cloud.google.com/sql/docs/postgres/instance-settings}}
+    \item \textbf{External evidence costs are missing.} X API spend, web/news search provider spend, and query retry volume are not included.
+    \item \textbf{Backtesting is a data-engineering workload.} Replaying months of raw events and recomputing features point-in-time will cost CPU, storage, and operational attention, even if model training itself stays modest.
+    \item \textbf{If you add LLM summarization or dense embedding generation, you add either API cost or GPU cost.} That is fine if intentional; the SRS currently treats it like free glue logic.
+\end{enumerate}
+
+\textbf{Bottom line on ML:} this project should start as a streaming statistics and gradient-boosted ranking system. If the data becomes trustworthy, then sequence and graph models become legitimate. If the data remains semantically weak, deep models will only give you more expensive hallucinations.
+
+\section{4. Actionable Improvements Before Writing More Code}
+
+\subsection{Priority-Ordered Fixes}
+
+\begin{itemize}[nosep]
+    \item \textbf{P0: Formalize the architecture around a durable event log.} Do not keep pretending PostgreSQL is enough. Add an append-only raw event stream and a replay contract.
+    \item \textbf{P0: Finish ingestion correctness before ML work.} Remove the sports filter, fix condition-level trade ingestion, capture both assets, stop deleting research-critical closed-market data before it is archived, and add wallet-linked trade fields.
+    \item \textbf{P0: Define time semantics.} Specify event time, processing time, watermark policy, dedupe keys, and late-event handling.
+    \item \textbf{P0: Define entity semantics.} Specify what a wallet, wallet profile, cluster, and first-seen event actually mean, and how they are versioned over time.
+    \item \textbf{P0: Replace the serverless hand-wave with a runtime decision memo.} Decide whether the persistent collector lives on a VM, container worker, or another long-lived runtime, and justify it with timeout, state, and cost math.
+    \item \textbf{P0: Rewrite the cost model.} Include active Cloud Run time, Redis floor cost, Cloud SQL sizing, storage growth, logging, egress, search APIs, and backfill runs.
+    \item \textbf{P1: Write a label specification.} Define targets, horizons, censoring, exclusions near resolution, and the exact mapping from score to operational action.
+    \item \textbf{P1: Build the external evidence benchmark before productizing ``public silence.''} Measure retrieval recall, provider lag, timestamp reliability, and cache completeness.
+    \item \textbf{P1: Define the alert feedback loop.} Specify analyst review, rejection reasons, suppression windows, dedupe policy, and how feedback becomes labels.
+    \item \textbf{P1: Build a conservative execution simulator.} Include fees, queue position assumptions, liquidity caps, and adverse selection.
+    \item \textbf{P2: Delay graph and deep temporal models until the feature store is stable.} Use tabular ranking and graph features first.
+    \item \textbf{P2: Add governance requirements.} Secrets, access control, audit logging, and retention policy belong in the SRS, not as afterthoughts.
+\end{itemize}
+
+\subsection{The Minimum Hard Gate for ``Implementation Ready''}
+
+This document should not be called implementation-ready until all of the following are true:
+
+\begin{enumerate}[nosep]
+    \item raw event archival is designed and implemented,
+    \item online state semantics are defined,
+    \item wallet-linked ingestion is correct and durable,
+    \item label definitions are written,
+    \item the runtime and cost model are numerically credible, and
+    \item at least one end-to-end replay from raw data to alert can be reproduced deterministically.
+\end{enumerate}
+
+Until then, the correct status is not ``start building the full system.'' The correct status is ``finish the data and state contract so the system can be built once instead of twice.''
+
+\section*{External Sources Checked}
+\addcontentsline{toc}{section}{External Sources Checked}
+
+\begin{itemize}[nosep]
+    \item Polymarket WebSocket overview: \url{https://docs.polymarket.com/quickstart/websocket/wss-overview}
+    \item Polymarket market channel quickstart: \url{https://docs.polymarket.com/quickstart/websocket/market-channel}
+    \item Polymarket trades API reference: \url{https://docs.polymarket.com/api-reference/core/get-trades-for-a-user-or-markets}
+    \item Cloud Run WebSockets: \url{https://cloud.google.com/run/docs/triggering/websockets}
+    \item Cloud Run request timeout: \url{https://cloud.google.com/run/docs/configuring/request-timeout}
+    \item Cloud Run pricing: \url{https://cloud.google.com/run/pricing}
+    \item Cloud SQL instance settings: \url{https://cloud.google.com/sql/docs/postgres/instance-settings}
+    \item Memorystore pricing: \url{https://cloud.google.com/memorystore/pricing}
+    \item Google Programmable Search JSON API overview: \url{https://developers.google.com/custom-search/v1/overview}
+    \item X recent search overview: \url{https://docs.x.com/x-api/posts/search/recent-posts/introduction}
+\end{itemize}
+
+\end{document}
