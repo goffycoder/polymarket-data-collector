@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 2 Plan - Person 2 (Person B)}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4, ``Phase 2: Build the Durable Data Plane''.
+\textbf{Interpretation note:} Phase 2 for Person 2 is about proving that the new durable data plane is actually usable. The replay path, point-in-time contracts, and reconstruction proof are the acceptance criteria for the storage and transport work.
+\textbf{Implementation note:} Validation remains scoped to the approved universe and the archived raw data produced by Phase 2. Person 2 is not re-litigating Phase 1 selection policy here; the job is to prove replayability, ordering correctness, and point-in-time state reconstruction.
+
+\textbf{Phase duration:} 2-3 weeks\\
+\textbf{Phase goal:} Define replay contracts and prove a historical window can be reconstructed from durable archives.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Define the normalized envelope contract consumed by the detector.
+\item Build replay-validation tooling that:
+\begin{itemize}
+\item replays a chosen archive window,
+\item compares replayed counts to original counts,
+\item verifies ordering and timestamp behavior.
+\end{itemize}
+\item Define the point-in-time contract for profiles, activity, and evidence snapshots.
+\item Produce one replay case study proving a one-hour window can be reconstructed.
+\end{enumerate}
+
+\section*{Locked Implementation Decisions}
+\begin{itemize}
+\item Replay validation is based on immutable raw archives and manifest metadata, not on trusting the live operational database alone.
+\item The detector-facing normalized envelope contract must preserve source provenance, schema version, capture time, event ordering metadata, and identifiers needed for market, asset, wallet, and episode reconstruction.
+\item Point-in-time outputs are archive-relative snapshots and must be derivable from replayed inputs without consulting future state.
+\item Replay proof must verify both count parity and ordering semantics, not just that some rows were reproduced.
+\item Gate 2 success requires a reconstruction proof over a bounded historical window that another teammate can rerun deterministically.
+\end{itemize}
+
+\section*{Concrete Execution Breakdown}
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
+\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
+Normalized envelope contract & Detector-facing contract spec and examples & Every downstream-required field is typed, versioned, and mapped back to raw provenance \\
+Replay-validation tooling & Replay runner plus parity and ordering checks & A chosen archive window can be replayed and compared against original counts and ordering expectations \\
+Point-in-time snapshot contract & Snapshot spec for profiles, activity, and evidence & Snapshot semantics are deterministic and do not rely on future information leakage \\
+Replay case study & Gate 2 proof package for a one-hour window & The team can rerun one bounded historical reconstruction and reproduce the same evidence \\
+\end{longtable}
+
+\section*{Execution Sequence (No Day Timeline)}
+\textbf{Block 1: Contract definition}
+\begin{itemize}
+\item Define the normalized envelope schema expected by the detector and map each field back to raw archive provenance.
+\item Review Person 1's raw-envelope and archive conventions to ensure replay assumptions are explicit rather than implied.
+\item Freeze contract versioning rules so replay tooling can handle schema evolution safely.
+\end{itemize}
+
+\textbf{Block 2: Replay tooling and parity checks}
+\begin{itemize}
+\item Build tooling that reads one archive window, replays envelopes in deterministic order, and materializes validation outputs.
+\item Compare replayed counts to original manifests and operational outputs for the same window.
+\item Verify ordering, event-time behavior, and duplicate-handling semantics, especially for wallet and episode-sensitive records.
+\item Produce replay diagnostics that explain count deltas or ordering drift with concrete reason codes.
+\end{itemize}
+
+\textbf{Block 3: Point-in-time state definition}
+\begin{itemize}
+\item Define point-in-time contracts for wallet profiles, market activity, and evidence snapshots used by later detector phases.
+\item Confirm that each snapshot can be rebuilt from replayed envelopes without leaking future knowledge.
+\item Raise any provenance gaps, missing fields, or schema-version edge cases to Person 1 before Gate 2 signoff.
+\end{itemize}
+
+\textbf{Block 4: Replay proof and signoff pack}
+\begin{itemize}
+\item Produce a one-hour replay case study with exact archive inputs, replay procedure, and expected outputs.
+\item Document parity results, ordering results, and any reconstruction caveats.
+\item Assemble the Gate 2 evidence packet so the replay proof can be rerun by either teammate.
+\end{itemize}
+
+\section*{Handoffs to Person 1}
+\begin{itemize}
+\item Detector-facing normalized envelope contract and any required field corrections.
+\item Replay-tool findings on missing provenance, ordering drift, or manifest mismatch.
+\item Point-in-time contract requirements for profiles, activity, and evidence snapshots.
+\item Concrete archive windows used for replay proof and their reproducibility status.
+\item Gate 2 parity and ordering evidence for shared signoff.
+\item Any raw-capture or Postgres-write gaps that block deterministic reconstruction.
+\end{itemize}
+
+\section*{Gate 2 Checklist (Person 2 Ownership)}
+\begin{itemize}
+\item Normalized envelope contract is versioned and mapped to raw provenance.
+\item Replay tooling can reconstruct a bounded archive window deterministically.
+\item Replayed counts match expected counts or have explicit investigated deltas.
+\item Ordering and timestamp behavior are validated and documented.
+\item Point-in-time snapshot contracts are deterministic and future-safe.
+\item One one-hour replay proof is complete and rerunnable by the team.
+\end{itemize}
+
+\end{document}
