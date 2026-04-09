@@ -31,6 +31,7 @@ _EVENTS_NEW_COLS = [
     ("description",     "TEXT"),
     ("category",        "TEXT"),
     ("tags",            "TEXT"),
+    ("tag_ids",         "TEXT"),
     ("volume",          "REAL DEFAULT 0"),
     ("volume_24hr",     "REAL DEFAULT 0"),
     ("volume_1wk",      "REAL DEFAULT 0"),
@@ -89,6 +90,17 @@ _MARKETS_NEW_COLS = [
     ("closed_at",        "DATETIME"),
 ]
 
+_TRADES_NEW_COLS = [
+    ("asset_id",         "TEXT"),
+    ("condition_id",     "TEXT"),
+    ("proxy_wallet",     "TEXT"),
+    ("transaction_hash", "TEXT"),
+    ("outcome_side",     "TEXT"),
+    ("usdc_notional",    "REAL"),
+    ("dedupe_key",       "TEXT"),
+    ("source_priority",  "INTEGER DEFAULT 0"),
+]
+
 
 def _table_exists(conn: sqlite3.Connection, name: str) -> bool:
     r = conn.execute(
@@ -137,6 +149,9 @@ def apply_schema():
 
         if _table_exists(conn, "markets"):
             _add_missing_columns(conn, "markets", _MARKETS_NEW_COLS)
+
+        if _table_exists(conn, "trades"):
+            _add_missing_columns(conn, "trades", _TRADES_NEW_COLS)
 
         # Drop old order_books table (replaced by order_book_snapshots)
         if _table_exists(conn, "order_books"):

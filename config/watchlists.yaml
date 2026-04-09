@@ -1,10 +1,123 @@
-watchlists:
-  finance_economy:
-    tag_ids: [2, 15] 
-    min_liquidity: 1000
-  geopolitics:
-    tag_ids: [504]
-    min_liquidity: 5000
-  elections:
-    tag_ids: [1001]
-    min_liquidity: 10000
+# Universe policy for high-resolution collection.
+# Full metadata sync still runs across all active events and markets.
+# Only expensive collectors (WS, books, prices, trades, backfill) use this policy.
+
+universe:
+  include:
+    tag_ids:
+      - "102000"  # Macro Indicators
+      - "102973"  # macro
+      - "100968"  # commodity
+      - "2"       # Politics
+      - "99"      # u.s. 2024 elections
+    keywords:
+      - macro
+      - economy
+      - economic
+      - inflation
+      - deflation
+      - cpi
+      - pce
+      - gdp
+      - unemployment
+      - jobs
+      - payrolls
+      - recession
+      - central bank
+      - fed
+      - fomc
+      - rate cut
+      - rate hike
+      - interest rate
+      - treasury
+      - tariff
+      - sanction
+      - oil
+      - gas
+      - opec
+      - commodity
+      - bitcoin
+      - btc
+      - ethereum
+      - eth
+      - crypto
+      - etf
+      - reserve
+      - election
+      - politics
+      - president
+      - congress
+      - senate
+      - house
+      - governor
+      - prime minister
+      - referendum
+      - ceasefire
+      - war
+      - ukraine
+      - russia
+      - china
+      - taiwan
+      - israel
+      - iran
+    event_slugs: []
+    market_slugs: []
+    min_event_liquidity: 1000
+    min_market_liquidity: 250
+  exclude:
+    tag_ids: []
+    keywords:
+      - sport
+      - soccer
+      - basketball
+      - hockey
+      - football
+      - baseball
+      - tennis
+      - cricket
+      - golf
+      - boxing
+      - mma
+      - ufc
+      - olympics
+      - esports
+      - entertainment
+      - celebrity
+      - awards
+      - movie
+      - music
+      - actor
+      - actress
+      - gaming
+      - streamer
+      - influencer
+      - dating
+      - reality tv
+      - meme
+      - fashion
+      - zodiac
+    event_slugs: []
+    market_slugs: []
+  candidate_review:
+    min_event_liquidity: 15000
+    keywords:
+      - weather
+      - hurricane
+      - typhoon
+      - drought
+      - wildfire
+      - flood
+      - shipping
+      - logistics
+      - port
+      - canal
+      - supply chain
+      - airline
+      - trucking
+      - rail strike
+      - power grid
+      - blackout
+    max_results: 100
+  runtime:
+    high_resolution_only_for_approved_universe: true
+    candidate_review_enabled: true
