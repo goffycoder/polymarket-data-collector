@@ -7,11 +7,11 @@
     "contract_document": "Documentation/person2Phases/phase1_validation_contract.tex"
   },
   "universe": {
-    "source": "config/universe_policy.yaml",
-    "policy_format": "universe_policy",
+    "source": "config/watchlists.yaml",
+    "policy_format": "universe",
     "enforcement_mode": "approved_only",
     "zero_leakage_required": true,
-    "selector_version": "pending_person1_alignment",
+    "selector_version": "watchlists_v1",
     "tag_ids_field": "tag_ids",
     "tag_labels_field": "tags",
     "event_slug_field": "slug",
@@ -202,18 +202,21 @@
   },
   "candidate_review": {
     "required": true,
-    "report_path": "Documentation/person1Phases/phase1_candidate_review.csv",
+    "report_table": "universe_review_candidates",
     "required_columns": [
       "event_id",
       "event_slug",
-      "market_slug",
-      "status",
-      "liquidity",
-      "reason_code"
+      "event_title",
+      "event_liquidity",
+      "event_volume",
+      "matched_keywords",
+      "matched_tag_ids",
+      "reason",
+      "generated_at"
     ],
     "required_non_empty_columns": [
-      "status",
-      "reason_code"
+      "event_id",
+      "reason"
     ]
   },
   "qa": {
@@ -231,7 +234,7 @@
     "evidence_sources": [
       "Documentation/person2Phases/phase1_validation_contract.tex",
       "config/phase1_validation.yaml",
-      "Documentation/person1Phases/phase1_candidate_review.csv",
+      "database.universe_review_candidates",
       "Documentation/person2Phases/phase1_qa_sample_review.csv"
     ]
   }
