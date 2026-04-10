@@ -152,12 +152,13 @@ def _parse_simple_yaml(raw_text: str) -> dict[str, Any]:
     """Parse a small YAML subset used by this repository's config files.
 
     This fallback supports indentation-based mappings and inline list syntax
-    such as ``tag_ids: [2, 15]``. It is intentionally narrow and only exists so
-    the validation suite can run when PyYAML is unavailable.
+    such as ``tag_ids: [2, 15]`` as well as block lists using ``- value``.
+    It is intentionally narrow and only exists so the validation suite can run
+    when PyYAML is unavailable.
     """
 
     root: dict[str, Any] = {}
-    stack: list[tuple[int, dict[str, Any]]] = [(-1, root)]
+    stack: list[tuple[int, Any, dict[str, Any] | None, str | None]] = [(-1, root, None, None)]
 
     for raw_line in raw_text.splitlines():
         line = raw_line.split("#", 1)[0].rstrip()
@@ -166,6 +167,26 @@ def _parse_simple_yaml(raw_text: str) -> dict[str, Any]:
 
         indent = len(line) - len(line.lstrip(" "))
         stripped = line.strip()
+
+        while len(stack) > 1 and indent <= stack[-1][0]:
+            stack.pop()
+
+        current_indent, parent, parent_map, parent_key = stack[-1]
+        if stripped.startswith("- "):
+            if isinstance(parent, dict):
+                if parent_map is None or parent_key is None or parent:
+                    raise ValueError(f"Unsupported YAML list placement: {raw_line}")
+                converted: list[Any] = []
+                parent_map[parent_key] = converted
+                stack[-1] = (current_indent, converted, parent_map, parent_key)
+                parent = converted
+
+            if not isinstance(parent, list):
+                raise ValueError(f"Unsupported YAML list placement: {raw_line}")
+
+            parent.append(_parse_simple_yaml_scalar(stripped[2:].strip()))
+            continue
+
         if ":" not in stripped:
             raise ValueError(f"Unsupported YAML line in fallback parser: {raw_line}")
 
@@ -173,14 +194,13 @@ def _parse_simple_yaml(raw_text: str) -> dict[str, Any]:
         key = key.strip()
         value = raw_value.strip()
 
-        while len(stack) > 1 and indent <= stack[-1][0]:
-            stack.pop()
+        if not isinstance(parent, dict):
+            raise ValueError(f"Unsupported YAML mapping placement: {raw_line}")
 
-        parent = stack[-1][1]
         if not value:
             child: dict[str, Any] = {}
             parent[key] = child
-            stack.append((indent, child))
+            stack.append((indent, child, parent, key))
             continue
 
         parent[key] = _parse_simple_yaml_scalar(value)
@@ -484,6 +504,28 @@ def _parse_universe_rules(policy_config: dict[str, Any]) -> dict[str, Any]:
             "manual_event_slugs": {str(value).lower() for value in policy.get("manual_event_slugs", [])},
             "manual_market_slugs": {str(value).lower() for value in policy.get("manual_market_slugs", [])},
             "min_liquidity": float(policy.get("minimum_liquidity", 0)),
+        }
+
+    if "universe" in policy_config and isinstance(policy_config["universe"], dict):
+        universe = policy_config["universe"]
+        include = universe.get("include", {}) if isinstance(universe.get("include", {}), dict) else {}
+        exclude = universe.get("exclude", {}) if isinstance(universe.get("exclude", {}), dict) else {}
+        return {
+            "include_tag_ids": {str(value) for value in include.get("tag_ids", [])},
+            "exclude_tag_ids": {str(value) for value in exclude.get("tag_ids", [])},
+            "include_keywords": [str(value).lower() for value in include.get("keywords", [])],
+            "exclude_keywords_or_slugs": [
+                str(value).lower() for value in (
+                    list(exclude.get("keywords", []))
+                    + list(exclude.get("event_slugs", []))
+                    + list(exclude.get("market_slugs", []))
+                )
+            ],
+            "manual_event_slugs": {str(value).lower() for value in include.get("event_slugs", [])},
+            "manual_market_slugs": {str(value).lower() for value in include.get("market_slugs", [])},
+            "min_liquidity": float(
+                include.get("min_market_liquidity", include.get("min_event_liquidity", 0))
+            ),
         }
 
     watchlists = policy_config.get("watchlists", {})
@@ -2909,18 +2951,105 @@ def _build_condition_integrity_result(
 
 
 def _validate_candidate_review_output(runtime: ValidationRuntime, summary: ValidationSummary) -> None:
-    """Validate that candidate-review output is present and schema-compatible."""
+    """Validate candidate-review output from either a CSV path or DB table."""
 
     raw_config = _read_yaml(runtime.config_path)
     candidate_review = raw_config.get("candidate_review", {})
     if not candidate_review.get("required", False):
         return
 
+    report_table = str(candidate_review.get("report_table", "")).strip()
     report_path = Path(candidate_review.get("report_path", ""))
     required_columns = [str(value) for value in candidate_review.get("required_columns", [])]
     required_non_empty_columns = [
         str(value) for value in candidate_review.get("required_non_empty_columns", [])
     ]
+
+    if report_table:
+        if not runtime.db_path.exists():
+            summary.add(
+                "candidate_review_output",
+                "fail",
+                "error",
+                f"Candidate-review table is configured but database is missing: {runtime.db_path}",
+                reason_code="candidate_review_db_missing",
+            )
+            return
+
+        if not report_table.replace("_", "").isalnum():
+            summary.add(
+                "candidate_review_output",
+                "fail",
+                "error",
+                f"Candidate-review table name is not a safe SQL identifier: {report_table}",
+                reason_code="candidate_review_table_invalid",
+            )
+            return
+
+        conn = sqlite3.connect(runtime.db_path)
+        try:
+            conn.row_factory = sqlite3.Row
+            if not _table_exists(conn, report_table):
+                summary.add(
+                    "candidate_review_output",
+                    "fail",
+                    "error",
+                    f"Candidate-review table is configured but not present: {report_table}",
+                    reason_code="candidate_review_table_missing",
+                )
+                return
+
+            columns = _table_columns(conn, report_table)
+            missing_columns = sorted(column for column in required_columns if column not in columns)
+            if missing_columns:
+                summary.add(
+                    "candidate_review_output",
+                    "fail",
+                    "error",
+                    "Candidate-review table exists but is missing required columns.",
+                    reason_code="candidate_review_schema_missing",
+                    metrics={"missing_columns": missing_columns, "report_table": report_table},
+                )
+                return
+
+            blank_required_counts: dict[str, int] = {}
+            for column in required_non_empty_columns:
+                if column not in columns:
+                    continue
+                query = (
+                    f"SELECT SUM(CASE WHEN {column} IS NULL OR TRIM(CAST({column} AS TEXT)) = '' "
+                    f"THEN 1 ELSE 0 END) FROM {report_table}"
+                )
+                blank_required_counts[column] = int(_query_scalar(conn, query, ()))
+
+            if any(count > 0 for count in blank_required_counts.values()):
+                summary.add(
+                    "candidate_review_output",
+                    "fail",
+                    "error",
+                    "Candidate-review table has blank values in required columns.",
+                    reason_code="candidate_review_blank_required_values",
+                    metrics={"blank_required_counts": blank_required_counts, "report_table": report_table},
+                )
+                return
+
+            row_count = int(_query_scalar(conn, f"SELECT COUNT(*) FROM {report_table}", ()))
+        finally:
+            conn.close()
+
+        summary.add(
+            "candidate_review_output",
+            "pass",
+            "info",
+            "Candidate-review output is present and schema-compatible in the configured table.",
+            metrics={
+                "report_table": report_table,
+                "row_count": row_count,
+                "required_columns": required_columns,
+            },
+        )
+        return
+
     if not report_path.exists():
         summary.add(
             "candidate_review_output",
