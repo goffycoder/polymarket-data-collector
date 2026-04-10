@@ -1,0 +1,261 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 1 Validation Contract - Person 2}
+
+\textbf{Phase:} 1\\
+\textbf{Owner:} Person 2 (Person B)\\
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4, ``Phase 1: Fix Ingestion Correctness''\\
+\textbf{Machine-readable companion:} \texttt{config/phase1\_validation.yaml}
+
+\section*{Purpose}
+
+This contract defines the first canonical validation layer for wallet-aware
+trade correctness. It is the shared reference for:
+\begin{itemize}
+\item field-level expectations for Phase 1 trade records,
+\item approved-universe validation scope,
+\item candidate-review output validation for excluded but finance-relevant
+events,
+\item interface compatibility with market descriptors and condition-based trade
+ingestion,
+\item validation thresholds,
+\item deterministic semantics for \texttt{first\_seen\_at}, fresh-wallet status,
+and trade-to-market episode linkage.
+\end{itemize}
+
+\section*{Scope}
+
+Phase 1 validation is intentionally scoped to the approved target-market
+universe. It does not attempt to validate the full Polymarket exchange.
+All quality checks, QA samples, and signoff metrics must be computed only over
+the approved market set unless a specific leakage check is being run.
+
+\section*{Dependencies On Person 1 Outputs}
+
+This contract assumes Person 1 will provide:
+\begin{itemize}
+\item final universe-policy behavior and config schema,
+\item stable event tag-id storage in synced event metadata,
+\item market descriptors carrying \texttt{market\_id}, \texttt{condition\_id},
+\texttt{yes\_token\_id}, \texttt{no\_token\_id}, \texttt{event\_id}, and
+\texttt{tier},
+\item the canonical trade field map for new ingestion columns,
+\item source-priority and dedupe rules across WebSocket, REST, and backfill,
+\item condition-id-based trade ingestion for REST and backfill paths,
+\item evidence that both YES and NO assets are being ingested.
+\end{itemize}
+
+If any dependency is missing, validators must fail explicitly with a clear
+reason rather than silently skipping checks.
+
+\section*{Approved Market Universe Contract}
+
+\begin{itemize}
+\item Validation inputs must be filtered through the approved universe-policy
+selector.
+\item Leakage outside the approved universe is a tracked defect.
+\item Universe-selection rules must be versioned so repeated validation runs are
+reproducible.
+\item Report outputs must state which selector version and universe-policy
+inputs were used.
+\item Stable tag IDs must be preferred over free-text tag labels whenever they
+are available.
+\item Candidate-review output for excluded but finance-relevant events is part
+of the Phase 1 validation surface and must be reviewed alongside the approved
+universe.
+\end{itemize}
+
+\section*{Interface Compatibility Contract}
+
+\subsection*{Event Metadata}
+\begin{itemize}
+\item Event metadata must store stable tag IDs alongside tag labels.
+\item Validation should prefer tag-ID-based policy matching and fall back to tag
+labels only if stable IDs are unavailable.
+\end{itemize}
+
+\subsection*{Market Descriptors}
+\begin{itemize}
+\item Runtime collector interfaces are expected to move from one-token maps to
+market descriptors.
+\item Validation must assume market descriptors expose
+\texttt{market\_id}, \texttt{condition\_id}, \texttt{yes\_token\_id},
+\texttt{no\_token\_id}, \texttt{event\_id}, and \texttt{tier}.
+\item Both-asset coverage checks must validate YES and NO coverage at the parent
+market level rather than assuming YES-token-only routing.
+\end{itemize}
+
+\section*{Canonical Wallet-Aware Trade Entity}
+
+The canonical Phase 1 trade entity is the minimum normalized record required to
+judge whether wallet-aware ingestion is semantically usable downstream.
+
+\begin{longtable}{p{0.20\linewidth}p{0.14\linewidth}p{0.12\linewidth}p{0.19\linewidth}p{0.25\linewidth}}
+\textbf{Field} & \textbf{Type} & \textbf{Nullable} & \textbf{Severity} & \textbf{Rule} \\
+\texttt{trade\_id} & string & no & error & Must uniquely identify a canonical trade record \\
+\texttt{market\_id} & string & no & error & Must map to an approved market when validation is scoped \\
+\texttt{condition\_id} & string & no & error & Must be populated when the market has a valid condition identifier \\
+\texttt{asset\_id} & string & no & error & Must identify the traded YES/NO asset \\
+\texttt{proxy\_wallet} & string & yes & warn & Null-rate is monitored and bounded by threshold \\
+\texttt{transaction\_hash} & string & yes & warn & Null-rate is monitored and bounded by threshold \\
+\texttt{outcome\_side} & enum & no & error & Must be deterministic and restricted to \texttt{YES}/\texttt{NO} \\
+\texttt{price} & float & no & error & Must be numeric and represent the unit execution price \\
+\texttt{size} & float & no & error & Must be numeric and positive \\
+\texttt{usdc\_notional} & float & no & error & Must be numeric and consistent with price/size rules \\
+\texttt{dedupe\_key} & string & no & error & Must capture transaction-hash-based or fallback economic-trade identity \\
+\texttt{source\_priority} & integer & no & error & Must encode canonical source precedence for downstream duplicate resolution \\
+\texttt{trade\_time} & timestamp & no & error & Must represent provider event time when available \\
+\texttt{source} & enum & no & error & Must identify ingestion origin for dedupe and QA \\
+\end{longtable}
+
+\section*{Validation Checks}
+
+\subsection*{1. Both-Side Asset Coverage}
+\begin{itemize}
+\item Validate that approved markets expose observable activity for both YES and
+NO assets.
+\item Report coverage counts and ratios at market, source, and aggregate levels.
+\item Record failing markets with reason codes for handoff to Person 1.
+\end{itemize}
+
+\subsection*{2. Universe Leakage And Candidate Review}
+\begin{itemize}
+\item Validate that expensive collection only lands for approved-universe
+markets.
+\item Validate that excluded but finance-relevant active events are surfaced in
+the candidate-review output rather than silently ignored.
+\item Verify candidate-review output columns, reproducibility, and reason codes.
+\end{itemize}
+
+\subsection*{3. Duplicate Trade Inflation And Canonical Resolution}
+\begin{itemize}
+\item Measure duplicate inflation across WebSocket, REST, and backfill paths.
+\item Use \texttt{transaction\_hash} as the strongest dedupe key when present.
+\item Fall back to a deterministic key built from \texttt{condition\_id},
+\texttt{asset\_id}, \texttt{outcome\_side}, price, size, and normalized event
+time.
+\item Validate that \texttt{dedupe\_key} and \texttt{source\_priority} are
+populated and coherent with the source-priority policy.
+\item Report both raw duplicate counts and inflation ratios.
+\end{itemize}
+
+\subsection*{4. Wallet Field Null-Rate}
+\begin{itemize}
+\item Track null-rate separately for each wallet-linked field.
+\item Segment results by source and market group where needed.
+\item Treat threshold breaches as validation failures even if schema allows
+nulls.
+\end{itemize}
+
+\subsection*{5. Condition-ID Population}
+\begin{itemize}
+\item Measure the share of approved-universe trades with populated
+\texttt{condition\_id}.
+\item Report the population rate overall and by source.
+\item Highlight mismatches between market metadata and trade records.
+\end{itemize}
+
+\subsection*{6. Asset And Outcome Correctness}
+\begin{itemize}
+\item Validate that \texttt{asset\_id} is populated and maps to the YES or NO
+token on the referenced market descriptor.
+\item Validate that \texttt{outcome\_side} is populated and restricted to
+\texttt{YES}/\texttt{NO}.
+\item Validate that condition-id-based trade ingestion lands trades against the
+correct market descriptor.
+\end{itemize}
+
+\section*{Deterministic Semantics}
+
+\subsection*{\texttt{first\_seen\_at}}
+
+\texttt{first\_seen\_at} means the earliest timestamp observed in our archive for
+the wallet or entity being evaluated. It does not claim to be the earliest
+platform existence time. The first executable implementation must:
+\begin{itemize}
+\item derive \texttt{first\_seen\_at} as the minimum observed
+\texttt{trade\_time} per non-blank \texttt{proxy\_wallet},
+\item preserve provenance as archive-derived rather than platform-derived,
+\item fail explicitly if the required entity or event-time fields are missing.
+\end{itemize}
+
+\subsection*{Fresh-Wallet Flag}
+
+Fresh-wallet status is computed, not absolute. The first implementation must be
+based on:
+\begin{itemize}
+\item archive-backed \texttt{first\_seen\_at},
+\item known trading footprint,
+\item profile-age evidence when available,
+\item a confidence flag that surfaces known archive gaps or downtime.
+\end{itemize}
+
+The initial deterministic rule will classify a wallet as fresh when its
+archive-derived age and known trade footprint both remain below configured
+thresholds. Confidence is downgraded when profile-age evidence is unavailable or
+event-time evidence is incomplete.
+
+\subsection*{Trade-To-Market Episode Linkage}
+
+Episode linkage rules must be deterministic and executable in validation
+queries. At minimum, the linkage contract must specify:
+\begin{itemize}
+\item which market or condition identifiers drive joins,
+\item which event-time field anchors ordering,
+\item how both-side asset activity is associated to one market episode,
+\item how ambiguous or unmatched trades are classified.
+\end{itemize}
+
+The first executable implementation will:
+\begin{itemize}
+\item partition trades by \texttt{market\_id} and \texttt{condition\_id},
+\item order trades by \texttt{trade\_time},
+\item start a new episode whenever the configured inactivity gap is exceeded,
+\item attach YES and NO side activity to the same episode when they fall inside
+the same market-condition time window,
+\item classify trades with missing linkage keys as unresolved and report them.
+\end{itemize}
+
+\section*{Thresholds And Outputs}
+
+Threshold values are stored in the machine-readable companion configuration so
+they can change without rewriting validation code. Every validation run must
+emit:
+\begin{itemize}
+\item a run timestamp,
+\item configuration version,
+\item selector version or universe-policy source,
+\item aggregate metrics,
+\item failing-record samples,
+\item pass/warn/fail status by check.
+\end{itemize}
+
+\section*{QA Sampling Protocol}
+
+Manual QA must review at least 20 trade episodes. The review sheet must capture:
+\begin{itemize}
+\item episode identifier,
+\item market identifier,
+\item observed YES/NO coverage,
+\item wallet field completeness,
+\item condition-id completeness,
+\item duplicate observations,
+\item candidate-review cross-check status when applicable,
+\item pass/fail decision,
+\item notes and failure taxonomy.
+\end{itemize}
+
+\section*{Gate 1 Acceptance Criteria}
+
+\begin{itemize}
+\item The validation contract is versioned and stored in-repo.
+\item Thresholds are versioned and machine-readable.
+\item Validators can consume the contract without hard-coded assumptions.
+\item QA artifacts are ready before the full validation logic lands.
+\item Failures are explainable and reproducible for Person 1 handoff.
+\end{itemize}
+
+\end{document}
