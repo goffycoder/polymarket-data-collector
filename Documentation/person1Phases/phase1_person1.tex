@@ -7,6 +7,7 @@
 
 \textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4, ``Phase 1: Fix Ingestion Correctness''.
 \textbf{Interpretation note:} The SRS says to remove the hard-coded sports filter. For execution, this means removing brittle hard-coding, not removing filtering itself. Phase 1 should enforce a curated target-market universe so compute is spent only on markets with signal value.
+\textbf{Implementation note:} Full low-cost event and market metadata sync remains enabled for the full exchange. Only expensive collectors (WebSocket, books, prices, trades, backfill) are filtered to the approved high-resolution universe.
 
 \textbf{Phase duration:} 1-2 weeks\\
 \textbf{Phase goal:} Make live data semantically usable for wallet-aware detection.
@@ -28,13 +29,22 @@
 \item Add dedupe keys and source-priority logic across WebSocket, REST, and backfill.
 \end{enumerate}
 
+\section*{Locked Implementation Decisions}
+\begin{itemize}
+\item Coverage policy is \textbf{Broad Cross-Domain}: include finance, macro, elections, geopolitics, commodities, energy, and crypto-policy events that can move finance.
+\item Candidate-review guardrail is enabled: excluded but high-liquidity or secondary-keyword events are surfaced for review instead of being silently ignored.
+\item NO coverage is required for asset-level WebSocket, order-book, and price polling.
+\item Trade ingestion uses \texttt{condition\_id} against the Polymarket Data API and uses returned \texttt{asset} and \texttt{outcome} fields instead of issuing separate YES and NO trade requests.
+\item Fresh-wallet readiness means \texttt{first-seen in our archive}, not ``new to Polymarket.''
+\end{itemize}
+
 \section*{Concrete Execution Breakdown}
 \begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
 \textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
 Target-market selector refactor & Config keys plus allowlist/blocklist filter update & No hard-coded category filter remains in ingestion path, and only approved markets are ingested \\
 YES/NO subscription coverage & Subscription code and coverage check output & Both outcome-side assets appear in live stream for sampled markets \\
 Identifier correctness fix & Parser and persistence updates & \texttt{condition\_id} is populated for valid incoming trades \\
-Schema expansion & DB migration and write-path update & All 6 required fields are non-null when source payload provides them \\
+Schema expansion & DB migration and write-path update & Wallet-aware trade fields plus \texttt{dedupe\_key} and \texttt{source\_priority} are populated when source payload provides them \\
 Dedupe and source priority & Deterministic merge rule implementation & Duplicate inflation bounded and reproducible across WS/REST/backfill \\
 \end{longtable}
 
@@ -42,8 +52,9 @@ Dedupe and source priority & Deterministic merge rule implementation & Duplicate
 \textbf{Block 1: Target universe controls}
 \begin{itemize}
 \item Remove hard-coded sports-only logic and replace it with a configurable target-market selector.
-\item Define strict allowlist and blocklist rules so low-value or nonsensical markets are excluded by policy.
+\item Define strict allowlist and blocklist rules so low-value or nonsensical markets are excluded by policy while broad cross-domain finance movers stay in scope.
 \item Add config validation and safe defaults so the collector fails closed rather than ingesting the full exchange.
+\item Keep candidate-review output for excluded but potentially finance-relevant events.
 \item Share the target-universe contract with Person 2 for validation scripts.
 \end{itemize}
 
@@ -56,8 +67,8 @@ Dedupe and source priority & Deterministic merge rule implementation & Duplicate
 
 \textbf{Block 3: Field and schema integrity}
 \begin{itemize}
-\item Fix ingestion mapping for condition-level identifiers.
-\item Implement schema migration for required fields.
+\item Fix ingestion mapping so trade collection uses \texttt{condition\_id} correctly.
+\item Implement schema migration for wallet-aware trade fields and dedupe metadata.
 \item Backfill recent window to validate post-migration writes.
 \end{itemize}
 
@@ -71,6 +82,7 @@ Dedupe and source priority & Deterministic merge rule implementation & Duplicate
 \section*{Handoffs to Person 2}
 \begin{itemize}
 \item Final target-market selector rules, including allowlist and exclusion logic.
+\item Candidate-review output format for excluded but review-worthy events.
 \item Final canonical field map for all required Phase 1 columns.
 \item Source-priority and dedupe rule specification.
 \item Sample datasets before and after dedupe for QA review.
@@ -81,6 +93,7 @@ Dedupe and source priority & Deterministic merge rule implementation & Duplicate
 \begin{itemize}
 \item No hard-coded sports-only filter remains in the ingestion path.
 \item Approved-market selector is active and blocks out-of-scope markets.
+\item Candidate-review output surfaces excluded events that may still matter for finance.
 \item YES/NO live coverage proven with evidence.
 \item Required wallet and condition fields are persisted.
 \item Dedupe behavior documented and reproducible.

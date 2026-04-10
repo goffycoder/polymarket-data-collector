@@ -25,6 +25,11 @@ def _parse_tags(tag_list: list) -> str:
     return json.dumps([t.get("label", "") for t in tag_list if t.get("label")])
 
 
+def _parse_tag_ids(tag_list: list) -> str:
+    """Extract stable tag identifiers into a JSON string."""
+    return json.dumps([str(t.get("id")) for t in tag_list if t.get("id") is not None])
+
+
 def _safe_float(val) -> float | None:
     try:
         return float(val) if val is not None else None
@@ -75,17 +80,18 @@ async def sync_events() -> set:
 
                 active_ids.add(eid)
                 tag_str = _parse_tags(event.get("tags", []))
+                tag_ids_str = _parse_tag_ids(event.get("tags", []))
 
                 conn.execute("""
                     INSERT INTO events (
-                        event_id, title, description, slug, tags,
+                        event_id, title, description, slug, tags, tag_ids,
                         volume, volume_24hr, volume_1wk, volume_1mo,
                         liquidity, open_interest, comment_count, competitive,
                         start_date, end_date, creation_date,
                         neg_risk, featured, restricted,
                         status, last_updated_at
                     ) VALUES (
-                        :event_id, :title, :description, :slug, :tags,
+                        :event_id, :title, :description, :slug, :tags, :tag_ids,
                         :volume, :volume_24hr, :volume_1wk, :volume_1mo,
                         :liquidity, :open_interest, :comment_count, :competitive,
                         :start_date, :end_date, :creation_date,
@@ -96,6 +102,7 @@ async def sync_events() -> set:
                         title           = excluded.title,
                         description     = excluded.description,
                         tags            = excluded.tags,
+                        tag_ids         = excluded.tag_ids,
                         volume          = excluded.volume,
                         volume_24hr     = excluded.volume_24hr,
                         volume_1wk      = excluded.volume_1wk,
@@ -114,6 +121,7 @@ async def sync_events() -> set:
                     "description":  event.get("description"),
                     "slug":         event.get("slug") or event.get("ticker"),
                     "tags":         tag_str,
+                    "tag_ids":      tag_ids_str,
                     "volume":       _safe_float(event.get("volume")),
                     "volume_24hr":  _safe_float(event.get("volume24hr")),
                     "volume_1wk":   _safe_float(event.get("volume1wk")),

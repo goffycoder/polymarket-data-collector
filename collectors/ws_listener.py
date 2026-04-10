@@ -18,6 +18,8 @@ from datetime import datetime, timezone
 import websockets
 from websockets.exceptions import ConnectionClosed, WebSocketException
 
+from collectors.trade_utils import make_trade_row, upsert_trade_rows
+from collectors.universe_selector import TokenContext
 from database.db_manager import get_conn
 from utils.logger import get_logger
 
@@ -59,17 +61,17 @@ class MarketWebSocketListener:
 
     Usage:
         listener = MarketWebSocketListener()
-        await listener.run(token_ids, token_to_market)
+        await listener.run(token_ids, token_context)
     """
 
     def __init__(self):
         self._reconnect_delay = RECONNECT_BASE
 
-    async def run(self, token_ids: list[str], token_to_market: dict[str, str]):
+    async def run(self, token_ids: list[str], token_context: dict[str, TokenContext]):
         """
         Maintain a persistent WebSocket connection, reconnecting on failure.
-        token_ids: list of YES token IDs to subscribe to
-        token_to_market: {token_id: market_id}
+        token_ids: list of YES and NO token IDs to subscribe to
+        token_context: {token_id: TokenContext}
         """
         if not token_ids:
             log.warning("WS: No Tier 1 tokens to subscribe to, skipping WebSocket")
@@ -100,7 +102,7 @@ class MarketWebSocketListener:
                 tasks = []
                 for i, batch in enumerate(batches):
                     tasks.append(asyncio.create_task(
-                        self._listen_batch(batch_id=i, token_ids=batch, token_to_market=token_to_market)
+                        self._listen_batch(batch_id=i, token_ids=batch, token_context=token_context)
                     ))
                     if i < len(batches) - 1:
                         await asyncio.sleep(WS_STAGGER_SECS)
@@ -111,7 +113,7 @@ class MarketWebSocketListener:
                 await asyncio.sleep(self._reconnect_delay)
                 self._reconnect_delay = min(self._reconnect_delay * 2, RECONNECT_MAX)
 
-    async def _listen_batch(self, batch_id: int, token_ids: list[str], token_to_market: dict[str, str]):
+    async def _listen_batch(self, batch_id: int, token_ids: list[str], token_context: dict[str, TokenContext]):
         """Connect and listen for one batch of token_ids."""
         delay = RECONNECT_BASE
         while True:
@@ -138,7 +140,7 @@ class MarketWebSocketListener:
                     try:
                         async for raw_msg in ws:
                             try:
-                                await self._handle_message(raw_msg, token_to_market, conn)
+                                await self._handle_message(raw_msg, token_context, conn)
                             except Exception as e:
                                 log.debug(f"WS message error: {e}")
                     finally:
@@ -159,7 +161,7 @@ class MarketWebSocketListener:
                 await asyncio.sleep(staggered_delay)
                 delay = min(delay * 2, RECONNECT_MAX)
 
-    async def _handle_message(self, raw: str, token_to_market: dict, conn):
+    async def _handle_message(self, raw: str, token_context: dict[str, TokenContext], conn):
         """Dispatch incoming WS message to the appropriate handler.
         
         The server can send either a single event dict or an array of events.
@@ -174,39 +176,39 @@ class MarketWebSocketListener:
         if isinstance(msg, list):
             for item in msg:
                 if isinstance(item, dict):
-                    await self._dispatch(msg=item, token_to_market=token_to_market, conn=conn)
+                    await self._dispatch(msg=item, token_context=token_context, conn=conn)
             return
 
         if isinstance(msg, dict):
-            await self._dispatch(msg=msg, token_to_market=token_to_market, conn=conn)
+            await self._dispatch(msg=msg, token_context=token_context, conn=conn)
 
-    async def _dispatch(self, msg: dict, token_to_market: dict, conn):
+    async def _dispatch(self, msg: dict, token_context: dict[str, TokenContext], conn):
         """Route a single event dict to the right handler."""
         event_type = msg.get("event_type")
 
         if event_type == "book":
-            await self._handle_book(msg, token_to_market, conn)
+            await self._handle_book(msg, token_context, conn)
 
         elif event_type == "price_change":
-            await self._handle_price_change(msg, token_to_market, conn)
+            await self._handle_price_change(msg, token_context, conn)
 
         elif event_type == "last_trade_price":
-            await self._handle_last_trade(msg, token_to_market, conn)
+            await self._handle_last_trade(msg, token_context, conn)
 
         elif event_type == "best_bid_ask":
-            await self._handle_best_bid_ask(msg, token_to_market, conn)
+            await self._handle_best_bid_ask(msg, token_context, conn)
 
         elif event_type == "market_resolved":
-            await self._handle_market_resolved(msg, token_to_market, conn)
+            await self._handle_market_resolved(msg, token_context, conn)
 
         elif event_type == "new_market":
             log.info(f"🆕 WS: New market detected: {msg.get('question', '')[:60]}")
 
-    async def _handle_book(self, msg: dict, token_to_market: dict, conn):
+    async def _handle_book(self, msg: dict, token_context: dict[str, TokenContext], conn):
         """Full order book snapshot — emitted on subscribe or after a trade."""
         asset_id = str(msg.get("asset_id") or "")
-        market_id = token_to_market.get(asset_id)
-        if not market_id:
+        token_meta = token_context.get(asset_id)
+        if not token_meta:
             return
 
         bids = msg.get("bids", [])
@@ -227,28 +229,39 @@ class MarketWebSocketListener:
                 depth_bids, depth_asks, bid_volume, ask_volume, source
             ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
         """, (
-            market_id, asset_id, now,
+            token_meta.market_id, asset_id, now,
             json.dumps(bids), json.dumps(asks),
             best_bid, best_ask, spread,
             len(bids), len(asks), bid_vol, ask_vol, "ws",
         ))
 
         conn.execute("""
-            INSERT INTO snapshots (market_id, captured_at, mid_price, best_bid, best_ask, spread, source)
-            VALUES (?,?,?,?,?,?,?)
-        """, (market_id, now, mid, best_bid, best_ask, spread, "ws"))
+            INSERT INTO snapshots (
+                market_id, captured_at, yes_price, no_price, mid_price, best_bid, best_ask, spread, source
+            ) VALUES (?,?,?,?,?,?,?,?,?)
+        """, (
+            token_meta.market_id,
+            now,
+            best_bid if token_meta.outcome_side == "YES" else None,
+            best_bid if token_meta.outcome_side == "NO" else None,
+            mid if token_meta.outcome_side == "YES" else None,
+            best_bid if token_meta.outcome_side == "YES" else None,
+            best_ask if token_meta.outcome_side == "YES" else None,
+            spread if token_meta.outcome_side == "YES" else None,
+            "ws",
+        ))
 
         conn.commit()
 
-    async def _handle_price_change(self, msg: dict, token_to_market: dict, conn):
+    async def _handle_price_change(self, msg: dict, token_context: dict[str, TokenContext], conn):
         """Price change — emitted when order placed or cancelled."""
         now = _ts_to_iso(msg.get("timestamp"))
         rows = []
 
         for change in msg.get("price_changes", []):
             asset_id = str(change.get("asset_id") or "")
-            market_id = token_to_market.get(asset_id)
-            if not market_id:
+            token_meta = token_context.get(asset_id)
+            if not token_meta:
                 continue
 
             price = _safe_float(change.get("price"))
@@ -258,56 +271,75 @@ class MarketWebSocketListener:
             spread = (best_ask - best_bid) if (best_bid is not None and best_ask is not None) else None
 
             rows.append((
-                market_id, now,
-                price, None, mid, best_bid, best_ask, spread, "ws",
+                token_meta.market_id,
+                now,
+                price if token_meta.outcome_side == "YES" else None,
+                price if token_meta.outcome_side == "NO" else None,
+                mid if token_meta.outcome_side == "YES" else None,
+                best_bid if token_meta.outcome_side == "YES" else None,
+                best_ask if token_meta.outcome_side == "YES" else None,
+                spread if token_meta.outcome_side == "YES" else None,
+                "ws",
             ))
 
         if rows:
             conn.executemany("""
                 INSERT INTO snapshots (
                     market_id, captured_at,
-                    yes_price, last_trade_price, mid_price, best_bid, best_ask, spread, source
-                ) VALUES (?,?,?,?,?,?,?,?,?)
+                    yes_price, no_price, mid_price, best_bid, best_ask, spread, source
+                ) VALUES (?,?,?,?,?,?,?,?)
             """, rows)
             conn.commit()
 
-    async def _handle_last_trade(self, msg: dict, token_to_market: dict, conn):
+    async def _handle_last_trade(self, msg: dict, token_context: dict[str, TokenContext], conn):
         """Trade matched — write to trades table."""
         asset_id = str(msg.get("asset_id") or "")
-        market_id = token_to_market.get(asset_id)
-        if not market_id:
+        token_meta = token_context.get(asset_id)
+        if not token_meta:
             return
 
+        now = _ts_to_iso(msg.get("timestamp"))
         price = _safe_float(msg.get("price"))
         size = _safe_float(msg.get("size"))
-        now = _ts_to_iso(msg.get("timestamp"))
-        # WS trade doesn't have unique trade_id — use asset+ts+price as surrogate
-        trade_id = f"ws_{asset_id}_{msg.get('timestamp', int(time.time()*1000))}_{price}"
-
-        conn.execute("""
-            INSERT OR IGNORE INTO trades (
-                trade_id, market_id, token_id, side, price, size, trade_time, captured_at, source
-            ) VALUES (?,?,?,?,?,?,?,?,?)
-        """, (
-            trade_id, market_id, asset_id,
-            str(msg.get("side") or ""),
-            price, size, now,
-            datetime.now(timezone.utc).isoformat(), "ws",
-        ))
+        trade_id = f"ws_{asset_id}_{msg.get('timestamp', int(time.time()*1000))}_{price}_{size}"
+        trade_row = make_trade_row(
+            {
+                "id": trade_id,
+                "asset": asset_id,
+                "conditionId": token_meta.condition_id,
+                "outcome": token_meta.outcome_side,
+                "side": msg.get("side"),
+                "price": msg.get("price"),
+                "size": msg.get("size"),
+                "timestamp": msg.get("timestamp"),
+            },
+            market_id=token_meta.market_id,
+            condition_id=token_meta.condition_id,
+            source="ws",
+        )
+        if trade_row:
+            upsert_trade_rows(conn, [trade_row])
 
         # Also snapshot the last trade price
         conn.execute("""
-            INSERT INTO snapshots (market_id, captured_at, last_trade_price, source)
-            VALUES (?,?,?,?)
-        """, (market_id, now, price, "ws"))
+            INSERT INTO snapshots (market_id, captured_at, yes_price, no_price, last_trade_price, source)
+            VALUES (?,?,?,?,?,?)
+        """, (
+            token_meta.market_id,
+            now,
+            price if token_meta.outcome_side == "YES" else None,
+            price if token_meta.outcome_side == "NO" else None,
+            price if token_meta.outcome_side == "YES" else None,
+            "ws",
+        ))
 
         conn.commit()
 
-    async def _handle_best_bid_ask(self, msg: dict, token_to_market: dict, conn):
+    async def _handle_best_bid_ask(self, msg: dict, token_context: dict[str, TokenContext], conn):
         """Best bid/ask update — highest resolution price signal."""
         asset_id = str(msg.get("asset_id") or "")
-        market_id = token_to_market.get(asset_id)
-        if not market_id:
+        token_meta = token_context.get(asset_id)
+        if not token_meta:
             return
 
         best_bid = _safe_float(msg.get("best_bid"))
@@ -317,12 +349,23 @@ class MarketWebSocketListener:
         now = _ts_to_iso(msg.get("timestamp"))
 
         conn.execute("""
-            INSERT INTO snapshots (market_id, captured_at, mid_price, best_bid, best_ask, spread, source)
-            VALUES (?,?,?,?,?,?,?)
-        """, (market_id, now, mid, best_bid, best_ask, spread, "ws"))
+            INSERT INTO snapshots (
+                market_id, captured_at, yes_price, no_price, mid_price, best_bid, best_ask, spread, source
+            ) VALUES (?,?,?,?,?,?,?,?,?)
+        """, (
+            token_meta.market_id,
+            now,
+            best_bid if token_meta.outcome_side == "YES" else None,
+            best_bid if token_meta.outcome_side == "NO" else None,
+            mid if token_meta.outcome_side == "YES" else None,
+            best_bid if token_meta.outcome_side == "YES" else None,
+            best_ask if token_meta.outcome_side == "YES" else None,
+            spread if token_meta.outcome_side == "YES" else None,
+            "ws",
+        ))
         conn.commit()
 
-    async def _handle_market_resolved(self, msg: dict, token_to_market: dict, conn):
+    async def _handle_market_resolved(self, msg: dict, token_context: dict[str, TokenContext], conn):
         """Market resolved — mark as closed and record YES/NO outcome for ML labels."""
         condition_id = str(msg.get("market") or "")
         now = datetime.now(timezone.utc).isoformat()

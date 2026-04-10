@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 2 Plan - Person 1 (Person A)}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4, ``Phase 2: Build the Durable Data Plane''.
+\textbf{Interpretation note:} Phase 2 is where ingestion stops being an ad hoc collector and becomes a replayable data system. Raw payload retention, deterministic archive layout, downstream publishing, and canonical database migration all have to land together.
+\textbf{Implementation note:} Phase 1 filtering and market-universe policy remain in force. Phase 2 does not widen scope; it hardens capture, transport, and storage so the approved universe can be reconstructed exactly from raw archives.
+
+\textbf{Phase duration:} 2-3 weeks\\
+\textbf{Phase goal:} Make ingestion replayable and move canonical operational state off SQLite.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Implement raw event envelope persistence for every inbound payload.
+\item Write raw archives to GCS with deterministic partitioning and manifest tracking.
+\item Stand up Pub/Sub and publish normalized envelopes downstream.
+\item Provision Cloud SQL PostgreSQL and migrate canonical write paths.
+\item Add archive manifest tables, schema version tables, and operational migration notes.
+\end{enumerate}
+
+\section*{Locked Implementation Decisions}
+\begin{itemize}
+\item Raw payload capture is mandatory for every inbound source path used by the system, including WebSocket, REST trades, backfill, price, and metadata sync where applicable.
+\item Raw archives are immutable append-only records; normalization bugs are fixed downstream, not by mutating historical raw payloads.
+\item Archive partitioning must be deterministic and replay-friendly, using stable source, date, and hour boundaries plus manifest tracking.
+\item PostgreSQL becomes the canonical operational store in Phase 2; SQLite may remain as a local bootstrap or developer convenience layer but not as the source of truth.
+\item Normalized envelopes published downstream must preserve source provenance, capture time, schema version, and sufficient identifiers to reconstruct market, asset, and wallet state.
+\end{itemize}
+
+\section*{Concrete Execution Breakdown}
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
+\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
+Raw envelope persistence & Durable raw-envelope writer integrated into collectors & Every inbound payload path emits a stored raw envelope with source, captured-at, payload body, and schema version metadata \\
+Archive and manifest pipeline & GCS partition writer plus manifest tables & Raw files land in deterministic partitions and every partition is traceable via manifest metadata \\
+Normalized transport plane & Pub/Sub topic, publisher, and normalized envelope contract implementation & Approved normalized envelopes publish successfully with reproducible ordering metadata and source provenance \\
+Canonical database migration & PostgreSQL schema, connection layer, and migrated write paths & Canonical operational writes succeed against PostgreSQL for active collectors \\
+Operational migration package & Schema-version tables plus runbook and migration notes & Replay, rollback, and cutover behavior are documented and executable by the team \\
+\end{longtable}
+
+\section*{Execution Sequence (No Day Timeline)}
+\textbf{Block 1: Raw capture foundation}
+\begin{itemize}
+\item Introduce a shared raw-envelope format that wraps every inbound payload with source, capture timestamp, schema version, and ingestion metadata.
+\item Hook raw persistence into each collector path without changing the payload semantics seen by the existing normalization layer.
+\item Add minimal operational metrics so dropped raw-envelope writes are visible immediately.
+\end{itemize}
+
+\textbf{Block 2: Durable archive and manifest tracking}
+\begin{itemize}
+\item Implement deterministic archive partitioning for GCS writes so replay windows can be addressed precisely by source and time bucket.
+\item Add archive manifest tables and manifest-writing logic for partition completeness, file counts, byte counts, and watermark tracking.
+\item Define archive naming and retention conventions that Person 2 can consume in replay tooling without special-case logic.
+\end{itemize}
+
+\textbf{Block 3: Downstream transport and canonical database cutover}
+\begin{itemize}
+\item Stand up Pub/Sub publishing for normalized envelopes emitted from the approved universe pipeline.
+\item Provision PostgreSQL schema equivalents for canonical state currently persisted in SQLite.
+\item Migrate write paths incrementally so canonical tables write to PostgreSQL while preserving source compatibility for the rest of the collector stack.
+\item Validate that PostgreSQL-backed writes preserve field semantics introduced in Phase 1, especially condition, asset, wallet, and dedupe metadata.
+\end{itemize}
+
+\textbf{Block 4: Operational hardening and handoff}
+\begin{itemize}
+\item Add schema-version tables and migration bookkeeping so replay tooling can reason about versioned payloads.
+\item Publish operational migration notes covering cutover sequence, rollback path, and replay prerequisites.
+\item Deliver archive layout, manifest conventions, and normalized-envelope examples to Person 2 for replay validation and the one-hour reconstruction proof.
+\end{itemize}
+
+\section*{Handoffs to Person 2}
+\begin{itemize}
+\item Canonical raw-envelope schema and examples from each inbound source.
+\item Archive partitioning convention, manifest schema, and naming rules.
+\item Normalized-envelope contract and field provenance notes.
+\item PostgreSQL schema map and differences from prior SQLite semantics.
+\item Replay prerequisites, schema-version notes, and known operational constraints.
+\item One reproducible archive window for the Gate 2 replay proof.
+\end{itemize}
+
+\section*{Gate 2 Checklist (Person 1 Ownership)}
+\begin{itemize}
+\item Every active inbound collector path emits raw envelopes.
+\item Raw archives land in immutable deterministic partitions with manifest coverage.
+\item Pub/Sub publishes normalized envelopes with provenance and version metadata.
+\item PostgreSQL accepts canonical operational writes and is treated as authoritative.
+\item Archive manifest tables and schema-version tables are populated.
+\item Migration and cutover notes are complete enough for shared execution.
+\end{itemize}
+
+\end{document}

@@ -27,6 +27,13 @@ from collectors.markets_collector import sync_markets
 from collectors.price_collector import collect_tier1, collect_tier2
 from collectors.trades_collector import collect_trades
 from collectors.ttl_manager import run_maintenance
+from collectors.universe_selector import (
+    MarketDescriptor,
+    TokenContext,
+    build_token_context,
+    load_universe_policy,
+    select_runtime_universe,
+)
 from collectors.ws_listener import MarketWebSocketListener
 from utils.logger import get_logger
 
@@ -48,74 +55,50 @@ TOKENS_PER_STREAM = 500
 MAX_WS_TOKENS   = MAX_WS_STREAMS * TOKENS_PER_STREAM   # = 2,500
 
 # --- Shared state (refreshed each sync cycle) ---
-_tier0_map: dict[str, str] = {}              # top MAX_WS_TOKENS vol>$500 → real-time WS
-_tier1_map: dict[str, str] = {}             # all vol>$500 (superset of T0) → book poll
-_tier2_map: dict[str, str] = {}
-_all_token_to_market: dict[str, str] = {}     # {token_id: market_id}
+_tier0_markets: tuple[MarketDescriptor, ...] = ()
+_tier1_markets: tuple[MarketDescriptor, ...] = ()
+_tier2_markets: tuple[MarketDescriptor, ...] = ()
+_all_token_context: dict[str, TokenContext] = {}
 _ws_listener = MarketWebSocketListener()
 
 _shutdown = asyncio.Event()
 
 
-def _load_tiers():
-    """Reload tiered markets from DB into shared state.
+def _token_count(markets: tuple[MarketDescriptor, ...]) -> int:
+    """Count the number of distinct token subscriptions in a market list."""
+    return sum(len(market.tokens()) for market in markets)
 
-    Tier 0 is a runtime-only promotion: the top MAX_WS_TOKENS markets from
-    the Tier 1 pool (volume > $500), sorted by volume DESC, that get
-    dedicated real-time WebSocket coverage.  The DB tier column is unchanged.
 
-    SPORTS FILTER IN EFFECT: Only markets tagged with sports keywords are 
-    loaded into the system priority queues. All other APIs (CLOB books, 
-    WebSockets, trades) strictly follow these queues.
-    """
-    global _tier0_map, _tier1_map, _tier2_map, _all_token_to_market
-    
-    SPORTS_KEYWORDS = [
-        'Sport', 'Soccer', 'Basketball', 'Hockey', 'Football', 'Baseball', 
-        'Tennis', 'Cricket', 'Golf', 'Boxing', 'MMA', 'UFC', 'F1', 
-        'Olympics', 'Esports', 'Games', 'NFL', 'NBA', 'MLB', 'NHL'
-    ]
-    tag_conditions = " OR ".join(f"e.tags LIKE '%{kw}%'" for kw in SPORTS_KEYWORDS)
+def _refresh_runtime_universe():
+    """Reload the approved runtime universe from local metadata and policy config."""
+    global _tier0_markets, _tier1_markets, _tier2_markets, _all_token_context
 
     conn = get_conn()
-    rows = conn.execute(f"""
-        SELECT m.market_id, m.yes_token_id, m.tier
-        FROM markets m
-        JOIN events e ON m.event_id = e.event_id
-        WHERE m.status='active' 
-          AND m.yes_token_id IS NOT NULL
-          AND ({tag_conditions})
-        ORDER BY m.volume DESC
-    """).fetchall()
-    conn.close()
+    try:
+        policy = load_universe_policy()
+        selection = select_runtime_universe(conn, policy, MAX_WS_TOKENS)
+    finally:
+        conn.close()
 
-    t0, t1, t2 = {}, {}, {}
-    tok_map = {}
-    tier1_candidates = []   # all vol>$500 markets in volume-DESC order
+    _tier0_markets = selection.tier0_markets
+    _tier1_markets = selection.tier1_markets
+    _tier2_markets = selection.tier2_markets
+    _all_token_context = selection.token_context
 
-    for r in rows:
-        mid, tok, tier = r[0], r[1], r[2]
-        tok_map[tok] = mid
-        if tier == 1:
-            tier1_candidates.append((mid, tok))
-            t1[mid] = tok
-        elif tier == 2:
-            t2[mid] = tok
-
-    # Tier 0 = top MAX_WS_TOKENS by volume (already sorted DESC above)
-    for mid, tok in tier1_candidates[:MAX_WS_TOKENS]:
-        t0[mid] = tok
-
-    _tier0_map = t0
-    _tier1_map = t1
-    _tier2_map = t2
-    _all_token_to_market = tok_map
     log.info(
-        f"🗂  Tiers loaded: "
-        f"T0(WS)={len(t0)}/{MAX_WS_TOKENS}, "
-        f"T1(poll)={len(t1)}, T2={len(t2)}, "
-        f"total_tokens={len(tok_map)}"
+        f"🗂  Universe loaded: "
+        f"T0(WS)={len(_tier0_markets)} markets/{_token_count(_tier0_markets)} tokens, "
+        f"T1(poll)={len(_tier1_markets)} markets, "
+        f"T2(price)={len(_tier2_markets)} markets, "
+        f"approved_tokens={len(_all_token_context)}, "
+        f"review_candidates={len(selection.review_candidates)}"
     )
+    if selection.review_candidates:
+        preview = ", ".join(
+            candidate.event_slug or candidate.event_title
+            for candidate in selection.review_candidates[:5]
+        )
+        log.info(f"🧭 Review candidates: {preview}")
 
 
 # ---- BACKGROUND LOOPS ----
@@ -127,7 +110,7 @@ async def sync_loop():
             log.info(f"⏱  [{datetime.now(timezone.utc).strftime('%H:%M:%S')} UTC] Starting full sync...")
             await sync_events()
             await sync_markets()
-            _load_tiers()
+            _refresh_runtime_universe()
             log.info("✅ Full sync complete")
         except Exception as e:
             log.error(f"Sync loop error: {e}")
@@ -138,8 +121,8 @@ async def tier1_loop():
     """Poll full order book for Tier 1 markets every 60 seconds."""
     while not _shutdown.is_set():
         try:
-            if _tier1_map:
-                await collect_tier1(_tier1_map)
+            if _tier1_markets:
+                await collect_tier1(_tier1_markets)
         except Exception as e:
             log.error(f"Tier1 loop error: {e}")
         await asyncio.sleep(TIER1_INTERVAL)
@@ -150,8 +133,8 @@ async def tier2_loop():
     await asyncio.sleep(30)  # Stagger start
     while not _shutdown.is_set():
         try:
-            if _tier2_map:
-                await collect_tier2(_tier2_map)
+            if _tier2_markets:
+                await collect_tier2(_tier2_markets)
         except Exception as e:
             log.error(f"Tier2 loop error: {e}")
         await asyncio.sleep(TIER2_INTERVAL)
@@ -160,16 +143,14 @@ async def tier2_loop():
 async def trades_loop():
     """Fetch recent trades for top Tier 1 markets every 5 minutes.
     
-    Limited to top 500 by volume — sending all 8,700 individual calls
-    exceeds the data-api 200 req/10s rate limit.
+    Limited to top 500 approved Tier 1 markets by volume — sending the full
+    universe through the Data API would create unnecessary rate pressure.
     """
     await asyncio.sleep(60)  # Stagger start
     while not _shutdown.is_set():
         try:
-            if _tier1_map:
-                # Sort by... we only have token_ids in the map; take first 500
-                # (already loaded in volume-DESC order from _load_tiers)
-                top_500 = dict(list(_tier1_map.items())[:500])
+            if _tier1_markets:
+                top_500 = _tier1_markets[:500]
                 await collect_trades(top_500)
         except Exception as e:
             log.error(f"Trades loop error: {e}")
@@ -190,22 +171,23 @@ async def ttl_loop():
 async def ws_loop():
     """WebSocket real-time feed for Tier 0 markets — persistent, auto-reconnects.
 
-    Subscribes to the top MAX_WS_TOKENS (2,500) volume>$500 markets across
-    MAX_WS_STREAMS (5) concurrent connections.  Capped here so we never
+    Subscribes to both YES and NO asset IDs for approved Tier 1 markets until
+    the MAX_WS_TOKENS (2,500) token cap is reached. Capped here so we never
     trigger the Cloudflare handshake-drop observed at 18+ simultaneous streams.
     """
     # Wait for first sync to populate tiers
     await asyncio.sleep(10)
     while not _shutdown.is_set():
         try:
-            t0_tokens = list(_tier0_map.values())
+            t0_context = build_token_context(list(_tier0_markets))
+            t0_tokens = list(t0_context.keys())
             if t0_tokens:
                 log.info(
                     f"📡 WS: Starting Tier 0 feed — "
                     f"{len(t0_tokens)} tokens across "
                     f"{min(MAX_WS_STREAMS, -(-len(t0_tokens)//TOKENS_PER_STREAM))} stream(s)"
                 )
-                await _ws_listener.run(t0_tokens, _all_token_to_market)
+                await _ws_listener.run(t0_tokens, t0_context)
             else:
                 log.info("WS: No Tier 0 tokens yet, waiting 60s...")
                 await asyncio.sleep(60)
@@ -247,7 +229,7 @@ async def main():
     log.info("🌐 PHASE 2: Initial full sync (events + markets)...")
     await sync_events()
     await sync_markets()
-    _load_tiers()
+    _refresh_runtime_universe()
 
     # ---- PHASE 3: Launch concurrent loops ----
     log.info("🚀 PHASE 3: Launching monitoring loops...")

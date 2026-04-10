@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS events (
     slug            TEXT,
     category        TEXT,
     tags            TEXT,
+    tag_ids         TEXT,
     status          TEXT DEFAULT 'active',
     volume          REAL DEFAULT 0,
     volume_24hr     REAL DEFAULT 0,
@@ -86,6 +87,8 @@ CREATE INDEX IF NOT EXISTS idx_markets_status ON markets(status);
 CREATE INDEX IF NOT EXISTS idx_markets_tier ON markets(tier);
 CREATE INDEX IF NOT EXISTS idx_markets_volume ON markets(volume DESC);
 CREATE INDEX IF NOT EXISTS idx_markets_yes_token ON markets(yes_token_id);
+CREATE INDEX IF NOT EXISTS idx_markets_no_token ON markets(no_token_id);
+CREATE INDEX IF NOT EXISTS idx_markets_condition ON markets(condition_id);
 
 -- -----------------------------------------------------------------
 -- 2b. MARKET_RESOLUTIONS — ground truth labels for ML
@@ -154,20 +157,80 @@ CREATE TABLE IF NOT EXISTS order_book_snapshots (
 CREATE INDEX IF NOT EXISTS idx_ob_market_time ON order_book_snapshots(market_id, captured_at DESC);
 
 -- -----------------------------------------------------------------
+-- 4b. UNIVERSE_REVIEW_CANDIDATES — excluded-but-interesting events
+-- -----------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS universe_review_candidates (
+    event_id            TEXT PRIMARY KEY,
+    event_slug          TEXT,
+    event_title         TEXT,
+    event_liquidity     REAL,
+    event_volume        REAL,
+    matched_keywords    TEXT,
+    matched_tag_ids     TEXT,
+    reason              TEXT,
+    generated_at        DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_universe_review_generated_at ON universe_review_candidates(generated_at DESC);
+
+-- -----------------------------------------------------------------
 -- 5. TRADES — individual matched trades
 -- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS trades (
     trade_id        TEXT PRIMARY KEY,
     market_id       TEXT NOT NULL,
     token_id        TEXT,
+    asset_id        TEXT,
+    condition_id    TEXT,
+    proxy_wallet    TEXT,
+    transaction_hash TEXT,
+    outcome_side    TEXT,
     side            TEXT,
     price           REAL,
     size            REAL,
+    usdc_notional   REAL,
     fee_rate_bps    TEXT,
     trade_time      DATETIME,
     captured_at     DATETIME DEFAULT CURRENT_TIMESTAMP,
-    source          TEXT DEFAULT 'clob'
+    source          TEXT DEFAULT 'clob',
+    dedupe_key      TEXT,
+    source_priority INTEGER DEFAULT 0
 );
 
 CREATE INDEX IF NOT EXISTS idx_trades_market_time ON trades(market_id, trade_time DESC);
 CREATE INDEX IF NOT EXISTS idx_trades_time ON trades(trade_time DESC);
+CREATE INDEX IF NOT EXISTS idx_trades_condition_time ON trades(condition_id, trade_time DESC);
+CREATE INDEX IF NOT EXISTS idx_trades_asset_time ON trades(asset_id, trade_time DESC);
+CREATE INDEX IF NOT EXISTS idx_trades_proxy_wallet_time ON trades(proxy_wallet, trade_time DESC);
+CREATE INDEX IF NOT EXISTS idx_trades_dedupe_key ON trades(dedupe_key);
+
+CREATE VIEW IF NOT EXISTS canonical_trades AS
+SELECT
+    trade_id,
+    market_id,
+    token_id,
+    asset_id,
+    condition_id,
+    proxy_wallet,
+    transaction_hash,
+    outcome_side,
+    side,
+    price,
+    size,
+    usdc_notional,
+    fee_rate_bps,
+    trade_time,
+    captured_at,
+    source,
+    dedupe_key,
+    source_priority
+FROM (
+    SELECT
+        t.*,
+        ROW_NUMBER() OVER (
+            PARTITION BY COALESCE(NULLIF(t.dedupe_key, ''), t.trade_id)
+            ORDER BY t.source_priority DESC, t.captured_at DESC, t.trade_id DESC
+        ) AS dedupe_rank
+    FROM trades t
+)
+WHERE dedupe_rank = 1;
