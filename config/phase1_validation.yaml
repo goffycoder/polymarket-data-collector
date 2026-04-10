@@ -1,0 +1,238 @@
+{
+  "version": 2,
+  "phase": "person2_phase1",
+  "metadata": {
+    "owner": "person2",
+    "source_of_truth": "Documentation/SRS.tex#11.4",
+    "contract_document": "Documentation/person2Phases/phase1_validation_contract.tex"
+  },
+  "universe": {
+    "source": "config/universe_policy.yaml",
+    "policy_format": "universe_policy",
+    "enforcement_mode": "approved_only",
+    "zero_leakage_required": true,
+    "selector_version": "pending_person1_alignment",
+    "tag_ids_field": "tag_ids",
+    "tag_labels_field": "tags",
+    "event_slug_field": "slug",
+    "market_slug_field": "slug"
+  },
+  "trade_entity": {
+    "table_name": "trades",
+    "required_fields": {
+      "trade_id": {
+        "type": "string",
+        "nullable": false,
+        "severity": "error",
+        "description": "Canonical trade identifier after dedupe."
+      },
+      "market_id": {
+        "type": "string",
+        "nullable": false,
+        "severity": "error",
+        "description": "Parent market identifier inside the approved universe."
+      },
+      "condition_id": {
+        "type": "string",
+        "nullable": false,
+        "severity": "error",
+        "description": "Condition identifier used for market-level trade correctness."
+      },
+      "asset_id": {
+        "type": "string",
+        "nullable": false,
+        "severity": "error",
+        "description": "Token or asset identifier for the traded YES or NO side."
+      },
+      "proxy_wallet": {
+        "type": "string",
+        "nullable": true,
+        "severity": "warn",
+        "description": "Public wallet or proxy wallet identifier when source provides it."
+      },
+      "transaction_hash": {
+        "type": "string",
+        "nullable": true,
+        "severity": "warn",
+        "description": "On-chain or source-specific transaction reference when available."
+      },
+      "outcome_side": {
+        "type": "string",
+        "nullable": false,
+        "severity": "error",
+        "allowed_values": ["YES", "NO"],
+        "description": "Deterministic side classification for the traded asset."
+      },
+      "price": {
+        "type": "float",
+        "nullable": false,
+        "severity": "error",
+        "description": "Unit execution price."
+      },
+      "size": {
+        "type": "float",
+        "nullable": false,
+        "severity": "error",
+        "description": "Executed size in asset units."
+      },
+      "usdc_notional": {
+        "type": "float",
+        "nullable": false,
+        "severity": "error",
+        "description": "USD notional represented by the trade."
+      },
+      "dedupe_key": {
+        "type": "string",
+        "nullable": false,
+        "severity": "error",
+        "description": "Canonical economic-trade dedupe key derived from transaction_hash or the fallback field tuple."
+      },
+      "source_priority": {
+        "type": "integer",
+        "nullable": false,
+        "severity": "error",
+        "description": "Canonical source-priority rank used by downstream duplicate resolution."
+      },
+      "trade_time": {
+        "type": "datetime",
+        "nullable": false,
+        "severity": "error",
+        "description": "Provider event timestamp used for ordering and replay."
+      },
+      "source": {
+        "type": "string",
+        "nullable": false,
+        "severity": "error",
+        "allowed_values": ["ws", "clob", "clob_backfill"],
+        "description": "Ingestion origin used in dedupe and QA reporting."
+      }
+    }
+  },
+  "thresholds": {
+    "both_side_coverage_min_ratio": 1.0,
+    "duplicate_inflation_max_ratio": 0.01,
+    "wallet_field_null_rate_max": {
+      "proxy_wallet": 0.10,
+      "transaction_hash": 0.10
+    },
+    "condition_id_population_min_ratio": 0.99,
+    "transaction_hash_population_min_ratio": 0.90,
+    "asset_id_population_min_ratio": 0.99,
+    "outcome_side_validity_min_ratio": 1.0
+  },
+  "interfaces": {
+    "event_metadata_fields": [
+      "event_id",
+      "tags",
+      "tag_ids",
+      "slug"
+    ],
+    "market_descriptor_fields": [
+      "market_id",
+      "condition_id",
+      "yes_token_id",
+      "no_token_id",
+      "event_id",
+      "tier"
+    ]
+  },
+  "dedupe": {
+    "row_identity_field": "trade_id",
+    "dedupe_key_field": "dedupe_key",
+    "strongest_key_field": "transaction_hash",
+    "fallback_key_fields": [
+      "condition_id",
+      "asset_id",
+      "outcome_side",
+      "price",
+      "size",
+      "trade_time"
+    ],
+    "source_priority_field": "source_priority",
+    "source_priority_rank": {
+      "data_api": 3,
+      "clob": 3,
+      "clob_backfill": 2,
+      "ws": 1
+    }
+  },
+  "semantics": {
+    "first_seen_at": {
+      "definition": "earliest_observed_timestamp_in_archive",
+      "provenance_required": true,
+      "entity_field": "proxy_wallet",
+      "event_time_field": "trade_time",
+      "exclude_blank_entities": true
+    },
+    "fresh_wallet": {
+      "definition": "computed_flag",
+      "required_inputs": [
+        "first_seen_at",
+        "trading_footprint",
+        "profile_age_if_available",
+        "confidence_flag"
+      ],
+      "entity_field": "proxy_wallet",
+      "event_time_field": "trade_time",
+      "max_age_days": 30,
+      "max_trade_count": 3,
+      "profile_age_field": null,
+      "confidence_levels": {
+        "full": "profile-age evidence available and archive-derived first_seen_at present",
+        "limited": "profile-age evidence unavailable but archive-derived first_seen_at and trade footprint available",
+        "low": "missing event-time evidence or archive gaps make the flag unreliable"
+      }
+    },
+    "episode_linkage": {
+      "join_keys": ["market_id", "condition_id"],
+      "asset_key": "asset_id",
+      "wallet_key": "proxy_wallet",
+      "event_time_field": "trade_time",
+      "outcome_side_field": "outcome_side",
+      "unresolved_trade_policy": "classify_and_report"
+      ,
+      "gap_minutes": 30,
+      "min_trades_per_episode": 1
+    }
+  },
+  "outputs": {
+    "report_formats": ["stdout", "csv", "json"],
+    "sample_failure_limit": 50,
+    "include_reason_codes": true
+  },
+  "candidate_review": {
+    "required": true,
+    "report_path": "Documentation/person1Phases/phase1_candidate_review.csv",
+    "required_columns": [
+      "event_id",
+      "event_slug",
+      "market_slug",
+      "status",
+      "liquidity",
+      "reason_code"
+    ],
+    "required_non_empty_columns": [
+      "status",
+      "reason_code"
+    ]
+  },
+  "qa": {
+    "sample_size": 20,
+    "output_csv": "Documentation/person2Phases/phase1_qa_sample_review.csv",
+    "include_only_approved_universe": true,
+    "sort_fields": [
+      "trade_count_desc",
+      "distinct_wallet_count_desc",
+      "episode_start_at_asc"
+    ]
+  },
+  "gate1": {
+    "signoff_document": "Documentation/person2Phases/phase1_gate1_signoff.tex",
+    "evidence_sources": [
+      "Documentation/person2Phases/phase1_validation_contract.tex",
+      "config/phase1_validation.yaml",
+      "Documentation/person1Phases/phase1_candidate_review.csv",
+      "Documentation/person2Phases/phase1_qa_sample_review.csv"
+    ]
+  }
+}

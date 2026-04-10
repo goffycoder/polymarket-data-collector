@@ -1,0 +1,92 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 1 Gate 1 Signoff - Person 2}
+
+\textbf{Phase:} 1\\
+\textbf{Owner:} Person 2 (Person B)\\
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4\\
+\textbf{Related artifacts:}
+\begin{itemize}
+\item \texttt{Documentation/person2Phases/phase1\_validation\_contract.tex}
+\item \texttt{config/phase1\_validation.yaml}
+\item \texttt{Documentation/person2Phases/phase1\_qa\_sample\_review.csv}
+\end{itemize}
+
+\section*{Summary}
+
+This document is the Gate 1 evidence pack and signoff template for Person 2
+Phase 1 work. It should be completed after the automated validators and manual
+QA sample review have been executed against the current approved market
+universe.
+
+\section*{Automated Validation Evidence}
+
+\begin{itemize}
+\item Validation run timestamp: \underline{\hspace{8cm}}
+\item Config version: \underline{\hspace{8cm}}
+\item Approved universe source/version: \underline{\hspace{8cm}}
+\item Overall validation status: \underline{\hspace{8cm}}
+\end{itemize}
+
+\textbf{Checks}
+\begin{itemize}
+\item Both-side asset coverage: \underline{\hspace{4cm}}
+\item Duplicate trade inflation: \underline{\hspace{4cm}}
+\item Wallet-field null-rate: \underline{\hspace{4cm}}
+\item Condition-id population: \underline{\hspace{4cm}}
+\item \texttt{first\_seen\_at} semantics: \underline{\hspace{4cm}}
+\item Fresh-wallet semantics: \underline{\hspace{4cm}}
+\item Episode linkage semantics: \underline{\hspace{4cm}}
+\end{itemize}
+
+\section*{Manual QA Evidence}
+
+\begin{itemize}
+\item QA sample sheet path: \underline{\hspace{8cm}}
+\item Episode sample count reviewed: \underline{\hspace{8cm}}
+\item Reviewer: \underline{\hspace{8cm}}
+\item Review completion date: \underline{\hspace{8cm}}
+\end{itemize}
+
+\textbf{QA Findings Summary}
+\begin{itemize}
+\item Passed episodes: \underline{\hspace{4cm}}
+\item Failed episodes: \underline{\hspace{4cm}}
+\item Common failure taxonomy: \underline{\hspace{8cm}}
+\item Highest-severity issue found: \underline{\hspace{8cm}}
+\end{itemize}
+
+\section*{Handoffs To Person 1}
+
+\begin{itemize}
+\item Validation failures with concrete failing records and reason codes:
+\underline{\hspace{8cm}}
+\item Universe leakage or selector mismatches:
+\underline{\hspace{8cm}}
+\item Schema or parser corrections required:
+\underline{\hspace{8cm}}
+\item Duplicate inflation or wallet-null trends requiring action:
+\underline{\hspace{8cm}}
+\end{itemize}
+
+\section*{Gate 1 Checklist}
+
+\begin{itemize}
+\item Canonical validation spec is complete and versioned. \underline{\hspace{2cm}}
+\item Approved-universe behavior is validated or explicitly explained. \underline{\hspace{2cm}}
+\item Automated validation suite produced reproducible outputs. \underline{\hspace{2cm}}
+\item Deterministic semantic rules are documented and executed. \underline{\hspace{2cm}}
+\item Manual review of at least 20 episodes is complete. \underline{\hspace{2cm}}
+\item Findings have been handed off to Person 1 where needed. \underline{\hspace{2cm}}
+\end{itemize}
+
+\section*{Signoff}
+
+\begin{itemize}
+\item Person 2 signoff: \underline{\hspace{8cm}}
+\item Shared Gate 1 signoff with Person 1: \underline{\hspace{8cm}}
+\end{itemize}
+
+\end{document}

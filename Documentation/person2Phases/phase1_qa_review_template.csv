@@ -1,0 +1,1 @@
+episode_id,market_id,condition_id,asset_id,trade_id,source,trade_time,yes_side_observed,no_side_observed,wallet_fields_complete,condition_id_present,duplicate_indicator,episode_linkage_status,review_status,failure_taxonomy,reviewer_notes
