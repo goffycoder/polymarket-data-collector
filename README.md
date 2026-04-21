@@ -18,6 +18,7 @@ If you are orienting yourself quickly, read these in order:
 2. [Documentation/INDEX.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/INDEX.tex)
 3. [Documentation/phases/phase2.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/phases/phase2.tex)
 4. [database/POSTGRES_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/POSTGRES_LOCAL_RUNBOOK.md)
+5. [database/PHASE3_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/PHASE3_LOCAL_RUNBOOK.md)
 
 ## What This Is
 
@@ -78,6 +79,11 @@ utils/
 ├── http_client.py         async httpx with retry + backoff
 ├── logger.py              structured output to logs/collector.log
 └── event_log.py           raw archive + detector-input manifest helpers
+
+phase3/
+├── state_store.py         Redis / memory-backed online state
+├── detector.py            deterministic Phase 3 candidate logic
+└── live_runner.py         detector-input tailer with durable checkpoints
 ```
 
 ---
@@ -220,6 +226,9 @@ venv/bin/python database/postgres_migrate.py \
 
 The full local Phase 2 runbook is in [database/POSTGRES_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/POSTGRES_LOCAL_RUNBOOK.md).
 
+For the first real Phase 3 live run and Gate 3 reporting workflow, use
+[database/PHASE3_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/PHASE3_LOCAL_RUNBOOK.md).
+
 ## Phase 2 Deliverables In This Repo
 
 - Durable raw envelope archives under `data/raw/`
@@ -228,6 +237,30 @@ The full local Phase 2 runbook is in [database/POSTGRES_LOCAL_RUNBOOK.md](/Users
 - Replay republish CLI in `validation/run_phase2_republish.py`
 - PostgreSQL schema and migration tooling in `database/`
 - Gate 2 delivery and signoff docs in `Documentation/phases/`
+
+## Phase 3 Runtime Commands
+
+Smoke-test the live detector worker:
+
+```bash
+venv/bin/python run_phase3_live.py --once
+```
+
+Run the combined Gate 3 evidence report for a chosen window:
+
+```bash
+venv/bin/python -m validation.run_phase3_gate3_report \
+  --start '2026-04-21T13:00:00+00:00' \
+  --end '2026-04-21T14:00:00+00:00' \
+  --json
+```
+
+To run Phase 3 inside the main collector runtime, enable:
+
+```bash
+export POLYMARKET_ENABLE_PHASE3_DETECTOR=true
+venv/bin/python run_collector.py
+```
 
 ## What Is Legacy
 
