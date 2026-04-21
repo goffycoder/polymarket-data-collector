@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from typing import Any
 from uuid import uuid4
 
-from config.settings import PHASE6_MODEL_REGISTRY_VERSION
+from config.settings import PHASE6_CALIBRATION_VERSION, PHASE6_EVALUATION_VERSION, PHASE6_MODEL_REGISTRY_VERSION
 from database.db_manager import get_conn
 
 
@@ -53,6 +53,36 @@ class Phase6ShadowScoreSummary:
     market_id: str
     score_value: float
     score_label: str | None
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(slots=True)
+class Phase6EvaluationRunSummary:
+    evaluation_run_id: str
+    model_version: str
+    evaluation_version: str
+    feature_schema_version: str
+    dataset_hash: str
+    train_row_count: int
+    validation_row_count: int
+    test_row_count: int
+    labeled_row_count: int
+    output_path: str | None
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(slots=True)
+class Phase6CalibrationProfileSummary:
+    calibration_profile_id: str
+    model_version: str
+    profile_scope: str
+    profile_key: str
+    sample_count: int
+    positive_rate: float | None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -335,4 +365,130 @@ class Phase6Repository:
             market_id=market_id,
             score_value=score_value,
             score_label=score_label,
+        )
+
+    def record_evaluation_run(
+        self,
+        *,
+        model_version: str,
+        feature_schema_version: str,
+        dataset_hash: str,
+        start: str,
+        end: str,
+        train_row_count: int,
+        validation_row_count: int,
+        test_row_count: int,
+        labeled_row_count: int,
+        output_path: str | None,
+        summary_json: dict[str, Any],
+    ) -> Phase6EvaluationRunSummary:
+        evaluation_run_id = uuid4().hex
+        conn = get_conn()
+        try:
+            conn.execute(
+                """
+                INSERT INTO model_evaluation_runs (
+                    evaluation_run_id,
+                    model_version,
+                    evaluation_version,
+                    feature_schema_version,
+                    dataset_hash,
+                    start_time,
+                    end_time,
+                    train_row_count,
+                    validation_row_count,
+                    test_row_count,
+                    labeled_row_count,
+                    output_path,
+                    summary_json
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    evaluation_run_id,
+                    model_version,
+                    PHASE6_EVALUATION_VERSION,
+                    feature_schema_version,
+                    dataset_hash,
+                    start,
+                    end,
+                    train_row_count,
+                    validation_row_count,
+                    test_row_count,
+                    labeled_row_count,
+                    output_path,
+                    json.dumps(summary_json, sort_keys=True),
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        return Phase6EvaluationRunSummary(
+            evaluation_run_id=evaluation_run_id,
+            model_version=model_version,
+            evaluation_version=PHASE6_EVALUATION_VERSION,
+            feature_schema_version=feature_schema_version,
+            dataset_hash=dataset_hash,
+            train_row_count=train_row_count,
+            validation_row_count=validation_row_count,
+            test_row_count=test_row_count,
+            labeled_row_count=labeled_row_count,
+            output_path=output_path,
+        )
+
+    def record_calibration_profile(
+        self,
+        *,
+        model_version: str,
+        profile_scope: str,
+        profile_key: str,
+        sample_count: int,
+        positive_rate: float | None,
+        watch_threshold: float | None,
+        actionable_threshold: float | None,
+        critical_threshold: float | None,
+        metadata_json: dict[str, Any] | None,
+    ) -> Phase6CalibrationProfileSummary:
+        calibration_profile_id = uuid4().hex
+        conn = get_conn()
+        try:
+            conn.execute(
+                """
+                INSERT INTO calibration_profiles (
+                    calibration_profile_id,
+                    model_version,
+                    calibration_version,
+                    profile_scope,
+                    profile_key,
+                    sample_count,
+                    positive_rate,
+                    watch_threshold,
+                    actionable_threshold,
+                    critical_threshold,
+                    metadata_json
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    calibration_profile_id,
+                    model_version,
+                    PHASE6_CALIBRATION_VERSION,
+                    profile_scope,
+                    profile_key,
+                    sample_count,
+                    positive_rate,
+                    watch_threshold,
+                    actionable_threshold,
+                    critical_threshold,
+                    json.dumps(metadata_json or {}, sort_keys=True),
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        return Phase6CalibrationProfileSummary(
+            calibration_profile_id=calibration_profile_id,
+            model_version=model_version,
+            profile_scope=profile_scope,
+            profile_key=profile_key,
+            sample_count=sample_count,
+            positive_rate=positive_rate,
         )
