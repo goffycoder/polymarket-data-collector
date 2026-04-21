@@ -297,6 +297,25 @@ CREATE TABLE IF NOT EXISTS backtest_artifacts (
 CREATE INDEX IF NOT EXISTS idx_backtest_artifacts_replay_time
     ON backtest_artifacts(replay_run_id, created_at DESC);
 
+CREATE TABLE IF NOT EXISTS backfill_requests (
+    backfill_request_id     TEXT PRIMARY KEY,
+    source_system           TEXT NOT NULL,
+    start_time              DATETIME NOT NULL,
+    end_time                DATETIME NOT NULL,
+    request_status          TEXT NOT NULL,
+    priority                TEXT DEFAULT 'normal',
+    requested_by            TEXT,
+    reason                  TEXT,
+    request_payload         TEXT,
+    output_path             TEXT,
+    notes                   TEXT,
+    created_at              DATETIME DEFAULT CURRENT_TIMESTAMP,
+    completed_at            DATETIME
+);
+
+CREATE INDEX IF NOT EXISTS idx_backfill_requests_source_time
+    ON backfill_requests(source_system, created_at DESC);
+
 -- -----------------------------------------------------------------
 -- 7. PHASE 3 ONLINE STATE / CANDIDATE DETECTION
 -- -----------------------------------------------------------------

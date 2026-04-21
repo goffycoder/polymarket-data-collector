@@ -269,6 +269,25 @@ CREATE TABLE IF NOT EXISTS backtest_artifacts (
 CREATE INDEX IF NOT EXISTS idx_backtest_artifacts_replay_time
     ON backtest_artifacts(replay_run_id, created_at DESC);
 
+CREATE TABLE IF NOT EXISTS backfill_requests (
+    backfill_request_id     TEXT PRIMARY KEY,
+    source_system           TEXT NOT NULL,
+    start_time              TIMESTAMPTZ NOT NULL,
+    end_time                TIMESTAMPTZ NOT NULL,
+    request_status          TEXT NOT NULL,
+    priority                TEXT DEFAULT 'normal',
+    requested_by            TEXT,
+    reason                  TEXT,
+    request_payload         TEXT,
+    output_path             TEXT,
+    notes                   TEXT,
+    created_at              TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    completed_at            TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_backfill_requests_source_time
+    ON backfill_requests(source_system, created_at DESC);
+
 CREATE TABLE IF NOT EXISTS detector_versions (
     detector_version        TEXT PRIMARY KEY,
     feature_schema_version  TEXT NOT NULL,
