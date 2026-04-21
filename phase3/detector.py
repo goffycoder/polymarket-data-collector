@@ -31,6 +31,7 @@ from utils.logger import get_logger
 log = get_logger("phase3_detector")
 
 DEFAULT_PHASE3_SOURCE_SYSTEMS = [
+    "clob_ws_market",
     "data_api_trades",
     "data_api_trades_backfill",
     "clob_prices",
@@ -441,7 +442,74 @@ class Phase3Detector:
                     self.summary.processed_snapshots += 1
             return
 
+        if entity_type.startswith("ws_frame::"):
+            for event in payload.get("events") or []:
+                if not isinstance(event, dict):
+                    continue
+                await self._process_ws_event(event)
+            return
+
         self.summary.ignored_envelopes += 1
+
+    async def _process_ws_event(self, event: dict[str, Any]) -> None:
+        event_type = str(event.get("event_type") or "")
+        if event_type == "last_trade_price":
+            trade = event.get("trade")
+            if isinstance(trade, dict):
+                await self._process_trade(trade)
+                self.summary.processed_trades += 1
+            return
+
+        if event_type == "price_change":
+            for change in event.get("price_changes") or []:
+                if not isinstance(change, dict):
+                    continue
+                snapshot = {
+                    "market_id": change.get("market_id"),
+                    "captured_at": event.get("captured_at"),
+                    "yes_price": change.get("price") if change.get("outcome_side") == "YES" else None,
+                    "no_price": change.get("price") if change.get("outcome_side") == "NO" else None,
+                    "best_bid": change.get("best_bid") if change.get("outcome_side") == "YES" else None,
+                    "best_ask": change.get("best_ask") if change.get("outcome_side") == "YES" else None,
+                    "spread": change.get("spread") if change.get("outcome_side") == "YES" else None,
+                    "source": "ws",
+                }
+                await self._process_snapshot(snapshot)
+                self.summary.processed_snapshots += 1
+            return
+
+        if event_type == "best_bid_ask":
+            best_bid_ask = event.get("best_bid_ask") or {}
+            snapshot = {
+                "market_id": event.get("market_id"),
+                "captured_at": event.get("captured_at"),
+                "yes_price": best_bid_ask.get("best_bid") if event.get("outcome_side") == "YES" else None,
+                "no_price": best_bid_ask.get("best_bid") if event.get("outcome_side") == "NO" else None,
+                "best_bid": best_bid_ask.get("best_bid") if event.get("outcome_side") == "YES" else None,
+                "best_ask": best_bid_ask.get("best_ask") if event.get("outcome_side") == "YES" else None,
+                "spread": best_bid_ask.get("spread") if event.get("outcome_side") == "YES" else None,
+                "source": "ws",
+            }
+            await self._process_snapshot(snapshot)
+            self.summary.processed_snapshots += 1
+            return
+
+        if event_type == "book":
+            book = event.get("book") or {}
+            if event.get("market_id"):
+                snapshot = {
+                    "market_id": event.get("market_id"),
+                    "captured_at": event.get("captured_at"),
+                    "yes_price": book.get("best_bid") if event.get("outcome_side") == "YES" else None,
+                    "no_price": book.get("best_bid") if event.get("outcome_side") == "NO" else None,
+                    "best_bid": book.get("best_bid") if event.get("outcome_side") == "YES" else None,
+                    "best_ask": book.get("best_ask") if event.get("outcome_side") == "YES" else None,
+                    "spread": book.get("spread") if event.get("outcome_side") == "YES" else None,
+                    "source": "ws",
+                }
+                await self._process_snapshot(snapshot)
+                self.summary.processed_snapshots += 1
+            return
 
     async def _process_trade(self, trade: dict[str, Any]) -> None:
         market_id = str(trade.get("market_id") or "")

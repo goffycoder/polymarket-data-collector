@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 import websockets
 from websockets.exceptions import ConnectionClosed, WebSocketException
 
-from collectors.trade_utils import make_trade_row, upsert_trade_rows
+from collectors.trade_utils import make_trade_row, trade_row_to_detector_payload, upsert_trade_rows
 from collectors.universe_selector import TokenContext
 from database.db_manager import get_conn
 from utils.event_log import archive_raw_event, publish_detector_input
@@ -64,15 +64,15 @@ def _normalize_ws_frame(raw: str) -> dict | list | None:
         return None
 
 
-def _event_summary(msg: dict, token_context: dict[str, TokenContext]) -> dict:
-    """Build a compact summary for one WS event used in the detector-input log."""
+def _event_payload(msg: dict, token_context: dict[str, TokenContext]) -> dict:
+    """Build a feature-ready normalized payload for one WS event."""
     asset_id = str(msg.get("asset_id") or "")
     market_ref = str(msg.get("market") or "")
     token_meta = token_context.get(asset_id) if asset_id else None
     event_type = str(msg.get("event_type") or "unknown")
     timestamp = _ts_to_iso(msg.get("timestamp"))
 
-    summary = {
+    payload = {
         "event_type": event_type,
         "captured_at": timestamp,
         "asset_id": asset_id or None,
@@ -83,23 +83,80 @@ def _event_summary(msg: dict, token_context: dict[str, TokenContext]) -> dict:
     }
 
     if event_type == "price_change":
-        summary["price_change_count"] = len(msg.get("price_changes", []))
+        changes = []
+        for change in msg.get("price_changes", []):
+            change_asset_id = str(change.get("asset_id") or "")
+            change_meta = token_context.get(change_asset_id) if change_asset_id else token_meta
+            best_bid = _safe_float(change.get("best_bid"))
+            best_ask = _safe_float(change.get("best_ask"))
+            spread = (
+                (best_ask - best_bid)
+                if best_bid is not None and best_ask is not None
+                else None
+            )
+            changes.append(
+                {
+                    "asset_id": change_asset_id or None,
+                    "market_id": change_meta.market_id if change_meta else None,
+                    "condition_id": change_meta.condition_id if change_meta else None,
+                    "outcome_side": change_meta.outcome_side if change_meta else None,
+                    "price": _safe_float(change.get("price")),
+                    "best_bid": best_bid,
+                    "best_ask": best_ask,
+                    "spread": spread,
+                    "size": _safe_float(change.get("size")),
+                }
+            )
+        payload["price_changes"] = changes
     if event_type == "book":
-        summary["bid_levels"] = len(msg.get("bids", []))
-        summary["ask_levels"] = len(msg.get("asks", []))
+        bids = msg.get("bids", [])
+        asks = msg.get("asks", [])
+        best_bid = _safe_float(bids[0]["price"]) if bids else None
+        best_ask = _safe_float(asks[0]["price"]) if asks else None
+        spread = (
+            (best_ask - best_bid)
+            if best_bid is not None and best_ask is not None
+            else None
+        )
+        payload["book"] = {
+            "bid_levels": len(bids),
+            "ask_levels": len(asks),
+            "best_bid": best_bid,
+            "best_ask": best_ask,
+            "spread": spread,
+            "bid_volume": sum(_safe_float(b.get("size", 0)) or 0 for b in bids),
+            "ask_volume": sum(_safe_float(a.get("size", 0)) or 0 for a in asks),
+        }
     if event_type == "last_trade_price":
-        summary["price"] = msg.get("price")
-        summary["size"] = msg.get("size")
-        summary["side"] = msg.get("side")
+        trade_row = make_trade_row(
+            {
+                "id": f"ws_{asset_id}_{msg.get('timestamp', int(time.time()*1000))}_{msg.get('price')}_{msg.get('size')}",
+                "asset": asset_id,
+                "conditionId": token_meta.condition_id if token_meta else market_ref,
+                "outcome": token_meta.outcome_side if token_meta else None,
+                "side": msg.get("side"),
+                "price": msg.get("price"),
+                "size": msg.get("size"),
+                "timestamp": msg.get("timestamp"),
+            },
+            market_id=token_meta.market_id if token_meta else "",
+            condition_id=token_meta.condition_id if token_meta else market_ref,
+            source="ws",
+        )
+        payload["trade"] = trade_row_to_detector_payload(trade_row) if trade_row else None
     if event_type == "best_bid_ask":
-        summary["best_bid"] = msg.get("best_bid")
-        summary["best_ask"] = msg.get("best_ask")
-        summary["spread"] = msg.get("spread")
+        payload["best_bid_ask"] = {
+            "best_bid": _safe_float(msg.get("best_bid")),
+            "best_ask": _safe_float(msg.get("best_ask")),
+            "spread": _safe_float(msg.get("spread")),
+        }
     if event_type == "market_resolved":
-        summary["resolved_asset_id"] = asset_id or None
-        summary["final_price"] = msg.get("price")
+        payload["resolution"] = {
+            "resolved_asset_id": asset_id or None,
+            "final_price": _safe_float(msg.get("price")),
+        }
 
-    return summary
+    return payload
 
 
 def _frame_summary(frame: dict | list, token_context: dict[str, TokenContext]) -> tuple[str, str, dict]:
@@ -109,7 +166,7 @@ def _frame_summary(frame: dict | list, token_context: dict[str, TokenContext]) -
     else:
         events = [frame] if isinstance(frame, dict) else []
 
-    summaries = [_event_summary(event, token_context) for event in events]
+    summaries = [_event_payload(event, token_context) for event in events]
     first_event = events[0] if events else {}
     first_ts = _ts_to_iso(first_event.get("timestamp"))
     frame_type = "batch" if isinstance(frame, list) else str(first_event.get("event_type") or "unknown")
