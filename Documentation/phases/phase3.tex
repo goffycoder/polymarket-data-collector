@@ -1,0 +1,315 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 3 Plan - Single Owner}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4, ``Phase 3: Build Online State and Deterministic Candidate Detection''.\\
+\textbf{Execution status:} Drafted for implementation kickoff after Phase 2 checkpoint.\\
+\textbf{Entry assumption:} Phase 2 durable archives, detector-input logs, replay tooling, and local PostgreSQL runtime are available and academically defendable as the system of record.
+
+\textbf{Phase goal:} Move from durable raw capture to stable online state, reproducible rolling features, and deterministic candidate episodes that can later feed evidence retrieval, replay validation, and ML ranking.\\
+\textbf{Interpretation note:} Phase 3 is not a modeling phase and not an alert-delivery phase. It is the bridge between trustworthy replayable data and trustworthy candidate generation.\\
+\textbf{Implementation note:} Every live feature or episode emitted in Phase 3 must be reproducible from replay using event-time semantics, watermark rules, and versioned detector logic.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Stand up local Redis-backed rolling state for market, wallet, and event-family windows.
+\item Implement watermark and late-event handling on event time rather than ingest time.
+\item Build state reconciliation jobs that compare live rolling state against replay-rebuilt state.
+\item Add throughput and memory monitoring for local Redis and detector workers.
+\item Add persistent storage for candidate metadata, feature snapshots, and detector versions.
+\item Define the first complete episode feature set for:
+\begin{itemize}
+\item fresh-wallet count
+\item fresh-wallet notional share
+\item directional imbalance
+\item concentration ratio
+\item probability velocity
+\item probability acceleration
+\item volume acceleration
+\end{itemize}
+\item Implement deterministic candidate rules plus robust streaming statistics.
+\item Define cooldown, suppression, and dedupe semantics for duplicate bursts.
+\item Evaluate candidate quality on replayed historical windows and tune thresholds.
+\item Produce one live candidate-generation service, one feature definition spec with schema version, one reconciliation report, and one Gate 3 signoff packet.
+\end{enumerate}
+
+\section*{Phase 3 Exit Criteria}
+\begin{itemize}
+\item Streaming features are stable and reconcile against replay within documented tolerances.
+\item Candidate generation is reproducible from replay.
+\item Detector state survives normal restarts without corrupting windows or episodes.
+\item Candidate rate is operationally bounded, explainable, and does not flood downstream operators.
+\item Every candidate persists feature snapshot, feature-schema version, detector version, triggering rules, and event-time window.
+\end{itemize}
+
+\section*{Locked Scope Decisions}
+\begin{itemize}
+\item Phase 3 uses \texttt{event\_time} as the canonical clock for windows and feature computation; \texttt{ingest\_time} and \texttt{processing\_time} are observability fields, not feature clocks.
+\item Redis is the online rolling-state engine for low-latency windows; PostgreSQL remains the durable system of record for persisted candidates, detector versions, and reconciliation outputs.
+\item Candidate generation remains deterministic rules plus robust rolling statistics only; no learned ranking model ships in Phase 3.
+\item External evidence retrieval, Telegram/Discord alerting, and analyst feedback are explicitly deferred to Phase 4.
+\item Deep models, graph neural networks, and sequence models remain out of scope.
+\item Feature windows must be replay-compatible from Phase 2 raw archives and normalized envelopes.
+\item Phase 3 may add durable schema for \texttt{signal\_candidates}, \texttt{signal\_episodes}, \texttt{signal\_features}, and detector-version metadata, but it must not silently mutate Phase 2 archive semantics.
+\end{itemize}
+
+\section*{Concrete Artifacts Required}
+\begin{longtable}{p{0.27\linewidth}p{0.31\linewidth}p{0.30\linewidth}}
+\textbf{Workstream} & \textbf{Artifact} & \textbf{Done Condition} \\
+Online state runtime & Redis-backed state worker and configuration & Market, wallet, and event-family windows update continuously from detector-input envelopes \\
+Time semantics layer & Watermark and late-event policy & Out-of-order events are incorporated or dropped according to a documented deterministic rule set \\
+Feature contract & Versioned feature definition document & Every Phase 3 feature has a name, formula, window basis, null policy, and schema version \\
+Candidate detector & Deterministic episode rules with threshold config & Candidate episodes emit from rolling features without manual intervention \\
+Persistence layer & Durable candidate tables plus detector-version metadata & Each emitted candidate is queryable, versioned, and reproducible later \\
+Reconciliation job & Replay-vs-live comparison workflow & Recent live windows can be rebuilt from replay and compared field by field within tolerance \\
+Operational monitoring & Throughput, lag, memory, and candidate-rate metrics & Detector health can be observed during local runs and soak tests \\
+Signoff evidence & Gate 3 report and reproducible validation outputs & The phase can be defended with concrete counts, tolerances, and example candidate windows \\
+\end{longtable}
+
+\section*{Required Persistent Contracts}
+\textbf{1. Detector state contract}
+\begin{itemize}
+\item Redis keys must be namespaced by environment and state type.
+\item Window state must exist at minimum for:
+\begin{itemize}
+\item market
+\item wallet
+\item event family
+\end{itemize}
+\item State entries must carry last processed \texttt{event\_time}, last processed \texttt{ingest\_time}, and a detector/state schema version.
+\item Restart behavior must prefer rebuilding short recent windows from durable detector-input logs rather than trusting partially written in-memory state.
+\end{itemize}
+
+\textbf{2. Candidate persistence contract}
+\begin{itemize}
+\item Every candidate row must persist:
+\begin{itemize}
+\item candidate identifier
+\item market identifier
+\item event identifier
+\item event-family identifier
+\item episode start and end event time
+\item trigger timestamp
+\item feature snapshot payload
+\item feature-schema version
+\item detector version
+\item triggering rules
+\item cooldown/suppression decision state
+\end{itemize}
+\item Candidate persistence must be append-friendly and auditable.
+\item Candidate rows must be replay-regenerable from raw archives plus detector version and feature version.
+\end{itemize}
+
+\textbf{3. Reconciliation contract}
+\begin{itemize}
+\item Reconciliation must compare live and replayed rolling features on the same event-time window.
+\item Tolerance must be explicit per feature family, especially for floating-point microstructure fields.
+\item Reconciliation outputs must record:
+\begin{itemize}
+\item run identifier
+\item replay window
+\item detector version
+\item feature-schema version
+\item compared feature counts
+\item mismatched rows
+\item maximum absolute and relative error where relevant
+\end{itemize}
+\end{itemize}
+
+\section*{Canonical Feature Set For Gate 3}
+\textbf{Market microstructure features}
+\begin{itemize}
+\item probability change
+\item probability velocity
+\item probability acceleration
+\item bid-ask spread
+\item depth imbalance
+\item realized volatility
+\item aggressive flow imbalance
+\item volume acceleration
+\end{itemize}
+
+\textbf{Wallet and flow features}
+\begin{itemize}
+\item first-seen age
+\item traded-footprint count
+\item first-trade notional
+\item fresh-wallet count by window
+\item fresh-wallet notional share
+\item concentration ratio
+\item repeated same-direction participation
+\item event-family overlap
+\end{itemize}
+
+\textbf{Context features}
+\begin{itemize}
+\item category
+\item time to resolution
+\item event popularity
+\item event-family breadth
+\item cross-market linkage strength
+\item market liquidity bucket
+\end{itemize}
+
+\textbf{Gate 3 minimum rule-driving subset}
+\begin{itemize}
+\item fresh-wallet count
+\item fresh-wallet notional share
+\item directional imbalance
+\item concentration ratio
+\item probability velocity
+\item probability acceleration
+\item volume acceleration
+\end{itemize}
+
+\section*{Deterministic Candidate Rules}
+The first detector version should stay simple, explainable, and replay-safe.
+
+\textbf{Rule family A: Fresh-wallet burst}
+\begin{itemize}
+\item Trigger when fresh-wallet count and fresh-wallet notional share exceed configured thresholds inside a bounded event-time window.
+\item Require at least one supporting market-microstructure feature to exceed baseline, such as probability velocity or volume acceleration.
+\item Record whether the burst is same-direction concentrated or mixed.
+\end{itemize}
+
+\textbf{Rule family B: Concentrated directional flow}
+\begin{itemize}
+\item Trigger when directional imbalance and concentration ratio jointly exceed threshold.
+\item Require minimum notional and minimum participating-wallet count to avoid noise from tiny markets.
+\item Suppress duplicate candidates for the same market unless the new burst materially exceeds the previous trigger.
+\end{itemize}
+
+\textbf{Rule family C: Fast repricing with wallet support}
+\begin{itemize}
+\item Trigger when probability velocity or acceleration exceeds threshold and coincides with fresh-wallet or concentrated-flow evidence.
+\item Require the move to occur within a configured short window to preserve episode meaning.
+\item Record pre-window and post-window prices for later evaluation.
+\end{itemize}
+
+\textbf{Robust statistics required}
+\begin{itemize}
+\item rolling median and MAD
+\item exponentially weighted z-scores
+\item change-point style signals
+\item tail-event thresholds for rare bursts
+\end{itemize}
+
+\section*{Cooldown, Suppression, and Dedupe Policy}
+\begin{itemize}
+\item A single market burst must not emit repeated candidates every time one more event lands in the same window.
+\item Cooldown must apply at minimum on:
+\begin{itemize}
+\item market identifier
+\item event-family identifier
+\item trigger rule family
+\end{itemize}
+\item A new candidate during cooldown is only allowed when severity materially increases according to a documented delta rule.
+\item Suppression decisions must be persisted so later replay can explain why an apparently qualifying window did or did not emit.
+\item Dedupe logic must distinguish:
+\begin{itemize}
+\item same underlying episode seen multiple times
+\item new episode after cooldown expiry
+\item stronger continuation of the same episode
+\end{itemize}
+\end{itemize}
+
+\section*{Concrete Execution Sequence}
+\textbf{Block 1: Online state foundation}
+\begin{itemize}
+\item Add Redis configuration and runtime wiring.
+\item Define state-key namespaces and window granularities for market, wallet, and event-family state.
+\item Build the detector-input consumer that updates rolling state from Phase 2 normalized envelopes.
+\item Record processing lag, watermark lag, and per-key update counts.
+\end{itemize}
+
+\textbf{Block 2: Event-time correctness}
+\begin{itemize}
+\item Define the canonical event-time extraction rules per source system.
+\item Implement watermark advancement and late-event handling.
+\item Decide and document when late events revise windows versus when they are counted as too late.
+\item Verify that restart and replay use the same event-time semantics as live processing.
+\end{itemize}
+
+\textbf{Block 3: Feature contract v1}
+\begin{itemize}
+\item Write the feature definition spec with schema version \texttt{phase3\_v1}.
+\item Implement rolling computations for the Gate 3 minimum subset first.
+\item Add null/default policies and minimum-support conditions for illiquid windows.
+\item Persist feature snapshots for candidate-emitting windows.
+\end{itemize}
+
+\textbf{Block 4: Deterministic detector v1}
+\begin{itemize}
+\item Implement the first rule families and threshold configuration.
+\item Add cooldown, suppression, and dedupe semantics.
+\item Persist candidate rows and detector-version metadata.
+\item Measure candidate rate by market, category, and hour.
+\end{itemize}
+
+\textbf{Block 5: Replay reconciliation}
+\begin{itemize}
+\item Build a job that replays recent detector-input windows into Redis-equivalent state.
+\item Compare live and replayed rolling features field by field.
+\item Compare live and replayed candidate outputs.
+\item Write one reconciliation report with mismatch explanations and tolerance results.
+\end{itemize}
+
+\textbf{Block 6: Gate 3 hardening}
+\begin{itemize}
+\item Run a local soak session with monitoring enabled.
+\item Validate restart safety and short-window rebuild behavior.
+\item Tune thresholds so candidate volume is bounded and explainable.
+\item Assemble the Gate 3 signoff packet.
+\end{itemize}
+
+\section*{Files and Modules Expected To Change}
+\begin{itemize}
+\item \texttt{config/settings.py} for Redis and detector configuration
+\item \texttt{database/schema.sql} and \texttt{database/postgres\_schema.sql} for candidate and detector tables
+\item new detector/runtime modules for rolling state and candidate generation
+\item \texttt{run\_collector.py} or a dedicated service entrypoint for the online detector worker
+\item \texttt{validation/} for live-vs-replay reconciliation tooling
+\item \texttt{ml\_pipeline/feature\_builder.py} only if it becomes the canonical batch materializer for Phase 3 feature reuse
+\end{itemize}
+
+\section*{Required Metrics and Monitoring}
+\begin{itemize}
+\item detector-input envelopes processed per minute
+\item median and p95 processing lag
+\item median and p95 watermark lag
+\item Redis memory usage
+\item hot-key concentration and largest window states
+\item candidate count by hour
+\item candidate count by rule family
+\item suppressed-vs-emitted count
+\item replay reconciliation mismatch rate
+\item restart recovery duration
+\end{itemize}
+
+\section*{Gate 3 Evidence Pack Requirements}
+\begin{itemize}
+\item one feature definition document with schema version
+\item one detector version record and threshold configuration snapshot
+\item one reconciliation report comparing live vs replayed features
+\item one candidate-rate summary over a non-trivial live window
+\item one restart-safety proof showing windows do not corrupt on normal restart
+\item one example packet showing a candidate with full feature snapshot and trigger explanation
+\end{itemize}
+
+\section*{Out of Scope For Phase 3}
+\begin{itemize}
+\item learned ranking models
+\item external web/news or X evidence retrieval
+\item Telegram or Discord alert delivery
+\item analyst feedback workflow
+\item paper trading, backtesting reports, or empirical thesis claims
+\item graph clustering beyond fields needed to preserve future compatibility
+\end{itemize}
+
+\section*{Bottom-Line Assessment}
+Phase 3 is done when the repo can produce stable, replay-reproducible candidate episodes from live detector-input streams without depending on manual judgment, future information, or non-versioned state. If the system can rebuild recent windows from replay, reconcile live vs replayed features within tolerance, survive restart safely, and emit bounded explainable candidates, then the project is ready to enter Phase 4 with a trustworthy candidate engine rather than a brittle heuristic prototype.
+
+\end{document}
