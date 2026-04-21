@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\textbf{Legacy note:} This split-by-person draft complements the canonical roadmap in \texttt{Documentation/SRS.tex}.\\
+
+\section*{Phase 5 Plan - Person 1 (Person A)}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.5, ``Phase 5: Build Replay, Backtesting, and Validation''.\\
+\textbf{Interpretation note:} Person 1 owns the deterministic historical execution layer for Phase 5. The main job is to make replay and backfill operationally trustworthy so evaluation can be rerun from raw archives instead of hand-assembled local state.\\
+\textbf{Implementation note:} Person 1 is not defining the empirical success metrics in this phase. The job is to make sure historical windows, replay runs, and artifact tables exist in a versioned, reproducible form that Person 2 can consume for evaluation and case studies.
+
+\textbf{Phase duration:} 3-4 weeks\\
+\textbf{Phase goal:} Build the replay and artifact pipeline that makes historical validation reproducible.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Build batch replay jobs that reconstruct historical windows from raw archives.
+\item Add backfill orchestration for missing windows and archive integrity checks.
+\item Build result tables for replay runs, validation runs, and backtest artifacts.
+\item Add reproducible job configuration and version tracking.
+\end{enumerate}
+
+\section*{Locked Implementation Decisions}
+\begin{itemize}
+\item Replay must start from immutable raw archives and normalized detector-input logs, not from mutable end-state tables alone.
+\item Every replay and backfill job must record configuration, code version, input window, and output artifact identifiers.
+\item Backfill and replay must be deterministic enough that another teammate can rerun the same window and obtain materially identical candidate and alert artifacts.
+\item Replay outputs must be stored separately from live operational tables so historical experiments cannot silently mutate live state.
+\item Integrity checks must fail loudly when archive partitions, manifests, or schema versions are missing or inconsistent.
+\end{itemize}
+
+\section*{Concrete Execution Breakdown}
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
+\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
+Deterministic replay jobs & Replay CLI/runner for bounded historical windows & A chosen archive window can be reconstructed from raw inputs into stable detector and alert artifacts \\
+Backfill and integrity pipeline & Missing-window backfill flow plus manifest/integrity checks & Historical gaps are visible, explainable, and fillable without corrupting replay assumptions \\
+Replay artifact persistence & Result tables for replay runs, validation runs, and backtest outputs & Every evaluation run is queryable by window, version, config, and status \\
+Versioned job configuration & Stored configs and run metadata & A replay or validation run can be rerun from recorded settings without guesswork \\
+\end{longtable}
+
+\section*{Execution Sequence (No Day Timeline)}
+\textbf{Block 1: Replay runner foundation}
+\begin{itemize}
+\item Build batch replay jobs that read raw archives and normalized detector-input partitions for a bounded historical window.
+\item Reconstruct Phase 3 candidate generation and Phase 4 alert production in a deterministic historical mode.
+\item Record replay timing, row counts, and failure states so reruns are diagnosable rather than opaque.
+\end{itemize}
+
+\textbf{Block 2: Backfill and integrity hardening}
+\begin{itemize}
+\item Add orchestration for missing archive windows, including gap detection and explicit backfill requests.
+\item Implement archive integrity checks covering manifests, partition continuity, schema version compatibility, and replay prerequisites.
+\item Produce operator-facing reason codes for integrity failures and partial replay blocks.
+\end{itemize}
+
+\textbf{Block 3: Artifact tables and run bookkeeping}
+\begin{itemize}
+\item Create result tables for replay runs, validation runs, and backtest artifacts.
+\item Persist replay configuration, code version, runtime parameters, and source windows for every run.
+\item Ensure Person 2 can query replay outputs without reverse-engineering filesystem state.
+\end{itemize}
+
+\textbf{Block 4: Handoff-ready reproducibility package}
+\begin{itemize}
+\item Freeze one deterministic replay CLI or workflow for shared use.
+\item Publish configuration examples and one replay-ready historical window to Person 2.
+\item Deliver run metadata and artifact-location conventions so evaluation and case-study work can proceed cleanly.
+\end{itemize}
+
+\section*{Handoffs to Person 2}
+\begin{itemize}
+\item One deterministic replay CLI or workflow with exact invocation examples.
+\item Replay and validation artifact tables plus schema notes.
+\item Recorded replay configurations and code-version metadata.
+\item One replay-ready historical window with known integrity status.
+\item Backfill and integrity diagnostics for any missing or degraded windows.
+\item Clear replay limitations so evaluation results are interpreted honestly.
+\end{itemize}
+
+\section*{Gate 5 Checklist (Person 1 Ownership)}
+\begin{itemize}
+\item Historical windows can be replayed from raw inputs with recorded configuration.
+\item Missing-window and archive-integrity issues are surfaced with explicit diagnostics.
+\item Replay, validation, and backtest artifacts are persisted in queryable result tables.
+\item Job versioning and configuration tracking are complete enough for reruns.
+\item At least one historical window is ready for Person 2 evaluation work without manual patching.
+\end{itemize}
+
+\end{document}

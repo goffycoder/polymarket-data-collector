@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\textbf{Legacy note:} This split-by-person draft complements the canonical roadmap in \texttt{Documentation/SRS.tex}.\\
+
+\section*{Phase 5 Plan - Person 2 (Person B)}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.5, ``Phase 5: Build Replay, Backtesting, and Validation''.\\
+\textbf{Interpretation note:} Person 2 owns the empirical evaluation layer in Phase 5. The job is to decide whether replayed candidates and alerts are historically useful under point-in-time-safe validation, not just whether the replay machinery runs.\\
+\textbf{Implementation note:} Person 2 should consume the replay outputs produced by Person 1 rather than reconstructing raw windows independently. Evaluation, paper-trading, and case studies must remain conservative and historically honest.
+
+\textbf{Phase duration:} 3-4 weeks\\
+\textbf{Phase goal:} Evaluate replayed historical outputs with conservative validation and produce defendable case studies.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Implement event-family holdout, category holdout, and time-split validation.
+\item Build the conservative paper-trading simulator with bid/ask execution, slippage, size caps, fees, and near-resolution restrictions.
+\item Define success metrics and failure metrics for candidate quality, alert usefulness, paper-trade edge, and lead time.
+\item Produce at least three historical case studies that replay from raw data to alert decision.
+\end{enumerate}
+
+\section*{Locked Implementation Decisions}
+\begin{itemize}
+\item All evaluation must be point-in-time correct and may not use information that would not have been available at alert time.
+\item Validation must include event-family holdout, category holdout, and time-split analysis rather than one pooled score.
+\item Paper-trading assumptions must be conservative and explicitly documented, especially around spread crossing, fees, slippage, size limits, and near-resolution exclusions.
+\item Success metrics must include failure-oriented views, not just favorable precision or return summaries.
+\item Case studies must be reproducible from replay artifacts and explain both why an alert fired and how it would have been judged historically.
+\end{itemize}
+
+\section*{Concrete Execution Breakdown}
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
+\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
+Validation framework & Event-family, category, and time-split validation outputs & Historical evaluation is segmented in a way that avoids optimistic leakage \\
+Conservative simulator & Paper-trading simulator with realistic frictions & Replay outputs can be translated into conservative paper-trade outcomes \\
+Metric package & Success and failure metrics for alerts and trades & Evaluation includes candidate quality, alert usefulness, lead time, and paper-trade edge \\
+Historical case studies & At least three replay-to-alert narratives & Each case study links replay inputs, alert output, and historical interpretation in a defendable way \\
+\end{longtable}
+
+\section*{Execution Sequence (No Day Timeline)}
+\textbf{Block 1: Validation design}
+\begin{itemize}
+\item Implement event-family holdout, category holdout, and time-split validation on top of replayed artifacts.
+\item Define exactly which outputs are judged at the candidate, alert, and paper-trade levels.
+\item Reject any evaluation path that leaks future public evidence or future market state into the judgment.
+\end{itemize}
+
+\textbf{Block 2: Conservative paper-trading simulator}
+\begin{itemize}
+\item Build a simulator that uses bid/ask execution rather than optimistic midpoint fills.
+\item Add slippage, fees, size caps, and near-resolution restrictions.
+\item Keep the simulator explainable enough that an academic reviewer can understand the assumptions without reverse-engineering the code.
+\end{itemize}
+
+\textbf{Block 3: Metrics and reporting}
+\begin{itemize}
+\item Define success metrics and failure metrics for candidate quality, alert usefulness, lead time, and paper-trade edge.
+\item Produce one backtesting report template that can be reused across historical windows.
+\item Surface both strong and weak regimes so the results are honest rather than cherry-picked.
+\end{itemize}
+
+\textbf{Block 4: Historical case studies and signoff pack}
+\begin{itemize}
+\item Produce at least three historical case studies from replayed raw data through alert decision.
+\item Summarize why the system looked useful, where it failed, and what assumptions mattered most.
+\item Assemble the historical validation pack and Gate 5 precondition evidence for shared signoff.
+\end{itemize}
+
+\section*{Handoffs to Person 1}
+\begin{itemize}
+\item Validation findings that expose replay gaps, missing fields, or reproducibility issues.
+\item Simulator requirements that need stronger replay artifacts or additional stored metadata.
+\item Metric definitions and report templates that should become canonical for later phases.
+\item Historical windows that were especially informative, broken, or high-signal for future regression tests.
+\item Case-study outputs that should be added to the shared Gate 5 evidence packet.
+\end{itemize}
+
+\section*{Gate 5 Checklist (Person 2 Ownership)}
+\begin{itemize}
+\item Validation includes event-family, category, and time-split holdouts.
+\item Paper-trading assumptions are conservative, explicit, and reproducible.
+\item Success and failure metrics are documented for candidates, alerts, lead time, and trades.
+\item At least three historical case studies are complete and rerunnable from replay artifacts.
+\item The historical validation pack is strong enough for shared Gate 5 precondition signoff.
+\end{itemize}
+
+\end{document}
