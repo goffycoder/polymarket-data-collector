@@ -104,8 +104,25 @@ class Phase3LiveRunner:
                     final_offset = position
                     break
                 final_offset = handle.tell()
-                payload = json.loads(line)
-                await self.detector.handle_envelope(payload)
+                try:
+                    payload = json.loads(line)
+                except json.JSONDecodeError as exc:
+                    if not line.endswith("\n"):
+                        final_offset = position
+                        break
+                    log.warning(
+                        f"Skipping malformed detector-input envelope in {relative_path} "
+                        f"at byte {position}: {exc}"
+                    )
+                    continue
+                try:
+                    await self.detector.handle_envelope(payload)
+                except Exception as exc:
+                    log.warning(
+                        f"Skipping unreadable detector-input envelope in {relative_path} "
+                        f"at byte {position}: {exc}"
+                    )
+                    continue
                 processed += 1
                 last_ordering_key = payload.get("ordering_key")
                 last_captured_at = payload.get("captured_at")

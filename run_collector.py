@@ -248,6 +248,9 @@ async def phase3_live_loop():
     )
     try:
         await runner.run_forever()
+    except Exception as exc:
+        log.error(f"Phase 3 live loop failed: {exc}")
+        raise
     finally:
         await _phase3_state_context.store.aclose()
         _phase3_state_context = None

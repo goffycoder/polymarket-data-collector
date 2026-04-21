@@ -42,7 +42,21 @@ DEFAULT_PHASE3_SOURCE_SYSTEMS = [
 def _parse_iso(value: str | None) -> datetime | None:
     if not value:
         return None
-    parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    if isinstance(value, datetime):
+        parsed = value
+    else:
+        text = str(value).strip()
+        if not text:
+            return None
+        try:
+            if text.replace(".", "", 1).isdigit():
+                raw_value = float(text)
+                scale = 1000 if "." in text or abs(raw_value) >= 1_000_000_000_000 else 1
+                parsed = datetime.fromtimestamp(raw_value / scale, tz=timezone.utc)
+            else:
+                parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        except (TypeError, ValueError, OSError, OverflowError):
+            return None
     if parsed.tzinfo is None:
         return parsed.replace(tzinfo=timezone.utc)
     return parsed.astimezone(timezone.utc)

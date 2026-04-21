@@ -90,9 +90,15 @@ def parse_trade_time(raw_ts) -> str | None:
     try:
         if isinstance(raw_ts, (int, float)):
             return datetime.fromtimestamp(float(raw_ts) / 1000, tz=timezone.utc).isoformat()
-        text = str(raw_ts)
+        text = str(raw_ts).strip()
+        if not text:
+            return None
+        if text.replace(".", "", 1).isdigit():
+            raw_value = float(text)
+            scale = 1000 if "." in text or abs(raw_value) >= 1_000_000_000_000 else 1
+            return datetime.fromtimestamp(raw_value / scale, tz=timezone.utc).isoformat()
         return datetime.fromisoformat(text.replace("Z", "+00:00")).astimezone(timezone.utc).isoformat()
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, OSError, OverflowError):
         return str(raw_ts)
 
 
