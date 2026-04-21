@@ -1,15 +1,23 @@
 from __future__ import annotations
 
+import json
+import urllib.error
+import urllib.request
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Any, Protocol
 
 from config.settings import (
+    ENABLE_PHASE4_DISCORD,
+    ENABLE_PHASE4_TELEGRAM,
     PHASE4_ALERT_ACTIONABLE_THRESHOLD,
     PHASE4_ALERT_CHANNELS,
     PHASE4_ALERT_INFO_THRESHOLD,
     PHASE4_ALERT_SUPPRESSION_SECONDS,
     PHASE4_ALERT_WATCH_THRESHOLD,
+    PHASE4_DISCORD_WEBHOOK_URL,
+    PHASE4_TELEGRAM_BOT_TOKEN,
+    PHASE4_TELEGRAM_CHAT_ID,
 )
 from phase4.repository import Phase4Repository
 from utils.logger import get_logger
@@ -105,8 +113,133 @@ class NoopDeliveryChannel:
         }
 
 
+class TelegramDeliveryChannel:
+    name = "telegram"
+
+    def __init__(self):
+        self.enabled = ENABLE_PHASE4_TELEGRAM
+        self.bot_token = PHASE4_TELEGRAM_BOT_TOKEN
+        self.chat_id = PHASE4_TELEGRAM_CHAT_ID
+
+    def send(self, alert: dict[str, Any]) -> dict[str, Any]:
+        if not self.enabled:
+            return {
+                "status": "skipped",
+                "channel": self.name,
+                "reason": "telegram_disabled",
+            }
+        if not self.bot_token or not self.chat_id:
+            return {
+                "status": "skipped",
+                "channel": self.name,
+                "reason": "telegram_not_configured",
+            }
+
+        payload = {
+            "chat_id": self.chat_id,
+            "text": self._render_text(alert),
+            "disable_web_page_preview": True,
+        }
+        url = f"https://api.telegram.org/bot{self.bot_token}/sendMessage"
+        return _post_json(url=url, body=payload, channel=self.name)
+
+    def _render_text(self, alert: dict[str, Any]) -> str:
+        return "\n".join(
+            [
+                f"[{alert['severity']}] {alert['title']}",
+                alert.get("what_changed", ""),
+                alert.get("why_it_looks_informed", ""),
+                f"Public evidence: {alert.get('public_evidence_state')}",
+                f"Detector: {alert.get('detector_version')} / {alert.get('feature_schema_version')}",
+                f"Alert ID: {alert.get('alert_id')}",
+            ]
+        ).strip()
+
+
+class DiscordDeliveryChannel:
+    name = "discord"
+
+    def __init__(self):
+        self.enabled = ENABLE_PHASE4_DISCORD
+        self.webhook_url = PHASE4_DISCORD_WEBHOOK_URL
+
+    def send(self, alert: dict[str, Any]) -> dict[str, Any]:
+        if not self.enabled:
+            return {
+                "status": "skipped",
+                "channel": self.name,
+                "reason": "discord_disabled",
+            }
+        if not self.webhook_url:
+            return {
+                "status": "skipped",
+                "channel": self.name,
+                "reason": "discord_not_configured",
+            }
+
+        payload = {
+            "content": self._render_text(alert),
+        }
+        return _post_json(url=self.webhook_url, body=payload, channel=self.name)
+
+    def _render_text(self, alert: dict[str, Any]) -> str:
+        return "\n".join(
+            [
+                f"**[{alert['severity']}] {alert['title']}**",
+                alert.get("what_changed", ""),
+                alert.get("why_it_looks_informed", ""),
+                f"Public evidence: {alert.get('public_evidence_state')}",
+                f"Alert ID: {alert.get('alert_id')}",
+            ]
+        ).strip()
+
+
+def _post_json(*, url: str, body: dict[str, Any], channel: str) -> dict[str, Any]:
+    raw = json.dumps(body).encode("utf-8")
+    request = urllib.request.Request(
+        url,
+        data=raw,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=10) as response:
+            response_text = response.read().decode("utf-8", errors="replace")
+            return {
+                "status": "sent",
+                "channel": channel,
+                "provider_message_id": response.headers.get("X-Telegram-Bot-Api-Secret-Token")
+                or response.headers.get("X-Request-Id")
+                or str(response.status),
+                "http_status": response.status,
+                "response_text_preview": response_text[:300],
+            }
+    except urllib.error.HTTPError as exc:
+        response_text = exc.read().decode("utf-8", errors="replace")
+        return {
+            "status": "error",
+            "channel": channel,
+            "http_status": exc.code,
+            "error_message": response_text[:300] or str(exc),
+        }
+    except Exception as exc:
+        return {
+            "status": "error",
+            "channel": channel,
+            "error_message": str(exc),
+        }
+
+
 def build_default_channels() -> list[DeliveryChannel]:
-    return [NoopDeliveryChannel(name=channel_name) for channel_name in PHASE4_ALERT_CHANNELS]
+    channels: list[DeliveryChannel] = []
+    for channel_name in PHASE4_ALERT_CHANNELS:
+        if channel_name == "telegram":
+            channels.append(TelegramDeliveryChannel())
+        elif channel_name == "discord":
+            channels.append(DiscordDeliveryChannel())
+        else:
+            channels.append(NoopDeliveryChannel(name=channel_name))
+    return channels
 
 
 @dataclass(slots=True)
