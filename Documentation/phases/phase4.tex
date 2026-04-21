@@ -1,0 +1,288 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 4 Plan - Single Owner}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Work Packages 6 and 7, Section 7, and Section 11.5 ``Phase 4: Build Evidence, Alerts, and Analyst Workflow''.\\
+\textbf{Execution status:} Local kickoff branch created from Phase 3 head while Gate 3 evidence collection is still running.\\
+\textbf{Entry assumption:} Phase 3 candidate generation, replay reconciliation, and detector versioning are already operational enough to produce stable candidate episodes for downstream alerting.
+
+\textbf{Phase goal:} Turn replayable market candidates into explainable, human-facing alerts with point-in-time evidence snapshots, durable delivery history, and structured analyst feedback.\\
+\textbf{Interpretation note:} External evidence is not a trigger. It is a confidence modifier, explanation layer, and replayable analyst context.\\
+\textbf{Implementation note:} Evidence retrieval must stay off the sub-second detector hot path and run asynchronously with timeout handling, caching, and persistent query logging.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Build provider abstractions for web/news retrieval and X-style social retrieval.
+\item Implement an evidence worker that receives Phase 3 candidates and executes asynchronous retrieval jobs.
+\item Persist every evidence query with provider, query text, candidate identifier, timestamps, latency, result count, and raw response metadata.
+\item Cache point-in-time evidence snapshots so later replay can reconstruct what was knowable when the alert fired.
+\item Implement evidence timeout policy so an initial alert may ship without evidence and later be updated asynchronously.
+\item Define the evidence scoring rubric:
+\begin{itemize}
+\item already public
+\item weakly public
+\item not publicly explained
+\end{itemize}
+\item Implement Telegram as the primary alert path and Discord as archive/debug delivery.
+\item Persist alert delivery attempts, delivery outcomes, retry state, and suppression state.
+\item Define alert severities:
+\begin{itemize}
+\item \texttt{INFO}
+\item \texttt{WATCH}
+\item \texttt{ACTIONABLE}
+\item \texttt{CRITICAL}
+\end{itemize}
+\item Design the alert payload and explanation template so every alert states what changed, why it looks informed, what evidence exists, and what invalidates it.
+\item Implement analyst actions:
+\begin{itemize}
+\item acknowledge
+\item snooze
+\item dismiss
+\item mark useful
+\item mark false positive
+\item attach notes
+\item attach follow-up timestamp
+\end{itemize}
+\item Run manual review on the first batch of live alerts and tune suppression and escalation rules.
+\item Produce one end-to-end alert path, one analyst-feedback workflow, one suppression policy, and one Gate 4 signoff based on real alert traffic.
+\end{enumerate}
+
+\section*{Phase 4 Exit Criteria}
+\begin{itemize}
+\item Alerts are explainable, versioned, and durably logged.
+\item Evidence snapshots are timestamped, cached, and replayable point in time.
+\item Delivery attempts and outcomes are queryable for Telegram and Discord.
+\item Alert suppression prevents repeated paging without new candidate strength or new evidence.
+\item Analysts can respond to alerts in a structured workflow and that feedback is preserved for later labeling.
+\item At least one live alert window can be defended with candidate inputs, evidence state, delivery history, and analyst response.
+\end{itemize}
+
+\section*{Locked Scope Decisions}
+\begin{itemize}
+\item Phase 4 consumes Phase 3 candidates; it does not change Phase 3 trigger semantics in the first pass except for explicit suppression tuning informed by real alerts.
+\item Evidence retrieval is asynchronous and must not block candidate detection.
+\item Phase 4 remains rule-based and operator-facing; learned ranking, calibration, and execution logic are deferred beyond Gate 4.
+\item Evidence snapshots must be stored in a point-in-time form that replay jobs can rehydrate later.
+\item Provider abstractions must record failures, timeouts, and empty-result cases so ``no evidence'' never means ``search silently failed''.
+\item Telegram is the primary delivery destination; Discord is the archival/debug channel.
+\item Wallet identifiers must remain redacted or hashed by default in outward-facing alert payloads.
+\end{itemize}
+
+\section*{Concrete Artifacts Required}
+\begin{longtable}{p{0.24\linewidth}p{0.34\linewidth}p{0.28\linewidth}}
+\textbf{Workstream} & \textbf{Artifact} & \textbf{Done Condition} \\
+Evidence provider layer & Provider abstraction with web/news and social provider adapters & Providers can execute versioned queries, normalize results, and record failures without changing downstream workers \\
+Evidence logging & Durable evidence-query and evidence-snapshot tables & Every retrieval attempt and snapshot is queryable by candidate, provider, and timestamp \\
+Evidence worker & Async local worker with timeout and cache policy & Candidate-driven evidence jobs run off the hot path and produce point-in-time evidence state \\
+Alert renderer & Alert payload and explanation template & Alerts consistently include market evidence, public evidence state, invalidation notes, and version metadata \\
+Delivery layer & Telegram/Discord delivery integration plus retry tracking & Every alert attempt has status, channel, retry state, and provider response metadata \\
+Analyst workflow & Analyst-feedback persistence and action handler & Analysts can acknowledge, snooze, dismiss, mark useful, mark false positive, and add notes \\
+Suppression policy & Event-family and alert-level suppression rules & Duplicate alerts are bounded unless candidate severity or evidence state materially changes \\
+Gate 4 evidence & Real live alert report and screenshots/log extracts & The system can be defended with one end-to-end candidate-to-alert example and real operator traffic \\
+\end{longtable}
+
+\section*{Required Persistent Contracts}
+\textbf{1. Evidence query contract}
+\begin{itemize}
+\item Every evidence query row must persist:
+\begin{itemize}
+\item query identifier
+\item candidate identifier
+\item alert identifier if available
+\item provider name
+\item provider query text
+\item provider query type
+\item request timestamp
+\item response timestamp
+\item latency
+\item result count
+\item timeout or failure state
+\item raw response metadata
+\end{itemize}
+\item Query logging must preserve enough metadata to diagnose provider failures and replay evidence state later.
+\end{itemize}
+
+\textbf{2. Evidence snapshot contract}
+\begin{itemize}
+\item Every evidence snapshot must persist:
+\begin{itemize}
+\item candidate identifier
+\item snapshot timestamp
+\item provider set used
+\item normalized result summary
+\item evidence classification
+\item confidence modifiers or severity adjustments
+\item cache key and freshness metadata
+\end{itemize}
+\item Snapshots must remain tied to the candidate time window and never be overwritten by later public information.
+\end{itemize}
+
+\textbf{3. Alert contract}
+\begin{itemize}
+\item Every alert row must persist:
+\begin{itemize}
+\item alert identifier
+\item candidate identifier
+\item severity
+\item alert status
+\item rendered payload
+\item detector version
+\item feature-schema version
+\item evidence snapshot reference
+\item suppression state
+\item first delivery time
+\item last delivery time
+\end{itemize}
+\item Alert delivery attempts must be stored separately with channel, attempt number, outcome, and retry metadata.
+\end{itemize}
+
+\textbf{4. Analyst feedback contract}
+\begin{itemize}
+\item Every analyst action must persist:
+\begin{itemize}
+\item alert identifier
+\item action type
+\item actor
+\item action timestamp
+\item notes
+\item optional follow-up timestamp
+\end{itemize}
+\item Feedback rows become future label inputs and must be immutable append records.
+\end{itemize}
+
+\section*{Canonical Phase 4 Workflow}
+\begin{enumerate}
+\item Phase 3 emits a candidate from market data alone.
+\item Phase 4 creates an alert draft with candidate explanation and provisional severity.
+\item Evidence worker executes provider queries asynchronously and stores all query attempts.
+\item Evidence worker materializes a point-in-time evidence snapshot and classifies it as:
+\begin{itemize}
+\item clear public explanation already exists
+\item weak or partial public explanation
+\item no reliable public explanation found
+\end{itemize}
+\item Alert severity or explanation is updated if evidence materially changes interpretation.
+\item Alert delivery worker sends the alert to Telegram and archive/debug copies to Discord.
+\item Delivery outcomes, retries, and failures are logged.
+\item Analysts respond with structured actions and those actions are stored for later evaluation and model-building.
+\end{enumerate}
+
+\section*{Severity and Payload Rules}
+\textbf{Severity meanings}
+\begin{longtable}{p{0.22\linewidth}p{0.62\linewidth}}
+\textbf{Severity} & \textbf{Meaning} \\
+\texttt{INFO} & Interesting anomaly, but not yet operationally useful \\
+\texttt{WATCH} & Real anomaly worth monitoring and evidence enrichment \\
+\texttt{ACTIONABLE} & Strong enough to require immediate human review \\
+\texttt{CRITICAL} & Repeated or multi-source-confirmed high-value event requiring urgent escalation \\
+\end{longtable}
+
+\textbf{Every alert payload must include}
+\begin{itemize}
+\item what changed
+\item why it looks informed
+\item what market evidence supports it
+\item what public evidence exists or does not exist
+\item what invalidates it
+\item detector version and feature-schema version
+\end{itemize}
+
+\section*{Suppression and Escalation Policy}
+\begin{itemize}
+\item The same event family must not page repeatedly without either:
+\begin{itemize}
+\item materially stronger candidate features, or
+\item materially new external evidence
+\end{itemize}
+\item Suppression must exist at minimum on:
+\begin{itemize}
+\item alert identifier
+\item market identifier
+\item event-family identifier
+\item delivery channel
+\end{itemize}
+\item Evidence updates may revise severity without generating a brand-new alert identifier if the update belongs to the same alert episode.
+\item Escalation from \texttt{WATCH} to \texttt{ACTIONABLE} or \texttt{CRITICAL} must be logged with the reason:
+\begin{itemize}
+\item stronger market evidence
+\item stronger external evidence
+\item repeated corroborating alerts
+\end{itemize}
+\end{itemize}
+
+\section*{Concrete Execution Sequence}
+\textbf{Block 1: Evidence persistence foundation}
+\begin{itemize}
+\item Add durable schema for evidence queries, evidence snapshots, alerts, alert delivery attempts, and analyst feedback.
+\item Define identifiers linking candidate, alert, evidence snapshot, and analyst action.
+\item Add config placeholders for provider timeouts, cache TTLs, and delivery credentials.
+\end{itemize}
+
+\textbf{Block 2: Provider abstraction and worker}
+\begin{itemize}
+\item Create provider interfaces for web/news and social retrieval.
+\item Add normalized result schemas and response metadata capture.
+\item Implement async evidence worker with timeout handling and cache-first behavior.
+\item Add a local evaluation harness for known historical cases so retrieval quality can be benchmarked.
+\end{itemize}
+
+\textbf{Block 3: Alert rendering and delivery}
+\begin{itemize}
+\item Create alert payload builder from candidate plus evidence snapshot.
+\item Implement severity mapping and explanation template.
+\item Add Telegram delivery first and Discord archival delivery second.
+\item Persist delivery attempts, provider responses, retries, and failure state.
+\end{itemize}
+
+\textbf{Block 4: Analyst workflow}
+\begin{itemize}
+\item Add analyst-feedback tables and simple CLI or local workflow hooks.
+\item Implement actions for acknowledge, snooze, dismiss, mark useful, mark false positive, and notes.
+\item Tie suppression windows to alert and event-family state.
+\end{itemize}
+
+\textbf{Block 5: Real traffic hardening}
+\begin{itemize}
+\item Run the first live alert windows from real Phase 3 candidate traffic.
+\item Review evidence latency, timeout rate, and delivery success rate.
+\item Tune suppression and escalation thresholds on real examples rather than synthetic ones.
+\end{itemize}
+
+\textbf{Block 6: Gate 4 evidence pack}
+\begin{itemize}
+\item Produce one end-to-end report from candidate generation through evidence retrieval, delivery, and analyst action.
+\item Archive screenshots or textual payload examples for Telegram and Discord.
+\item Document at least one alert that updated after asynchronous evidence arrived.
+\item Write one Gate 4 signoff packet with real traffic counts and known limitations.
+\end{itemize}
+
+\section*{Expected Modules To Change}
+\begin{itemize}
+\item \texttt{config/settings.py} for provider, cache, and delivery settings
+\item \texttt{database/schema.sql} and \texttt{database/postgres\_schema.sql} for alert/evidence tables
+\item a new \texttt{phase4/} package for evidence, alert, and analyst workflow logic
+\item one or more local runners such as \texttt{run\_phase4\_evidence.py} and \texttt{run\_phase4\_alerts.py}
+\item validation/reporting modules for Gate 4 evidence and delivery summaries
+\item README and local runbook documentation once the first path is live
+\end{itemize}
+
+\section*{Gate 4 Evidence Pack}
+Gate 4 should be defended with a compact but concrete evidence packet:
+\begin{itemize}
+\item one real candidate-to-alert timeline
+\item one evidence-query log slice
+\item one evidence snapshot example
+\item one Telegram payload example
+\item one Discord archive example
+\item one analyst-feedback example
+\item alert-volume, timeout-rate, and delivery-success summaries
+\item known limitations and provider caveats
+\end{itemize}
+
+\section*{Definition of Done}
+Phase 4 is done when the repo can take a real Phase 3 candidate, asynchronously gather and persist point-in-time external evidence, render an explainable alert, deliver it through local operator channels with durable status tracking, and capture structured analyst feedback without losing replayability. If the alert loop can be demonstrated on real traffic with bounded duplicate paging and preserved evidence state, the project is ready to enter replay/backtesting validation as a full candidate-to-alert system rather than a detector-only prototype.
+
+\end{document}
