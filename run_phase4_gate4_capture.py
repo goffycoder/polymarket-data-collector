@@ -81,7 +81,10 @@ async def _main() -> int:
     report_payload = build_phase4_gate4_report().to_dict()
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(json.dumps(report_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    output_path.write_text(
+        json.dumps(report_payload, indent=2, sort_keys=True, default=str) + "\n",
+        encoding="utf-8",
+    )
 
     payload = {
         "bootstrap_summary": bootstrap_summary,

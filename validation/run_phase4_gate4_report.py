@@ -40,7 +40,7 @@ def main() -> int:
     apply_schema()
     payload = build_phase4_gate4_report().to_dict()
     if args.json:
-        print(json.dumps(payload, indent=2, sort_keys=True))
+        print(json.dumps(payload, indent=2, sort_keys=True, default=str))
     else:
         print(_render_text(payload))
     return 0
