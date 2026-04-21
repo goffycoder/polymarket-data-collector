@@ -1,0 +1,77 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 4 Gate 4 Signoff Memo}
+
+\textbf{Project:} Polymarket local-first alert loop\\
+\textbf{Phase:} Phase 4 - Evidence, Alerts, and Analyst Workflow\\
+\textbf{Branch context:} \texttt{phase4-evidence-alerts}\\
+\textbf{Status:} Substantially implemented locally and ready for controlled live validation.\\
+\textbf{Scope statement:} This memo records what is already implemented in the local Phase 4 worktree and what still remains a controlled limitation before final academic or operational signoff.
+
+\section*{Implemented Capability Summary}
+The Phase 4 local branch now includes:
+\begin{itemize}
+\item durable Phase 4 tables for evidence queries, evidence snapshots, alerts, delivery attempts, workflow versions, and analyst feedback
+\item a Phase 4 bootstrap path that registers workflow versioning and inspects pending candidate work
+\item a local evidence worker that writes evidence queries and evidence snapshots from candidate inputs
+\item an alert worker that renders explainable alert payloads and persists alert rows
+\item suppression logic for duplicate same-family alerts inside a bounded suppression window
+\item analyst workflow actions for acknowledge, snooze, dismiss, mark useful, mark false positive, and notes
+\item alert update and resend semantics when evidence state or derived severity materially changes
+\item Telegram delivery support behind environment-gated credentials
+\item Discord webhook delivery support behind environment-gated credentials
+\item a combined Gate 4 summary report that surfaces alert counts, delivery outcomes, analyst actions, and one example alert record
+\item human-facing Phase 4 timestamps rendered in Eastern Time with 12-hour AM/PM formatting
+\end{itemize}
+
+\section*{Gate 4 Criteria Check}
+\begin{longtable}{p{0.34\linewidth}p{0.18\linewidth}p{0.34\linewidth}}
+\textbf{Criterion} & \textbf{Status} & \textbf{Comment} \\
+Explainable alert payloads exist & Met & Alert payloads include what changed, why it looks informed, market evidence, public evidence state, invalidation note, and version metadata \\
+Evidence snapshots are persisted point in time & Met & Evidence worker writes query rows and snapshot rows with versioned workflow context \\
+Delivery attempts are durably logged & Met & Every delivery attempt records channel, attempt number, status, payload, response metadata, and error fields \\
+Analyst feedback is structured & Met & Analyst actions are stored with actor, notes, action type, and timestamps \\
+Duplicate paging is bounded & Met & Suppression prevents same-family duplicates unless the update is materially stronger \\
+Alert updates can occur without creating duplicate alert rows & Met & Existing candidate-linked alerts can be updated and resent in place \\
+Primary live delivery path exists & Met locally & Telegram was validated locally with environment-backed credentials \\
+Archive/debug delivery path exists & Implemented but optional & Discord webhook delivery code exists, but operational use is deferred if not configured \\
+Real traffic Gate 4 evidence packet exists & Partial & Local validation path and reporting exist; final signoff should use at least one real Phase 3 candidate window tied to live runtime evidence \\
+\end{longtable}
+
+\section*{Known Limitations}
+\begin{itemize}
+\item Evidence providers are still placeholder local providers by default; the persistence and workflow are in place, but richer real retrieval adapters remain a future enhancement.
+\item Discord delivery is implemented but may remain disabled if Telegram is the only required delivery path for the first live validation.
+\item Gate 4 reporting summarizes current runtime state but still depends on the selected database containing meaningful alert traffic.
+\item Final signoff should be based on at least one live candidate-to-alert run sourced from a real Phase 3 candidate rather than only seeded test data.
+\end{itemize}
+
+\section*{Recommended Final Gate 4 Validation Sequence}
+\begin{enumerate}
+\item Ensure Phase 3 is generating at least one real candidate in the canonical local runtime.
+\item Run \texttt{run\_phase4\_pipeline.py} against that runtime with Telegram enabled.
+\item Confirm one real alert is delivered to Telegram and stored in \texttt{alerts} and \texttt{alert\_delivery\_attempts}.
+\item Record at least one analyst action with \texttt{run\_phase4\_analyst\_action.py}.
+\item Generate \texttt{validation.run\_phase4\_gate4\_report}.
+\item Archive one alert screenshot, one report JSON, and one analyst-action example as the Gate 4 evidence packet.
+\end{enumerate}
+
+\section*{Minimum Gate 4 Evidence Packet}
+\begin{itemize}
+\item one Telegram alert screenshot showing the human-facing payload
+\item one \texttt{phase4\_gate4\_report.json} artifact from the same runtime window
+\item one analyst-feedback row proving a structured human review action occurred
+\item one stored alert row tied to a persisted evidence snapshot and delivery attempt history
+\end{itemize}
+
+\section*{Assessment}
+Phase 4 should now be treated as a real local alert-loop implementation rather than a planning-only phase. The branch already supports the complete local workflow from candidate to evidence to alert to analyst action, with delivery logging and update semantics. The remaining work before final signoff is mostly operational evidence gathering, not missing architectural foundation.
+
+\section*{Signoff Recommendation}
+\textbf{Recommendation:} Proceed with controlled live validation and Gate 4 evidence capture.\\
+\textbf{Reason:} The core workflow is implemented and locally verified. Final signoff should depend on one real live candidate path and its persisted evidence packet rather than additional foundational coding.
+
+\end{document}

@@ -10,7 +10,8 @@ The canonical roadmap now lives in [Documentation/SRS.tex](/Users/vrajpatel/All-
 
 - Phase 1: delivered and signed off in the phase docs.
 - Phase 2: substantially delivered as the durable data plane in [Documentation/phases/phase2.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/phases/phase2.tex).
-- Phase 3 next focus: online state, deterministic candidate detection, and the first stable feature contracts.
+- Phase 3: online state, deterministic candidate detection, and checkpointed replay validation are implemented enough to feed downstream alerting.
+- Phase 4 local branch: evidence, alerts, Telegram delivery, analyst workflow, and Gate 4 reporting are implemented in the Phase 4 worktree.
 
 If you are orienting yourself quickly, read these in order:
 
@@ -19,6 +20,8 @@ If you are orienting yourself quickly, read these in order:
 3. [Documentation/phases/phase2.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/phases/phase2.tex)
 4. [database/POSTGRES_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/POSTGRES_LOCAL_RUNBOOK.md)
 5. [database/PHASE3_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/PHASE3_LOCAL_RUNBOOK.md)
+6. [database/PHASE4_LOCAL_RUNBOOK.md](/private/tmp/polymarket_arbitrage_phase4/database/PHASE4_LOCAL_RUNBOOK.md)
+7. [Documentation/phases/phase4_gate4_signoff.tex](/private/tmp/polymarket_arbitrage_phase4/Documentation/phases/phase4_gate4_signoff.tex)
 
 ## What This Is
 
@@ -84,6 +87,12 @@ phase3/
 ├── state_store.py         Redis / memory-backed online state
 ├── detector.py            deterministic Phase 3 candidate logic
 └── live_runner.py         detector-input tailer with durable checkpoints
+
+phase4/
+├── evidence.py            async evidence worker and provider abstraction
+├── alerts.py              alert rendering, suppression, delivery, updates
+├── analyst.py             analyst action workflow
+└── repository.py          Phase 4 persistence layer
 ```
 
 ---
