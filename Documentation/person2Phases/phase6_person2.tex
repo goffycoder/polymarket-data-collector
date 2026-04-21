@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\textbf{Legacy note:} This split-by-person draft complements the canonical roadmap in \texttt{Documentation/SRS.tex}.\\
+
+\section*{Phase 6 Plan - Person 2 (Person B)}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.5, ``Phase 6: Train and Deploy ML v1''.\\
+\textbf{Interpretation note:} Person 2 owns the modeling and evaluation logic for Phase 6. The job is to turn replayable episode data into a first learned ranker, compare it to required baselines, calibrate the outputs, and define usable alert cutoffs.\\
+\textbf{Implementation note:} Person 2 should treat the model as one candidate ranking policy among several until baseline comparisons and calibration are convincing. Shadow deployment does not count as success by itself.
+
+\textbf{Phase duration:} 2-4 weeks\\
+\textbf{Phase goal:} Train, compare, calibrate, and document ML v1.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Build the episode training dataset.
+\item Train the first LightGBM or CatBoost ranker.
+\item Compare against the required baselines.
+\item Calibrate outputs by market liquidity bucket and category.
+\item Define the cutoffs for \texttt{WATCH}, \texttt{ACTIONABLE}, and \texttt{CRITICAL}.
+\item Produce a model card describing failure modes and data limitations.
+\end{enumerate}
+
+\section*{Locked Implementation Decisions}
+\begin{itemize}
+\item The training dataset must be derived from replayable episode artifacts and stable feature versions.
+\item Baseline comparisons are mandatory; the model must outperform wallet-unaware or simpler ranking baselines to justify adoption.
+\item Calibration must be segmented by liquidity bucket and category, not assumed globally uniform.
+\item Alert cutoffs must be tied to calibrated score behavior and operational tolerance, not arbitrary score bands.
+\item The model card must document failure modes, data limits, and known blind spots honestly.
+\end{itemize}
+
+\section*{Concrete Execution Breakdown}
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
+\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
+Training dataset & Episode-level ML dataset & Replay-derived rows are stable, labeled, and versioned enough for repeatable experiments \\
+First ranker & LightGBM or CatBoost model artifact & One first-pass model can score episodes or alerts consistently against held-out data \\
+Baseline comparison & Baseline-comparison report & Model performance is contextualized against required non-ML baselines \\
+Calibration and cutoffs & Calibration report plus alert thresholds & Score outputs are interpretable and mapped to operational severity buckets \\
+Model card & Failure-mode and limitation memo & Risks, blind spots, and data constraints are documented honestly \\
+\end{longtable}
+
+\section*{Execution Sequence (No Day Timeline)}
+\textbf{Block 1: Training dataset construction}
+\begin{itemize}
+\item Build the episode training dataset from replay-derived features and stable labels.
+\item Define train/validation/test splits that respect the Phase 5 holdout logic.
+\item Record dataset hashes and feature-schema versions for every training run.
+\end{itemize}
+
+\textbf{Block 2: First ranker and baseline comparisons}
+\begin{itemize}
+\item Train the first LightGBM or CatBoost ranker.
+\item Compare it against the required baselines, especially wallet-unaware or simpler ranking policies.
+\item Reject any result that looks better only because of leakage or inconsistent feature handling.
+\end{itemize}
+
+\textbf{Block 3: Calibration and alert cutoffs}
+\begin{itemize}
+\item Calibrate outputs by market liquidity bucket and category.
+\item Define the cutoffs for \texttt{WATCH}, \texttt{ACTIONABLE}, and \texttt{CRITICAL}.
+\item Validate that the cutoffs make operational sense in shadow-mode alert review.
+\end{itemize}
+
+\textbf{Block 4: Model card and handoff}
+\begin{itemize}
+\item Produce a model card describing failure modes, limitations, and rollback concerns.
+\item Hand the calibrated artifact and threshold recommendations to Person 1 for registry and shadow deployment.
+\item Summarize whether ML v1 deserves continued shadowing or should be revised first.
+\end{itemize}
+
+\section*{Handoffs to Person 1}
+\begin{itemize}
+\item Trained model artifact and exact dataset hash.
+\item Baseline-comparison and calibration reports.
+\item Recommended alert thresholds for \texttt{WATCH}, \texttt{ACTIONABLE}, and \texttt{CRITICAL}.
+\item Model card with failure modes and deployment caveats.
+\item Any feature-contract issues discovered during training.
+\end{itemize}
+
+\section*{Gate 6 Checklist (Person 2 Ownership)}
+\begin{itemize}
+\item Episode training dataset is stable and versioned.
+\item First ranker is trained and compared against required baselines.
+\item Calibration exists by liquidity bucket and category.
+\item Score cutoffs are defined for operational severities.
+\item Model card documents failure modes and data limitations.
+\end{itemize}
+
+\end{document}

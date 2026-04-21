@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\textbf{Legacy note:} This split-by-person draft complements the canonical roadmap in \texttt{Documentation/SRS.tex}.\\
+
+\section*{Phase 6 Plan - Person 1 (Person A)}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.5, ``Phase 6: Train and Deploy ML v1''.\\
+\textbf{Interpretation note:} Person 1 owns the production-facing ML plumbing for Phase 6. The job is to materialize stable features, register trained artifacts, and shadow-deploy the ranker so every score remains traceable and reversible.\\
+\textbf{Implementation note:} Person 1 is not responsible for proving the model is good. The job is to make training and inference reproducible, versioned, and safe enough that Person 2's modeling results can be deployed without silently changing live alert semantics.
+
+\textbf{Phase duration:} 2-4 weeks\\
+\textbf{Phase goal:} Build the feature, registry, and shadow-deployment layer for ML v1.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Build feature materialization jobs for training and inference.
+\item Add a model registry with artifact path, feature-schema version, training dataset hash, calibration metadata, and deployment timestamp.
+\item Integrate the ranker into the detector or alert service in shadow mode first.
+\item Log every score with model version and feature version.
+\end{enumerate}
+
+\section*{Locked Implementation Decisions}
+\begin{itemize}
+\item Feature materialization must produce the same feature contract for both training and inference windows.
+\item Every deployed or shadowed model must be discoverable through a registry entry rather than loose filesystem artifacts.
+\item Score logging must include model version, feature version, and enough identifiers to replay why a score existed.
+\item ML integration begins in shadow mode only; rule-based alerting remains authoritative until Phase 6 evidence is convincing.
+\item Rollback must be operationally simple and must not require rebuilding feature or registry state from scratch.
+\end{itemize}
+
+\section*{Concrete Execution Breakdown}
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
+\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
+Feature materialization & Training/inference feature jobs & Stable feature tables or artifacts exist for both offline and shadow-online use \\
+Model registry & Registry schema and management workflow & Every model artifact is versioned, queryable, and tied to training metadata \\
+Shadow deployment & Ranker integration path in shadow mode & Live candidate/alert flow can compute scores without affecting production decisions \\
+Score logging & Durable score log contract & Every shadow score is traceable to model version and feature version \\
+\end{longtable}
+
+\section*{Execution Sequence (No Day Timeline)}
+\textbf{Block 1: Feature materialization foundation}
+\begin{itemize}
+\item Build feature jobs that transform replayable Phase 3 and Phase 4 artifacts into stable training and inference features.
+\item Freeze feature-schema versioning rules and dataset hashing.
+\item Ensure Person 2 can consume the same feature contract in offline training that Person 1 will use in shadow inference.
+\end{itemize}
+
+\textbf{Block 2: Registry and artifact tracking}
+\begin{itemize}
+\item Add a model registry capturing artifact path, feature version, dataset hash, calibration metadata, and deployment timestamps.
+\item Publish one operator-facing lookup path for the current shadow model and prior rollback targets.
+\item Make registry writes durable enough for later audit and replay.
+\end{itemize}
+
+\textbf{Block 3: Shadow deployment and score logging}
+\begin{itemize}
+\item Integrate the ranker into detector or alert flow in shadow mode only.
+\item Log every score with model version, feature version, candidate or alert identifier, and score timestamp.
+\item Verify rollback and disable paths before any discussion of production ranking.
+\end{itemize}
+
+\textbf{Block 4: Handoff-ready production package}
+\begin{itemize}
+\item Deliver shadow score logs and registry queries to Person 2 for evaluation.
+\item Provide deployment notes, rollback instructions, and feature materialization commands.
+\item Freeze one operational story for how ML v1 coexists with rule-based alerts during shadow mode.
+\end{itemize}
+
+\section*{Handoffs to Person 2}
+\begin{itemize}
+\item Stable training and inference feature contract.
+\item Model registry schema and lookup path.
+\item Shadow-score logs with model and feature provenance.
+\item Deployment notes and rollback behavior.
+\item Dataset hashes and artifact paths needed for reproducible comparisons.
+\end{itemize}
+
+\section*{Gate 6 Checklist (Person 1 Ownership)}
+\begin{itemize}
+\item Feature jobs support both training and inference on the same schema version.
+\item Model registry tracks artifacts, dataset hashes, and deployment metadata.
+\item Ranker is integrated in shadow mode without taking over live alert decisions.
+\item Every score is durably logged with model and feature provenance.
+\item Rollback path is clear and operationally simple.
+\end{itemize}
+
+\end{document}
