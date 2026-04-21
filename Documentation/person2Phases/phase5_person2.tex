@@ -3,88 +3,349 @@
 \usepackage{longtable}
 \begin{document}
 
-\textbf{Legacy note:} This split-by-person draft complements the canonical roadmap in \texttt{Documentation/SRS.tex}.\\
+\section*{Phase 5 Person 2 - Task 4}
 
-\section*{Phase 5 Plan - Person 2 (Person B)}
+\textbf{Deliverable scope:} metrics catalog and reporting package only.\\
+\textbf{Binding dependencies:} Task 1 point-in-time and no-leakage rules remain mandatory; Task 2 holdout and aggregation rules remain mandatory; Task 3 simulator assumptions remain mandatory for any paper-trade metric.\\
+\textbf{Implementation note:} this document defines what counts as good, weak, and bad performance, and how those results must be reported without hiding poor regimes behind pooled averages.
 
-\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.5, ``Phase 5: Build Replay, Backtesting, and Validation''.\\
-\textbf{Interpretation note:} Person 2 owns the empirical evaluation layer in Phase 5. The job is to decide whether replayed candidates and alerts are historically useful under point-in-time-safe validation, not just whether the replay machinery runs.\\
-\textbf{Implementation note:} Person 2 should consume the replay outputs produced by Person 1 rather than reconstructing raw windows independently. Evaluation, paper-trading, and case studies must remain conservative and historically honest.
+\section*{Purpose}
 
-\textbf{Phase duration:} 3-4 weeks\\
-\textbf{Phase goal:} Evaluate replayed historical outputs with conservative validation and produce defendable case studies.
-
-\section*{Owned Deliverables (From SRS)}
-\begin{enumerate}
-\item Implement event-family holdout, category holdout, and time-split validation.
-\item Build the conservative paper-trading simulator with bid/ask execution, slippage, size caps, fees, and near-resolution restrictions.
-\item Define success metrics and failure metrics for candidate quality, alert usefulness, paper-trade edge, and lead time.
-\item Produce at least three historical case studies that replay from raw data to alert decision.
-\end{enumerate}
-
-\section*{Locked Implementation Decisions}
 \begin{itemize}
-\item All evaluation must be point-in-time correct and may not use information that would not have been available at alert time.
-\item Validation must include event-family holdout, category holdout, and time-split analysis rather than one pooled score.
-\item Paper-trading assumptions must be conservative and explicitly documented, especially around spread crossing, fees, slippage, size limits, and near-resolution exclusions.
-\item Success metrics must include failure-oriented views, not just favorable precision or return summaries.
-\item Case studies must be reproducible from replay artifacts and explain both why an alert fired and how it would have been judged historically.
+\item Define the canonical metrics used to judge replayed candidates, alerts, lead time, and simulated trades.
+\item Make reporting reusable across historical windows and holdout regimes.
+\item Force every report to show both success and failure views, not just favorable headline numbers.
 \end{itemize}
 
-\section*{Concrete Execution Breakdown}
-\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
-\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
-Validation framework & Event-family, category, and time-split validation outputs & Historical evaluation is segmented in a way that avoids optimistic leakage \\
-Conservative simulator & Paper-trading simulator with realistic frictions & Replay outputs can be translated into conservative paper-trade outcomes \\
-Metric package & Success and failure metrics for alerts and trades & Evaluation includes candidate quality, alert usefulness, lead time, and paper-trade edge \\
-Historical case studies & At least three replay-to-alert narratives & Each case study links replay inputs, alert output, and historical interpretation in a defendable way \\
+\section*{Metric Design Principles}
+
+\begin{itemize}
+\item All metrics are computed on units defined in Task 1:
+candidate,
+alert,
+and paper-trade.
+\item All metrics must be segmented by the holdout framework defined in Task 2:
+event-family holdout,
+category holdout,
+and time-split holdout.
+\item No metric may use post-decision information as an input feature; ex-post labels are allowed only for scoring after the unit is fully constructed.
+\item Coverage-limited samples remain visible in reporting with explicit status labels:
+\texttt{scored},
+\texttt{descriptive\_only},
+or \texttt{coverage\_insufficient}.
+\item No single pooled number may stand alone as the project-wide conclusion.
+\end{itemize}
+
+\section*{Metrics Catalog}
+
+\subsection*{1. Candidate Quality Metrics}
+
+\textbf{Purpose}
+\begin{itemize}
+\item Measure whether the detector emits historically meaningful candidate episodes before alert formatting and evidence adjustment.
+\end{itemize}
+
+\begin{longtable}{p{0.28\linewidth}p{0.22\linewidth}p{0.38\linewidth}}
+\textbf{Metric} & \textbf{Type} & \textbf{Definition} \\
+Candidate count & descriptive & Number of candidate-eligible rows in scope \\
+Candidate rate per window & descriptive & Candidate count divided by decision-time window duration \\
+Distinct market count & descriptive & Number of unique \texttt{market\_id} values among candidate rows \\
+Distinct event-family count & descriptive & Number of unique \texttt{event\_family\_id} values among candidate rows \\
+Candidate label coverage & quality-control & Share of candidate rows with valid ex-post labels \\
+Candidate resolution reach rate & success/failure & Share of candidate rows that eventually resolve with a usable label \\
+Candidate precision at horizon & success & Share of labeled candidate rows meeting the pre-declared success condition at the chosen historical horizon \\
+Candidate false-positive rate & failure & Share of labeled candidate rows failing the success condition \\
+Candidate severity decile calibration & diagnostic & Outcome rate by candidate severity-score bucket \\
+Rule-family mix & diagnostic & Distribution of triggering rule families across candidate rows \\
 \end{longtable}
 
-\section*{Execution Sequence (No Day Timeline)}
-\textbf{Block 1: Validation design}
+\textbf{Interpretation}
 \begin{itemize}
-\item Implement event-family holdout, category holdout, and time-split validation on top of replayed artifacts.
-\item Define exactly which outputs are judged at the candidate, alert, and paper-trade levels.
-\item Reject any evaluation path that leaks future public evidence or future market state into the judgment.
+\item Candidate quality is good when labeled candidate precision remains stable across holdout regimes and is not produced by one narrow event family or category.
+\item Candidate quality is weak when precision collapses outside one topical domain or when severity score is not monotonic with outcome quality.
+\item Candidate quality is bad when candidate volume is high but label-based success is low or concentrated in one narrow regime.
 \end{itemize}
 
-\textbf{Block 2: Conservative paper-trading simulator}
+\subsection*{2. Alert Usefulness Metrics}
+
+\textbf{Purpose}
 \begin{itemize}
-\item Build a simulator that uses bid/ask execution rather than optimistic midpoint fills.
-\item Add slippage, fees, size caps, and near-resolution restrictions.
-\item Keep the simulator explainable enough that an academic reviewer can understand the assumptions without reverse-engineering the code.
+\item Measure whether the full alert object, including severity and evidence state at alert time, would have been historically useful to a reviewer.
 \end{itemize}
 
-\textbf{Block 3: Metrics and reporting}
+\begin{longtable}{p{0.28\linewidth}p{0.22\linewidth}p{0.38\linewidth}}
+\textbf{Metric} & \textbf{Type} & \textbf{Definition} \\
+Alert count & descriptive & Number of alert-eligible rows in scope \\
+Alert creation rate & descriptive & Alerts created per historical window or per day \\
+Alert suppression rate & diagnostic & Share of alert-eligible candidates suppressed before alert creation \\
+Alert label coverage & quality-control & Share of alerts with usable ex-post labels \\
+Alert usefulness precision & success & Share of labeled alerts meeting the pre-declared historical usefulness rule \\
+Alert non-useful rate & failure & Share of labeled alerts that do not meet the usefulness rule \\
+Severity-tier precision & diagnostic & Usefulness precision by alert severity tier \\
+Evidence-state breakdown & diagnostic & Usefulness precision by evidence state at alert time \\
+Alert redundancy rate & failure & Share of alerts clustered within the same event family and close time window that do not add new useful signal \\
+Alert concentration ratio & failure & Share of total alert count explained by the top event families or categories \\
+\end{longtable}
+
+\textbf{Interpretation}
 \begin{itemize}
-\item Define success metrics and failure metrics for candidate quality, alert usefulness, lead time, and paper-trade edge.
-\item Produce one backtesting report template that can be reused across historical windows.
-\item Surface both strong and weak regimes so the results are honest rather than cherry-picked.
+\item Alert usefulness is good when higher-severity alerts are more useful than lower-severity alerts and usefulness remains present across holdouts.
+\item Alert usefulness is weak when severity tiers do not separate outcomes or when usefulness depends heavily on one evidence state only.
+\item Alert usefulness is bad when alerts are frequent but historical usefulness is low, redundant, or highly concentrated in one regime.
 \end{itemize}
 
-\textbf{Block 4: Historical case studies and signoff pack}
+\subsection*{3. Lead-Time Metrics}
+
+\textbf{Purpose}
 \begin{itemize}
-\item Produce at least three historical case studies from replayed raw data through alert decision.
-\item Summarize why the system looked useful, where it failed, and what assumptions mattered most.
-\item Assemble the historical validation pack and Gate 5 precondition evidence for shared signoff.
+\item Measure how early candidates and alerts occur relative to the eventual historical outcome or decisive market move.
 \end{itemize}
 
-\section*{Handoffs to Person 1}
+\begin{longtable}{p{0.28\linewidth}p{0.22\linewidth}p{0.38\linewidth}}
+\textbf{Metric} & \textbf{Type} & \textbf{Definition} \\
+Median lead time to resolution & success & Median \texttt{resolution\_time - decision\_timestamp} for labeled successful rows \\
+P25/P75 lead time & diagnostic & Interquartile range of lead time among successful rows \\
+Short-lead alert share & failure & Share of useful alerts whose lead time falls below the minimum operational threshold \\
+Near-resolution trigger share & failure & Share of candidate or alert rows generated inside the near-resolution exclusion zone \\
+Lead-time by severity tier & diagnostic & Median lead time within each severity band \\
+Lead-time by category & diagnostic & Median lead time by canonical category \\
+Lead-time by event family & diagnostic & Median lead time by event-family holdout block \\
+\end{longtable}
+
+\textbf{Interpretation}
 \begin{itemize}
-\item Validation findings that expose replay gaps, missing fields, or reproducibility issues.
-\item Simulator requirements that need stronger replay artifacts or additional stored metadata.
-\item Metric definitions and report templates that should become canonical for later phases.
-\item Historical windows that were especially informative, broken, or high-signal for future regression tests.
-\item Case-study outputs that should be added to the shared Gate 5 evidence packet.
+\item Lead time is good when useful alerts occur early enough to matter operationally and not only minutes before resolution.
+\item Lead time is weak when apparent usefulness exists but mostly arrives too late for meaningful action.
+\item Lead time is bad when the system mostly triggers near resolution or after public explanation has already become obvious.
 \end{itemize}
 
-\section*{Gate 5 Checklist (Person 2 Ownership)}
+\subsection*{4. Simulated Trade Performance Metrics}
+
+\textbf{Purpose}
 \begin{itemize}
-\item Validation includes event-family, category, and time-split holdouts.
-\item Paper-trading assumptions are conservative, explicit, and reproducible.
-\item Success and failure metrics are documented for candidates, alerts, lead time, and trades.
-\item At least three historical case studies are complete and rerunnable from replay artifacts.
-\item The historical validation pack is strong enough for shared Gate 5 precondition signoff.
+\item Measure whether alert-derived paper trades retain edge under the conservative simulator assumptions from Task 3.
+\end{itemize}
+
+\begin{longtable}{p{0.28\linewidth}p{0.22\linewidth}p{0.38\linewidth}}
+\textbf{Metric} & \textbf{Type} & \textbf{Definition} \\
+Trade eligibility rate & diagnostic & Share of alerts that become paper-trade eligible \\
+Fill rate & diagnostic & Share of eligible alerts that actually fill under conservative execution rules \\
+Skip rate by reason & failure & Distribution of deterministic skip reasons \\
+Median bounded PnL & success & Median conservative PnL across filled trades \\
+Mean bounded PnL & descriptive & Average conservative PnL across filled trades \\
+Hit rate & success & Share of filled trades with positive bounded PnL after fees and slippage \\
+Loss rate & failure & Share of filled trades with non-positive bounded PnL \\
+Worst decile PnL & failure & Mean or median PnL of the worst 10\% of filled trades \\
+Maximum drawdown proxy & failure & Worst cumulative decline over chronological simulated trades within a reporting block \\
+PnL by severity tier & diagnostic & Trade performance by originating alert severity \\
+PnL by holdout regime & diagnostic & Trade performance segmented by event-family, category, and time split \\
+Holding duration distribution & diagnostic & Entry-to-exit duration summary across filled trades \\
+\end{longtable}
+
+\textbf{Interpretation}
+\begin{itemize}
+\item Trade performance is good when bounded PnL and hit rate remain positive under conservative assumptions across more than one holdout regime.
+\item Trade performance is weak when gains appear only in one time block, one category, or one severity tier.
+\item Trade performance is bad when positive results disappear after fees, slippage, or realistic skip rules are applied.
+\end{itemize}
+
+\subsection*{5. Failure Metrics And Weak-Regime Reporting}
+
+\textbf{Purpose}
+\begin{itemize}
+\item Prevent optimistic summaries from hiding the regimes where the system breaks, overfires, or becomes unusable.
+\end{itemize}
+
+\begin{longtable}{p{0.28\linewidth}p{0.22\linewidth}p{0.38\linewidth}}
+\textbf{Metric} & \textbf{Type} & \textbf{Definition} \\
+Coverage-insufficient split count & failure & Number of holdout splits not eligible for scored reporting \\
+Descriptive-only split count & failure & Number of splits that do not satisfy scoring minimums but still appear in the report ledger \\
+Worst regime precision & failure & Lowest candidate or alert precision among scored holdout blocks \\
+Worst regime bounded PnL & failure & Lowest filled-trade bounded PnL among scored holdout blocks \\
+Top-category dependency share & failure & Share of success explained by the single strongest category \\
+Top-event-family dependency share & failure & Share of success explained by the single strongest event family \\
+False-positive concentration & failure & Share of negative outcomes concentrated in the worst holdout blocks \\
+Skip-due-to-data rate & failure & Share of paper-trade rows skipped due to missing or insufficient market data \\
+Near-resolution exclusion rate & failure & Share of alerts made non-tradable by near-resolution rules \\
+Weak-regime count & failure & Number of holdout blocks that fall below the minimum acceptable threshold for key metrics \\
+\end{longtable}
+
+\textbf{Interpretation}
+\begin{itemize}
+\item Every final report must include a named weak-regime section.
+\item If the strongest results come from one narrow regime while weak regimes dominate the rest, the project may not claim broad historical usefulness.
+\item Failure metrics are first-class outputs, not appendix-only diagnostics.
+\end{itemize}
+
+\section*{Metric Eligibility Rules}
+
+\begin{itemize}
+\item Candidate metrics use only \texttt{unit\_eligibility\_candidate = true} rows.
+\item Alert metrics use only \texttt{unit\_eligibility\_alert = true} rows.
+\item Paper-trade metrics use only \texttt{unit\_eligibility\_paper\_trade = true} rows.
+\item Label-based metrics require valid ex-post labels and sufficient coverage status under Task 2.
+\item Coverage-insufficient splits are excluded from scored aggregates and retained in descriptive reporting.
+\end{itemize}
+
+\section*{Reporting Package}
+
+\subsection*{Required Report Views}
+
+\begin{itemize}
+\item \textbf{Coverage view:} what windows, units, and holdout blocks were actually evaluable.
+\item \textbf{Success view:} candidate precision, alert usefulness, lead time, and bounded trade performance in scored regimes.
+\item \textbf{Failure view:} false positives, weak regimes, concentration, skip reasons, and poor trade blocks.
+\item \textbf{Regime view:} event-family holdout, category holdout, and time-split comparisons side by side.
+\item \textbf{Case-study pointer view:} identify strongest, weakest, and most ambiguous historical windows for later Task 5 writeups.
+\end{itemize}
+
+\subsection*{Reusable Backtesting Report Template}
+
+\textbf{Section 1: Run Identity}
+\begin{itemize}
+\item validation run id
+\item replay run ids or source windows
+\item detector version
+\item alert workflow version
+\item simulator version
+\item metric catalog version
+\item report generation timestamp
+\end{itemize}
+
+\textbf{Section 2: Scope And Coverage}
+\begin{itemize}
+\item historical windows included
+\item holdout regimes included
+\item total candidate rows
+\item total alert rows
+\item total paper-trade eligible rows
+\item scored split count
+\item descriptive-only split count
+\item coverage-insufficient split count
+\item coverage reason codes
+\end{itemize}
+
+\textbf{Section 3: Candidate Quality Scorecard}
+\begin{itemize}
+\item candidate count
+\item label coverage
+\item candidate precision
+\item false-positive rate
+\item severity calibration summary
+\item top rule-family breakdown
+\item worst holdout block
+\end{itemize}
+
+\textbf{Section 4: Alert Usefulness Scorecard}
+\begin{itemize}
+\item alert count
+\item suppression rate
+\item usefulness precision
+\item severity-tier precision
+\item evidence-state breakdown
+\item alert redundancy rate
+\item worst holdout block
+\end{itemize}
+
+\textbf{Section 5: Lead-Time Scorecard}
+\begin{itemize}
+\item median lead time
+\item interquartile lead time
+\item short-lead alert share
+\item near-resolution trigger share
+\item lead time by severity tier
+\item weakest lead-time block
+\end{itemize}
+
+\textbf{Section 6: Paper-Trade Scorecard}
+\begin{itemize}
+\item trade eligibility rate
+\item fill rate
+\item skip rate by reason
+\item median bounded PnL
+\item hit rate
+\item loss rate
+\item worst decile PnL
+\item holding duration summary
+\item weakest trade-performance block
+\end{itemize}
+
+\textbf{Section 7: Weak-Regime And Failure Review}
+\begin{itemize}
+\item weakest event-family block
+\item weakest category block
+\item weakest time block
+\item top-category dependency share
+\item top-event-family dependency share
+\item dominant failure reason codes
+\item whether positive performance disappears under stricter conservative assumptions
+\end{itemize}
+
+\textbf{Section 8: Interpretation Summary}
+\begin{itemize}
+\item strongest regime
+\item weakest regime
+\item whether performance is broad or narrow
+\item whether lead time is operationally meaningful
+\item whether simulated trade edge survives conservative assumptions
+\item recommendation:
+\texttt{promising},
+\texttt{mixed},
+or \texttt{not\_yet\_defendable}
+\end{itemize}
+
+\subsection*{Report Status Labels}
+
+\begin{itemize}
+\item \texttt{promising}: success metrics remain positive across multiple scored holdout regimes and failure metrics do not show dominant narrow-regime dependence.
+\item \texttt{mixed}: some regimes look strong, but weak-regime or concentration signals prevent broad claims.
+\item \texttt{not\_yet\_defendable}: performance relies on too few windows, too few categories, too much missing coverage, or collapses under conservative assumptions.
+\end{itemize}
+
+\section*{Aggregation And Headline Reporting Rules}
+
+\begin{itemize}
+\item No headline metric may be shown without its holdout-regime breakdown.
+\item No pooled metric may combine event-family, category, and time-split results into one signoff score.
+\item If a summary aggregate is shown, it must be labeled \texttt{descriptive\_only} unless all underlying scored blocks satisfy Task 2 minimum sample and coverage rules.
+\item The report must always display:
+best block,
+median scored block,
+and worst scored block
+for each primary metric family.
+\item Any claim of historical usefulness must cite both a success view and a failure view from the same reporting run.
+\end{itemize}
+
+\section*{Minimum Reporting Requirements}
+
+\begin{itemize}
+\item At least one metric from each family must appear in the top-level report:
+candidate quality,
+alert usefulness,
+lead time,
+paper-trade performance,
+and failure metrics.
+\item Every top-level report must include at least one weak-regime table.
+\item Every top-level report must include one coverage summary table.
+\item Every top-level report must identify one historical window suitable for a strongest-case study and one for a failure-case study.
+\end{itemize}
+
+\section*{Review Checklist}
+
+\begin{itemize}
+\item Does the metrics catalog define success and failure views for each unit?
+\item Does the report template force holdout-regime segmentation instead of pooled-only reporting?
+\item Are coverage-insufficient and descriptive-only splits still visible?
+\item Are weak regimes and concentration risks shown alongside favorable results?
+\item Can another engineer generate the same report from the same validation run inputs and versions?
+\end{itemize}
+
+\section*{Done Condition}
+
+\begin{itemize}
+\item One metrics catalog exists.
+\item One reusable backtesting report template exists.
+\item Reporting includes both success views and failure views for candidates, alerts, lead time, and simulated trades.
 \end{itemize}
 
 \end{document}
