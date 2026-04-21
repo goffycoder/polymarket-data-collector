@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 2 Gate 2 Signoff}
+
+\textbf{Phase:} 2\\
+\textbf{Owner model:} Single owner workflow\\
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4\\
+\textbf{Canonical phase delivery doc:} \texttt{Documentation/phases/phase2.tex}\\
+\textbf{Execution branch:} \texttt{phase2-local-data-plane}\\
+\textbf{Signoff date:} April 20, 2026
+
+\section*{Summary}
+
+This document is the Gate 2 evidence pack for the durable local data plane.
+Phase 2 required the collector to move beyond a mutable live-only workflow and
+become a replayable, manifest-backed, local-first system with a viable local
+PostgreSQL operational path.
+
+The engineering objective is met. Raw archive persistence, detector-input
+logging, replay validation, replay republish, PostgreSQL migration, live
+PostgreSQL runtime execution, and graceful shutdown behavior have all been
+validated on the local machine.
+
+\section*{Delivered Artifacts}
+
+\begin{itemize}
+\item \texttt{utils/event\_log.py}
+\item \texttt{database/schema.sql}
+\item \texttt{database/postgres\_schema.sql}
+\item \texttt{database/postgres\_migrate.py}
+\item \texttt{database/POSTGRES\_LOCAL\_RUNBOOK.md}
+\item \texttt{config/settings.py}
+\item \texttt{database/db\_manager.py}
+\item \texttt{validation/phase2\_replay.py}
+\item \texttt{validation/run\_phase2\_replay.py}
+\item \texttt{validation/phase2\_republish.py}
+\item \texttt{validation/run\_phase2\_republish.py}
+\item Collector integrations in events, markets, trades, backfill, prices, and WS listeners
+\end{itemize}
+
+\section*{Validation Evidence}
+
+\textbf{Replay parity proof}
+\begin{itemize}
+\item Replay window: \texttt{2026-04-20T05:00:00+00:00} to \texttt{2026-04-20T06:00:00+00:00}
+\item Source system: \texttt{gamma\_events}
+\item Raw rows in window: 66
+\item Detector rows in window: 66
+\item Raw partition manifest rows: 66
+\item Detector partition manifest rows: 66
+\item Result: exact parity for the validated one-hour window
+\end{itemize}
+
+\textbf{Replay republish proof}
+\begin{itemize}
+\item Replay run ID: \texttt{12bc07e8ae50}
+\item Raw partitions touched: 1
+\item Raw rows scanned: 66
+\item Rows republished: 66
+\item Output path: \texttt{data/replay\_runs/12bc07e8ae50/source\_system=gamma\_events/detector\_input.ndjson}
+\item Result: deterministic replay output produced successfully
+\end{itemize}
+
+\textbf{PostgreSQL migration proof}
+\begin{itemize}
+\item \texttt{events}: 62,150+ rows present and later advanced by live collector execution
+\item \texttt{markets}: 176,188 rows migrated
+\item \texttt{trades}: 79,785 rows migrated
+\item \texttt{order\_book\_snapshots}: 3,442,571 rows migrated
+\item \texttt{snapshots}: 38,074,383 rows migrated
+\item Final local PostgreSQL database size: approximately 12 GB
+\item Result: the local PostgreSQL operational store exists at meaningful production-scale volume
+\end{itemize}
+
+\textbf{Live PostgreSQL runtime proof}
+\begin{itemize}
+\item The collector was executed with the PostgreSQL backend configuration on the local machine.
+\item Schema application succeeded.
+\item Live Gamma event paging advanced through real offsets during runtime.
+\item Raw archive manifests and detector-input manifests were written during live execution.
+\item Graceful shutdown was re-tested after the fix and completed cleanly.
+\item Result: PostgreSQL is viable as a real local runtime backend, not only as an offline migration target
+\end{itemize}
+
+\section*{Gate 2 Checklist}
+
+\begin{itemize}
+\item Every active inbound collector path emits raw envelopes. Passed
+\item Raw archives are immutable, deterministic, and manifest-backed. Passed
+\item Detector inputs are published with provenance and schema version metadata. Passed
+\item Replay tooling reconstructs a bounded archive window deterministically. Passed
+\item Replay parity matched the validated one-hour proof window. Passed
+\item Replay republish produced deterministic detector-input output. Passed
+\item Local PostgreSQL accepts canonical operational data and live writes. Passed
+\item Graceful collector shutdown on the PostgreSQL path is clean. Passed
+\item Point-in-time contract prose is fully polished for formal review. Partial documentation follow-up only
+\end{itemize}
+
+\section*{Residual Items}
+
+\begin{itemize}
+\item Add a shorter formal prose section describing point-in-time contracts for profiles, activity, and evidence snapshots.
+\item Optionally run a longer soak test if the grading rubric asks for extended uptime evidence rather than functional proof.
+\item Commit and sign off the branch state once documentation wording is approved.
+\end{itemize}
+
+\section*{Signoff}
+
+\begin{itemize}
+\item Phase 2 engineering readiness: \textbf{Ready for Gate 2 signoff}
+\item Remaining work category: \textbf{Documentation polish and packaging only}
+\item Final assessment: \textbf{Phase 2 delivered}
+\end{itemize}
+
+\end{document}

@@ -3,15 +3,31 @@
 \begin{document}
 \section*{Documentation Index}
 
+This index is meant to answer two questions quickly:
 \begin{itemize}
-\item \texttt{Documentation/SRS.tex}: v4 integrated SRS (source of truth).
+\item what is the canonical source of truth,
+\item which documents are active versus legacy as the repo moves into Phase 3.
+\end{itemize}
+
+\begin{itemize}
+\item \texttt{Documentation/SRS.tex}: v4.1 integrated SRS (source of truth).
+\item \texttt{Documentation/phases/phase2.tex}: canonical Phase 2 delivery summary and evidence.
+\item \texttt{Documentation/phases/phase2\_gate2\_signoff.tex}: Gate 2 evidence pack and signoff memo.
 \item \texttt{Documentation/SRS\_audit.tex}: audit findings (companion).
 \item \texttt{Documentation/polymarket\_research\_srs.tex}: research notes (companion).
 \item \texttt{Documentation/reference\_repo\_analysis.tex}: repo/codebase analysis (companion).
+\item \texttt{Documentation/phases/}: canonical single-owner phase plans.
 \item \texttt{Documentation/references/}: raw reference exports used while drafting the SRS.
 \item \texttt{Documentation/build/}: generated LaTeX build artifacts (ignored by git).
-\item \texttt{Documentation/person1Phases/}: per-phase deliverables for Person 1.
-\item \texttt{Documentation/person2Phases/}: per-phase deliverables for Person 2.
+\item \texttt{Documentation/person1Phases/}: legacy split-by-person planning docs.
+\item \texttt{Documentation/person2Phases/}: legacy split-by-person planning docs and support artifacts.
 \end{itemize}
+
+\textbf{Canonical path for startup and handoff:}
+\texttt{README.md} $\rightarrow$ \texttt{Documentation/INDEX.tex} $\rightarrow$
+\texttt{Documentation/SRS.tex} $\rightarrow$ \texttt{Documentation/phases/phase2.tex}
+
+\textbf{Legacy note:} the split-by-person folders are retained for historical
+reference only; active planning should use \texttt{Documentation/phases/}.
 
 \end{document}

@@ -15,6 +15,7 @@ from typing import Sequence
 
 from collectors.universe_selector import MarketDescriptor, TokenContext, build_token_context
 from database.db_manager import get_conn
+from utils.event_log import archive_raw_event, publish_detector_input
 from utils.http_client import make_client, safe_post
 from utils.logger import get_logger
 
@@ -130,13 +131,23 @@ async def _fetch_books_batch(
 ):
     """Fetch full order book for a batch of token_ids and write to DB."""
     async with SEMAPHORE:
-        data = await safe_post(client, f"{CLOB_URL}/books",
-                               json_body=[{"token_id": tid} for tid in token_ids])
+        request_payload = [{"token_id": tid} for tid in token_ids]
+        data = await safe_post(client, f"{CLOB_URL}/books", json_body=request_payload)
         if not data:
             return
 
         books = data if isinstance(data, list) else []
         captured_at = datetime.now(timezone.utc).isoformat()
+        archive_result = archive_raw_event(
+            source_system="clob_books",
+            event_type="books_batch",
+            payload=books,
+            captured_at=captured_at,
+            metadata={
+                "requested_token_ids": token_ids,
+                "request_size": len(request_payload),
+            },
+        )
         market_snapshots: dict[str, dict] = {}
         obs = []
 
@@ -187,6 +198,19 @@ async def _fetch_books_batch(
             """, obs)
 
         conn.commit()
+        publish_detector_input(
+            source_system="clob_books",
+            entity_type="books_batch",
+            captured_at=captured_at,
+            ordering_key=f"{captured_at}:{len(token_ids)}",
+            raw_partition_path=archive_result.partition_path,
+            payload={
+                "token_ids": token_ids,
+                "market_ids": sorted(market_snapshots.keys()),
+                "snapshot_count": len(market_snapshots),
+                "order_book_count": len(obs),
+            },
+        )
         log.debug(
             f"  Books batch: {len(market_snapshots)} market snapshots, {len(obs)} order books"
         )
@@ -206,6 +230,17 @@ async def _fetch_prices_batch(
         if not data:
             return
 
+        captured_at = datetime.now(timezone.utc).isoformat()
+        archive_result = archive_raw_event(
+            source_system="clob_prices",
+            event_type="prices_batch",
+            payload=data,
+            captured_at=captured_at,
+            metadata={
+                "requested_token_ids": token_ids,
+                "request_size": len(payload),
+            },
+        )
         prices_map = {}
         if isinstance(data, list):
             for item in data:
@@ -218,7 +253,6 @@ async def _fetch_prices_batch(
             for tid, p in data.items():
                 prices_map[str(tid)] = _safe_float(p)
 
-        now = datetime.now(timezone.utc).isoformat()
         rows: dict[str, dict] = {}
         for tid, price in prices_map.items():
             token_meta = token_context.get(tid)
@@ -227,7 +261,7 @@ async def _fetch_prices_batch(
 
             row = rows.setdefault(
                 token_meta.market_id,
-                _empty_snapshot(token_meta.market_id, now, "clob"),
+                _empty_snapshot(token_meta.market_id, captured_at, "clob"),
             )
             if token_meta.outcome_side == "YES":
                 row["yes_price"] = price
@@ -240,6 +274,18 @@ async def _fetch_prices_batch(
                 VALUES (:market_id, :captured_at, :yes_price, :no_price, :source)
             """, list(rows.values()))
             conn.commit()
+            publish_detector_input(
+                source_system="clob_prices",
+                entity_type="prices_batch",
+                captured_at=captured_at,
+                ordering_key=f"{captured_at}:{len(token_ids)}",
+                raw_partition_path=archive_result.partition_path,
+                payload={
+                    "token_ids": token_ids,
+                    "market_ids": sorted(rows.keys()),
+                    "snapshot_count": len(rows),
+                },
+            )
         log.debug(f"  Prices batch: {len(rows)} market snapshots")
 
 

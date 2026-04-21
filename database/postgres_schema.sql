@@ -1,14 +1,8 @@
 -- =================================================================
--- POLYMARKET V2 CANONICAL SCHEMA
--- Single source of truth. Applied idempotently on every startup.
+-- POLYMARKET V2 / PHASE 2 POSTGRESQL SCHEMA
+-- Canonical target schema for local PostgreSQL cutover.
 -- =================================================================
 
-PRAGMA journal_mode=WAL;
-PRAGMA foreign_keys=ON;
-
--- -----------------------------------------------------------------
--- 1. EVENTS
--- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS events (
     event_id        TEXT PRIMARY KEY,
     title           TEXT,
@@ -18,31 +12,28 @@ CREATE TABLE IF NOT EXISTS events (
     tags            TEXT,
     tag_ids         TEXT,
     status          TEXT DEFAULT 'active',
-    volume          REAL DEFAULT 0,
-    volume_24hr     REAL DEFAULT 0,
-    volume_1wk      REAL DEFAULT 0,
-    volume_1mo      REAL DEFAULT 0,
-    liquidity       REAL DEFAULT 0,
-    open_interest   REAL DEFAULT 0,
+    volume          DOUBLE PRECISION DEFAULT 0,
+    volume_24hr     DOUBLE PRECISION DEFAULT 0,
+    volume_1wk      DOUBLE PRECISION DEFAULT 0,
+    volume_1mo      DOUBLE PRECISION DEFAULT 0,
+    liquidity       DOUBLE PRECISION DEFAULT 0,
+    open_interest   DOUBLE PRECISION DEFAULT 0,
     comment_count   INTEGER DEFAULT 0,
-    competitive     REAL DEFAULT 0,
+    competitive     DOUBLE PRECISION DEFAULT 0,
     start_date      TEXT,
     end_date        TEXT,
     creation_date   TEXT,
     neg_risk        INTEGER DEFAULT 0,
     featured        INTEGER DEFAULT 0,
     restricted      INTEGER DEFAULT 0,
-    first_seen_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    last_updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    closed_at       DATETIME NULL
+    first_seen_at   TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    last_updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    closed_at       TIMESTAMPTZ
 );
 
 CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
 CREATE INDEX IF NOT EXISTS idx_events_volume ON events(volume DESC);
 
--- -----------------------------------------------------------------
--- 2. MARKETS
--- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS markets (
     market_id           TEXT PRIMARY KEY,
     event_id            TEXT,
@@ -54,32 +45,32 @@ CREATE TABLE IF NOT EXISTS markets (
     no_token_id         TEXT,
     outcomes            TEXT,
     outcome_prices      TEXT,
-    volume              REAL DEFAULT 0,
-    volume_24hr         REAL DEFAULT 0,
-    volume_1wk          REAL DEFAULT 0,
-    volume_1mo          REAL DEFAULT 0,
-    liquidity           REAL DEFAULT 0,
-    best_bid            REAL,
-    best_ask            REAL,
-    spread              REAL,
-    last_trade_price    REAL,
-    price_change_1d     REAL,
-    price_change_1wk    REAL,
-    min_tick_size       REAL,
-    min_order_size      REAL,
+    volume              DOUBLE PRECISION DEFAULT 0,
+    volume_24hr         DOUBLE PRECISION DEFAULT 0,
+    volume_1wk          DOUBLE PRECISION DEFAULT 0,
+    volume_1mo          DOUBLE PRECISION DEFAULT 0,
+    liquidity           DOUBLE PRECISION DEFAULT 0,
+    best_bid            DOUBLE PRECISION,
+    best_ask            DOUBLE PRECISION,
+    spread              DOUBLE PRECISION,
+    last_trade_price    DOUBLE PRECISION,
+    price_change_1d     DOUBLE PRECISION,
+    price_change_1wk    DOUBLE PRECISION,
+    min_tick_size       DOUBLE PRECISION,
+    min_order_size      DOUBLE PRECISION,
     accepts_orders      INTEGER DEFAULT 0,
     enable_order_book   INTEGER DEFAULT 0,
     neg_risk            INTEGER DEFAULT 0,
     restricted          INTEGER DEFAULT 0,
     automated           INTEGER DEFAULT 0,
-    outcome             TEXT NULL,          -- 'YES' | 'NO' | 'N/A' — set on resolution
+    outcome             TEXT,
     start_date          TEXT,
     end_date            TEXT,
     tier                INTEGER DEFAULT 3,
     status              TEXT DEFAULT 'active',
-    first_seen_at       DATETIME DEFAULT CURRENT_TIMESTAMP,
-    last_updated_at     DATETIME DEFAULT CURRENT_TIMESTAMP,
-    closed_at           DATETIME NULL
+    first_seen_at       TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    last_updated_at     TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    closed_at           TIMESTAMPTZ
 );
 
 CREATE INDEX IF NOT EXISTS idx_markets_event ON markets(event_id);
@@ -90,111 +81,95 @@ CREATE INDEX IF NOT EXISTS idx_markets_yes_token ON markets(yes_token_id);
 CREATE INDEX IF NOT EXISTS idx_markets_no_token ON markets(no_token_id);
 CREATE INDEX IF NOT EXISTS idx_markets_condition ON markets(condition_id);
 
--- -----------------------------------------------------------------
--- 2b. MARKET_RESOLUTIONS — ground truth labels for ML
--- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS market_resolutions (
-    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    id              BIGSERIAL PRIMARY KEY,
     market_id       TEXT NOT NULL,
     condition_id    TEXT,
-    outcome         TEXT NOT NULL,      -- 'YES' | 'NO' | 'N/A'
-    final_price     REAL,              -- 1.0 = YES won, 0.0 = NO won
-    resolved_at     DATETIME NOT NULL,
-    source          TEXT DEFAULT 'ws'  -- 'ws' | 'api'
+    outcome         TEXT NOT NULL,
+    final_price     DOUBLE PRECISION,
+    resolved_at     TIMESTAMPTZ NOT NULL,
+    source          TEXT DEFAULT 'ws'
 );
 
 CREATE INDEX IF NOT EXISTS idx_resolutions_market ON market_resolutions(market_id);
 CREATE INDEX IF NOT EXISTS idx_resolutions_time ON market_resolutions(resolved_at DESC);
 
--- -----------------------------------------------------------------
--- 3. SNAPSHOTS — rich ML time-series
--- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS snapshots (
-    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    id                  BIGSERIAL PRIMARY KEY,
     market_id           TEXT NOT NULL,
-    captured_at         DATETIME DEFAULT CURRENT_TIMESTAMP,
-    yes_price           REAL,
-    no_price            REAL,
-    last_trade_price    REAL,
-    mid_price           REAL,
-    best_bid            REAL,
-    best_ask            REAL,
-    spread              REAL,
-    volume_total        REAL,
-    volume_24hr         REAL,
-    volume_1wk          REAL,
-    volume_1mo          REAL,
-    liquidity           REAL,
-    price_change_1d     REAL,
-    price_change_1wk    REAL,
-    source              TEXT DEFAULT 'gamma',
-    FOREIGN KEY(market_id) REFERENCES markets(market_id)
+    captured_at         TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    yes_price           DOUBLE PRECISION,
+    no_price            DOUBLE PRECISION,
+    last_trade_price    DOUBLE PRECISION,
+    mid_price           DOUBLE PRECISION,
+    best_bid            DOUBLE PRECISION,
+    best_ask            DOUBLE PRECISION,
+    spread              DOUBLE PRECISION,
+    volume_total        DOUBLE PRECISION,
+    volume_24hr         DOUBLE PRECISION,
+    volume_1wk          DOUBLE PRECISION,
+    volume_1mo          DOUBLE PRECISION,
+    liquidity           DOUBLE PRECISION,
+    price_change_1d     DOUBLE PRECISION,
+    price_change_1wk    DOUBLE PRECISION,
+    source              TEXT DEFAULT 'gamma'
 );
 
 CREATE INDEX IF NOT EXISTS idx_snapshots_market_time ON snapshots(market_id, captured_at DESC);
 CREATE INDEX IF NOT EXISTS idx_snapshots_time ON snapshots(captured_at DESC);
 
--- -----------------------------------------------------------------
--- 4. ORDER_BOOK_SNAPSHOTS — full depth (Tier 1 only)
--- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS order_book_snapshots (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    id          BIGSERIAL PRIMARY KEY,
     market_id   TEXT NOT NULL,
     token_id    TEXT,
-    captured_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    captured_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     bids_json   TEXT,
     asks_json   TEXT,
-    best_bid    REAL,
-    best_ask    REAL,
-    spread      REAL,
+    best_bid    DOUBLE PRECISION,
+    best_ask    DOUBLE PRECISION,
+    spread      DOUBLE PRECISION,
     depth_bids  INTEGER,
     depth_asks  INTEGER,
-    bid_volume  REAL,
-    ask_volume  REAL,
+    bid_volume  DOUBLE PRECISION,
+    ask_volume  DOUBLE PRECISION,
     source      TEXT DEFAULT 'clob'
 );
 
 CREATE INDEX IF NOT EXISTS idx_ob_market_time ON order_book_snapshots(market_id, captured_at DESC);
 
--- -----------------------------------------------------------------
--- 4b. UNIVERSE_REVIEW_CANDIDATES — excluded-but-interesting events
--- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS universe_review_candidates (
     event_id            TEXT PRIMARY KEY,
     event_slug          TEXT,
     event_title         TEXT,
-    event_liquidity     REAL,
-    event_volume        REAL,
+    event_liquidity     DOUBLE PRECISION,
+    event_volume        DOUBLE PRECISION,
     matched_keywords    TEXT,
     matched_tag_ids     TEXT,
     reason              TEXT,
-    generated_at        DATETIME DEFAULT CURRENT_TIMESTAMP
+    generated_at        TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX IF NOT EXISTS idx_universe_review_generated_at ON universe_review_candidates(generated_at DESC);
 
--- -----------------------------------------------------------------
--- 5. TRADES — individual matched trades
--- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS trades (
-    trade_id        TEXT PRIMARY KEY,
-    market_id       TEXT NOT NULL,
-    token_id        TEXT,
-    asset_id        TEXT,
-    condition_id    TEXT,
-    proxy_wallet    TEXT,
+    trade_id         TEXT PRIMARY KEY,
+    market_id        TEXT NOT NULL,
+    token_id         TEXT,
+    asset_id         TEXT,
+    condition_id     TEXT,
+    proxy_wallet     TEXT,
     transaction_hash TEXT,
-    outcome_side    TEXT,
-    side            TEXT,
-    price           REAL,
-    size            REAL,
-    usdc_notional   REAL,
-    fee_rate_bps    TEXT,
-    trade_time      DATETIME,
-    captured_at     DATETIME DEFAULT CURRENT_TIMESTAMP,
-    source          TEXT DEFAULT 'clob',
-    dedupe_key      TEXT,
-    source_priority INTEGER DEFAULT 0
+    outcome_side     TEXT,
+    side             TEXT,
+    price            DOUBLE PRECISION,
+    size             DOUBLE PRECISION,
+    usdc_notional    DOUBLE PRECISION,
+    fee_rate_bps     TEXT,
+    trade_time       TIMESTAMPTZ,
+    captured_at      TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    source           TEXT DEFAULT 'clob',
+    dedupe_key       TEXT,
+    source_priority  INTEGER DEFAULT 0
 );
 
 CREATE INDEX IF NOT EXISTS idx_trades_market_time ON trades(market_id, trade_time DESC);
@@ -204,20 +179,17 @@ CREATE INDEX IF NOT EXISTS idx_trades_asset_time ON trades(asset_id, trade_time 
 CREATE INDEX IF NOT EXISTS idx_trades_proxy_wallet_time ON trades(proxy_wallet, trade_time DESC);
 CREATE INDEX IF NOT EXISTS idx_trades_dedupe_key ON trades(dedupe_key);
 
--- -----------------------------------------------------------------
--- 6. PHASE 2 DURABLE DATA PLANE METADATA
--- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS raw_archive_manifests (
     partition_path       TEXT PRIMARY KEY,
     source_system        TEXT NOT NULL,
     event_type           TEXT NOT NULL,
     schema_version       TEXT NOT NULL,
     row_count            INTEGER DEFAULT 0,
-    byte_count           INTEGER DEFAULT 0,
-    first_captured_at    DATETIME,
-    last_captured_at     DATETIME,
+    byte_count           BIGINT DEFAULT 0,
+    first_captured_at    TIMESTAMPTZ,
+    last_captured_at     TIMESTAMPTZ,
     last_envelope_id     TEXT,
-    last_updated_at      DATETIME DEFAULT CURRENT_TIMESTAMP
+    last_updated_at      TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX IF NOT EXISTS idx_raw_archive_source_time
@@ -229,11 +201,11 @@ CREATE TABLE IF NOT EXISTS detector_input_manifests (
     entity_type          TEXT NOT NULL,
     schema_version       TEXT NOT NULL,
     row_count            INTEGER DEFAULT 0,
-    byte_count           INTEGER DEFAULT 0,
-    first_captured_at    DATETIME,
-    last_captured_at     DATETIME,
+    byte_count           BIGINT DEFAULT 0,
+    first_captured_at    TIMESTAMPTZ,
+    last_captured_at     TIMESTAMPTZ,
     last_ordering_key    TEXT,
-    last_updated_at      DATETIME DEFAULT CURRENT_TIMESTAMP
+    last_updated_at      TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX IF NOT EXISTS idx_detector_input_source_time
@@ -243,28 +215,28 @@ CREATE TABLE IF NOT EXISTS schema_versions (
     component            TEXT PRIMARY KEY,
     schema_version       TEXT NOT NULL,
     notes                TEXT,
-    updated_at           DATETIME DEFAULT CURRENT_TIMESTAMP
+    updated_at           TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS replay_runs (
-    replay_run_id        TEXT PRIMARY KEY,
-    source_system        TEXT NOT NULL,
-    start_time           DATETIME NOT NULL,
-    end_time             DATETIME NOT NULL,
-    status               TEXT NOT NULL,
+    replay_run_id          TEXT PRIMARY KEY,
+    source_system          TEXT NOT NULL,
+    start_time             TIMESTAMPTZ NOT NULL,
+    end_time               TIMESTAMPTZ NOT NULL,
+    status                 TEXT NOT NULL,
     raw_partitions_touched INTEGER DEFAULT 0,
-    raw_rows_scanned     INTEGER DEFAULT 0,
-    rows_republished     INTEGER DEFAULT 0,
-    output_path          TEXT,
-    notes                TEXT,
-    created_at           DATETIME DEFAULT CURRENT_TIMESTAMP,
-    completed_at         DATETIME
+    raw_rows_scanned       INTEGER DEFAULT 0,
+    rows_republished       INTEGER DEFAULT 0,
+    output_path            TEXT,
+    notes                  TEXT,
+    created_at             TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    completed_at           TIMESTAMPTZ
 );
 
 CREATE INDEX IF NOT EXISTS idx_replay_runs_source_time
     ON replay_runs(source_system, created_at DESC);
 
-CREATE VIEW IF NOT EXISTS canonical_trades AS
+CREATE OR REPLACE VIEW canonical_trades AS
 SELECT
     trade_id,
     market_id,
@@ -292,5 +264,5 @@ FROM (
             ORDER BY t.source_priority DESC, t.captured_at DESC, t.trade_id DESC
         ) AS dedupe_rank
     FROM trades t
-)
+) ranked
 WHERE dedupe_rank = 1;

@@ -12,6 +12,7 @@ from typing import Sequence
 from collectors.trade_utils import make_trade_row, parse_trade_time, upsert_trade_rows
 from collectors.universe_selector import MarketDescriptor, load_universe_policy, select_runtime_universe
 from database.db_manager import apply_schema, get_conn
+from utils.event_log import archive_raw_event, publish_detector_input
 from utils.http_client import make_client, safe_get
 from utils.logger import get_logger
 
@@ -48,6 +49,19 @@ async def _backfill_market(
             if not data:
                 break
 
+            captured_at = datetime.now(timezone.utc).isoformat()
+            archive_result = archive_raw_event(
+                source_system="data_api_trades_backfill",
+                event_type="historical_trades_page",
+                payload=data,
+                captured_at=captured_at,
+                metadata={
+                    "market_id": market.market_id,
+                    "condition_id": market.condition_id,
+                    "offset": offset,
+                    "params": params,
+                },
+            )
             trades = data if isinstance(data, list) else data.get("data", [])
             if not trades:
                 break
@@ -77,6 +91,20 @@ async def _backfill_market(
             if rows:
                 upsert_trade_rows(conn, rows)
                 total_inserted += len(rows)
+                publish_detector_input(
+                    source_system="data_api_trades_backfill",
+                    entity_type="historical_trades_page",
+                    captured_at=captured_at,
+                    ordering_key=f"{market.market_id}:{offset}",
+                    raw_partition_path=archive_result.partition_path,
+                    payload={
+                        "market_id": market.market_id,
+                        "condition_id": market.condition_id,
+                        "offset": offset,
+                        "row_count": len(rows),
+                        "trade_ids": [row["trade_id"] for row in rows],
+                    },
+                )
 
             if hit_cutoff or len(trades) < PAGE_SIZE:
                 break

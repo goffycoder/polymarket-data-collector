@@ -1,0 +1,108 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 1 Plan - Single Owner}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4, ``Phase 1: Fix Ingestion Correctness''.
+\textbf{Interpretation note:} Phase 1 is about making live data semantically usable for wallet-aware detection. It is not a modeling phase.
+\textbf{Implementation note:} Validation is scoped to the approved target-market universe. Full low-cost metadata sync may still cover the wider exchange, but expensive live collection remains focused on the approved universe.
+
+\textbf{Phase duration:} 1-2 weeks\\
+\textbf{Phase goal:} Make live trade and market data correct enough to support trustworthy wallet-aware feature engineering later.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Replace the hard-coded sports-only filter with a configurable target-market selector and explicit exclusion policy.
+\item Update live subscription logic so both YES and NO assets are covered.
+\item Correct trade ingestion to capture condition-level identifiers.
+\item Expand schema and ingestion for:
+\begin{itemize}
+\item \texttt{proxy\_wallet}
+\item \texttt{transaction\_hash}
+\item \texttt{condition\_id}
+\item \texttt{asset\_id}
+\item \texttt{outcome\_side}
+\item \texttt{usdc\_notional}
+\end{itemize}
+\item Add dedupe keys and source-priority logic across WebSocket, REST, and backfill.
+\item Write the canonical entity and field validation spec for wallet-aware trades.
+\item Build validation scripts for:
+\begin{itemize}
+\item both-side asset coverage
+\item duplicate trade inflation
+\item null-rate of wallet fields
+\item condition-id population rate
+\end{itemize}
+\item Define the first version of:
+\begin{itemize}
+\item \texttt{first\_seen\_at}
+\item fresh-wallet flag logic
+\item trade-to-market episode linkage rules
+\end{itemize}
+\item Produce a QA sample review over at least 20 manually inspected trade episodes.
+\end{enumerate}
+
+\section*{Locked Implementation Decisions}
+\begin{itemize}
+\item Coverage policy is \textbf{Broad Cross-Domain}: include finance, macro, elections, geopolitics, commodities, energy, and crypto-policy events that can move finance.
+\item Candidate-review guardrail is enabled: excluded but potentially finance-relevant events must be surfaced rather than silently dropped.
+\item Both YES and NO assets are required for WebSocket, order-book, price, and trade correctness.
+\item Trade ingestion must use \texttt{condition\_id} semantics and preserve returned \texttt{asset}, \texttt{outcome}, \texttt{proxyWallet}, and \texttt{transactionHash} when available.
+\item Fresh-wallet readiness means ``first seen in our archive,'' not ``new to Polymarket'' in an absolute sense.
+\end{itemize}
+
+\section*{Concrete Execution Breakdown}
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
+\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
+Target-market selector refactor & Configurable universe policy and exclusion rules & No brittle sports-only hard-coding remains in the ingestion path \\
+YES/NO coverage correctness & Live subscription updates and coverage proof & Both outcome-side assets appear in sampled live collection for approved markets \\
+Trade schema correctness & Parser and persistence updates & \texttt{condition\_id}, asset-side fields, wallet-linked fields, and notional fields are populated when source payloads provide them \\
+Dedupe and source priority & Deterministic merge rules & Duplicate inflation is measured, bounded, and reproducible across WS/REST/backfill \\
+Validation contract and scripts & Field-level data contract plus automated checks & All required Phase 1 checks run reproducibly against the approved universe \\
+Episode semantics and QA & Deterministic semantic rules and manual review sheet & \texttt{first\_seen\_at}, fresh-wallet logic, and episode linkage are documented, executable, and manually spot-checked \\
+\end{longtable}
+
+\section*{Execution Sequence (No Day Timeline)}
+\textbf{Block 1: Target universe controls}
+\begin{itemize}
+\item Replace sports-only hard-coding with a configurable target-market selector.
+\item Define allowlist/blocklist rules and candidate-review output for excluded but review-worthy events.
+\item Freeze selector defaults and version the policy for reproducible validation.
+\end{itemize}
+
+\textbf{Block 2: Market and trade correctness}
+\begin{itemize}
+\item Update live logic for both YES and NO assets inside the approved universe.
+\item Fix ingestion mapping so trades carry \texttt{condition\_id}, asset-side identity, wallet-linked fields, and notional values correctly.
+\item Add dedupe keys and source-priority merge logic across all collection paths.
+\end{itemize}
+
+\textbf{Block 3: Validation and semantics}
+\begin{itemize}
+\item Write the canonical validation contract and implement the validation suite.
+\item Measure both-side coverage, duplicate inflation, wallet null-rates, and condition-id population.
+\item Define and test \texttt{first\_seen\_at}, fresh-wallet, and trade-to-market episode linkage rules.
+\end{itemize}
+
+\textbf{Block 4: QA and signoff}
+\begin{itemize}
+\item Run manual QA over at least 20 trade episodes.
+\item Produce one data-quality report proving both-side and wallet-linked coverage for the approved universe.
+\item Assemble one Gate 1 signoff packet.
+\end{itemize}
+
+\section*{Gate 1 Checklist}
+\begin{itemize}
+\item Approved-universe selector behavior is versioned and validated.
+\item YES/NO coverage is live for the approved universe.
+\item Wallet-linked trade fields and condition-level identifiers are landing correctly.
+\item Dedupe and source-priority logic are implemented and measurable.
+\item Automated validation suite produces reproducible outputs.
+\item \texttt{first\_seen\_at}, fresh-wallet, and episode-linkage rules are deterministic.
+\item Manual review of at least 20 episodes is complete.
+\item One Gate 1 signoff document is ready.
+\end{itemize}
+
+\end{document}

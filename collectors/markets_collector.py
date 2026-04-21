@@ -10,6 +10,7 @@ import json
 from datetime import datetime, timezone
 
 from database.db_manager import get_conn
+from utils.event_log import archive_raw_event, publish_detector_input
 from utils.http_client import make_client, safe_get
 from utils.logger import get_logger
 
@@ -115,7 +116,20 @@ async def sync_markets() -> dict[str, str]:
                 break
 
             now = datetime.now(timezone.utc).isoformat()
+            archive_result = archive_raw_event(
+                source_system="gamma_markets",
+                event_type="markets_page",
+                payload=rows,
+                captured_at=now,
+                metadata={
+                    "url": url,
+                    "params": params,
+                    "offset": offset,
+                    "page_size": len(rows),
+                },
+            )
             snapshot_rows = []
+            page_market_ids: list[str] = []
 
             for m in rows:
                 mid = str(m.get("id", ""))
@@ -129,6 +143,7 @@ async def sync_markets() -> dict[str, str]:
                 vol = _safe_float(m.get("volumeNum") or m.get("volume"))
                 tier = _assign_tier(vol)
                 active_token_map[mid] = yes_token
+                page_market_ids.append(mid)
 
                 # --- Upsert market record ---
                 conn.execute("""
@@ -256,6 +271,18 @@ async def sync_markets() -> dict[str, str]:
                 total_snapshots += len(snapshot_rows)
 
             conn.commit()
+            publish_detector_input(
+                source_system="gamma_markets",
+                entity_type="markets_page",
+                captured_at=now,
+                ordering_key=f"offset:{offset}",
+                raw_partition_path=archive_result.partition_path,
+                payload={
+                    "offset": offset,
+                    "row_count": len(rows),
+                    "market_ids": page_market_ids,
+                },
+            )
             log.debug(f"  Markets offset={offset}: +{len(rows)} (snapshots={total_snapshots})")
             offset += PAGE_SIZE
 

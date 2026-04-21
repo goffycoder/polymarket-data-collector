@@ -21,6 +21,7 @@ from websockets.exceptions import ConnectionClosed, WebSocketException
 from collectors.trade_utils import make_trade_row, upsert_trade_rows
 from collectors.universe_selector import TokenContext
 from database.db_manager import get_conn
+from utils.event_log import archive_raw_event, publish_detector_input
 from utils.logger import get_logger
 
 log = get_logger("ws_listener")
@@ -53,6 +54,72 @@ def _ts_to_iso(ts) -> str:
         return datetime.fromtimestamp(ms / 1000, tz=timezone.utc).isoformat()
     except (TypeError, ValueError):
         return str(ts)
+
+
+def _normalize_ws_frame(raw: str) -> dict | list | None:
+    """Parse a raw WS frame into JSON, returning None on decode failure."""
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        return None
+
+
+def _event_summary(msg: dict, token_context: dict[str, TokenContext]) -> dict:
+    """Build a compact summary for one WS event used in the detector-input log."""
+    asset_id = str(msg.get("asset_id") or "")
+    market_ref = str(msg.get("market") or "")
+    token_meta = token_context.get(asset_id) if asset_id else None
+    event_type = str(msg.get("event_type") or "unknown")
+    timestamp = _ts_to_iso(msg.get("timestamp"))
+
+    summary = {
+        "event_type": event_type,
+        "captured_at": timestamp,
+        "asset_id": asset_id or None,
+        "market_ref": market_ref or None,
+        "market_id": token_meta.market_id if token_meta else None,
+        "condition_id": token_meta.condition_id if token_meta else (market_ref or None),
+        "outcome_side": token_meta.outcome_side if token_meta else None,
+    }
+
+    if event_type == "price_change":
+        summary["price_change_count"] = len(msg.get("price_changes", []))
+    if event_type == "book":
+        summary["bid_levels"] = len(msg.get("bids", []))
+        summary["ask_levels"] = len(msg.get("asks", []))
+    if event_type == "last_trade_price":
+        summary["price"] = msg.get("price")
+        summary["size"] = msg.get("size")
+        summary["side"] = msg.get("side")
+    if event_type == "best_bid_ask":
+        summary["best_bid"] = msg.get("best_bid")
+        summary["best_ask"] = msg.get("best_ask")
+        summary["spread"] = msg.get("spread")
+    if event_type == "market_resolved":
+        summary["resolved_asset_id"] = asset_id or None
+        summary["final_price"] = msg.get("price")
+
+    return summary
+
+
+def _frame_summary(frame: dict | list, token_context: dict[str, TokenContext]) -> tuple[str, str, dict]:
+    """Summarize one decoded WS frame for the local normalized envelope log."""
+    if isinstance(frame, list):
+        events = [item for item in frame if isinstance(item, dict)]
+    else:
+        events = [frame] if isinstance(frame, dict) else []
+
+    summaries = [_event_summary(event, token_context) for event in events]
+    first_event = events[0] if events else {}
+    first_ts = _ts_to_iso(first_event.get("timestamp"))
+    frame_type = "batch" if isinstance(frame, list) else str(first_event.get("event_type") or "unknown")
+    ordering_key = f"{frame_type}:{first_ts}:{len(events)}"
+    payload = {
+        "frame_type": frame_type,
+        "event_count": len(events),
+        "events": summaries,
+    }
+    return frame_type, ordering_key, payload
 
 
 class MarketWebSocketListener:
@@ -108,6 +175,8 @@ class MarketWebSocketListener:
                         await asyncio.sleep(WS_STAGGER_SECS)
                 await asyncio.gather(*tasks)
 
+            except asyncio.CancelledError:
+                raise
             except Exception as e:
                 log.warning(f"WS top-level error: {e}. Reconnecting in {self._reconnect_delay:.0f}s")
                 await asyncio.sleep(self._reconnect_delay)
@@ -146,6 +215,8 @@ class MarketWebSocketListener:
                     finally:
                         conn.close()
 
+            except asyncio.CancelledError:
+                raise
             except (ConnectionClosed, WebSocketException) as e:
                 # Add deterministic stagger based on batch_id so if all connections
                 # drop simultaneously, they don't all attempt to reconnect simultaneously
@@ -167,10 +238,27 @@ class MarketWebSocketListener:
         The server can send either a single event dict or an array of events.
         e.g. on initial subscribe it bursts a list of book snapshots.
         """
-        try:
-            msg = json.loads(raw)
-        except json.JSONDecodeError:
+        msg = _normalize_ws_frame(raw)
+        if msg is None:
             return
+
+        captured_at = datetime.now(timezone.utc).isoformat()
+        archive_result = archive_raw_event(
+            source_system="clob_ws_market",
+            event_type="market_ws_frame",
+            payload=msg,
+            captured_at=captured_at,
+            metadata={"raw_size_bytes": len(raw.encode("utf-8"))},
+        )
+        frame_type, ordering_key, payload = _frame_summary(msg, token_context)
+        publish_detector_input(
+            source_system="clob_ws_market",
+            entity_type=f"ws_frame::{frame_type}",
+            captured_at=captured_at,
+            ordering_key=ordering_key,
+            raw_partition_path=archive_result.partition_path,
+            payload=payload,
+        )
 
         # Server sometimes sends a JSON array (burst of events in one frame)
         if isinstance(msg, list):

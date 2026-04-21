@@ -5,11 +5,13 @@ Fetches recent trades for approved Tier 1 markets using the market condition ID,
 normalizes wallet-aware fields, and writes them into the trades table.
 """
 import asyncio
+from datetime import datetime, timezone
 from typing import Sequence
 
 from collectors.trade_utils import make_trade_row, upsert_trade_rows
 from collectors.universe_selector import MarketDescriptor
 from database.db_manager import get_conn
+from utils.event_log import archive_raw_event, publish_detector_input
 from utils.http_client import make_client, safe_get
 from utils.logger import get_logger
 
@@ -29,6 +31,18 @@ async def _fetch_market_trades(client, market: MarketDescriptor, conn):
         if not data:
             return
 
+        captured_at = datetime.now(timezone.utc).isoformat()
+        archive_result = archive_raw_event(
+            source_system="data_api_trades",
+            event_type="recent_trades_page",
+            payload=data,
+            captured_at=captured_at,
+            metadata={
+                "market_id": market.market_id,
+                "condition_id": market.condition_id,
+                "params": params,
+            },
+        )
         trades = data if isinstance(data, list) else data.get("data", [])
         rows = []
 
@@ -44,6 +58,19 @@ async def _fetch_market_trades(client, market: MarketDescriptor, conn):
 
         if rows:
             upsert_trade_rows(conn, rows)
+            publish_detector_input(
+                source_system="data_api_trades",
+                entity_type="recent_trades_page",
+                captured_at=captured_at,
+                ordering_key=f"{market.market_id}:{market.condition_id}",
+                raw_partition_path=archive_result.partition_path,
+                payload={
+                    "market_id": market.market_id,
+                    "condition_id": market.condition_id,
+                    "row_count": len(rows),
+                    "trade_ids": [row["trade_id"] for row in rows],
+                },
+            )
             log.debug(f"  Trades market={market.market_id}: +{len(rows)} rows")
 
 

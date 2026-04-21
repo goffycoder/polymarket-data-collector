@@ -10,6 +10,7 @@ import json
 from datetime import datetime, timezone
 
 from database.db_manager import get_conn
+from utils.event_log import archive_raw_event, publish_detector_input
 from utils.http_client import make_client, safe_get
 from utils.logger import get_logger
 
@@ -72,6 +73,20 @@ async def sync_events() -> set:
             rows = data if isinstance(data, list) else []
             if not rows:
                 break
+
+            page_captured_at = datetime.now(timezone.utc).isoformat()
+            archive_result = archive_raw_event(
+                source_system="gamma_events",
+                event_type="events_page",
+                payload=rows,
+                captured_at=page_captured_at,
+                metadata={
+                    "url": url,
+                    "params": params,
+                    "offset": offset,
+                    "page_size": len(rows),
+                },
+            )
 
             for event in rows:
                 eid = str(event.get("id", ""))
@@ -141,6 +156,18 @@ async def sync_events() -> set:
                 total_upserted += 1
 
             conn.commit()
+            publish_detector_input(
+                source_system="gamma_events",
+                entity_type="events_page",
+                captured_at=page_captured_at,
+                ordering_key=f"offset:{offset}",
+                raw_partition_path=archive_result.partition_path,
+                payload={
+                    "offset": offset,
+                    "row_count": len(rows),
+                    "active_event_ids": sorted(active_ids),
+                },
+            )
             log.debug(f"  Events offset={offset}: +{len(rows)} rows (total upserted={total_upserted})")
             offset += PAGE_SIZE
 

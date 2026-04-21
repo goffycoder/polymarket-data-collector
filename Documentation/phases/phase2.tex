@@ -1,0 +1,106 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 2 Delivery - Single Owner}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4, ``Phase 2: Build the Durable Data Plane''.\\
+\textbf{Delivery date:} April 20, 2026\\
+\textbf{Execution branch:} \texttt{phase2-local-data-plane}
+
+\textbf{Phase goal:} Convert the collector into a replayable local data system with durable raw archives, detector-input logging, local PostgreSQL cutover, and replay validation.\\
+\textbf{Current status:} Substantially delivered. The Phase 2 data plane is implemented and validated on a local PostgreSQL-backed runtime. Remaining work is signoff packaging and optional longer soak validation, not core architecture build-out.
+
+\section*{Delivered Outcomes}
+\begin{longtable}{p{0.26\linewidth}p{0.40\linewidth}p{0.24\linewidth}}
+\textbf{Capability} & \textbf{Delivered Artifact} & \textbf{Status} \\
+Raw archive foundation & \texttt{utils/event\_log.py} with deterministic hourly partitions under \texttt{data/raw/} and \texttt{data/detector\_input/} & Delivered \\
+Manifest and version tracking & \texttt{raw\_archive\_manifests}, \texttt{detector\_input\_manifests}, \texttt{schema\_versions}, and \texttt{replay\_runs} in the canonical schema & Delivered \\
+Collector integration & Raw archive and detector-input hooks wired into events, markets, trades, backfill, books, prices, and WebSocket market frames & Delivered \\
+Replay validation & \texttt{validation/phase2\_replay.py} and \texttt{validation/run\_phase2\_replay.py} & Delivered \\
+Replay republish path & \texttt{validation/phase2\_republish.py} and \texttt{validation/run\_phase2\_republish.py} & Delivered \\
+Local PostgreSQL target schema & \texttt{database/postgres\_schema.sql} & Delivered \\
+SQLite to PostgreSQL migration tooling & \texttt{database/postgres\_migrate.py} with rowid-based batching for large SQLite tables & Delivered \\
+Runtime PostgreSQL cutover & Env-driven backend selection in \texttt{config/settings.py} and \texttt{database/db\_manager.py} & Delivered \\
+Operational runbook & \texttt{database/POSTGRES\_LOCAL\_RUNBOOK.md} & Delivered \\
+Graceful shutdown fix & Cooperative shutdown in \texttt{run\_collector.py} and cancellation-safe WS listener behavior & Delivered \\
+\end{longtable}
+
+\section*{Validated Evidence}
+\textbf{1. Raw archive and detector-input parity on a real non-empty window}
+\begin{itemize}
+\item Replay window used for proof: \texttt{2026-04-20T05:00:00+00:00} to \texttt{2026-04-20T06:00:00+00:00}
+\item Source system: \texttt{gamma\_events}
+\item Raw rows in window: 66
+\item Detector rows in window: 66
+\item Raw manifest rows for the partition: 66
+\item Detector manifest rows for the partition: 66
+\item Conclusion: replay parity held exactly for the validated one-hour archive window.
+\end{itemize}
+
+\textbf{2. Deterministic republish proof}
+\begin{itemize}
+\item Replay republish run ID: \texttt{12bc07e8ae50}
+\item Raw partitions touched: 1
+\item Raw rows scanned: 66
+\item Rows republished: 66
+\item Output path: \texttt{data/replay\_runs/12bc07e8ae50/source\_system=gamma\_events/detector\_input.ndjson}
+\item Conclusion: the archive window can be republished deterministically into a replay detector-input log.
+\end{itemize}
+
+\textbf{3. Local PostgreSQL migration proof}
+\begin{itemize}
+\item \texttt{events}: 62,150 migrated initially, later advanced by live collector writes
+\item \texttt{markets}: 176,188 migrated
+\item \texttt{trades}: 79,785 migrated
+\item \texttt{order\_book\_snapshots}: 3,442,571 migrated
+\item \texttt{snapshots}: 38,074,383 migrated
+\item Final local PostgreSQL database size after heavy-table migration: approximately 12 GB
+\item Conclusion: the canonical operational dataset now exists in local PostgreSQL at meaningful production-scale volume.
+\end{itemize}
+
+\textbf{4. Live collector runtime proof on PostgreSQL}
+\begin{itemize}
+\item The collector was started with \texttt{POLYMARKET\_DB\_BACKEND=postgres} and \texttt{POLYMARKET\_DATABASE\_URL=postgresql+psycopg://localhost:5432/polymarket\_phase2}
+\item The runtime applied schema successfully, entered live Gamma sync, and wrote real archive and detector-input manifest rows into PostgreSQL-backed Phase 2 state.
+\item A longer live run advanced \texttt{gamma\_events} paging up to \texttt{offset=6500} without runtime failure.
+\item Graceful shutdown was re-tested after the fix and no longer fails with \texttt{RuntimeError: Event loop stopped before Future completed.}
+\item Conclusion: the PostgreSQL runtime path is operational for real local collector execution, not only offline migration.
+\end{itemize}
+
+\section*{Interpretation Against SRS Intent}
+Phase 2 was not about increasing data scope. It was about proving that local collection can be durably captured, replayed, migrated, and reconstructed without trusting mutable live tables alone. That core objective is now satisfied:
+\begin{itemize}
+\item inbound payloads are archived in immutable local partitions,
+\item detector inputs are logged locally with provenance and schema version metadata,
+\item replay and republish tooling operate on real archive windows,
+\item PostgreSQL is viable as the canonical operational backend on one machine,
+\item large historical operational tables have been migrated successfully,
+\item live collector execution and graceful shutdown were validated on the PostgreSQL path.
+\end{itemize}
+
+\section*{Residual Closeout Items}
+\begin{itemize}
+\item Write the final Gate 2 signoff memo and attach command transcripts or screenshots if required by the grading rubric.
+\item Add a concise formal writeup of point-in-time contracts for profiles, activity, and evidence snapshots so the documentation matches the implemented replay model more explicitly.
+\item Optionally run a longer soak session on PostgreSQL if a course deliverable asks for extended uptime evidence rather than functional proof.
+\end{itemize}
+
+\section*{Gate 2 Checklist Status}
+\begin{itemize}
+\item Every active inbound collector path emits raw envelopes: Delivered
+\item Raw archives are immutable, deterministic, and covered by manifests: Delivered
+\item Detector inputs are published through a local normalized-envelope log with provenance and version metadata: Delivered
+\item Local PostgreSQL accepts canonical operational writes and is authoritative-capable: Delivered
+\item Replay tooling can reconstruct a bounded archive window deterministically: Delivered
+\item Replayed counts match expected counts for the validated one-hour proof window: Delivered
+\item Ordering and timestamp behavior are validated through replay and republish contracts: Delivered at Phase 2 engineering level
+\item Point-in-time snapshot contract prose is fully packaged for signoff: Remaining documentation polish
+\item One one-hour replay proof is complete and rerunnable: Delivered
+\end{itemize}
+
+\section*{Bottom-Line Assessment}
+Phase 2 engineering is complete enough to defend academically as delivered. The main remaining work is documentation polish and formal signoff packaging, not unresolved data-plane implementation risk.
+
+\end{document}

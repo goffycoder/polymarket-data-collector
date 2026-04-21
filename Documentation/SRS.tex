@@ -68,8 +68,8 @@ Specification}\label{software-requirements-specification}
 \subsection{Polymarket Insider-Signal Detection and Leading Indicator
 Engine}\label{polymarket-insider-signal-detection-and-leading-indicator-engine}
 
-\textbf{Version:} 4.0\\
-\textbf{Date:} April 9, 2026\\
+\textbf{Version:} 4.1\\
+\textbf{Date:} April 18, 2026\\
 \textbf{Owner:} Vraj Patel\\
 \textbf{Status:} Final integrated source of truth\\
 \textbf{Implementation readiness:} Not Ready until Stage Gate 2,
@@ -213,8 +213,9 @@ Trade schema & No \texttt{proxy\_wallet}, \texttt{transaction\_hash},
 in the canonical trade table & Core entity model does not exist yet \\
 Retention & Closed-market microstructure is still deleted after 24 hours
 & Event studies and label generation are corrupted \\
-Storage & Local SQLite database is already very large & Current design
-does not scale as the archive matures \\
+Storage & Local SQLite database is already very large & Canonical local
+execution must graduate to raw archives plus local PostgreSQL, not stay
+SQLite-only \\
 ML & \texttt{ml\_pipeline/feature\_builder.py} is still a stub & No
 trustworthy model training path exists \\
 \end{longtable}
@@ -441,8 +442,10 @@ Principles}\label{31-architecture-principles}
 \subsubsection{3.2 Canonical Deployment
 Topology}\label{32-canonical-deployment-topology}
 
-The final source-of-truth deployment for v1 is a hybrid GCP
-architecture:
+The final source-of-truth deployment for v1 is a local-first
+architecture. The whole system runs on one workstation or small server,
+while still connecting to external APIs for live market data and
+evidence retrieval.
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}llll@{}}
@@ -452,47 +455,49 @@ Plane & Service & Runtime & Purpose \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Sensing & \texttt{collector-stream} & Compute Engine VM & Long-lived
+Sensing & \texttt{collector-stream} & Long-lived local process &
 WebSocket listener and REST pollers \\
-Durable log & \texttt{raw-event-log} & GCS + Pub/Sub & Immutable payload
-archive plus downstream fan-out \\
-Operational store & \texttt{market-intel-db} & Cloud SQL PostgreSQL &
+Durable log & \texttt{raw-event-log} & Local append-only filesystem
+archive & Immutable payload archive plus replay source of truth \\
+Operational store & \texttt{market-intel-db} & Local PostgreSQL &
 Relational state, alert history, analyst feedback \\
-Online state & \texttt{signal-state} & Memorystore Redis & Rolling
+Online state & \texttt{signal-state} & Local Redis service & Rolling
 windows, suppression windows, hot keyed state \\
-Decision & \texttt{detector} & Python worker on VM initially, splitable
-later & Candidate generation and episode scoring \\
-Evidence & \texttt{evidence-worker} & Cloud Run Jobs or async worker &
-X/web/news enrichment after a candidate exists \\
-Alerting & \texttt{alert-worker} & Python worker &
+Decision & \texttt{detector} & Local Python worker & Candidate
+generation and episode scoring \\
+Evidence & \texttt{evidence-worker} & Local async worker & X/web/news
+enrichment after a candidate exists \\
+Alerting & \texttt{alert-worker} & Local Python worker &
 Telegram/Discord/Twilio integration \\
-Research & \texttt{replay-backtest} & Batch jobs & Point-in-time
+Research & \texttt{replay-backtest} & Local batch jobs & Point-in-time
 rebuilds, validation, retraining \\
-Ops & Cloud Monitoring + Secret Manager & Managed GCP services &
-Metrics, logging, secrets, incident response \\
+Ops & Local logs + OS service manager + backups & Local platform
+services & Metrics, logging, secrets, restart policy, backups \\
 \end{longtable}
 }
 
-\subsubsection{3.3 Why the Collector Is Not on Cloud
-Run}\label{33-why-the-collector-is-not-on-cloud-run}
+\subsubsection{3.3 Why v1 Runs Locally
+First}\label{33-why-v1-runs-locally-first}
 
-Cloud Run remains valid for stateless async jobs and evidence workers.
-It is \textbf{not} the canonical runtime for the persistent market
-collector because:
+Local-first execution is the canonical v1 path because:
 
 \begin{itemize}
 \tightlist
 \item
-  WebSockets are still request-bounded.
+  the collector is long-lived and stateful,
 \item
-  Open connections remain billable as active service time.
+  local raw archives and replay artifacts are easier to inspect,
+  reproduce, and back up for a thesis workflow,
 \item
-  Reconnects and best-effort session affinity complicate long-lived
-  stateful streaming.
+  avoiding cross-service hops makes debugging ingestion, replay, and
+  feature drift substantially easier for a two-person team,
+\item
+  the first learned model family is CPU-cheap and does not require
+  distributed infrastructure.
 \end{itemize}
 
-For v1, the collector runs on a persistent VM. Stateless jobs may still
-use Cloud Run.
+Cloud deployment remains optional later, but it is not the source of
+truth for v1.
 
 \subsubsection{3.4 End-to-End Data Flow}\label{34-end-to-end-data-flow}
 
@@ -504,11 +509,13 @@ use Cloud Run.
 \item
   Every payload is wrapped in a raw event envelope.
 \item
-  Raw envelopes are written to GCS in append-only partitions.
+  Raw envelopes are written to local append-only partitions.
 \item
-  Normalized lightweight envelopes are published to Pub/Sub.
+  Normalized lightweight envelopes are persisted into a local detector
+  input log.
 \item
-  Detector consumes Pub/Sub events and updates Redis rolling state.
+  Detector consumes the local input log and updates local Redis rolling
+  state.
 \item
   Candidate rules and streaming anomaly features emit
   \texttt{signal\_candidates}.
@@ -520,7 +527,7 @@ use Cloud Run.
   Alert worker applies suppression, severity, and delivery policy.
 \item
   All alerts, analyst actions, model versions, and evidence snapshots
-  are stored in PostgreSQL.
+  are stored in local PostgreSQL.
 \item
   Replay jobs rebuild features and labels from raw archives, not from
   mutable live tables alone.
@@ -761,7 +768,8 @@ Data Type & Hot Retention & Cold Retention & Notes \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Raw event envelopes & 30-90 days & 1+ year & Immutable in GCS \\
+Raw event envelopes & 30-90 days & 1+ year & Immutable on local disk
+with checksum and backup \\
 Normalized trades/activity & 1+ year & 1+ year & No destructive TTL
 before archival \\
 Feature tables & 180+ days & Rebuildable & Versioned by feature
@@ -938,17 +946,18 @@ Log}\label{53-work-package-2-add-a-durable-raw-event-log}
   Wrap every inbound payload in the raw event envelope defined in
   Section 4.1.
 \item
-  Write raw events to GCS as append-only compressed NDJSON or Parquet
+  Write raw events to local disk as append-only compressed NDJSON or
+  Parquet
   partitions:
 
   \begin{itemize}
   \tightlist
   \item
-    \texttt{bucket/year=YYYY/month=MM/day=DD/hour=HH/source\_system=...}
+    \texttt{data/raw/year=YYYY/month=MM/day=DD/hour=HH/source\_system=...}
   \end{itemize}
 \item
-  Publish lightweight normalized envelopes to Pub/Sub for downstream
-  consumers.
+  Persist lightweight normalized envelopes into a local detector input
+  log for downstream consumers.
 \item
   Write archive manifest records into PostgreSQL with file path, time
   range, row count, checksum, and schema version.
@@ -971,7 +980,7 @@ Log}\label{53-work-package-2-add-a-durable-raw-event-log}
 Plane}\label{54-work-package-3-migrate-to-the-canonical-data-plane}
 
 \textbf{Objective:} Stop treating SQLite as the long-term operational
-backbone.
+backbone while keeping the canonical runtime local.
 
 \textbf{Tasks}
 
@@ -979,7 +988,7 @@ backbone.
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Stand up Cloud SQL PostgreSQL as the operational relational store.
+  Stand up local PostgreSQL as the operational relational store.
 \item
   Port the schema from SQLite to PostgreSQL with partitions for
   high-volume tables.
@@ -1013,7 +1022,7 @@ backbone.
 \item
   Partitions and indexes support the expected query patterns.
 \item
-  SQLite is no longer the authoritative store.
+  SQLite is no longer the authoritative operational store.
 \end{itemize}
 
 \subsubsection{5.5 Work Package 4: Build the Online State
@@ -1028,7 +1037,7 @@ possible.
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Introduce Redis for rolling keyed state:
+  Introduce local Redis for rolling keyed state:
 
   \begin{itemize}
   \tightlist
@@ -1067,7 +1076,7 @@ possible.
   Add late-event handling with watermark rules.
 \item
   Add state reconciliation job that replays recent history and compares
-  Redis state against rebuilt state.
+  local Redis state against rebuilt state.
 \end{enumerate}
 
 \textbf{Exit criteria}
@@ -1075,7 +1084,8 @@ possible.
 \begin{itemize}
 \tightlist
 \item
-  Redis-backed streaming features match replayed historical features
+  Local Redis-backed streaming features match replayed historical
+  features
   within tolerance.
 \item
   Detector state survives normal restarts without corrupting episodes.
@@ -1503,6 +1513,57 @@ Alert dispatch & under 1 s after final payload \\
 \end{longtable}
 }
 
+\subsubsection{6.7 ML Feasibility and Local Compute
+Constraints}\label{67-ml-feasibility-and-local-compute-constraints}
+
+The v1 ML path is feasible on one local machine only if the system
+reaches data-contract maturity first.
+
+\paragraph{Feasible on local CPU}
+
+\begin{itemize}
+\tightlist
+\item
+  deterministic candidate generation,
+\item
+  rolling-window feature computation,
+\item
+  episode-level dataset materialization,
+\item
+  LightGBM or CatBoost training and calibration,
+\item
+  shadow-mode inference on candidate episodes,
+\item
+  replay, backtesting, and paper-trading evaluation.
+\end{itemize}
+
+\paragraph{Not yet feasible in the current repo state}
+
+\begin{itemize}
+\tightlist
+\item
+  Trustworthy model training is not ready while
+  \texttt{ml\_pipeline/feature\_builder.py} remains a stub.
+\item
+  Gate 1 trade correctness must pass before wallet-aware features can be
+  trusted.
+\item
+  Gate 2 replay must exist before labels, backtests, and feature windows
+  are defendable.
+\item
+  Gate 5 episode training rows and labels must be stable before any
+  learned ranker is graded as meaningful.
+\end{itemize}
+
+\paragraph{Canonical feasibility judgment}
+
+The first ML system is feasible locally because the chosen model family
+is tabular, CPU-cheap, and trained on engineered episode features rather
+than raw high-frequency tensors. Deep models, graph neural networks, and
+GPU-heavy sequence systems are not part of the defendable v1 path and
+remain infeasible until the feature contract, replay path, and labeling
+contract are stable.
+
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \subsection{7. Evidence, Alerting, and Analyst
@@ -1622,7 +1683,7 @@ The system is replayable only if it can:
 \item
   rebuild normalized envelopes,
 \item
-  rebuild Redis-equivalent rolling state,
+  rebuild local Redis-equivalent rolling state,
 \item
   rerun candidate detection,
 \item
@@ -1722,7 +1783,9 @@ The following metrics are mandatory:
 \item
   archive write failures
 \item
-  Pub/Sub backlog
+  local detector-input backlog
+\item
+  free disk headroom for archives and Postgres
 \item
   Redis memory usage
 \item
@@ -1744,7 +1807,7 @@ Requirements}\label{92-incident-requirements}
   Pager notifications for collector death, archive failures, or
   zero-event periods.
 \item
-  Runbooks for reconnect storms, queue backlog, and schema drift.
+  Runbooks for reconnect storms, local disk pressure, and schema drift.
 \item
   Daily integrity check comparing expected and actual event volume.
 \end{itemize}
@@ -1755,8 +1818,9 @@ Requirements}\label{93-security-requirements}
 \begin{itemize}
 \tightlist
 \item
-  Secrets must live in Secret Manager or equivalent, not in
-  \texttt{.env} on production hosts.
+  Secrets must live in the OS keychain, a local secret manager, or a
+  file with restricted permissions, not in a casually shared
+  \texttt{.env}.
 \item
   Production DB access must be role-scoped.
 \item
@@ -1792,19 +1856,17 @@ It ignored:
 \begin{itemize}
 \tightlist
 \item
-  billable always-on compute for persistent streaming,
+  local machine power and uptime assumptions,
 \item
-  realistic Redis cost floors,
+  local storage growth and backup needs,
 \item
-  dedicated PostgreSQL sizing,
+  dedicated PostgreSQL and Redis resource needs,
 \item
   raw archive growth,
 \item
-  queueing,
-\item
   evidence-provider spend,
 \item
-  monitoring and log storage.
+  monitoring, log storage, and optional hardware upgrades.
 \end{itemize}
 
 \subsubsection{10.2 Canonical Budget
@@ -1815,19 +1877,19 @@ The v1 research environment assumes:
 \begin{itemize}
 \tightlist
 \item
-  single region (\texttt{us-central1}),
+  one always-on local workstation or small server,
 \item
-  one persistent collector VM,
+  one persistent local collector process,
 \item
-  one non-HA Cloud SQL PostgreSQL instance,
+  one local PostgreSQL instance,
 \item
-  one Basic Redis instance,
+  one local Redis instance,
 \item
-  raw archive in GCS,
+  raw archive on local SSD or equivalent fast disk,
 \item
-  Pub/Sub fan-out,
+  periodic backup of raw archives and the operational database,
 \item
-  light Cloud Run evidence jobs,
+  local evidence and replay jobs,
 \item
   no GPU,
 \item
@@ -1837,8 +1899,10 @@ The v1 research environment assumes:
 \subsubsection{10.3 Monthly Budget
 Model}\label{103-monthly-budget-model}
 
-The following uses official pricing pages referenced in Section 12 and
-reflects a realistic v1 research setup as of April 7, 2026.
+The following reflects a realistic local-first v1 research setup. It is
+an incremental operating-cost model, not a claim that new hardware is
+free. If a dedicated workstation must be purchased, that is a separate
+capital decision.
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}llrl@{}}
@@ -1848,28 +1912,20 @@ Item & Assumption & Estimated Monthly Cost & Notes \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Persistent collector VM & Compute Engine \texttt{e2-standard-2} at
-\texttt{\$0.06701142/hour} & \texttt{\$48.92} & 2 vCPU, 8 GiB, always
-on \\
-Cloud SQL compute & 2 vCPU and 8 GiB memory in \texttt{us-central1} &
-\texttt{\$101.18} & Based on current Cloud SQL Enterprise per-vCPU and
-per-GiB rates \\
-Cloud SQL SSD storage & 100 GiB & \texttt{\$17.00} & Current SSD storage
-rate \\
-Cloud SQL backups & 100 GiB backup footprint & \texttt{\$8.00} & Assumes
-separate backup storage \\
-Redis / Memorystore & Basic 5 GiB floor & \texttt{\$98.55} & Realistic
-floor, not a rounding error \\
-GCS hot archive & 200 GiB Standard storage & \texttt{\$4.00} & Raw
-recent archive \\
-GCS cold archive & 2 TiB Archive storage & \texttt{\$2.40} & Long-term
-raw retention \\
-Pub/Sub & \textasciitilde250 GiB monthly throughput after free tier &
-\texttt{\$10.00} & Approximation for moderate stream fan-out \\
-Cloud Run jobs & Evidence/backfill/replay helper workloads &
-\texttt{\$15-\$40} & Usage-dependent \\
-Monitoring and logs & Cloud Monitoring + log retention &
-\texttt{\$10-\$30} & Usage-dependent \\
+Local compute and services & Existing workstation or small server &
+\texttt{\$0-\$60} & Incremental power and wear; exclude sunk hardware if
+already owned \\
+Local PostgreSQL and Redis & Local services on the same machine &
+\texttt{\$0-\$10} & Operational overhead, not a cloud bill \\
+Hot archive storage & 200 GiB fast local storage &
+\texttt{\$0-\$15} & Existing SSD if already available; otherwise
+incremental storage cost \\
+Cold backup storage & 1-2 TiB external disk or backup target &
+\texttt{\$5-\$25} & Includes off-machine or removable backup discipline \\
+Replay / evidence jobs & Local batch and async workers &
+\texttt{\$0-\$10} & CPU time is covered by the local host assumption \\
+Monitoring and logs & Local logs and lightweight monitoring &
+\texttt{\$0-\$10} & Open-source or OS-native tooling \\
 Telegram / Discord & Core alerting channels & \texttt{\$0} & API use
 itself is free \\
 Twilio SMS & Escalation only & \texttt{\$0-\$15} & Depends on alert
@@ -1889,10 +1945,12 @@ Budget Tier & Monthly Range \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Core infrastructure only & \texttt{\$314-\$360} \\
-Core infrastructure + basic evidence usage & \texttt{\$364-\$860+} \\
-Production-like with HA and heavier evidence usage &
-\texttt{\$700-\$1,500+} \\
+Core local infrastructure only & \texttt{\$5-\$120} \\
+Core local infrastructure + basic evidence usage &
+\texttt{\$55-\$620+} \\
+Dedicated workstation plus heavier evidence usage &
+\texttt{\$150-\$900+} monthly equivalent, plus optional one-time hardware
+capex \\
 \end{longtable}
 }
 
@@ -1904,11 +1962,12 @@ Production-like with HA and heavier evidence usage &
 \item
   Evidence providers must have explicit monthly spend caps.
 \item
-  Cloud SQL shared-core instances are dev-only and not acceptable as the
-  canonical production-backed store.
+  If the local workstation cannot sustain PostgreSQL, Redis, archive
+  writes, and detector latency simultaneously, optional scope must be
+  frozen until capacity is increased.
 \item
-  Any move to HA Postgres, larger Redis, or redundant collectors must
-  trigger a budget review.
+  Any move to dedicated extra hardware, cloud migration, or redundant
+  collectors must trigger a budget review.
 \end{enumerate}
 
 \subsubsection{10.6 Budget Guardrails Derived from the
@@ -1923,7 +1982,7 @@ Audit}\label{106-budget-guardrails-derived-from-the-audit}
 \item
   Evidence-provider usage must have both monthly caps and daily caps.
 \item
-  Archive growth, replay costs, and evidence costs must be reviewed
+  Archive growth, backup discipline, and evidence costs must be reviewed
   weekly during active development.
 \item
   If real spend exceeds the documented plan by more than 20\% for two
@@ -1953,9 +2012,10 @@ Gate 0 & Data Loss Stopped & No destructive TTL before archival, health
 metrics live \\
 Gate 1 & Ingestion Correct & Wallet-linked trades and both-side coverage
 are working \\
-Gate 2 & Replayable System & Raw archive, Pub/Sub fan-out, and
+Gate 2 & Replayable System & Raw archive, local detector input log, and
 deterministic replay exist \\
-Gate 3 & Online State Stable & Redis-backed features reconcile against
+Gate 3 & Online State Stable & Local Redis-backed features reconcile
+against
 replay \\
 Gate 4 & Alert Loop Live & Alerts, suppression, and analyst feedback are
 working \\
@@ -1981,9 +2041,11 @@ Phase & Focus & Deliverables & Duration \\
 72h soak test & 1 week \\
 1 & Ingestion correctness & Remove sports filter, both-side coverage,
 wallet-linked trade schema & 1-2 weeks \\
-2 & Durable data plane & Raw archive, Pub/Sub, PostgreSQL cutover,
+2 & Durable data plane & Raw archive, local detector input log,
+PostgreSQL cutover,
 manifesting & 2-3 weeks \\
-3 & Online state and candidates & Redis windows, deterministic episodes,
+3 & Online state and candidates & Local Redis windows, deterministic
+episodes,
 cooldown logic & 2-3 weeks \\
 4 & Evidence and alerts & Provider abstraction, Telegram/Discord,
 analyst feedback loop & 2-3 weeks \\
@@ -2012,9 +2074,9 @@ Primary ownership:
 \item
   collector runtime and ingestion correctness,
 \item
-  raw archive and queueing infrastructure,
+  raw archive and detector-input infrastructure,
 \item
-  PostgreSQL, Redis, deployment, and monitoring,
+  local PostgreSQL, local Redis, deployment, and monitoring,
 \item
   replay plumbing, operational reliability, and cost control.
 \end{itemize}
@@ -2320,12 +2382,13 @@ off SQLite.
 \item
   Implement raw event envelope persistence for every inbound payload.
 \item
-  Write raw archives to GCS with deterministic partitioning and manifest
-  tracking.
+  Write raw archives to local disk with deterministic partitioning and
+  manifest tracking.
 \item
-  Stand up Pub/Sub and publish normalized envelopes downstream.
+  Stand up a local normalized-envelope log and publish detector inputs
+  downstream.
 \item
-  Provision Cloud SQL PostgreSQL and migrate canonical write paths.
+  Provision local PostgreSQL and migrate canonical write paths.
 \item
   Add archive manifest tables, schema version tables, and operational
   migration notes.
@@ -2367,7 +2430,7 @@ off SQLite.
 \item
   one replay tool for historical partitions,
 \item
-  one PostgreSQL-backed operational environment,
+  one local PostgreSQL-backed operational environment,
 \item
   one Gate 2 replay proof.
 \end{itemize}
@@ -2381,7 +2444,7 @@ off SQLite.
 \item
   one-hour replay works end to end,
 \item
-  SQLite is no longer the authoritative source of truth.
+  SQLite is no longer the authoritative operational source of truth.
 \end{itemize}
 
 \paragraph{Phase 3: Build Online State and Deterministic Candidate
@@ -2397,7 +2460,7 @@ generation.
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Stand up Redis-backed rolling state for market, wallet, and
+  Stand up local Redis-backed rolling state for market, wallet, and
   event-family windows.
 \item
   Implement watermark and late-event handling.
@@ -2405,7 +2468,8 @@ generation.
   Build state reconciliation jobs that compare replayed state against
   live state.
 \item
-  Add throughput and memory monitoring for Redis and detector workers.
+  Add throughput and memory monitoring for local Redis and detector
+  workers.
 \item
   Add persistent storage for candidate metadata and detector versions.
 \end{enumerate}
@@ -2853,8 +2917,11 @@ happen:
   \url{https://docs.polymarket.com/api-reference/misc/get-total-markets-a-user-has-traded}
 \end{itemize}
 
-\subsubsection{GCP Runtime and Cost
+\subsubsection{Historical Cloud Runtime and Cost
 References}\label{gcp-runtime-and-cost-references}
+
+These cloud references are retained only as optional future migration
+material. They are not part of the canonical v1 deployment path.
 
 \begin{itemize}
 \tightlist

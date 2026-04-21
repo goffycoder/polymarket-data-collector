@@ -1,26 +1,53 @@
 # Polymarket High-Resolution Data Collector
 
-> Capturing Polymarket prediction markets at **182 snapshots/second** — real-time WebSocket feed, full order book depth, matched trades, and automatic outcome labels — all in a local SQLite database ready for ML.
+> Phase 2 checkpoint: a replayable local Polymarket data plane with durable raw archives, detector-input logging, and local PostgreSQL support for Phase 3 work.
 
 ---
+
+## Current Status
+
+The canonical roadmap now lives in [Documentation/SRS.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/SRS.tex) and the active phase docs live in [Documentation/phases/](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/phases).
+
+- Phase 1: delivered and signed off in the phase docs.
+- Phase 2: substantially delivered as the durable data plane in [Documentation/phases/phase2.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/phases/phase2.tex).
+- Phase 3 next focus: online state, deterministic candidate detection, and the first stable feature contracts.
+
+If you are orienting yourself quickly, read these in order:
+
+1. [README.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/README.md)
+2. [Documentation/INDEX.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/INDEX.tex)
+3. [Documentation/phases/phase2.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/phases/phase2.tex)
+4. [database/POSTGRES_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/POSTGRES_LOCAL_RUNBOOK.md)
 
 ## What This Is
 
 Polymarket is a binary prediction market. Every question ("Will X happen by Y date?") is an **event** with one or more **markets** (YES/NO token pairs trading at $0.00–$1.00, where price = probability).
 
-This collector runs as a background service and captures the complete state of **35,000+ markets** across all resolution timelines into a structured database — designed for ML model training and quantitative research.
+This repo started as a high-resolution collector and now serves as the local-first data foundation for later detection, replay, and research phases. The live collector captures markets into a structured operational store while Phase 2 adds durable archives and replay tooling so later feature and validation work can be reproduced honestly.
 
 **Current collection rate:** ~182 snapshots/second (88% real-time WebSocket push)
 
+## Active Repo Map
+
+```
+collectors/      live ingestion loops and backfill paths
+database/        runtime schema, DB abstraction, PostgreSQL migration, runbook
+utils/           logging, HTTP helpers, Phase 2 event-log helpers
+validation/      Phase 1 validation plus Phase 2 replay/republish tools
+Documentation/   canonical SRS, phase docs, signoff artifacts, reference notes
+ml_pipeline/     future Phase 3+ feature and modeling work
+Old-content/     legacy experiments kept for reference only
+```
+
 ---
 
-## Architecture
+## Runtime Architecture
 
 ```
 run_collector.py
-├── PHASE 1  apply_schema()         idempotent SQLite schema on every start
-├── PHASE 2  initial full sync      all events + markets from Gamma API
-└── PHASE 3  concurrent loops
+├── Stage 1  apply_schema()         idempotent local schema on every start
+├── Stage 2  initial full sync      all events + markets from Gamma API
+└── Stage 3  concurrent loops
     ├── ws_loop()       WebSocket real-time feed    (continuous push)
     ├── tier1_loop()    CLOB full order books        every 60s
     ├── tier2_loop()    CLOB best prices             every 5 min
@@ -42,11 +69,15 @@ collectors/
 database/
 ├── schema.sql             canonical schema, applied idempotently
 ├── db_manager.py          connection pool + schema migration
-└── polymarket_state.db    ← your database (gitignored)
+├── polymarket_state.db    ← local SQLite bootstrap/dev database (gitignored)
+├── postgres_schema.sql    ← local PostgreSQL target schema
+├── postgres_migrate.py    ← SQLite → PostgreSQL migration helper
+└── POSTGRES_LOCAL_RUNBOOK.md
 
 utils/
 ├── http_client.py         async httpx with retry + backoff
-└── logger.py              structured output to logs/collector.log
+├── logger.py              structured output to logs/collector.log
+└── event_log.py           raw archive + detector-input manifest helpers
 ```
 
 ---
@@ -63,9 +94,23 @@ Re-evaluated every 30 minutes based on total USD volume:
 
 ---
 
-## Database — `database/polymarket_state.db`
+## Database
 
-Six tables, single SQLite file, WAL mode.
+For the delivered Phase 2 workflow, local PostgreSQL is the recommended canonical runtime because replay validation and migration proofs were completed on that path. SQLite can still be used as a bootstrap or developer convenience layer when needed.
+
+Recommended Phase 2+ runtime:
+
+```bash
+export POLYMARKET_DB_BACKEND=postgres
+export POLYMARKET_DATABASE_URL='postgresql+psycopg://USER:PASS@localhost:5432/polymarket'
+```
+
+SQLite fallback:
+
+```bash
+export POLYMARKET_DB_BACKEND=sqlite
+export POLYMARKET_SQLITE_PATH='database/polymarket_state.db'
+```
 
 ### `events` — question containers
 | Column | Type | Description |
@@ -152,15 +197,41 @@ git clone <repo-url> && cd polymarket_arbitrage
 python -m venv venv && source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
-# 2. Run interactively (for testing)
+# 2. Recommended: use local PostgreSQL for the canonical Phase 2 runtime
+export POLYMARKET_DB_BACKEND=postgres
+export POLYMARKET_DATABASE_URL='postgresql+psycopg://USER:PASS@localhost:5432/polymarket'
+
+# 3. Run interactively (for testing)
 python run_collector.py
 
-# 3. Register as macOS background service
+# 4. Register as macOS background service
 sed -e "s|__PROJECT_DIR__|$(pwd)|g" \
     -e "s|__PYTHON_PATH__|$(pwd)/venv/bin/python|g" \
     polymarket.plist > ~/Library/LaunchAgents/com.polymarket.collector.plist
 launchctl load ~/Library/LaunchAgents/com.polymarket.collector.plist
 ```
+
+To migrate an existing local SQLite dataset into PostgreSQL:
+
+```bash
+venv/bin/python database/postgres_migrate.py \
+  --target-url 'postgresql+psycopg://USER:PASS@localhost:5432/polymarket'
+```
+
+The full local Phase 2 runbook is in [database/POSTGRES_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/POSTGRES_LOCAL_RUNBOOK.md).
+
+## Phase 2 Deliverables In This Repo
+
+- Durable raw envelope archives under `data/raw/`
+- Detector-input logs under `data/detector_input/`
+- Replay validation CLI in `validation/run_phase2_replay.py`
+- Replay republish CLI in `validation/run_phase2_republish.py`
+- PostgreSQL schema and migration tooling in `database/`
+- Gate 2 delivery and signoff docs in `Documentation/phases/`
+
+## What Is Legacy
+
+`Old-content/`, `Documentation/person1Phases/`, and `Documentation/person2Phases/` are retained for historical context. They are useful references, but they are not the canonical source of truth for starting Phase 3.
 
 ---
 

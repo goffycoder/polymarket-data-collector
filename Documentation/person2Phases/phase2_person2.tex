@@ -3,11 +3,13 @@
 \usepackage{longtable}
 \begin{document}
 
+\textbf{Legacy note:} This split-by-person draft is superseded by the canonical single-owner Phase 2 document at \texttt{Documentation/phases/phase2.tex}.\\
+
 \section*{Phase 2 Plan - Person 2 (Person B)}
 
 \textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.4, ``Phase 2: Build the Durable Data Plane''.
-\textbf{Interpretation note:} Phase 2 for Person 2 is about proving that the new durable data plane is actually usable. The replay path, point-in-time contracts, and reconstruction proof are the acceptance criteria for the storage and transport work.
-\textbf{Implementation note:} Validation remains scoped to the approved universe and the archived raw data produced by Phase 2. Person 2 is not re-litigating Phase 1 selection policy here; the job is to prove replayability, ordering correctness, and point-in-time state reconstruction.
+\textbf{Interpretation note:} Phase 2 for Person 2 is about proving that the new durable local data plane is actually usable. The replay path, point-in-time contracts, and reconstruction proof are the acceptance criteria for the storage and transport work.
+\textbf{Implementation note:} Validation remains scoped to the approved universe and the archived raw data produced by Phase 2. Person 2 is not re-litigating Phase 1 selection policy here; the job is to prove replayability, ordering correctness, and point-in-time state reconstruction on the local-first canonical stack.
 
 \textbf{Phase duration:} 2-3 weeks\\
 \textbf{Phase goal:} Define replay contracts and prove a historical window can be reconstructed from durable archives.
@@ -53,7 +55,7 @@ Replay case study & Gate 2 proof package for a one-hour window & The team can re
 
 \textbf{Block 2: Replay tooling and parity checks}
 \begin{itemize}
-\item Build tooling that reads one archive window, replays envelopes in deterministic order, and materializes validation outputs.
+\item Build tooling that reads one archive window from the local durable archive, replays envelopes in deterministic order, and materializes validation outputs.
 \item Compare replayed counts to original manifests and operational outputs for the same window.
 \item Verify ordering, event-time behavior, and duplicate-handling semantics, especially for wallet and episode-sensitive records.
 \item Produce replay diagnostics that explain count deltas or ordering drift with concrete reason codes.
@@ -80,7 +82,7 @@ Replay case study & Gate 2 proof package for a one-hour window & The team can re
 \item Point-in-time contract requirements for profiles, activity, and evidence snapshots.
 \item Concrete archive windows used for replay proof and their reproducibility status.
 \item Gate 2 parity and ordering evidence for shared signoff.
-\item Any raw-capture or Postgres-write gaps that block deterministic reconstruction.
+\item Any raw-capture or local-PostgreSQL-write gaps that block deterministic reconstruction.
 \end{itemize}
 
 \section*{Gate 2 Checklist (Person 2 Ownership)}

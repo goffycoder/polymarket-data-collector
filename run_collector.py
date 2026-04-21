@@ -21,7 +21,7 @@ import signal
 import sys
 from datetime import datetime, timezone
 
-from database.db_manager import apply_schema, get_conn
+from database.db_manager import apply_schema, backend_name, get_conn
 from collectors.events_collector import sync_events
 from collectors.markets_collector import sync_markets
 from collectors.price_collector import collect_tier1, collect_tier2
@@ -99,6 +99,30 @@ def _refresh_runtime_universe():
             for candidate in selection.review_candidates[:5]
         )
         log.info(f"🧭 Review candidates: {preview}")
+
+
+async def _run_until_shutdown(coro, *, label: str) -> bool:
+    """Run one coroutine unless shutdown is requested first.
+
+    Returns True if the coroutine completed normally, False if shutdown
+    interrupted it and the task was cancelled.
+    """
+    task = asyncio.create_task(coro, name=label)
+    shutdown_task = asyncio.create_task(_shutdown.wait(), name=f"{label}_shutdown_wait")
+    done, pending = await asyncio.wait(
+        {task, shutdown_task},
+        return_when=asyncio.FIRST_COMPLETED,
+    )
+
+    if shutdown_task in done and _shutdown.is_set():
+        task.cancel()
+        await asyncio.gather(task, return_exceptions=True)
+        return False
+
+    shutdown_task.cancel()
+    await asyncio.gather(shutdown_task, return_exceptions=True)
+    await task
+    return True
 
 
 # ---- BACKGROUND LOOPS ----
@@ -196,22 +220,12 @@ async def ws_loop():
             await asyncio.sleep(5)
 
 
-# ---- GRACEFUL SHUTDOWN ----
-
-_loop: asyncio.AbstractEventLoop | None = None
-
-
 def _handle_signal(signum, frame):
     log.info(f"🛑 Signal {signum} received — shutting down gracefully...")
     _shutdown.set()
-    if _loop and _loop.is_running():
-        _loop.stop()  # Cancel all running tasks immediately
 
 
 async def main():
-    global _loop
-    _loop = asyncio.get_event_loop()
-
     # Register shutdown signals
     signal.signal(signal.SIGTERM, _handle_signal)
     signal.signal(signal.SIGINT, _handle_signal)
@@ -219,6 +233,7 @@ async def main():
     log.info("=" * 55)
     log.info("  POLYMARKET V2 HIGH-RESOLUTION DATA COLLECTOR")
     log.info("=" * 55)
+    log.info(f"🗄️ Runtime DB backend: {backend_name()}")
 
     # ---- PHASE 1: Bootstrap ----
     log.info("📐 PHASE 1: Applying database schema...")
@@ -227,24 +242,34 @@ async def main():
 
     # ---- PHASE 2: Initial Full Sync ----
     log.info("🌐 PHASE 2: Initial full sync (events + markets)...")
-    await sync_events()
-    await sync_markets()
+    events_completed = await _run_until_shutdown(sync_events(), label="initial_events_sync")
+    if not events_completed:
+        log.info("👋 Collector stopped during initial events sync.")
+        return
+
+    markets_completed = await _run_until_shutdown(sync_markets(), label="initial_markets_sync")
+    if not markets_completed:
+        log.info("👋 Collector stopped during initial markets sync.")
+        return
+
     _refresh_runtime_universe()
 
     # ---- PHASE 3: Launch concurrent loops ----
     log.info("🚀 PHASE 3: Launching monitoring loops...")
+    tasks = [
+        asyncio.create_task(ws_loop(), name="ws_loop"),
+        asyncio.create_task(tier1_loop(), name="tier1_loop"),
+        asyncio.create_task(tier2_loop(), name="tier2_loop"),
+        asyncio.create_task(trades_loop(), name="trades_loop"),
+        asyncio.create_task(sync_loop(), name="sync_loop"),
+        asyncio.create_task(ttl_loop(), name="ttl_loop"),
+    ]
     try:
-        await asyncio.gather(
-            ws_loop(),
-            tier1_loop(),
-            tier2_loop(),
-            trades_loop(),
-            sync_loop(),
-            ttl_loop(),
-            return_exceptions=True,
-        )
-    except asyncio.CancelledError:
-        pass
+        await _shutdown.wait()
+    finally:
+        for task in tasks:
+            task.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
 
     log.info("👋 Collector stopped.")
 

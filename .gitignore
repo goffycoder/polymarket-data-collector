@@ -19,6 +19,7 @@ __pycache__/
 database/*.csv
 database/*.csv.*
 *.tmp
+data/
 
 # macOS
 .DS_Store
@@ -34,6 +35,19 @@ Documentation/*.fdb_latexmk
 Documentation/*.fls
 Documentation/*.log
 Documentation/*.out
+Documentation/**/*.aux
+Documentation/**/*.fdb_latexmk
+Documentation/**/*.fls
+Documentation/**/*.log
+Documentation/**/*.out
+Documentation/**/*.synctex.gz
+Documentation/**/*.toc
+Documentation/phases/*.aux
+Documentation/phases/*.log
+Documentation/person1Phases/*.aux
+Documentation/person1Phases/*.log
+Documentation/person2Phases/*.aux
+Documentation/person2Phases/*.log
 
 # Deployed service (contains local absolute paths — use polymarket.plist template instead)
 com.polymarket.collector.plist
