@@ -5,8 +5,11 @@ This runbook is the shortest practical path to exercise the Person 1 ML plumbing
 Current Person 1 capabilities:
 - replay-derived feature materialization
 - model registry writes
-- shadow-score logging foundation
+- shadow-score logging foundation with dedupe
 - runnable shadow scoring with a registered JSON artifact
+- active shadow model lookup / activation / retirement
+- rolling live shadow polling
+- registry and recent-score reporting
 
 ## 1. Move into the Person 1 worktree
 
@@ -77,7 +80,24 @@ Then register it:
   --shadow-enabled
 ```
 
-## 5. Run shadow scoring
+## 5. Activate or retire the shadow model
+
+Activate one model:
+
+```bash
+/Users/vrajpatel/All-projects/polymarket_arbitrage/venv/bin/python run_phase6_activate_model.py \
+  --model-version phase6_shadow_v1
+```
+
+Retire one model:
+
+```bash
+/Users/vrajpatel/All-projects/polymarket_arbitrage/venv/bin/python run_phase6_activate_model.py \
+  --model-version phase6_shadow_v1 \
+  --action retire
+```
+
+## 6. Run shadow scoring for one window
 
 ```bash
 /Users/vrajpatel/All-projects/polymarket_arbitrage/venv/bin/python run_phase6_shadow_score.py \
@@ -89,7 +109,31 @@ This writes:
 - one shadow-score artifact in `reports/phase6/shadow_scores/`
 - one `shadow_model_scores` row per scored candidate
 
-## 6. Useful tables to inspect
+## 7. Run the rolling live shadow poller
+
+One short pass:
+
+```bash
+/Users/vrajpatel/All-projects/polymarket_arbitrage/venv/bin/python run_phase6_shadow_live.py \
+  --iterations 1 \
+  --lookback-minutes 30
+```
+
+## 8. Inspect status and the Gate 6 report
+
+Registry / score status:
+
+```bash
+/Users/vrajpatel/All-projects/polymarket_arbitrage/venv/bin/python run_phase6_registry_status.py --json
+```
+
+Person 1 report:
+
+```bash
+/Users/vrajpatel/All-projects/polymarket_arbitrage/venv/bin/python -m validation.run_phase6_person1_report --json
+```
+
+## 9. Useful tables to inspect
 
 ```sql
 select * from feature_materialization_runs order by created_at desc limit 20;
@@ -97,7 +141,7 @@ select * from model_registry order by created_at desc limit 20;
 select * from shadow_model_scores order by created_at desc limit 20;
 ```
 
-## 7. What to hand to Person 2
+## 10. What to hand to Person 2
 
 Before Person 2 starts comparing or calibrating ML v1, give them:
 - the materialized feature artifact path

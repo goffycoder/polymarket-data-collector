@@ -26,6 +26,7 @@ class Phase6ShadowRunSummary:
     model_version: str
     feature_schema_version: str
     score_count: int
+    new_score_count: int
     output_path: str | None
 
     def to_dict(self) -> dict[str, Any]:
@@ -87,6 +88,8 @@ def build_shadow_scores(
                 "candidate_id": record["candidate_id"],
                 "alert_id": record.get("alert_id"),
                 "market_id": record["market_id"],
+                "event_id": record.get("event_id"),
+                "event_family_id": record.get("event_family_id"),
                 "decision_timestamp": record["decision_timestamp"],
                 "score_value": score_value,
                 "score_label": _score_label(score_value, thresholds),

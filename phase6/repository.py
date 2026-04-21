@@ -58,7 +58,61 @@ class Phase6ShadowScoreSummary:
         return asdict(self)
 
 
+@dataclass(slots=True)
+class Phase6RegistryStatusSummary:
+    active_shadow_model: dict[str, Any] | None
+    recent_models: list[dict[str, Any]]
+    recent_shadow_scores: list[dict[str, Any]]
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
 class Phase6Repository:
+    def list_recent_models(self, *, limit: int = 20) -> list[dict[str, Any]]:
+        conn = get_conn()
+        try:
+            rows = conn.execute(
+                """
+                SELECT
+                    model_version,
+                    model_name,
+                    registry_version,
+                    artifact_path,
+                    feature_schema_version,
+                    training_dataset_hash,
+                    calibration_metadata,
+                    deployment_status,
+                    shadow_enabled,
+                    deployed_at,
+                    created_at,
+                    notes
+                FROM model_registry
+                ORDER BY COALESCE(deployed_at, created_at) DESC, model_version DESC
+                LIMIT ?
+                """,
+                (limit,),
+            ).fetchall()
+        finally:
+            conn.close()
+        return [
+            {
+                "model_version": row["model_version"],
+                "model_name": row["model_name"],
+                "registry_version": row["registry_version"],
+                "artifact_path": row["artifact_path"],
+                "feature_schema_version": row["feature_schema_version"],
+                "training_dataset_hash": row["training_dataset_hash"],
+                "calibration_metadata": json.loads(row["calibration_metadata"] or "{}"),
+                "deployment_status": row["deployment_status"],
+                "shadow_enabled": bool(row["shadow_enabled"]),
+                "deployed_at": row["deployed_at"],
+                "created_at": row["created_at"],
+                "notes": row["notes"],
+            }
+            for row in rows
+        ]
+
     def load_model_registry_entry(self, *, model_version: str) -> dict[str, Any] | None:
         conn = get_conn()
         try:
@@ -100,6 +154,74 @@ class Phase6Repository:
             "created_at": row["created_at"],
             "notes": row["notes"],
         }
+
+    def activate_shadow_model(
+        self,
+        *,
+        model_version: str,
+        retire_previous: bool = True,
+        notes: str | None = None,
+    ) -> dict[str, Any]:
+        conn = get_conn()
+        try:
+            if retire_previous:
+                conn.execute(
+                    """
+                    UPDATE model_registry
+                    SET shadow_enabled = 0,
+                        deployment_status = CASE
+                            WHEN deployment_status IN ('shadow', 'deployed') THEN 'retired'
+                            ELSE deployment_status
+                        END
+                    WHERE shadow_enabled = 1
+                      AND model_version <> ?
+                    """,
+                    (model_version,),
+                )
+            conn.execute(
+                """
+                UPDATE model_registry
+                SET shadow_enabled = 1,
+                    deployment_status = 'shadow',
+                    deployed_at = ?,
+                    notes = COALESCE(?, notes)
+                WHERE model_version = ?
+                """,
+                (_iso_now(), notes, model_version),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        result = self.load_model_registry_entry(model_version=model_version)
+        if result is None:
+            raise ValueError(f"Model version not found: {model_version}")
+        return result
+
+    def retire_model(
+        self,
+        *,
+        model_version: str,
+        notes: str | None = None,
+    ) -> dict[str, Any]:
+        conn = get_conn()
+        try:
+            conn.execute(
+                """
+                UPDATE model_registry
+                SET shadow_enabled = 0,
+                    deployment_status = 'retired',
+                    notes = COALESCE(?, notes)
+                WHERE model_version = ?
+                """,
+                (notes, model_version),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        result = self.load_model_registry_entry(model_version=model_version)
+        if result is None:
+            raise ValueError(f"Model version not found: {model_version}")
+        return result
 
     def load_active_shadow_model(self) -> dict[str, Any] | None:
         conn = get_conn()
@@ -311,6 +433,13 @@ class Phase6Repository:
                     score_metadata,
                     scored_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(model_version, candidate_id, scored_at) DO UPDATE SET
+                    feature_schema_version = excluded.feature_schema_version,
+                    alert_id = excluded.alert_id,
+                    market_id = excluded.market_id,
+                    score_value = excluded.score_value,
+                    score_label = excluded.score_label,
+                    score_metadata = excluded.score_metadata
                 """,
                 (
                     shadow_score_id,
@@ -335,4 +464,82 @@ class Phase6Repository:
             market_id=market_id,
             score_value=score_value,
             score_label=score_label,
+        )
+
+    def list_recent_shadow_scores(self, *, model_version: str | None = None, limit: int = 20) -> list[dict[str, Any]]:
+        conn = get_conn()
+        try:
+            if model_version:
+                rows = conn.execute(
+                    """
+                    SELECT
+                        shadow_score_id,
+                        model_version,
+                        feature_schema_version,
+                        candidate_id,
+                        alert_id,
+                        market_id,
+                        score_value,
+                        score_label,
+                        score_metadata,
+                        scored_at,
+                        created_at
+                    FROM shadow_model_scores
+                    WHERE model_version = ?
+                    ORDER BY scored_at DESC, shadow_score_id DESC
+                    LIMIT ?
+                    """,
+                    (model_version, limit),
+                ).fetchall()
+            else:
+                rows = conn.execute(
+                    """
+                    SELECT
+                        shadow_score_id,
+                        model_version,
+                        feature_schema_version,
+                        candidate_id,
+                        alert_id,
+                        market_id,
+                        score_value,
+                        score_label,
+                        score_metadata,
+                        scored_at,
+                        created_at
+                    FROM shadow_model_scores
+                    ORDER BY scored_at DESC, shadow_score_id DESC
+                    LIMIT ?
+                    """,
+                    (limit,),
+                ).fetchall()
+        finally:
+            conn.close()
+        return [
+            {
+                "shadow_score_id": row["shadow_score_id"],
+                "model_version": row["model_version"],
+                "feature_schema_version": row["feature_schema_version"],
+                "candidate_id": row["candidate_id"],
+                "alert_id": row["alert_id"],
+                "market_id": row["market_id"],
+                "score_value": float(row["score_value"]),
+                "score_label": row["score_label"],
+                "score_metadata": json.loads(row["score_metadata"] or "{}"),
+                "scored_at": row["scored_at"],
+                "created_at": row["created_at"],
+            }
+            for row in rows
+        ]
+
+    def build_registry_status(self, *, limit: int = 20) -> Phase6RegistryStatusSummary:
+        active = self.load_active_shadow_model()
+        recent_models = self.list_recent_models(limit=limit)
+        recent_scores = self.list_recent_shadow_scores(
+            model_version=(active or {}).get("model_version"),
+            limit=limit,
+        )
+        return Phase6RegistryStatusSummary(
+            active_shadow_model=active,
+            recent_models=recent_models,
+            recent_shadow_scores=recent_scores,
         )

@@ -374,6 +374,8 @@ CREATE INDEX IF NOT EXISTS idx_shadow_model_scores_candidate_time
     ON shadow_model_scores(candidate_id, scored_at DESC);
 CREATE INDEX IF NOT EXISTS idx_shadow_model_scores_model_time
     ON shadow_model_scores(model_version, scored_at DESC);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_shadow_model_scores_model_candidate_time
+    ON shadow_model_scores(model_version, candidate_id, scored_at);
 
 -- -----------------------------------------------------------------
 -- 8. PHASE 3 ONLINE STATE / CANDIDATE DETECTION

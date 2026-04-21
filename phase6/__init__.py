@@ -1,6 +1,7 @@
 from phase6.repository import (
     Phase6FeatureMaterializationSummary,
     Phase6ModelRegistrySummary,
+    Phase6RegistryStatusSummary,
     Phase6ShadowScoreSummary,
     Phase6Repository,
 )
@@ -13,6 +14,7 @@ from phase6.scoring import (
 __all__ = [
     "Phase6FeatureMaterializationSummary",
     "Phase6ModelRegistrySummary",
+    "Phase6RegistryStatusSummary",
     "Phase6ShadowScoreSummary",
     "Phase6ShadowRunSummary",
     "Phase6Repository",
