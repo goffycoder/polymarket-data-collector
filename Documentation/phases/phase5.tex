@@ -1,0 +1,121 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 5 Plan - Single Owner}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.5, ``Phase 5: Build Replay, Backtesting, and Validation''.\\
+\textbf{Execution status:} Kickoff branch created from merged \texttt{main} after Phase 4 integration.\\
+\textbf{Entry assumption:} Phase 2 archives, Phase 3 detector outputs, and Phase 4 alert artifacts already exist as versioned local runtime components, even if live validation quality still needs tuning.
+
+\textbf{Phase goal:} Prove the system can be trusted historically, not just live, by making replay, backtesting, and evaluation reproducible and point-in-time honest.\\
+\textbf{Interpretation note:} Phase 5 is where the project becomes empirically defendable. The job is not just to replay data, but to show that candidate and alert behavior can be reconstructed, judged conservatively, and summarized in a way that survives academic scrutiny.\\
+\textbf{Implementation note:} Phase 5 must stay conservative. Midpoint fantasy fills, future-leaking labels, and cherry-picked case studies do not count as validation.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Build batch replay jobs that reconstruct historical windows from raw archives.
+\item Add backfill orchestration for missing windows and archive integrity checks.
+\item Build result tables for replay runs, validation runs, and backtest artifacts.
+\item Add reproducible job configuration and version tracking.
+\item Implement event-family holdout, category holdout, and time-split validation.
+\item Build a conservative paper-trading simulator with bid/ask execution, slippage, size caps, fees, and near-resolution restrictions.
+\item Define success metrics and failure metrics for candidate quality, alert usefulness, paper-trade edge, and lead time.
+\item Produce at least three historical case studies that replay from raw data to alert decision.
+\item Deliver one deterministic replay CLI, one backtesting report template, one historical validation pack, and one Gate 5 precondition signoff.
+\end{enumerate}
+
+\section*{Phase 5 Exit Criteria}
+\begin{itemize}
+\item Historical candidate and alert outputs are reproducible from archived inputs.
+\item Evaluation is point-in-time correct and segmented by holdout regime rather than one pooled score.
+\item Paper-trading assumptions are conservative, explicit, and reviewable.
+\item At least three historical case studies can be rerun end to end.
+\item One Gate 5 evidence packet exists with replay output, validation report, and backtest summary.
+\end{itemize}
+
+\section*{Locked Scope Decisions}
+\begin{itemize}
+\item Replay must begin from raw archives and detector-input partitions, not from hand-edited downstream tables.
+\item Historical jobs must store their configuration, code version, source window, and output artifact identifiers.
+\item Backtesting must use conservative execution assumptions and reject optimistic midpoint-only fills.
+\item Evaluation must include event-family holdout, category holdout, and time-split analysis.
+\item Case studies must be generated from rerunnable replay windows, not manually narrated from memory.
+\item Phase 5 validates the system historically; it does not yet introduce learned ranking or live trading automation.
+\end{itemize}
+
+\section*{Concrete Artifacts Required}
+\begin{longtable}{p{0.24\linewidth}p{0.34\linewidth}p{0.28\linewidth}}
+\textbf{Workstream} & \textbf{Artifact} & \textbf{Done Condition} \\
+Replay engine & Deterministic replay CLI/workflow & A chosen archive window can be rerun into stable candidate and alert artifacts \\
+Backfill and integrity layer & Gap detection plus backfill orchestration & Missing or corrupt historical windows are diagnosed and recoverable \\
+Artifact persistence & Replay, validation, and backtest result tables & Every run is queryable by config, version, and source window \\
+Validation suite & Holdout-based evaluation outputs & Historical quality is measurable without future leakage \\
+Paper-trading simulator & Conservative execution simulator & Candidate/alert outputs can be translated into bounded paper-trade outcomes \\
+Case-study package & Three rerunnable historical examples & Each example ties replayed inputs to alert decisions and retrospective judgment \\
+Gate 5 signoff & Historical validation pack & The team can defend one full historical evidence packet academically \\
+\end{longtable}
+
+\section*{Canonical Phase 5 Workflow}
+\begin{enumerate}
+\item Select a bounded historical window from raw archives and detector-input manifests.
+\item Replay that window deterministically into candidate and alert artifacts.
+\item Store replay-run metadata, versions, counts, and integrity diagnostics.
+\item Run holdout-based validation on the replay outputs.
+\item Feed replay outputs into the conservative paper-trading simulator.
+\item Produce reports for candidate quality, alert usefulness, lead time, and paper-trade edge.
+\item Turn the strongest and weakest windows into rerunnable case studies.
+\item Assemble the Gate 5 evidence packet and signoff memo.
+\end{enumerate}
+
+\section*{Concrete Execution Sequence}
+\textbf{Block 1: Replay foundation}
+\begin{itemize}
+\item Build deterministic replay jobs that reconstruct bounded historical windows from raw archives and detector-input logs.
+\item Record replay configs, code versions, counts, and failure diagnostics.
+\item Persist replay outputs separately from live operational tables.
+\end{itemize}
+
+\textbf{Block 2: Backfill and integrity}
+\begin{itemize}
+\item Add missing-window detection, archive-integrity checks, and explicit backfill orchestration.
+\item Fail loudly on missing manifests, broken partitions, or schema-version mismatches.
+\item Document what makes a replay window acceptable versus degraded.
+\end{itemize}
+
+\textbf{Block 3: Validation and simulator}
+\begin{itemize}
+\item Implement event-family, category, and time-split holdouts.
+\item Build the conservative paper-trading simulator with bid/ask fills, slippage, fees, size caps, and near-resolution restrictions.
+\item Define the core Phase 5 metrics and reporting contract.
+\end{itemize}
+
+\textbf{Block 4: Case studies and signoff}
+\begin{itemize}
+\item Produce at least three historical case studies from replay input through alert decision and simulated outcome.
+\item Generate one reusable backtesting report template and one historical validation pack.
+\item Write the Gate 5 precondition signoff memo.
+\end{itemize}
+
+\section*{Expected Code Areas}
+\begin{itemize}
+\item \texttt{validation/} for replay, holdout evaluation, and report generation
+\item \texttt{phase3/} and \texttt{phase4/} integrations where replay consumes existing detector/alert contracts
+\item \texttt{database/} for replay-run, validation-run, and backtest artifact tables
+\item one new \texttt{phase5/} package for simulator and orchestration logic
+\item top-level runners such as \texttt{run\_phase5\_...} CLIs
+\end{itemize}
+
+\section*{Non-Goals}
+\begin{itemize}
+\item No live capital deployment.
+\item No learned ranking or calibration model yet.
+\item No claim of profitability without conservative replay evidence.
+\item No professor-facing empirical claim before at least one full historical validation pack exists.
+\end{itemize}
+
+\section*{Gate 5 Signoff Standard}
+Phase 5 is signoff-ready when one teammate can rerun the same historical window and recover materially identical replay artifacts, validation results, and backtest summaries, and when the project can defend both its strongest case study and one failure case without relying on hidden assumptions.
+
+\end{document}
