@@ -4,19 +4,20 @@ import argparse
 import json
 
 from database.db_manager import apply_schema
-from phase5 import run_phase5_replay_window
+from phase5 import run_phase5_replay_bundle
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Run the Phase 5 Person 1 replay foundation for one historical window."
+        description="Run the Phase 5 Person 1 replay foundation for one or more historical sources."
     )
     parser.add_argument("--start", required=True, help="Window start timestamp (ISO 8601).")
     parser.add_argument("--end", required=True, help="Window end timestamp (ISO 8601).")
     parser.add_argument(
         "--source-system",
+        action="append",
         required=True,
-        help="One source system name, e.g. gamma_events, clob_ws_market, data_api_trades.",
+        help="One source system name. Repeat this flag for multi-source replay, e.g. --source-system clob_ws_market --source-system clob_books.",
     )
     parser.add_argument(
         "--output-dir",
@@ -33,28 +34,37 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def _render_text(payload: dict) -> str:
-    return "\n".join(
-        [
-            f"Replay run id: {payload['replay_run_id']}",
-            f"Status: {payload['status']}",
-            f"Source system: {payload['source_system']}",
-            f"Window: {payload['start']} -> {payload['end']}",
-            f"Git commit: {payload['git_commit']}",
-            f"Raw partitions touched: {payload['raw_partitions_touched']}",
-            f"Raw rows scanned: {payload['raw_rows_scanned']}",
-            f"Detector rows observed: {payload['detector_rows_observed']}",
-            f"Artifact path: {payload['output_path']}",
-        ]
-    )
+    lines = [
+        f"Replay bundle id: {payload['bundle_id']}",
+        f"Overall status: {payload['overall_status']}",
+        f"Window: {payload['start']} -> {payload['end']}",
+        f"Git commit: {payload['git_commit']}",
+        f"Source systems: {', '.join(payload['source_systems'])}",
+        f"Total raw rows scanned: {payload['total_raw_rows_scanned']}",
+        f"Total detector rows observed: {payload['total_detector_rows_observed']}",
+        f"Artifact path: {payload['output_path']}",
+        "",
+        "Replay runs:",
+    ]
+    for item in payload["replay_runs"]:
+        lines.extend(
+            [
+                f"  - {item['source_system']}: status={item['status']} integrity={item['integrity_status']}",
+                f"    raw_missing={item['raw_missing_partitions']} detector_missing={item['detector_missing_partitions']}",
+                f"    raw_mismatches={item['raw_manifest_mismatches']} detector_mismatches={item['detector_manifest_mismatches']}",
+                f"    artifact={item['output_path']}",
+            ]
+        )
+    return "\n".join(lines)
 
 
 def main() -> int:
     args = build_parser().parse_args()
     apply_schema()
-    summary = run_phase5_replay_window(
+    summary = run_phase5_replay_bundle(
         start=args.start,
         end=args.end,
-        source_system=args.source_system,
+        source_systems=args.source_system,
         output_dir=args.output_dir,
         notes=args.notes or None,
     )
