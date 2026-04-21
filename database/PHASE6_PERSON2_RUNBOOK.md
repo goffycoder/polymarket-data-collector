@@ -55,7 +55,32 @@ Outputs:
 - one `model_evaluation_runs` row
 - several `calibration_profiles` rows
 
-## 5. Hand off to Person 1
+## 5. Render the Person 2 report
+
+```bash
+/Users/vrajpatel/All-projects/polymarket_arbitrage/venv/bin/python -m validation.run_phase6_person2_report --json
+```
+
+This summarizes:
+- latest evaluation run
+- baseline margin on the held-out test split
+- calibration slices by liquidity bucket and category
+
+## 6. Prepare the handoff for Person 1
+
+```bash
+/Users/vrajpatel/All-projects/polymarket_arbitrage/venv/bin/python run_phase6_prepare_handoff.py \
+  --model-version phase6_person2_ranker_v1 \
+  --json
+```
+
+This writes one bundle JSON in `reports/phase6/handoffs/` with:
+- model artifact path
+- dataset hash
+- recommended calibration metadata
+- the exact fields Person 1 needs for `run_phase6_register_model.py`
+
+## 7. Hand off to Person 1
 
 Use the generated model artifact with:
 
@@ -68,7 +93,7 @@ Use the generated model artifact with:
   --shadow-enabled
 ```
 
-## 6. Useful tables
+## 8. Useful tables
 
 ```sql
 select * from model_evaluation_runs order by created_at desc limit 20;

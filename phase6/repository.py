@@ -89,6 +89,127 @@ class Phase6CalibrationProfileSummary:
 
 
 class Phase6Repository:
+    def list_recent_evaluation_runs(self, *, limit: int = 20) -> list[dict[str, Any]]:
+        conn = get_conn()
+        try:
+            rows = conn.execute(
+                """
+                SELECT
+                    evaluation_run_id,
+                    model_version,
+                    evaluation_version,
+                    feature_schema_version,
+                    dataset_hash,
+                    start_time,
+                    end_time,
+                    train_row_count,
+                    validation_row_count,
+                    test_row_count,
+                    labeled_row_count,
+                    output_path,
+                    summary_json,
+                    created_at
+                FROM model_evaluation_runs
+                ORDER BY created_at DESC, evaluation_run_id DESC
+                LIMIT ?
+                """,
+                (limit,),
+            ).fetchall()
+        finally:
+            conn.close()
+        return [
+            {
+                "evaluation_run_id": row["evaluation_run_id"],
+                "model_version": row["model_version"],
+                "evaluation_version": row["evaluation_version"],
+                "feature_schema_version": row["feature_schema_version"],
+                "dataset_hash": row["dataset_hash"],
+                "start_time": row["start_time"],
+                "end_time": row["end_time"],
+                "train_row_count": int(row["train_row_count"] or 0),
+                "validation_row_count": int(row["validation_row_count"] or 0),
+                "test_row_count": int(row["test_row_count"] or 0),
+                "labeled_row_count": int(row["labeled_row_count"] or 0),
+                "output_path": row["output_path"],
+                "summary_json": json.loads(row["summary_json"] or "{}"),
+                "created_at": row["created_at"],
+            }
+            for row in rows
+        ]
+
+    def list_calibration_profiles(
+        self,
+        *,
+        model_version: str | None = None,
+        limit: int = 200,
+    ) -> list[dict[str, Any]]:
+        conn = get_conn()
+        try:
+            if model_version:
+                rows = conn.execute(
+                    """
+                    SELECT
+                        calibration_profile_id,
+                        model_version,
+                        calibration_version,
+                        profile_scope,
+                        profile_key,
+                        sample_count,
+                        positive_rate,
+                        watch_threshold,
+                        actionable_threshold,
+                        critical_threshold,
+                        metadata_json,
+                        created_at
+                    FROM calibration_profiles
+                    WHERE model_version = ?
+                    ORDER BY created_at DESC, calibration_profile_id DESC
+                    LIMIT ?
+                    """,
+                    (model_version, limit),
+                ).fetchall()
+            else:
+                rows = conn.execute(
+                    """
+                    SELECT
+                        calibration_profile_id,
+                        model_version,
+                        calibration_version,
+                        profile_scope,
+                        profile_key,
+                        sample_count,
+                        positive_rate,
+                        watch_threshold,
+                        actionable_threshold,
+                        critical_threshold,
+                        metadata_json,
+                        created_at
+                    FROM calibration_profiles
+                    ORDER BY created_at DESC, calibration_profile_id DESC
+                    LIMIT ?
+                    """,
+                    (limit,),
+                ).fetchall()
+        finally:
+            conn.close()
+        return [
+            {
+                "calibration_profile_id": row["calibration_profile_id"],
+                "model_version": row["model_version"],
+                "calibration_version": row["calibration_version"],
+                "profile_scope": row["profile_scope"],
+                "profile_key": row["profile_key"],
+                "sample_count": int(row["sample_count"] or 0),
+                "positive_rate": row["positive_rate"],
+                "watch_threshold": row["watch_threshold"],
+                "actionable_threshold": row["actionable_threshold"],
+                "critical_threshold": row["critical_threshold"],
+                "metadata_json": json.loads(row["metadata_json"] or "{}"),
+                "created_at": row["created_at"],
+            }
+            for row in rows
+        ]
+
     def load_model_registry_entry(self, *, model_version: str) -> dict[str, Any] | None:
         conn = get_conn()
         try:
