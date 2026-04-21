@@ -134,7 +134,31 @@ The report summarizes:
 - latest alert example
 - assessment status
 
-## 8. Alert update / resend test
+## 8. One-command Gate 4 capture
+
+If you want the shortest full signoff path, use:
+
+```bash
+mkdir -p reports
+
+/Users/vrajpatel/All-projects/polymarket_arbitrage/venv/bin/python run_phase4_gate4_capture.py \
+  --limit 10 \
+  --output reports/phase4_gate4_report.json
+```
+
+This performs:
+- workflow bootstrap
+- evidence pass
+- alert pass
+- latest-alert summary
+- Gate 4 JSON report write
+
+The output gives you:
+- the latest alerts in readable form
+- the Gate 4 assessment status
+- the exact report path to archive
+
+## 9. Alert update / resend test
 
 If you want to test the update semantics, run the pipeline once, then change the candidate severity or evidence conditions, and run the pipeline again.
 
@@ -143,7 +167,7 @@ The expected behavior is:
 - alert payload updates in place
 - delivery attempts increase when the update is material enough to resend
 
-## 9. Build a simple Gate 4 evidence packet
+## 10. Build a simple Gate 4 evidence packet
 
 For a clean local signoff packet, capture all of:
 - one Telegram alert screenshot
@@ -163,7 +187,8 @@ Then keep:
 - `reports/phase4_gate4_report.json`
 - the Telegram screenshot
 - the alert id used for the analyst action
-## 10. Time display
+
+## 11. Time display
 
 Human-facing Phase 4 outputs now render timestamps in:
 - Eastern Time
@@ -172,7 +197,8 @@ Human-facing Phase 4 outputs now render timestamps in:
 - `ET` label
 
 Database timestamps remain stored in UTC/ISO for correctness.
-## 11. Common troubleshooting
+
+## 12. Common troubleshooting
 
 ### Telegram message did not arrive
 
@@ -207,7 +233,8 @@ That usually means:
 ### Gate 4 report says `no_alerts_yet`
 
 Phase 4 tables exist, but there is no live or seeded alert traffic in the selected DB yet.
-## 12. Safe local testing pattern
+
+## 13. Safe local testing pattern
 
 For isolated experimentation, prefer:
 
