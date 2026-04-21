@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\textbf{Legacy note:} This split-by-person draft complements the canonical roadmap in \texttt{Documentation/SRS.tex}.\\
+
+\section*{Phase 7 Plan - Person 2 (Person B)}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.5, ``Phase 7: Advanced Research and Scale-Up''.\\
+\textbf{Interpretation note:} Person 2 owns the advanced-research track after Phase 6. \textbf{Assume Person 1 already has the data, replay artifacts, and operational ML plumbing available.} Person 2 should spend time on research questions, new feature families, model experiments, ablations, and thesis-quality outputs rather than data engineering or collector operations.\\
+\textbf{Implementation note:} Every advanced experiment must remain reproducible from saved datasets, hashes, and model versions. Research novelty does not excuse leakage or weak evaluation discipline.
+
+\textbf{Phase duration:} after v1 stability\\
+\textbf{Phase goal:} Expand the system into thesis-grade research depth on top of a stable data and runtime foundation.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Add graph-derived features and cluster persistence analysis.
+\item Experiment with marked Hawkes or TCN sequence models.
+\item Run the H1 observability / Goodhart study.
+\item Produce ablation studies and thesis-quality result tables and figures.
+\end{enumerate}
+
+\section*{Locked Implementation Decisions}
+\begin{itemize}
+\item Person 2 should assume Person 1 provides stable datasets, restore guarantees, and artifact hashes.
+\item Graph and temporal models must be compared against the Phase 6 baseline, not presented in isolation.
+\item Observability / Goodhart work must be grounded in measurable operator-facing proxies, not vague discussion.
+\item Thesis tables and figures must be reproducible from saved evaluation artifacts.
+\item Expensive experiments must be prioritized by likely information gain, not curiosity alone.
+\end{itemize}
+
+\section*{Concrete Execution Breakdown}
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
+\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
+Graph features & Graph / cluster feature set & Wallet-cluster persistence and relationship features are computed reproducibly from retained datasets \\
+Advanced temporal models & Hawkes / TCN experiment track & At least one sequence-oriented family is evaluated against the Phase 6 baseline \\
+Goodhart / observability study & H1 research memo & The system's observability incentives and possible gaming behaviors are analyzed with evidence \\
+Ablations and thesis figures & Reproducible tables and figures & Results can be regenerated from saved datasets, model versions, and scripts \\
+\end{longtable}
+
+\section*{Execution Sequence (No Day Timeline)}
+\textbf{Block 1: Data-ready research setup}
+\begin{itemize}
+\item Accept the stable replay datasets and hashes from Person 1.
+\item Freeze one research index of windows, categories, and evaluation scopes.
+\item Build the first graph-derived features from the retained data instead of asking Person 1 for new collection logic.
+\end{itemize}
+
+\textbf{Block 2: Advanced model experiments}
+\begin{itemize}
+\item Train graph-aware or cluster-aware variants on the stable Phase 6 baseline contract.
+\item Run marked Hawkes and/or TCN experiments using the same label and split discipline as Phase 6.
+\item Reject any apparent gain that disappears under strict holdouts or ablations.
+\end{itemize}
+
+\textbf{Block 3: Goodhart / observability study}
+\begin{itemize}
+\item Study whether alerting, scoring, or evidence policies create incentives that distort measured success.
+\item Quantify observability blind spots, gaming risk, and metric brittleness.
+\item Tie the findings back to concrete operator or thesis implications.
+\end{itemize}
+
+\textbf{Block 4: Thesis-quality reporting}
+\begin{itemize}
+\item Produce ablation tables, comparison figures, and methodology notes suitable for a thesis or paper appendix.
+\item Package every key figure so it can be regenerated from versioned artifacts.
+\item Hand Person 1 only the artifact set and deployment-relevant findings, not new infra burden.
+\end{itemize}
+
+\section*{Handoffs to Person 1}
+\begin{itemize}
+\item Versioned advanced-model artifacts and exact dataset hashes.
+\item Comparison reports versus the Phase 6 baseline.
+\item Any deployment-relevant warnings from the Goodhart / observability study.
+\item Thesis figures and tables that rely on retained operational datasets.
+\end{itemize}
+
+\section*{Gate 7 Checklist (Person 2 Ownership)}
+\begin{itemize}
+\item Graph-derived or cluster-persistence features exist and are reproducible.
+\item At least one advanced temporal model family is evaluated against the Phase 6 baseline.
+\item The H1 observability / Goodhart study is written with evidence.
+\item Thesis-quality ablation tables and figures can be regenerated from saved artifacts.
+\end{itemize}
+
+\end{document}

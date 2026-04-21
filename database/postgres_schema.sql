@@ -349,6 +349,46 @@ CREATE INDEX IF NOT EXISTS idx_shadow_model_scores_model_time
 CREATE UNIQUE INDEX IF NOT EXISTS uq_shadow_model_scores_model_candidate_time
     ON shadow_model_scores(model_version, candidate_id, scored_at);
 
+CREATE TABLE IF NOT EXISTS model_evaluation_runs (
+    evaluation_run_id        TEXT PRIMARY KEY,
+    model_version            TEXT NOT NULL,
+    evaluation_version       TEXT NOT NULL,
+    feature_schema_version   TEXT NOT NULL,
+    dataset_hash             TEXT NOT NULL,
+    start_time               TIMESTAMPTZ NOT NULL,
+    end_time                 TIMESTAMPTZ NOT NULL,
+    train_row_count          INTEGER DEFAULT 0,
+    validation_row_count     INTEGER DEFAULT 0,
+    test_row_count           INTEGER DEFAULT 0,
+    labeled_row_count        INTEGER DEFAULT 0,
+    output_path              TEXT,
+    summary_json             TEXT NOT NULL,
+    created_at               TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_model_evaluation_runs_model_time
+    ON model_evaluation_runs(model_version, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS calibration_profiles (
+    calibration_profile_id   TEXT PRIMARY KEY,
+    model_version            TEXT NOT NULL,
+    calibration_version      TEXT NOT NULL,
+    profile_scope            TEXT NOT NULL,
+    profile_key              TEXT NOT NULL,
+    sample_count             INTEGER DEFAULT 0,
+    positive_rate            DOUBLE PRECISION,
+    watch_threshold          DOUBLE PRECISION,
+    actionable_threshold     DOUBLE PRECISION,
+    critical_threshold       DOUBLE PRECISION,
+    metadata_json            TEXT,
+    created_at               TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_calibration_profiles_model_time
+    ON calibration_profiles(model_version, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_calibration_profiles_scope_key
+    ON calibration_profiles(profile_scope, profile_key, created_at DESC);
+
 CREATE TABLE IF NOT EXISTS detector_versions (
     detector_version        TEXT PRIMARY KEY,
     feature_schema_version  TEXT NOT NULL,

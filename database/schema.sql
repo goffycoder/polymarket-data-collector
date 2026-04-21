@@ -377,6 +377,46 @@ CREATE INDEX IF NOT EXISTS idx_shadow_model_scores_model_time
 CREATE UNIQUE INDEX IF NOT EXISTS uq_shadow_model_scores_model_candidate_time
     ON shadow_model_scores(model_version, candidate_id, scored_at);
 
+CREATE TABLE IF NOT EXISTS model_evaluation_runs (
+    evaluation_run_id        TEXT PRIMARY KEY,
+    model_version            TEXT NOT NULL,
+    evaluation_version       TEXT NOT NULL,
+    feature_schema_version   TEXT NOT NULL,
+    dataset_hash             TEXT NOT NULL,
+    start_time               TEXT NOT NULL,
+    end_time                 TEXT NOT NULL,
+    train_row_count          INTEGER DEFAULT 0,
+    validation_row_count     INTEGER DEFAULT 0,
+    test_row_count           INTEGER DEFAULT 0,
+    labeled_row_count        INTEGER DEFAULT 0,
+    output_path              TEXT,
+    summary_json             TEXT NOT NULL,
+    created_at               DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_model_evaluation_runs_model_time
+    ON model_evaluation_runs(model_version, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS calibration_profiles (
+    calibration_profile_id   TEXT PRIMARY KEY,
+    model_version            TEXT NOT NULL,
+    calibration_version      TEXT NOT NULL,
+    profile_scope            TEXT NOT NULL,
+    profile_key              TEXT NOT NULL,
+    sample_count             INTEGER DEFAULT 0,
+    positive_rate            REAL,
+    watch_threshold          REAL,
+    actionable_threshold     REAL,
+    critical_threshold       REAL,
+    metadata_json            TEXT,
+    created_at               DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_calibration_profiles_model_time
+    ON calibration_profiles(model_version, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_calibration_profiles_scope_key
+    ON calibration_profiles(profile_scope, profile_key, created_at DESC);
+
 -- -----------------------------------------------------------------
 -- 8. PHASE 3 ONLINE STATE / CANDIDATE DETECTION
 -- -----------------------------------------------------------------

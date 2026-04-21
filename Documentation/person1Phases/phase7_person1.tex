@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\textbf{Legacy note:} This split-by-person draft complements the canonical roadmap in \texttt{Documentation/SRS.tex}.\\
+
+\section*{Phase 7 Plan - Person 1 (Person A)}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, Section 11.5, ``Phase 7: Advanced Research and Scale-Up''.\\
+\textbf{Interpretation note:} Person 1 owns the operational scale-up track after Phase 6 stability. The focus is not new alpha logic; it is making the existing system cheaper, more reliable, easier to run for long durations, and ready to support thesis-grade experiments without data loss.\\
+\textbf{Implementation note:} Person 1 should avoid premature HA complexity. Scale-up work only counts if it is grounded in the single-instance architecture that already works.
+
+\textbf{Phase duration:} after v1 stability\\
+\textbf{Phase goal:} Improve scale, reliability, and cost efficiency while preserving reproducibility.
+
+\section*{Owned Deliverables (From SRS)}
+\begin{enumerate}
+\item Improve system scale, reliability, and cost efficiency.
+\item Add archival compaction, cold-storage policies, and long-run dashboards.
+\item Add redundancy or HA only after the single-instance architecture is proven.
+\end{enumerate}
+
+\section*{Locked Implementation Decisions}
+\begin{itemize}
+\item Long-run observability must come before HA.
+\item Archive compaction must never destroy replayability guarantees.
+\item Cold-storage policy must be explicit by data tier, not ad hoc.
+\item Dashboards must serve operator questions first: lag, gaps, cost, alert volume, model shadow load.
+\item Redundancy is deferred until the current single-node runtime is measured and justified.
+\end{itemize}
+
+\section*{Concrete Execution Breakdown}
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.30\linewidth}}
+\textbf{Work Item} & \textbf{Artifact} & \textbf{Done Condition} \\
+Scale/reliability audit & Bottleneck and failure inventory & Main storage, replay, alerting, and ML-shadow bottlenecks are measured and prioritized \\
+Archive compaction & Compaction and retention workflow & Old raw/detector partitions can be compacted or tiered without breaking auditability \\
+Cold storage policy & Tiering and restore rules & Clear restore path exists for historical windows needed by research or replay \\
+Long-run dashboards & Operator dashboard/report set & Lag, gaps, candidate volume, alert volume, shadow-model load, and cost can be reviewed at a glance \\
+Redundancy readiness & HA decision memo & The team knows whether HA is needed, and if so which minimal design to adopt later \\
+\end{longtable}
+
+\section*{Execution Sequence (No Day Timeline)}
+\textbf{Block 1: Operational profiling}
+\begin{itemize}
+\item Measure runtime bottlenecks for ingestion, replay, evidence, alerting, and ML shadow scoring.
+\item Quantify storage growth and high-cost paths.
+\item Freeze one scale-up backlog ranked by operational pain and research impact.
+\end{itemize}
+
+\textbf{Block 2: Archive compaction and cold storage}
+\begin{itemize}
+\item Add archive compaction policy for long-retained replay data.
+\item Define hot / warm / cold retention classes for raw archives, detector input, and model artifacts.
+\item Prove that one archived historical window can still be restored and replayed after compaction.
+\end{itemize}
+
+\textbf{Block 3: Long-run dashboards and service hygiene}
+\begin{itemize}
+\item Build operator-facing dashboards or reports for gap rate, lag, storage growth, alert volume, and shadow-score load.
+\item Add routine integrity checks and daily/weekly health summaries.
+\item Keep the single-instance architecture healthy before considering HA.
+\end{itemize}
+
+\textbf{Block 4: Redundancy decision}
+\begin{itemize}
+\item Evaluate whether HA or redundancy is warranted after actual long-run measurements.
+\item If yes, produce a minimal future design rather than implementing a large premature cluster.
+\item Hand Person 2 the final long-run data availability guarantees for advanced research workloads.
+\end{itemize}
+
+\section*{Handoffs to Person 2}
+\begin{itemize}
+\item Stable retained datasets and restore guarantees for long-horizon experiments.
+\item Archive tiering rules and any compaction caveats.
+\item Long-run dashboard views that help research interpret coverage and bias risk.
+\item Any scale constraints that change which experiments are affordable.
+\end{itemize}
+
+\section*{Gate 7 Checklist (Person 1 Ownership)}
+\begin{itemize}
+\item Scale and cost bottlenecks are measured, not guessed.
+\item Archive compaction and cold-storage rules exist without breaking replayability.
+\item Long-run dashboard/reporting exists for operator health.
+\item HA/redundancy decision is documented after proving the single-instance design first.
+\end{itemize}
+
+\end{document}
