@@ -8,6 +8,7 @@ Current Person 1 capabilities:
 - multi-source replay bundles
 - window-health diagnostics
 - stored backfill requests for degraded windows
+- backfill request dispatch with a support matrix
 
 ## 1. Move into the Person 1 worktree
 
@@ -81,7 +82,27 @@ This writes:
 - one `backfill_requests` row per source system
 - one JSON request artifact per source system
 
-## 6. Useful tables to inspect
+## 6. Dispatch pending backfill requests
+
+Dry-run planning only:
+
+```bash
+/Users/vrajpatel/All-projects/polymarket_arbitrage/venv/bin/python run_phase5_backfill_dispatch.py --limit 10
+```
+
+Execute currently supported requests:
+
+```bash
+/Users/vrajpatel/All-projects/polymarket_arbitrage/venv/bin/python run_phase5_backfill_dispatch.py \
+  --limit 10 \
+  --execute-supported
+```
+
+Important:
+- today, the automated executor only supports `data_api_trades_backfill`
+- other source systems are marked `manual_required` until a dedicated backfill path exists
+
+## 7. Useful tables to inspect
 
 In `psql` or your DB GUI:
 
@@ -92,7 +113,7 @@ select * from backtest_artifacts order by created_at desc limit 20;
 select * from backfill_requests order by created_at desc limit 20;
 ```
 
-## 7. What “good” looks like
+## 8. What “good” looks like
 
 A replay window is healthiest when:
 - `overall_status` is `ready`
@@ -100,7 +121,7 @@ A replay window is healthiest when:
 - there are no manifest count mismatches
 - replay artifact paths are written successfully
 
-## 8. What to hand to Person 2
+## 9. What to hand to Person 2
 
 Before Person 2 starts validation work, give them:
 - one replay bundle artifact
