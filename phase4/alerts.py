@@ -1,18 +1,33 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
 from typing import Any, Protocol
 
 from config.settings import (
     PHASE4_ALERT_ACTIONABLE_THRESHOLD,
     PHASE4_ALERT_CHANNELS,
     PHASE4_ALERT_INFO_THRESHOLD,
+    PHASE4_ALERT_SUPPRESSION_SECONDS,
     PHASE4_ALERT_WATCH_THRESHOLD,
 )
 from phase4.repository import Phase4Repository
 from utils.logger import get_logger
 
 log = get_logger("phase4_alerts")
+
+SEVERITY_RANK = {
+    "INFO": 1,
+    "WATCH": 2,
+    "ACTIONABLE": 3,
+    "CRITICAL": 4,
+}
+
+
+def _iso(dt: datetime) -> str:
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc).isoformat()
 
 
 def derive_severity(*, severity_score: float | None, confidence_modifier: float | None) -> str:
@@ -98,12 +113,14 @@ def build_default_channels() -> list[DeliveryChannel]:
 class AlertWorkerSummary:
     candidates_seen: int = 0
     alerts_created: int = 0
+    alerts_suppressed: int = 0
     delivery_attempts_written: int = 0
 
     def to_dict(self) -> dict[str, int]:
         return {
             "candidates_seen": self.candidates_seen,
             "alerts_created": self.alerts_created,
+            "alerts_suppressed": self.alerts_suppressed,
             "delivery_attempts_written": self.delivery_attempts_written,
         }
 
@@ -152,18 +169,46 @@ class Phase4AlertWorker:
         )
         title = str(rendered_payload["title"])
         suppression_key = str(candidate.get("event_family_id") or candidate.get("market_id") or "")
+        suppressed_by = None
+        if suppression_key:
+            recent_alert = self.repository.recent_alert_for_suppression(
+                suppression_key=suppression_key,
+                since_time=_iso(datetime.now(timezone.utc) - timedelta(seconds=PHASE4_ALERT_SUPPRESSION_SECONDS)),
+            )
+            if recent_alert is not None:
+                recent_severity_rank = SEVERITY_RANK.get(str(recent_alert.get("severity") or "").upper(), 0)
+                current_severity_rank = SEVERITY_RANK.get(severity, 0)
+                recent_evidence_state = recent_alert.get("public_evidence_state")
+                current_evidence_state = rendered_payload.get("public_evidence_state")
+                if current_severity_rank <= recent_severity_rank and current_evidence_state == recent_evidence_state:
+                    suppressed_by = str(recent_alert["alert_id"])
+
+        alert_status = "suppressed" if suppressed_by else "created"
+        suppression_state = f"suppressed_by:{suppressed_by}" if suppressed_by else "new"
         alert_id = self.repository.record_alert(
             candidate_id=str(candidate["candidate_id"]),
             severity=severity,
-            alert_status="created",
+            alert_status=alert_status,
             title=title,
             rendered_payload=rendered_payload,
             detector_version=candidate.get("detector_version"),
             feature_schema_version=candidate.get("feature_schema_version"),
             evidence_snapshot_id=(evidence_snapshot or {}).get("evidence_snapshot_id"),
             suppression_key=suppression_key or None,
-            suppression_state="new",
+            suppression_state=suppression_state,
         )
+        if suppressed_by:
+            self.summary.alerts_suppressed += 1
+            payload = {
+                "candidate_id": candidate["candidate_id"],
+                "alert_id": alert_id,
+                "severity": severity,
+                "status": "suppressed",
+                "suppressed_by": suppressed_by,
+            }
+            log.info(f"Phase 4 alert suppressed: {payload}")
+            return payload
+
         self.summary.alerts_created += 1
 
         delivery_results: list[dict[str, Any]] = []

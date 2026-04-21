@@ -21,6 +21,15 @@ def _iso(dt: datetime) -> str:
     return dt.astimezone(timezone.utc).isoformat()
 
 
+def _parse_iso(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
 @dataclass(slots=True)
 class Phase4BootstrapSummary:
     workflow_version: str
@@ -488,3 +497,176 @@ class Phase4Repository:
         finally:
             conn.close()
         return delivery_attempt_id
+
+    def recent_alert_for_suppression(
+        self,
+        *,
+        suppression_key: str,
+        since_time: str,
+    ) -> dict[str, Any] | None:
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                """
+                SELECT
+                    alert_id,
+                    candidate_id,
+                    severity,
+                    alert_status,
+                    title,
+                    rendered_payload,
+                    workflow_version,
+                    detector_version,
+                    feature_schema_version,
+                    evidence_snapshot_id,
+                    suppression_key,
+                    suppression_state,
+                    first_delivery_at,
+                    last_delivery_at,
+                    created_at,
+                    updated_at
+                FROM alerts
+                WHERE suppression_key = ?
+                  AND created_at >= ?
+                ORDER BY created_at DESC
+                LIMIT 1
+                """,
+                (suppression_key, since_time),
+            ).fetchone()
+        finally:
+            conn.close()
+
+        if row is None:
+            return None
+
+        payload = json.loads(row["rendered_payload"] or "{}")
+        return {
+            "alert_id": row["alert_id"],
+            "candidate_id": row["candidate_id"],
+            "severity": row["severity"],
+            "alert_status": row["alert_status"],
+            "title": row["title"],
+            "rendered_payload": payload,
+            "workflow_version": row["workflow_version"],
+            "detector_version": row["detector_version"],
+            "feature_schema_version": row["feature_schema_version"],
+            "evidence_snapshot_id": row["evidence_snapshot_id"],
+            "suppression_key": row["suppression_key"],
+            "suppression_state": row["suppression_state"],
+            "first_delivery_at": row["first_delivery_at"],
+            "last_delivery_at": row["last_delivery_at"],
+            "created_at": row["created_at"],
+            "updated_at": row["updated_at"],
+            "public_evidence_state": payload.get("public_evidence_state"),
+        }
+
+    def update_alert_status(
+        self,
+        *,
+        alert_id: str,
+        alert_status: str,
+        title: str | None = None,
+        rendered_payload: dict[str, Any] | None = None,
+        suppression_state: str | None = None,
+    ) -> None:
+        assignments = ["alert_status = ?", "updated_at = ?"]
+        params: list[Any] = [alert_status, _iso(datetime.now(timezone.utc))]
+
+        if title is not None:
+            assignments.append("title = ?")
+            params.append(title)
+        if rendered_payload is not None:
+            assignments.append("rendered_payload = ?")
+            params.append(json.dumps(rendered_payload, sort_keys=True))
+        if suppression_state is not None:
+            assignments.append("suppression_state = ?")
+            params.append(suppression_state)
+
+        params.append(alert_id)
+        conn = get_conn()
+        try:
+            conn.execute(
+                f"""
+                UPDATE alerts
+                SET {", ".join(assignments)}
+                WHERE alert_id = ?
+                """,
+                tuple(params),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+    def record_analyst_feedback(
+        self,
+        *,
+        alert_id: str,
+        action_type: str,
+        actor: str | None,
+        notes: str | None,
+        follow_up_at: str | None = None,
+    ) -> str:
+        feedback_id = uuid4().hex
+        created_at = _iso(datetime.now(timezone.utc))
+        conn = get_conn()
+        try:
+            conn.execute(
+                """
+                INSERT INTO analyst_feedback (
+                    feedback_id,
+                    alert_id,
+                    action_type,
+                    actor,
+                    notes,
+                    follow_up_at,
+                    created_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    feedback_id,
+                    alert_id,
+                    action_type,
+                    actor,
+                    notes,
+                    follow_up_at,
+                    created_at,
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        return feedback_id
+
+    def recent_feedback_for_alert(self, alert_id: str, *, limit: int = 20) -> list[dict[str, Any]]:
+        conn = get_conn()
+        try:
+            rows = conn.execute(
+                """
+                SELECT
+                    feedback_id,
+                    action_type,
+                    actor,
+                    notes,
+                    follow_up_at,
+                    created_at
+                FROM analyst_feedback
+                WHERE alert_id = ?
+                ORDER BY created_at DESC
+                LIMIT ?
+                """,
+                (alert_id, limit),
+            ).fetchall()
+        finally:
+            conn.close()
+
+        return [
+            {
+                "feedback_id": row["feedback_id"],
+                "action_type": row["action_type"],
+                "actor": row["actor"],
+                "notes": row["notes"],
+                "follow_up_at": row["follow_up_at"],
+                "created_at": row["created_at"],
+            }
+            for row in rows
+        ]

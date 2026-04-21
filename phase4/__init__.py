@@ -5,6 +5,7 @@ from phase4.alerts import (
     derive_severity,
     render_alert_payload,
 )
+from phase4.analyst import AnalystWorkflowSummary, Phase4AnalystWorkflow
 from phase4.evidence import (
     EvidenceProviderResult,
     EvidenceWorkerSummary,
@@ -16,10 +17,12 @@ from phase4.repository import Phase4BootstrapSummary, Phase4Repository
 
 __all__ = [
     "AlertWorkerSummary",
+    "AnalystWorkflowSummary",
     "EvidenceProviderResult",
     "EvidenceWorkerSummary",
     "Phase4BootstrapSummary",
     "Phase4AlertWorker",
+    "Phase4AnalystWorkflow",
     "Phase4EvidenceWorker",
     "Phase4Repository",
     "build_default_channels",
