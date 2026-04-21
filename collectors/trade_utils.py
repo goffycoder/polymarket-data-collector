@@ -194,3 +194,25 @@ def upsert_trade_rows(conn, rows: list[dict]) -> None:
         return
     conn.executemany(TRADE_UPSERT_SQL, rows)
     conn.commit()
+
+
+def trade_row_to_detector_payload(row: dict) -> dict:
+    """Project a canonical trade row into the Phase 3 detector-input contract."""
+    return {
+        "trade_id": row.get("trade_id"),
+        "market_id": row.get("market_id"),
+        "asset_id": row.get("asset_id"),
+        "condition_id": row.get("condition_id"),
+        "proxy_wallet": row.get("proxy_wallet"),
+        "transaction_hash": row.get("transaction_hash"),
+        "outcome_side": row.get("outcome_side"),
+        "side": row.get("side"),
+        "price": row.get("price"),
+        "size": row.get("size"),
+        "usdc_notional": row.get("usdc_notional"),
+        "trade_time": row.get("trade_time"),
+        "captured_at": row.get("captured_at"),
+        "source": row.get("source"),
+        "dedupe_key": row.get("dedupe_key"),
+        "source_priority": row.get("source_priority"),
+    }

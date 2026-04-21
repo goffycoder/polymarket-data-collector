@@ -16,6 +16,7 @@ numpy==2.4.2
 # Database
 SQLAlchemy==2.0.46
 psycopg[binary]==3.2.13
+redis==7.0.1
 
 # Config & utilities
 python-dotenv==1.2.1

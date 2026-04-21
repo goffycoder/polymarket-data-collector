@@ -29,7 +29,7 @@ RAW_ARCHIVE_ROOT = REPO_ROOT / "data" / "raw"
 DETECTOR_INPUT_ROOT = REPO_ROOT / "data" / "detector_input"
 
 RAW_ENVELOPE_SCHEMA_VERSION = "raw_event_envelope.v1"
-NORMALIZED_ENVELOPE_SCHEMA_VERSION = "normalized_envelope.v1"
+NORMALIZED_ENVELOPE_SCHEMA_VERSION = "normalized_envelope.v2"
 
 
 @dataclass(frozen=True, slots=True)
@@ -321,4 +321,3 @@ def publish_detector_input(
         envelope_id=envelope_id,
         schema_version=schema_version,
     )
-

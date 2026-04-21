@@ -236,6 +236,78 @@ CREATE TABLE IF NOT EXISTS replay_runs (
 CREATE INDEX IF NOT EXISTS idx_replay_runs_source_time
     ON replay_runs(source_system, created_at DESC);
 
+CREATE TABLE IF NOT EXISTS detector_versions (
+    detector_version        TEXT PRIMARY KEY,
+    feature_schema_version  TEXT NOT NULL,
+    state_backend           TEXT NOT NULL,
+    notes                   TEXT,
+    created_at              TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    last_used_at            TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS signal_episodes (
+    episode_id               TEXT PRIMARY KEY,
+    market_id                TEXT NOT NULL,
+    event_id                 TEXT,
+    event_family_id          TEXT,
+    rule_family              TEXT NOT NULL,
+    episode_start_event_time TIMESTAMPTZ NOT NULL,
+    episode_end_event_time   TIMESTAMPTZ NOT NULL,
+    feature_schema_version   TEXT NOT NULL,
+    detector_version         TEXT NOT NULL,
+    episode_status           TEXT DEFAULT 'candidate',
+    metadata_json            TEXT,
+    created_at               TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_signal_episodes_market_time
+    ON signal_episodes(market_id, episode_end_event_time DESC);
+CREATE INDEX IF NOT EXISTS idx_signal_episodes_event_time
+    ON signal_episodes(event_id, episode_end_event_time DESC);
+
+CREATE TABLE IF NOT EXISTS signal_candidates (
+    candidate_id             TEXT PRIMARY KEY,
+    episode_id               TEXT NOT NULL,
+    market_id                TEXT NOT NULL,
+    event_id                 TEXT,
+    event_family_id          TEXT,
+    trigger_time             TIMESTAMPTZ NOT NULL,
+    episode_start_event_time TIMESTAMPTZ NOT NULL,
+    episode_end_event_time   TIMESTAMPTZ NOT NULL,
+    feature_schema_version   TEXT NOT NULL,
+    detector_version         TEXT NOT NULL,
+    triggering_rules         TEXT NOT NULL,
+    cooldown_state           TEXT,
+    feature_snapshot         TEXT NOT NULL,
+    severity_score           DOUBLE PRECISION,
+    emitted                  INTEGER DEFAULT 1,
+    created_at               TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_signal_candidates_market_time
+    ON signal_candidates(market_id, trigger_time DESC);
+CREATE INDEX IF NOT EXISTS idx_signal_candidates_event_time
+    ON signal_candidates(event_id, trigger_time DESC);
+CREATE INDEX IF NOT EXISTS idx_signal_candidates_detector_time
+    ON signal_candidates(detector_version, trigger_time DESC);
+
+CREATE TABLE IF NOT EXISTS signal_features (
+    id                       BIGSERIAL PRIMARY KEY,
+    candidate_id             TEXT NOT NULL,
+    episode_id               TEXT NOT NULL,
+    market_id                TEXT NOT NULL,
+    feature_name             TEXT NOT NULL,
+    feature_value            DOUBLE PRECISION,
+    feature_schema_version   TEXT NOT NULL,
+    observed_at              TIMESTAMPTZ NOT NULL,
+    created_at               TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_signal_features_candidate
+    ON signal_features(candidate_id);
+CREATE INDEX IF NOT EXISTS idx_signal_features_market_time
+    ON signal_features(market_id, observed_at DESC);
+
 CREATE OR REPLACE VIEW canonical_trades AS
 SELECT
     trade_id,

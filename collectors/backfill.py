@@ -9,7 +9,12 @@ import asyncio
 from datetime import datetime, timezone, timedelta
 from typing import Sequence
 
-from collectors.trade_utils import make_trade_row, parse_trade_time, upsert_trade_rows
+from collectors.trade_utils import (
+    make_trade_row,
+    parse_trade_time,
+    trade_row_to_detector_payload,
+    upsert_trade_rows,
+)
 from collectors.universe_selector import MarketDescriptor, load_universe_policy, select_runtime_universe
 from database.db_manager import apply_schema, get_conn
 from utils.event_log import archive_raw_event, publish_detector_input
@@ -91,6 +96,7 @@ async def _backfill_market(
             if rows:
                 upsert_trade_rows(conn, rows)
                 total_inserted += len(rows)
+                detector_trades = [trade_row_to_detector_payload(row) for row in rows]
                 publish_detector_input(
                     source_system="data_api_trades_backfill",
                     entity_type="historical_trades_page",
@@ -103,6 +109,7 @@ async def _backfill_market(
                         "offset": offset,
                         "row_count": len(rows),
                         "trade_ids": [row["trade_id"] for row in rows],
+                        "trades": detector_trades,
                     },
                 )
 

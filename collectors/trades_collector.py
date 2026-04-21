@@ -8,7 +8,7 @@ import asyncio
 from datetime import datetime, timezone
 from typing import Sequence
 
-from collectors.trade_utils import make_trade_row, upsert_trade_rows
+from collectors.trade_utils import make_trade_row, trade_row_to_detector_payload, upsert_trade_rows
 from collectors.universe_selector import MarketDescriptor
 from database.db_manager import get_conn
 from utils.event_log import archive_raw_event, publish_detector_input
@@ -58,6 +58,7 @@ async def _fetch_market_trades(client, market: MarketDescriptor, conn):
 
         if rows:
             upsert_trade_rows(conn, rows)
+            detector_trades = [trade_row_to_detector_payload(row) for row in rows]
             publish_detector_input(
                 source_system="data_api_trades",
                 entity_type="recent_trades_page",
@@ -69,6 +70,7 @@ async def _fetch_market_trades(client, market: MarketDescriptor, conn):
                     "condition_id": market.condition_id,
                     "row_count": len(rows),
                     "trade_ids": [row["trade_id"] for row in rows],
+                    "trades": detector_trades,
                 },
             )
             log.debug(f"  Trades market={market.market_id}: +{len(rows)} rows")

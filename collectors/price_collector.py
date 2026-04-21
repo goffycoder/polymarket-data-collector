@@ -170,6 +170,7 @@ async def _fetch_books_batch(
             _merge_snapshot(market_snapshot, snapshot_update)
 
         if market_snapshots:
+            market_snapshot_rows = list(market_snapshots.values())
             conn.executemany("""
                 INSERT INTO snapshots (
                     market_id, captured_at,
@@ -180,7 +181,9 @@ async def _fetch_books_batch(
                     :yes_price, :no_price, :last_trade_price, :mid_price,
                     :best_bid, :best_ask, :spread, :source
                 )
-            """, list(market_snapshots.values()))
+            """, market_snapshot_rows)
+        else:
+            market_snapshot_rows = []
 
         if obs:
             conn.executemany("""
@@ -203,14 +206,31 @@ async def _fetch_books_batch(
             entity_type="books_batch",
             captured_at=captured_at,
             ordering_key=f"{captured_at}:{len(token_ids)}",
-            raw_partition_path=archive_result.partition_path,
-            payload={
-                "token_ids": token_ids,
-                "market_ids": sorted(market_snapshots.keys()),
-                "snapshot_count": len(market_snapshots),
-                "order_book_count": len(obs),
-            },
-        )
+                raw_partition_path=archive_result.partition_path,
+                payload={
+                    "token_ids": token_ids,
+                    "market_ids": sorted(market_snapshots.keys()),
+                    "snapshot_count": len(market_snapshots),
+                    "order_book_count": len(obs),
+                    "market_snapshots": market_snapshot_rows,
+                    "order_books": [
+                        {
+                            "market_id": ob["market_id"],
+                            "token_id": ob["token_id"],
+                            "captured_at": ob["captured_at"],
+                            "best_bid": ob["best_bid"],
+                            "best_ask": ob["best_ask"],
+                            "spread": ob["spread"],
+                            "depth_bids": ob["depth_bids"],
+                            "depth_asks": ob["depth_asks"],
+                            "bid_volume": ob["bid_volume"],
+                            "ask_volume": ob["ask_volume"],
+                            "source": ob["source"],
+                        }
+                        for ob in obs
+                    ],
+                },
+            )
         log.debug(
             f"  Books batch: {len(market_snapshots)} market snapshots, {len(obs)} order books"
         )
@@ -269,10 +289,11 @@ async def _fetch_prices_batch(
                 row["no_price"] = price
 
         if rows:
+            market_snapshot_rows = list(rows.values())
             conn.executemany("""
                 INSERT INTO snapshots (market_id, captured_at, yes_price, no_price, source)
                 VALUES (:market_id, :captured_at, :yes_price, :no_price, :source)
-            """, list(rows.values()))
+            """, market_snapshot_rows)
             conn.commit()
             publish_detector_input(
                 source_system="clob_prices",
@@ -284,6 +305,7 @@ async def _fetch_prices_batch(
                     "token_ids": token_ids,
                     "market_ids": sorted(rows.keys()),
                     "snapshot_count": len(rows),
+                    "market_snapshots": market_snapshot_rows,
                 },
             )
         log.debug(f"  Prices batch: {len(rows)} market snapshots")

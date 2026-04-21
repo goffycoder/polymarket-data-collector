@@ -264,6 +264,81 @@ CREATE TABLE IF NOT EXISTS replay_runs (
 CREATE INDEX IF NOT EXISTS idx_replay_runs_source_time
     ON replay_runs(source_system, created_at DESC);
 
+-- -----------------------------------------------------------------
+-- 7. PHASE 3 ONLINE STATE / CANDIDATE DETECTION
+-- -----------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS detector_versions (
+    detector_version        TEXT PRIMARY KEY,
+    feature_schema_version  TEXT NOT NULL,
+    state_backend           TEXT NOT NULL,
+    notes                   TEXT,
+    created_at              DATETIME DEFAULT CURRENT_TIMESTAMP,
+    last_used_at            DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS signal_episodes (
+    episode_id               TEXT PRIMARY KEY,
+    market_id                TEXT NOT NULL,
+    event_id                 TEXT,
+    event_family_id          TEXT,
+    rule_family              TEXT NOT NULL,
+    episode_start_event_time DATETIME NOT NULL,
+    episode_end_event_time   DATETIME NOT NULL,
+    feature_schema_version   TEXT NOT NULL,
+    detector_version         TEXT NOT NULL,
+    episode_status           TEXT DEFAULT 'candidate',
+    metadata_json            TEXT,
+    created_at               DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_signal_episodes_market_time
+    ON signal_episodes(market_id, episode_end_event_time DESC);
+CREATE INDEX IF NOT EXISTS idx_signal_episodes_event_time
+    ON signal_episodes(event_id, episode_end_event_time DESC);
+
+CREATE TABLE IF NOT EXISTS signal_candidates (
+    candidate_id             TEXT PRIMARY KEY,
+    episode_id               TEXT NOT NULL,
+    market_id                TEXT NOT NULL,
+    event_id                 TEXT,
+    event_family_id          TEXT,
+    trigger_time             DATETIME NOT NULL,
+    episode_start_event_time DATETIME NOT NULL,
+    episode_end_event_time   DATETIME NOT NULL,
+    feature_schema_version   TEXT NOT NULL,
+    detector_version         TEXT NOT NULL,
+    triggering_rules         TEXT NOT NULL,
+    cooldown_state           TEXT,
+    feature_snapshot         TEXT NOT NULL,
+    severity_score           REAL,
+    emitted                  INTEGER DEFAULT 1,
+    created_at               DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_signal_candidates_market_time
+    ON signal_candidates(market_id, trigger_time DESC);
+CREATE INDEX IF NOT EXISTS idx_signal_candidates_event_time
+    ON signal_candidates(event_id, trigger_time DESC);
+CREATE INDEX IF NOT EXISTS idx_signal_candidates_detector_time
+    ON signal_candidates(detector_version, trigger_time DESC);
+
+CREATE TABLE IF NOT EXISTS signal_features (
+    id                       INTEGER PRIMARY KEY AUTOINCREMENT,
+    candidate_id             TEXT NOT NULL,
+    episode_id               TEXT NOT NULL,
+    market_id                TEXT NOT NULL,
+    feature_name             TEXT NOT NULL,
+    feature_value            REAL,
+    feature_schema_version   TEXT NOT NULL,
+    observed_at              DATETIME NOT NULL,
+    created_at               DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_signal_features_candidate
+    ON signal_features(candidate_id);
+CREATE INDEX IF NOT EXISTS idx_signal_features_market_time
+    ON signal_features(market_id, observed_at DESC);
+
 CREATE VIEW IF NOT EXISTS canonical_trades AS
 SELECT
     trade_id,
