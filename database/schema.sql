@@ -353,6 +353,118 @@ CREATE TABLE IF NOT EXISTS detector_checkpoints (
 CREATE INDEX IF NOT EXISTS idx_detector_checkpoints_source
     ON detector_checkpoints(detector_version, source_system, updated_at DESC);
 
+-- -----------------------------------------------------------------
+-- 8. PHASE 4 EVIDENCE / ALERTS / ANALYST WORKFLOW
+-- -----------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS alert_workflow_versions (
+    workflow_version         TEXT PRIMARY KEY,
+    evidence_schema_version  TEXT NOT NULL,
+    alert_schema_version     TEXT NOT NULL,
+    delivery_channels        TEXT NOT NULL,
+    notes                    TEXT,
+    created_at               DATETIME DEFAULT CURRENT_TIMESTAMP,
+    last_used_at             DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS evidence_queries (
+    evidence_query_id        TEXT PRIMARY KEY,
+    candidate_id             TEXT NOT NULL,
+    alert_id                 TEXT,
+    provider_name            TEXT NOT NULL,
+    provider_query_type      TEXT NOT NULL,
+    provider_query_text      TEXT NOT NULL,
+    request_started_at       DATETIME NOT NULL,
+    response_completed_at    DATETIME,
+    latency_ms               REAL,
+    result_count             INTEGER DEFAULT 0,
+    query_status             TEXT NOT NULL,
+    timeout_seconds          INTEGER,
+    raw_response_metadata    TEXT,
+    error_message            TEXT,
+    created_at               DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_evidence_queries_candidate_time
+    ON evidence_queries(candidate_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_evidence_queries_provider_time
+    ON evidence_queries(provider_name, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS evidence_snapshots (
+    evidence_snapshot_id     TEXT PRIMARY KEY,
+    candidate_id             TEXT NOT NULL,
+    alert_id                 TEXT,
+    snapshot_time            DATETIME NOT NULL,
+    evidence_state           TEXT NOT NULL,
+    provider_summary         TEXT NOT NULL,
+    confidence_modifier      REAL,
+    cache_key                TEXT,
+    freshness_seconds        INTEGER,
+    metadata_json            TEXT,
+    created_at               DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_evidence_snapshots_candidate_time
+    ON evidence_snapshots(candidate_id, snapshot_time DESC);
+
+CREATE TABLE IF NOT EXISTS alerts (
+    alert_id                 TEXT PRIMARY KEY,
+    candidate_id             TEXT NOT NULL,
+    severity                 TEXT NOT NULL,
+    alert_status             TEXT NOT NULL,
+    title                    TEXT,
+    rendered_payload         TEXT NOT NULL,
+    workflow_version         TEXT NOT NULL,
+    detector_version         TEXT,
+    feature_schema_version   TEXT,
+    evidence_snapshot_id     TEXT,
+    suppression_key          TEXT,
+    suppression_state        TEXT,
+    first_delivery_at        DATETIME,
+    last_delivery_at         DATETIME,
+    created_at               DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at               DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_alerts_candidate_time
+    ON alerts(candidate_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_alerts_status_time
+    ON alerts(alert_status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_alerts_severity_time
+    ON alerts(severity, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS alert_delivery_attempts (
+    delivery_attempt_id      TEXT PRIMARY KEY,
+    alert_id                 TEXT NOT NULL,
+    delivery_channel         TEXT NOT NULL,
+    attempt_number           INTEGER NOT NULL,
+    delivery_status          TEXT NOT NULL,
+    provider_message_id      TEXT,
+    request_payload          TEXT,
+    response_metadata        TEXT,
+    attempted_at             DATETIME NOT NULL,
+    completed_at             DATETIME,
+    error_message            TEXT,
+    created_at               DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_alert_delivery_attempts_alert_time
+    ON alert_delivery_attempts(alert_id, attempted_at DESC);
+CREATE INDEX IF NOT EXISTS idx_alert_delivery_attempts_channel_time
+    ON alert_delivery_attempts(delivery_channel, attempted_at DESC);
+
+CREATE TABLE IF NOT EXISTS analyst_feedback (
+    feedback_id              TEXT PRIMARY KEY,
+    alert_id                 TEXT NOT NULL,
+    action_type              TEXT NOT NULL,
+    actor                    TEXT,
+    notes                    TEXT,
+    follow_up_at             DATETIME,
+    created_at               DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_analyst_feedback_alert_time
+    ON analyst_feedback(alert_id, created_at DESC);
+
 CREATE VIEW IF NOT EXISTS canonical_trades AS
 SELECT
     trade_id,
