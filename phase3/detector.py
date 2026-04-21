@@ -30,6 +30,13 @@ from utils.logger import get_logger
 
 log = get_logger("phase3_detector")
 
+DEFAULT_PHASE3_SOURCE_SYSTEMS = [
+    "data_api_trades",
+    "data_api_trades_backfill",
+    "clob_prices",
+    "clob_books",
+]
+
 
 def _parse_iso(value: str | None) -> datetime | None:
     if not value:
@@ -285,6 +292,126 @@ class Phase3Repository:
             conn.commit()
         finally:
             conn.close()
+
+    def get_checkpoint(self, *, source_system: str, partition_path: str) -> dict[str, Any] | None:
+        checkpoint_key = f"{PHASE3_DETECTOR_VERSION}:{source_system}:{partition_path}"
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                """
+                SELECT checkpoint_key, file_offset, last_ordering_key, last_captured_at, updated_at
+                FROM detector_checkpoints
+                WHERE checkpoint_key = ?
+                """,
+                (checkpoint_key,),
+            ).fetchone()
+        finally:
+            conn.close()
+        if row is None:
+            return None
+        return {
+            "checkpoint_key": row["checkpoint_key"],
+            "file_offset": int(row["file_offset"] or 0),
+            "last_ordering_key": row["last_ordering_key"],
+            "last_captured_at": row["last_captured_at"],
+            "updated_at": row["updated_at"],
+        }
+
+    def upsert_checkpoint(
+        self,
+        *,
+        source_system: str,
+        partition_path: str,
+        file_offset: int,
+        last_ordering_key: str | None,
+        last_captured_at: str | None,
+    ) -> None:
+        checkpoint_key = f"{PHASE3_DETECTOR_VERSION}:{source_system}:{partition_path}"
+        conn = get_conn()
+        now = _iso(datetime.now(timezone.utc))
+        try:
+            conn.execute(
+                """
+                INSERT INTO detector_checkpoints (
+                    checkpoint_key,
+                    detector_version,
+                    source_system,
+                    partition_path,
+                    file_offset,
+                    last_ordering_key,
+                    last_captured_at,
+                    updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(checkpoint_key) DO UPDATE SET
+                    file_offset = excluded.file_offset,
+                    last_ordering_key = excluded.last_ordering_key,
+                    last_captured_at = excluded.last_captured_at,
+                    updated_at = excluded.updated_at
+                """,
+                (
+                    checkpoint_key,
+                    PHASE3_DETECTOR_VERSION,
+                    source_system,
+                    partition_path,
+                    file_offset,
+                    last_ordering_key,
+                    last_captured_at,
+                    now,
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+    def load_persisted_candidates(self, *, start: str, end: str) -> list[dict[str, Any]]:
+        conn = get_conn()
+        try:
+            rows = conn.execute(
+                """
+                SELECT
+                    candidate_id,
+                    episode_id,
+                    market_id,
+                    event_id,
+                    event_family_id,
+                    trigger_time,
+                    episode_start_event_time,
+                    episode_end_event_time,
+                    detector_version,
+                    feature_schema_version,
+                    triggering_rules,
+                    cooldown_state,
+                    feature_snapshot,
+                    severity_score
+                FROM signal_candidates
+                WHERE detector_version = ?
+                  AND trigger_time >= ?
+                  AND trigger_time < ?
+                ORDER BY trigger_time ASC, candidate_id ASC
+                """,
+                (PHASE3_DETECTOR_VERSION, start, end),
+            ).fetchall()
+        finally:
+            conn.close()
+        return [
+            {
+                "candidate_id": row["candidate_id"],
+                "episode_id": row["episode_id"],
+                "market_id": row["market_id"],
+                "event_id": row["event_id"],
+                "event_family_id": row["event_family_id"],
+                "trigger_time": row["trigger_time"],
+                "episode_start_event_time": row["episode_start_event_time"],
+                "episode_end_event_time": row["episode_end_event_time"],
+                "detector_version": row["detector_version"],
+                "feature_schema_version": row["feature_schema_version"],
+                "triggering_rules": json.loads(row["triggering_rules"]) if row["triggering_rules"] else [],
+                "cooldown_state": json.loads(row["cooldown_state"]) if row["cooldown_state"] else {},
+                "feature_snapshot": json.loads(row["feature_snapshot"]) if row["feature_snapshot"] else {},
+                "severity_score": float(row["severity_score"] or 0.0),
+            }
+            for row in rows
+        ]
 
 
 class Phase3Detector:
@@ -704,12 +831,7 @@ async def run_phase3_detector_window(
         raise ValueError("A valid start/end window is required and end must be later than start.")
 
     detector = Phase3Detector(store=store, repository=repository)
-    source_list = source_systems or [
-        "data_api_trades",
-        "data_api_trades_backfill",
-        "clob_prices",
-        "clob_books",
-    ]
+    source_list = source_systems or DEFAULT_PHASE3_SOURCE_SYSTEMS
 
     envelopes: list[dict[str, Any]] = []
     for source_system in source_list:

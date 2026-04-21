@@ -339,6 +339,20 @@ CREATE INDEX IF NOT EXISTS idx_signal_features_candidate
 CREATE INDEX IF NOT EXISTS idx_signal_features_market_time
     ON signal_features(market_id, observed_at DESC);
 
+CREATE TABLE IF NOT EXISTS detector_checkpoints (
+    checkpoint_key          TEXT PRIMARY KEY,
+    detector_version        TEXT NOT NULL,
+    source_system           TEXT NOT NULL,
+    partition_path          TEXT NOT NULL,
+    file_offset             INTEGER DEFAULT 0,
+    last_ordering_key       TEXT,
+    last_captured_at        DATETIME,
+    updated_at              DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_detector_checkpoints_source
+    ON detector_checkpoints(detector_version, source_system, updated_at DESC);
+
 CREATE VIEW IF NOT EXISTS canonical_trades AS
 SELECT
     trade_id,
