@@ -50,6 +50,26 @@ def derive_severity(*, severity_score: float | None, confidence_modifier: float 
     return "INFO"
 
 
+def should_resend_alert(
+    *,
+    previous_alert: dict[str, Any],
+    new_payload: dict[str, Any],
+    new_severity: str,
+) -> bool:
+    previous_payload = previous_alert.get("rendered_payload") or {}
+    previous_severity = str(previous_alert.get("severity") or "").upper()
+    previous_evidence_state = previous_payload.get("public_evidence_state")
+    new_evidence_state = new_payload.get("public_evidence_state")
+
+    if SEVERITY_RANK.get(new_severity, 0) > SEVERITY_RANK.get(previous_severity, 0):
+        return True
+    if previous_evidence_state != new_evidence_state:
+        return True
+    if previous_payload.get("why_it_looks_informed") != new_payload.get("why_it_looks_informed"):
+        return True
+    return False
+
+
 def render_alert_payload(
     candidate: dict[str, Any],
     evidence_snapshot: dict[str, Any] | None,
@@ -250,6 +270,7 @@ def build_default_channels() -> list[DeliveryChannel]:
 class AlertWorkerSummary:
     candidates_seen: int = 0
     alerts_created: int = 0
+    alerts_updated: int = 0
     alerts_suppressed: int = 0
     delivery_attempts_written: int = 0
 
@@ -257,6 +278,7 @@ class AlertWorkerSummary:
         return {
             "candidates_seen": self.candidates_seen,
             "alerts_created": self.alerts_created,
+            "alerts_updated": self.alerts_updated,
             "alerts_suppressed": self.alerts_suppressed,
             "delivery_attempts_written": self.delivery_attempts_written,
         }
@@ -274,7 +296,10 @@ class Phase4AlertWorker:
         self.summary = AlertWorkerSummary()
 
     def process_pending_candidates(self, *, limit: int = 10) -> list[dict[str, Any]]:
-        candidates = self.repository.pending_candidates(limit=limit)
+        candidates = self.repository.pending_candidates(
+            limit=limit,
+            include_existing_alerts=True,
+        )
         self.summary.candidates_seen += len(candidates)
         outputs: list[dict[str, Any]] = []
 
@@ -285,13 +310,6 @@ class Phase4AlertWorker:
 
     def process_candidate(self, candidate: dict[str, Any]) -> dict[str, Any]:
         existing_alert = self.repository.alert_for_candidate(str(candidate["candidate_id"]))
-        if existing_alert is not None:
-            return {
-                "candidate_id": candidate["candidate_id"],
-                "alert_id": existing_alert["alert_id"],
-                "status": "existing",
-            }
-
         evidence_snapshot = self.repository.latest_evidence_snapshot_for_candidate(
             str(candidate["candidate_id"])
         )
@@ -305,6 +323,54 @@ class Phase4AlertWorker:
             severity=severity,
         )
         title = str(rendered_payload["title"])
+
+        if existing_alert is not None:
+            resend = should_resend_alert(
+                previous_alert=existing_alert,
+                new_payload=rendered_payload,
+                new_severity=severity,
+            )
+            updated_status = "updated_resend" if resend else "updated"
+            self.repository.update_alert_status(
+                alert_id=str(existing_alert["alert_id"]),
+                alert_status=updated_status,
+                title=title,
+                rendered_payload=rendered_payload,
+                suppression_state="updated",
+                severity=severity,
+                evidence_snapshot_id=(evidence_snapshot or {}).get("evidence_snapshot_id"),
+            )
+            self.summary.alerts_updated += 1
+
+            delivery_results: list[dict[str, Any]] = []
+            if resend:
+                outbound_alert = {"alert_id": existing_alert["alert_id"], **rendered_payload}
+                next_attempt_number = self.repository.delivery_attempt_count(str(existing_alert["alert_id"]))
+                for offset, channel in enumerate(self.channels, start=1):
+                    response = channel.send(outbound_alert)
+                    self.repository.record_delivery_attempt(
+                        alert_id=str(existing_alert["alert_id"]),
+                        delivery_channel=channel.name,
+                        attempt_number=next_attempt_number + offset,
+                        delivery_status=response.get("status", "attempted"),
+                        provider_message_id=response.get("provider_message_id"),
+                        request_payload=outbound_alert,
+                        response_metadata=response,
+                        error_message=response.get("error_message"),
+                    )
+                    self.summary.delivery_attempts_written += 1
+                    delivery_results.append(response)
+
+            payload = {
+                "candidate_id": candidate["candidate_id"],
+                "alert_id": existing_alert["alert_id"],
+                "status": updated_status,
+                "severity": severity,
+                "resent": resend,
+            }
+            log.info(f"Phase 4 alert updated: {payload}")
+            return payload
+
         suppression_key = str(candidate.get("event_family_id") or candidate.get("market_id") or "")
         suppressed_by = None
         if suppression_key:

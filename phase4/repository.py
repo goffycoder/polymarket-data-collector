@@ -114,11 +114,19 @@ class Phase4Repository:
             analyst_feedback_rows=int(analyst_feedback_rows or 0),
         )
 
-    def pending_candidates(self, *, limit: int = 10) -> list[dict[str, str | float | None]]:
+    def pending_candidates(
+        self,
+        *,
+        limit: int = 10,
+        include_existing_alerts: bool = False,
+    ) -> list[dict[str, str | float | None]]:
         conn = get_conn()
         try:
+            where_clause = ""
+            if not include_existing_alerts:
+                where_clause = "WHERE a.alert_id IS NULL"
             rows = conn.execute(
-                """
+                f"""
                 SELECT
                     sc.candidate_id,
                     sc.market_id,
@@ -137,7 +145,7 @@ class Phase4Repository:
                 LEFT JOIN markets m ON m.market_id = sc.market_id
                 LEFT JOIN events e ON e.event_id = sc.event_id
                 LEFT JOIN alerts a ON a.candidate_id = sc.candidate_id
-                WHERE a.alert_id IS NULL
+                {where_clause}
                 ORDER BY sc.trigger_time DESC
                 LIMIT ?
                 """,
@@ -498,6 +506,17 @@ class Phase4Repository:
             conn.close()
         return delivery_attempt_id
 
+    def delivery_attempt_count(self, alert_id: str) -> int:
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                "SELECT COUNT(*) FROM alert_delivery_attempts WHERE alert_id = ?",
+                (alert_id,),
+            ).fetchone()
+        finally:
+            conn.close()
+        return int((row[0] if row else 0) or 0)
+
     def recent_alert_for_suppression(
         self,
         *,
@@ -568,6 +587,8 @@ class Phase4Repository:
         title: str | None = None,
         rendered_payload: dict[str, Any] | None = None,
         suppression_state: str | None = None,
+        severity: str | None = None,
+        evidence_snapshot_id: str | None = None,
     ) -> None:
         assignments = ["alert_status = ?", "updated_at = ?"]
         params: list[Any] = [alert_status, _iso(datetime.now(timezone.utc))]
@@ -581,6 +602,12 @@ class Phase4Repository:
         if suppression_state is not None:
             assignments.append("suppression_state = ?")
             params.append(suppression_state)
+        if severity is not None:
+            assignments.append("severity = ?")
+            params.append(severity)
+        if evidence_snapshot_id is not None:
+            assignments.append("evidence_snapshot_id = ?")
+            params.append(evidence_snapshot_id)
 
         params.append(alert_id)
         conn = get_conn()

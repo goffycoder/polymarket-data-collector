@@ -120,7 +120,10 @@ class Phase4EvidenceWorker:
         self.summary = EvidenceWorkerSummary()
 
     async def process_pending_candidates(self, *, limit: int = 10) -> list[dict[str, Any]]:
-        candidates = self.repository.pending_candidates(limit=limit)
+        candidates = self.repository.pending_candidates(
+            limit=limit,
+            include_existing_alerts=True,
+        )
         self.summary.candidates_seen += len(candidates)
         outputs: list[dict[str, Any]] = []
 
