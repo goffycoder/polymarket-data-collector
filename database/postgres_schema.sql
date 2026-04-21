@@ -288,6 +288,65 @@ CREATE TABLE IF NOT EXISTS backfill_requests (
 CREATE INDEX IF NOT EXISTS idx_backfill_requests_source_time
     ON backfill_requests(source_system, created_at DESC);
 
+-- -----------------------------------------------------------------
+-- 7. PHASE 6 ML V1 FOUNDATIONS
+-- -----------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS feature_materialization_runs (
+    materialization_run_id   TEXT PRIMARY KEY,
+    feature_schema_version   TEXT NOT NULL,
+    materialization_mode     TEXT NOT NULL,
+    start_time               TIMESTAMPTZ NOT NULL,
+    end_time                 TIMESTAMPTZ NOT NULL,
+    source_row_count         INTEGER DEFAULT 0,
+    feature_row_count        INTEGER DEFAULT 0,
+    dataset_hash             TEXT,
+    output_path              TEXT,
+    status                   TEXT NOT NULL,
+    notes                    TEXT,
+    created_at               TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    completed_at             TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_feature_materialization_runs_time
+    ON feature_materialization_runs(feature_schema_version, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS model_registry (
+    model_version            TEXT PRIMARY KEY,
+    model_name               TEXT NOT NULL,
+    registry_version         TEXT NOT NULL,
+    artifact_path            TEXT NOT NULL,
+    feature_schema_version   TEXT NOT NULL,
+    training_dataset_hash    TEXT NOT NULL,
+    calibration_metadata     TEXT,
+    deployment_status        TEXT NOT NULL,
+    shadow_enabled           INTEGER DEFAULT 0,
+    deployed_at              TIMESTAMPTZ,
+    created_at               TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    notes                    TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_model_registry_name_time
+    ON model_registry(model_name, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS shadow_model_scores (
+    shadow_score_id          TEXT PRIMARY KEY,
+    model_version            TEXT NOT NULL,
+    feature_schema_version   TEXT NOT NULL,
+    candidate_id             TEXT NOT NULL,
+    alert_id                 TEXT,
+    market_id                TEXT NOT NULL,
+    score_value              DOUBLE PRECISION NOT NULL,
+    score_label              TEXT,
+    score_metadata           TEXT,
+    scored_at                TIMESTAMPTZ NOT NULL,
+    created_at               TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_shadow_model_scores_candidate_time
+    ON shadow_model_scores(candidate_id, scored_at DESC);
+CREATE INDEX IF NOT EXISTS idx_shadow_model_scores_model_time
+    ON shadow_model_scores(model_version, scored_at DESC);
+
 CREATE TABLE IF NOT EXISTS detector_versions (
     detector_version        TEXT PRIMARY KEY,
     feature_schema_version  TEXT NOT NULL,
