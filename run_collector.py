@@ -21,6 +21,7 @@ import signal
 import sys
 from datetime import datetime, timezone
 
+from config.settings import ENABLE_PHASE3_DETECTOR, PHASE3_POLL_SECONDS, PHASE3_SOURCE_SYSTEMS
 from database.db_manager import apply_schema, backend_name, get_conn
 from collectors.events_collector import sync_events
 from collectors.markets_collector import sync_markets
@@ -35,6 +36,9 @@ from collectors.universe_selector import (
     select_runtime_universe,
 )
 from collectors.ws_listener import MarketWebSocketListener
+from phase3.detector import Phase3Repository
+from phase3.live_runner import Phase3LiveRunner
+from phase3.state_store import StateStoreContext, create_state_store
 from utils.logger import get_logger
 
 log = get_logger("run_collector")
@@ -60,6 +64,7 @@ _tier1_markets: tuple[MarketDescriptor, ...] = ()
 _tier2_markets: tuple[MarketDescriptor, ...] = ()
 _all_token_context: dict[str, TokenContext] = {}
 _ws_listener = MarketWebSocketListener()
+_phase3_state_context: StateStoreContext | None = None
 
 _shutdown = asyncio.Event()
 
@@ -220,6 +225,34 @@ async def ws_loop():
             await asyncio.sleep(5)
 
 
+async def phase3_live_loop():
+    """Optional Phase 3 live detector worker driven from detector-input partitions."""
+    global _phase3_state_context
+
+    await asyncio.sleep(20)  # Let the collector establish initial live data flow first
+    _phase3_state_context = await create_state_store()
+    repository = Phase3Repository()
+    repository.register_detector_version(
+        backend_name=_phase3_state_context.backend_name,
+        notes=_phase3_state_context.notes,
+    )
+    runner = Phase3LiveRunner(
+        store=_phase3_state_context.store,
+        repository=repository,
+        source_systems=list(PHASE3_SOURCE_SYSTEMS),
+        poll_seconds=PHASE3_POLL_SECONDS,
+    )
+    log.info(
+        "🧠 Phase 3 detector enabled "
+        f"(backend={_phase3_state_context.backend_name}, sources={list(PHASE3_SOURCE_SYSTEMS)})"
+    )
+    try:
+        await runner.run_forever()
+    finally:
+        await _phase3_state_context.store.aclose()
+        _phase3_state_context = None
+
+
 def _handle_signal(signum, frame):
     log.info(f"🛑 Signal {signum} received — shutting down gracefully...")
     _shutdown.set()
@@ -264,12 +297,16 @@ async def main():
         asyncio.create_task(sync_loop(), name="sync_loop"),
         asyncio.create_task(ttl_loop(), name="ttl_loop"),
     ]
+    if ENABLE_PHASE3_DETECTOR:
+        tasks.append(asyncio.create_task(phase3_live_loop(), name="phase3_live_loop"))
     try:
         await _shutdown.wait()
     finally:
         for task in tasks:
             task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
+        if _phase3_state_context is not None:
+            await _phase3_state_context.store.aclose()
 
     log.info("👋 Collector stopped.")
 

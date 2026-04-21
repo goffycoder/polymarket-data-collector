@@ -34,6 +34,21 @@ def _env_float(name: str, default: float) -> float:
         return default
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.getenv(name)
+    if raw is None or not raw.strip():
+        return default
+    return raw.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_csv(name: str, default: tuple[str, ...]) -> tuple[str, ...]:
+    raw = os.getenv(name)
+    if raw is None or not raw.strip():
+        return default
+    values = tuple(item.strip() for item in raw.split(",") if item.strip())
+    return values or default
+
+
 REDIS_URL = os.getenv("POLYMARKET_REDIS_URL", "redis://localhost:6379/0").strip()
 PHASE3_STATE_BACKEND = os.getenv("POLYMARKET_PHASE3_STATE_BACKEND", "redis").strip().lower()
 PHASE3_FEATURE_SCHEMA_VERSION = os.getenv(
@@ -77,3 +92,8 @@ PHASE3_MIN_WINDOW_NOTIONAL = _env_float(
     250.0,
 )
 PHASE3_POLL_SECONDS = _env_float("POLYMARKET_PHASE3_POLL_SECONDS", 5.0)
+ENABLE_PHASE3_DETECTOR = _env_bool("POLYMARKET_ENABLE_PHASE3_DETECTOR", False)
+PHASE3_SOURCE_SYSTEMS = _env_csv(
+    "POLYMARKET_PHASE3_SOURCE_SYSTEMS",
+    ("clob_ws_market", "data_api_trades", "data_api_trades_backfill", "clob_prices", "clob_books"),
+)
