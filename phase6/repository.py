@@ -59,6 +59,94 @@ class Phase6ShadowScoreSummary:
 
 
 class Phase6Repository:
+    def load_model_registry_entry(self, *, model_version: str) -> dict[str, Any] | None:
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                """
+                SELECT
+                    model_version,
+                    model_name,
+                    registry_version,
+                    artifact_path,
+                    feature_schema_version,
+                    training_dataset_hash,
+                    calibration_metadata,
+                    deployment_status,
+                    shadow_enabled,
+                    deployed_at,
+                    created_at,
+                    notes
+                FROM model_registry
+                WHERE model_version = ?
+                """,
+                (model_version,),
+            ).fetchone()
+        finally:
+            conn.close()
+        if row is None:
+            return None
+        return {
+            "model_version": row["model_version"],
+            "model_name": row["model_name"],
+            "registry_version": row["registry_version"],
+            "artifact_path": row["artifact_path"],
+            "feature_schema_version": row["feature_schema_version"],
+            "training_dataset_hash": row["training_dataset_hash"],
+            "calibration_metadata": json.loads(row["calibration_metadata"] or "{}"),
+            "deployment_status": row["deployment_status"],
+            "shadow_enabled": bool(row["shadow_enabled"]),
+            "deployed_at": row["deployed_at"],
+            "created_at": row["created_at"],
+            "notes": row["notes"],
+        }
+
+    def load_active_shadow_model(self) -> dict[str, Any] | None:
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                """
+                SELECT
+                    model_version,
+                    model_name,
+                    registry_version,
+                    artifact_path,
+                    feature_schema_version,
+                    training_dataset_hash,
+                    calibration_metadata,
+                    deployment_status,
+                    shadow_enabled,
+                    deployed_at,
+                    created_at,
+                    notes
+                FROM model_registry
+                WHERE shadow_enabled = 1
+                  AND deployment_status IN ('shadow', 'deployed')
+                ORDER BY
+                    CASE deployment_status WHEN 'deployed' THEN 0 ELSE 1 END,
+                    COALESCE(deployed_at, created_at) DESC
+                LIMIT 1
+                """
+            ).fetchone()
+        finally:
+            conn.close()
+        if row is None:
+            return None
+        return {
+            "model_version": row["model_version"],
+            "model_name": row["model_name"],
+            "registry_version": row["registry_version"],
+            "artifact_path": row["artifact_path"],
+            "feature_schema_version": row["feature_schema_version"],
+            "training_dataset_hash": row["training_dataset_hash"],
+            "calibration_metadata": json.loads(row["calibration_metadata"] or "{}"),
+            "deployment_status": row["deployment_status"],
+            "shadow_enabled": bool(row["shadow_enabled"]),
+            "deployed_at": row["deployed_at"],
+            "created_at": row["created_at"],
+            "notes": row["notes"],
+        }
+
     def record_materialization_run(
         self,
         *,
