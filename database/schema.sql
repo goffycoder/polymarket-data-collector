@@ -264,6 +264,39 @@ CREATE TABLE IF NOT EXISTS replay_runs (
 CREATE INDEX IF NOT EXISTS idx_replay_runs_source_time
     ON replay_runs(source_system, created_at DESC);
 
+CREATE TABLE IF NOT EXISTS validation_runs (
+    validation_run_id      TEXT PRIMARY KEY,
+    replay_run_id          TEXT,
+    validation_type        TEXT NOT NULL,
+    split_name             TEXT,
+    status                 TEXT NOT NULL,
+    config_json            TEXT,
+    metrics_json           TEXT,
+    output_path            TEXT,
+    notes                  TEXT,
+    created_at             DATETIME DEFAULT CURRENT_TIMESTAMP,
+    completed_at           DATETIME
+);
+
+CREATE INDEX IF NOT EXISTS idx_validation_runs_replay_time
+    ON validation_runs(replay_run_id, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS backtest_artifacts (
+    backtest_artifact_id   TEXT PRIMARY KEY,
+    replay_run_id          TEXT,
+    artifact_type          TEXT NOT NULL,
+    status                 TEXT NOT NULL,
+    config_json            TEXT,
+    summary_json           TEXT,
+    output_path            TEXT,
+    notes                  TEXT,
+    created_at             DATETIME DEFAULT CURRENT_TIMESTAMP,
+    completed_at           DATETIME
+);
+
+CREATE INDEX IF NOT EXISTS idx_backtest_artifacts_replay_time
+    ON backtest_artifacts(replay_run_id, created_at DESC);
+
 -- -----------------------------------------------------------------
 -- 7. PHASE 3 ONLINE STATE / CANDIDATE DETECTION
 -- -----------------------------------------------------------------
