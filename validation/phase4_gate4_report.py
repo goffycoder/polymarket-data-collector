@@ -6,6 +6,7 @@ from typing import Any
 
 from config.settings import PHASE4_ALERT_CHANNELS, PHASE4_WORKFLOW_VERSION
 from database.db_manager import get_conn
+from phase4.timefmt import format_eastern
 
 
 @dataclass(slots=True)
@@ -45,7 +46,9 @@ def _load_workflow_registration() -> dict[str, Any] | None:
         "delivery_channels": json.loads(row["delivery_channels"] or "[]"),
         "notes": row["notes"],
         "created_at": row["created_at"],
+        "created_at_display": format_eastern(row["created_at"]),
         "last_used_at": row["last_used_at"],
+        "last_used_at_display": format_eastern(row["last_used_at"]),
     }
 
 
@@ -196,6 +199,7 @@ def _latest_alert_example() -> dict[str, Any] | None:
         "title": row["title"],
         "suppression_state": row["suppression_state"],
         "created_at": row["created_at"],
+        "created_at_display": format_eastern(row["created_at"]),
         "payload": json.loads(row["rendered_payload"] or "{}"),
         "evidence_state": row["evidence_state"],
         "provider_summary": json.loads(row["provider_summary"] or "{}") if row["provider_summary"] else {},
@@ -204,6 +208,7 @@ def _latest_alert_example() -> dict[str, Any] | None:
                 "delivery_channel": delivery_row["delivery_channel"],
                 "delivery_status": delivery_row["delivery_status"],
                 "attempted_at": delivery_row["attempted_at"],
+                "attempted_at_display": format_eastern(delivery_row["attempted_at"]),
                 "error_message": delivery_row["error_message"],
             }
             for delivery_row in delivery_rows
@@ -214,6 +219,7 @@ def _latest_alert_example() -> dict[str, Any] | None:
                 "actor": feedback_row["actor"],
                 "notes": feedback_row["notes"],
                 "created_at": feedback_row["created_at"],
+                "created_at_display": format_eastern(feedback_row["created_at"]),
             }
             for feedback_row in feedback_rows
         ],

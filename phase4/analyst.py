@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from phase4.repository import Phase4Repository
+from phase4.timefmt import format_eastern
 from utils.logger import get_logger
 
 log = get_logger("phase4_analyst")
@@ -75,12 +76,14 @@ class Phase4AnalystWorkflow:
             suppression_state=normalized_action,
         )
         self.summary.actions_recorded += 1
+        follow_up_value = follow_up_at or _iso(datetime.now(timezone.utc))
         payload = {
             "feedback_id": feedback_id,
             "alert_id": alert_id,
             "action_type": normalized_action,
             "actor": actor,
-            "follow_up_at": follow_up_at or _iso(datetime.now(timezone.utc)),
+            "follow_up_at": follow_up_value,
+            "follow_up_at_display": format_eastern(follow_up_value),
         }
         log.info(f"Phase 4 analyst action recorded: {payload}")
         return payload

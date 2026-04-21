@@ -20,6 +20,7 @@ from config.settings import (
     PHASE4_TELEGRAM_CHAT_ID,
 )
 from phase4.repository import Phase4Repository
+from phase4.timefmt import format_eastern
 from utils.logger import get_logger
 
 log = get_logger("phase4_alerts")
@@ -74,8 +75,9 @@ def render_alert_payload(
     return {
         "title": title,
         "severity": severity,
+        "trigger_time_display": format_eastern(candidate.get("trigger_time")),
         "what_changed": (
-            f"Candidate {candidate.get('candidate_id')} triggered at {candidate.get('trigger_time')}"
+            f"Candidate {candidate.get('candidate_id')} triggered at {format_eastern(candidate.get('trigger_time'))}"
         ),
         "why_it_looks_informed": (
             f"Rules={candidate.get('triggering_rules')} "
@@ -148,6 +150,7 @@ class TelegramDeliveryChannel:
             [
                 f"[{alert['severity']}] {alert['title']}",
                 alert.get("what_changed", ""),
+                f"Triggered: {alert.get('trigger_time_display')}",
                 alert.get("why_it_looks_informed", ""),
                 f"Public evidence: {alert.get('public_evidence_state')}",
                 f"Detector: {alert.get('detector_version')} / {alert.get('feature_schema_version')}",
@@ -187,6 +190,7 @@ class DiscordDeliveryChannel:
             [
                 f"**[{alert['severity']}] {alert['title']}**",
                 alert.get("what_changed", ""),
+                f"Triggered: {alert.get('trigger_time_display')}",
                 alert.get("why_it_looks_informed", ""),
                 f"Public evidence: {alert.get('public_evidence_state')}",
                 f"Alert ID: {alert.get('alert_id')}",
