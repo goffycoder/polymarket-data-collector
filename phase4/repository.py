@@ -265,3 +265,226 @@ class Phase4Repository:
         finally:
             conn.close()
         return evidence_snapshot_id
+
+    def latest_evidence_snapshot_for_candidate(self, candidate_id: str) -> dict[str, Any] | None:
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                """
+                SELECT
+                    evidence_snapshot_id,
+                    snapshot_time,
+                    evidence_state,
+                    provider_summary,
+                    confidence_modifier,
+                    cache_key,
+                    freshness_seconds,
+                    metadata_json
+                FROM evidence_snapshots
+                WHERE candidate_id = ?
+                ORDER BY snapshot_time DESC, created_at DESC
+                LIMIT 1
+                """,
+                (candidate_id,),
+            ).fetchone()
+        finally:
+            conn.close()
+
+        if row is None:
+            return None
+
+        return {
+            "evidence_snapshot_id": row["evidence_snapshot_id"],
+            "snapshot_time": row["snapshot_time"],
+            "evidence_state": row["evidence_state"],
+            "provider_summary": json.loads(row["provider_summary"] or "{}"),
+            "confidence_modifier": row["confidence_modifier"],
+            "cache_key": row["cache_key"],
+            "freshness_seconds": row["freshness_seconds"],
+            "metadata_json": json.loads(row["metadata_json"] or "{}"),
+        }
+
+    def alert_for_candidate(self, candidate_id: str) -> dict[str, Any] | None:
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                """
+                SELECT
+                    alert_id,
+                    severity,
+                    alert_status,
+                    title,
+                    rendered_payload,
+                    workflow_version,
+                    detector_version,
+                    feature_schema_version,
+                    evidence_snapshot_id,
+                    suppression_key,
+                    suppression_state,
+                    first_delivery_at,
+                    last_delivery_at,
+                    created_at,
+                    updated_at
+                FROM alerts
+                WHERE candidate_id = ?
+                ORDER BY created_at DESC
+                LIMIT 1
+                """,
+                (candidate_id,),
+            ).fetchone()
+        finally:
+            conn.close()
+
+        if row is None:
+            return None
+
+        return {
+            "alert_id": row["alert_id"],
+            "severity": row["severity"],
+            "alert_status": row["alert_status"],
+            "title": row["title"],
+            "rendered_payload": json.loads(row["rendered_payload"] or "{}"),
+            "workflow_version": row["workflow_version"],
+            "detector_version": row["detector_version"],
+            "feature_schema_version": row["feature_schema_version"],
+            "evidence_snapshot_id": row["evidence_snapshot_id"],
+            "suppression_key": row["suppression_key"],
+            "suppression_state": row["suppression_state"],
+            "first_delivery_at": row["first_delivery_at"],
+            "last_delivery_at": row["last_delivery_at"],
+            "created_at": row["created_at"],
+            "updated_at": row["updated_at"],
+        }
+
+    def record_alert(
+        self,
+        *,
+        candidate_id: str,
+        severity: str,
+        alert_status: str,
+        title: str,
+        rendered_payload: dict[str, Any],
+        detector_version: str | None,
+        feature_schema_version: str | None,
+        evidence_snapshot_id: str | None,
+        suppression_key: str | None,
+        suppression_state: str | None,
+    ) -> str:
+        alert_id = uuid4().hex
+        now = _iso(datetime.now(timezone.utc))
+        conn = get_conn()
+        try:
+            conn.execute(
+                """
+                INSERT INTO alerts (
+                    alert_id,
+                    candidate_id,
+                    severity,
+                    alert_status,
+                    title,
+                    rendered_payload,
+                    workflow_version,
+                    detector_version,
+                    feature_schema_version,
+                    evidence_snapshot_id,
+                    suppression_key,
+                    suppression_state,
+                    first_delivery_at,
+                    last_delivery_at,
+                    created_at,
+                    updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    alert_id,
+                    candidate_id,
+                    severity,
+                    alert_status,
+                    title,
+                    json.dumps(rendered_payload, sort_keys=True),
+                    PHASE4_WORKFLOW_VERSION,
+                    detector_version,
+                    feature_schema_version,
+                    evidence_snapshot_id,
+                    suppression_key,
+                    suppression_state,
+                    None,
+                    None,
+                    now,
+                    now,
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        return alert_id
+
+    def record_delivery_attempt(
+        self,
+        *,
+        alert_id: str,
+        delivery_channel: str,
+        attempt_number: int,
+        delivery_status: str,
+        request_payload: dict[str, Any] | None,
+        response_metadata: dict[str, Any] | None,
+        provider_message_id: str | None = None,
+        error_message: str | None = None,
+    ) -> str:
+        delivery_attempt_id = uuid4().hex
+        attempted_at = _iso(datetime.now(timezone.utc))
+        completed_at = _iso(datetime.now(timezone.utc))
+        conn = get_conn()
+        try:
+            conn.execute(
+                """
+                INSERT INTO alert_delivery_attempts (
+                    delivery_attempt_id,
+                    alert_id,
+                    delivery_channel,
+                    attempt_number,
+                    delivery_status,
+                    provider_message_id,
+                    request_payload,
+                    response_metadata,
+                    attempted_at,
+                    completed_at,
+                    error_message
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    delivery_attempt_id,
+                    alert_id,
+                    delivery_channel,
+                    attempt_number,
+                    delivery_status,
+                    provider_message_id,
+                    json.dumps(request_payload or {}, sort_keys=True),
+                    json.dumps(response_metadata or {}, sort_keys=True),
+                    attempted_at,
+                    completed_at,
+                    error_message,
+                ),
+            )
+            conn.execute(
+                """
+                UPDATE alerts
+                SET
+                    alert_status = ?,
+                    first_delivery_at = COALESCE(first_delivery_at, ?),
+                    last_delivery_at = ?,
+                    updated_at = ?
+                WHERE alert_id = ?
+                """,
+                (
+                    "delivered" if delivery_status == "sent" else "delivery_attempted",
+                    attempted_at,
+                    completed_at,
+                    completed_at,
+                    alert_id,
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        return delivery_attempt_id
