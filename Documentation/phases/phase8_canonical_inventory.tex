@@ -1,0 +1,190 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 8 Task 1 - Canonical Inventory and Cleanup}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, \texttt{Documentation/phases/phase8.tex}, and the committed repository state as inventoried here.\\
+\textbf{Purpose:} Create one master inventory of what is actually canonical now across Phase 1 through Phase 7, separate active artifacts from legacy or historical artifacts, and remove ambiguity in the documentation path for a single-owner workflow.\\
+\textbf{Scope note:} This inventory classifies \textbf{committed} repo artifacts first. Runtime outputs under local \texttt{data/} and \texttt{reports/} directories are described as generated evidence locations, but they are not treated as canonical solely because a path exists in code or runbooks.
+
+\section*{Artifact Status Labels}
+\begin{itemize}
+\item \textbf{Canonical}: the current single-owner source to cite first for planning, startup, handoff, or closeout.
+\item \textbf{Supporting active}: still useful operationally or academically, but not the first canonical entrypoint. This often includes artifacts with historical filenames that remain practically relevant.
+\item \textbf{Generated runtime}: produced by running the system locally. These are important evidence outputs when present, but they are not authoritative in git by themselves.
+\item \textbf{Historical}: retained for provenance, comparison, or legacy context only.
+\end{itemize}
+
+\section*{Canonical Navigation Path After Task 1}
+\texttt{README.md} $\rightarrow$ \texttt{Documentation/INDEX.tex} $\rightarrow$ \texttt{Documentation/SRS.tex} $\rightarrow$ \texttt{Documentation/phases/phase8\_canonical\_inventory.tex} $\rightarrow$ the relevant phase doc, runbook, validation entrypoint, or runtime package.
+
+\section*{Repo-Wide Canonical Anchors}
+\begin{longtable}{p{0.25\linewidth}p{0.18\linewidth}p{0.45\linewidth}}
+\textbf{Artifact} & \textbf{Status} & \textbf{Role} \\
+\texttt{README.md} & Canonical & Top-level entrypoint for repo orientation and the active documentation path \\
+\texttt{Documentation/INDEX.tex} & Canonical & Documentation router that distinguishes canonical material from historical material \\
+\texttt{Documentation/SRS.tex} & Canonical & Source of truth for requirements, roadmap, v1 definition, metrics, and stage gates \\
+\texttt{Documentation/phases/phase8.tex} & Canonical & Single-owner Phase 8 closeout plan and consolidation scope \\
+\texttt{Documentation/phases/phase8\_canonical\_inventory.tex} & Canonical & Master inventory and artifact classification created in Task 1 \\
+\texttt{database/schema.sql} & Canonical & Canonical SQLite-oriented schema definition for the local-first runtime and later phases \\
+\texttt{database/postgres\_schema.sql} & Canonical & Canonical PostgreSQL schema for the local operational runtime and replayable later-phase tables \\
+\texttt{Documentation/*.pdf} & Supporting active & Convenience renders only; the matching \texttt{.tex} source remains authoritative \\
+\texttt{Old-content/} & Historical & Legacy experiments retained for reference only \\
+\end{longtable}
+
+\section*{Phase-by-Phase Inventory}
+\begin{longtable}{p{0.08\linewidth}p{0.31\linewidth}p{0.27\linewidth}p{0.26\linewidth}}
+\textbf{Phase} & \textbf{Canonical Artifacts} & \textbf{Supporting Active Artifacts} & \textbf{Classification Note} \\
+1 &
+\texttt{Documentation/phases/phase1.tex}\\
+\texttt{validation/phase1\_*.py}\\
+\texttt{validation/run\_phase1\_*.py}\\
+\texttt{config/phase1\_validation.yaml}
+&
+\texttt{Documentation/person1Phases/phase1\_person1.tex}\\
+\texttt{Documentation/person2Phases/phase1\_person2.tex}\\
+\texttt{Documentation/person2Phases/phase1\_validation\_contract.tex}\\
+\texttt{Documentation/person2Phases/phase1\_gate1\_signoff.tex}\\
+\texttt{Documentation/person2Phases/phase1\_qa\_review\_template.csv}
+&
+Phase 1 has a canonical single-owner phase plan. Split-person artifacts are retained as historical or evidentiary support, not as the main entrypoint. \\
+2 &
+\texttt{Documentation/phases/phase2.tex}\\
+\texttt{Documentation/phases/phase2\_gate2\_signoff.tex}\\
+\texttt{database/POSTGRES\_LOCAL\_RUNBOOK.md}\\
+\texttt{utils/event\_log.py}\\
+\texttt{validation/phase2\_replay.py}\\
+\texttt{validation/phase2\_republish.py}\\
+\texttt{validation/run\_phase2\_replay.py}\\
+\texttt{validation/run\_phase2\_republish.py}
+&
+\texttt{Documentation/person1Phases/phase2\_person1.tex}\\
+\texttt{Documentation/person2Phases/phase2\_person2.tex}
+&
+Phase 2 is the clearest delivered canonical phase in the repo. Split-person docs are historical context only. \\
+3 &
+\texttt{Documentation/phases/phase3.tex}\\
+\texttt{database/PHASE3\_LOCAL\_RUNBOOK.md}\\
+\texttt{phase3/}\\
+\texttt{run\_phase3\_detector.py}\\
+\texttt{run\_phase3\_live.py}\\
+\texttt{validation/phase3\_candidate\_report.py}\\
+\texttt{validation/phase3\_gate3\_report.py}\\
+\texttt{validation/phase3\_reconciliation.py}
+&
+\texttt{validation/run\_phase3\_candidate\_report.py}\\
+\texttt{validation/run\_phase3\_gate3\_report.py}\\
+\texttt{validation/run\_phase3\_reconciliation.py}
+&
+Phase 3 uses a clean single-owner documentation path plus active runtime and validation modules. \\
+4 &
+\texttt{Documentation/phases/phase4.tex}\\
+\texttt{Documentation/phases/phase4\_gate4\_signoff.tex}\\
+\texttt{database/PHASE4\_LOCAL\_RUNBOOK.md}\\
+\texttt{phase4/}\\
+\texttt{run\_phase4\_alerts.py}\\
+\texttt{run\_phase4\_analyst\_action.py}\\
+\texttt{run\_phase4\_bootstrap.py}\\
+\texttt{run\_phase4\_evidence.py}\\
+\texttt{run\_phase4\_gate4\_capture.py}\\
+\texttt{run\_phase4\_pipeline.py}
+&
+\texttt{validation/phase4\_gate4\_report.py}\\
+\texttt{validation/run\_phase4\_gate4\_report.py}
+&
+Phase 4 has canonical single-owner planning and signoff docs. Validation reporting remains active support rather than the first doc entrypoint. \\
+5 &
+\texttt{Documentation/phases/phase5.tex}\\
+\texttt{phase5/}\\
+\texttt{run\_phase5\_replay.py}\\
+\texttt{run\_phase5\_window\_health.py}\\
+\texttt{run\_phase5\_backfill\_request.py}\\
+\texttt{run\_phase5\_backfill\_dispatch.py}
+&
+\texttt{database/PHASE5\_PERSON1\_RUNBOOK.md}\\
+\texttt{validation/phase5\_person2\_report.py}\\
+\texttt{validation/run\_phase5\_person2\_report.py}\\
+\texttt{Documentation/person1Phases/phase5\_person1.tex}\\
+\texttt{Documentation/person2Phases/phase5\_person2.tex}
+&
+Phase 5 has a canonical single-owner phase plan, but its practical runbook and one reporting path still retain split-person naming. Those are supporting active artifacts with historical filenames. \\
+6 &
+\texttt{phase6/}\\
+\texttt{run\_phase6\_build\_training\_dataset.py}\\
+\texttt{run\_phase6\_materialize\_features.py}\\
+\texttt{run\_phase6\_prepare\_handoff.py}\\
+\texttt{run\_phase6\_register\_model.py}\\
+\texttt{run\_phase6\_activate\_model.py}\\
+\texttt{run\_phase6\_registry\_status.py}\\
+\texttt{run\_phase6\_shadow\_score.py}\\
+\texttt{run\_phase6\_shadow\_live.py}\\
+\texttt{run\_phase6\_train\_ranker.py}
+&
+\texttt{Documentation/person1Phases/phase6\_person1.tex}\\
+\texttt{Documentation/person2Phases/phase6\_person2.tex}\\
+\texttt{database/PHASE6\_PERSON1\_RUNBOOK.md}\\
+\texttt{database/PHASE6\_PERSON2\_RUNBOOK.md}\\
+\texttt{validation/phase6\_person1\_report.py}\\
+\texttt{validation/phase6\_person2\_report.py}\\
+\texttt{validation/run\_phase6\_person1\_report.py}\\
+\texttt{validation/run\_phase6\_person2\_report.py}
+&
+Phase 6 has active committed runtime, reporting, and schema support, but the detailed human-facing docs still use split-person naming. For Phase 8 closeout, the active code is canonical and the split-person docs are supporting active rather than canonical planning sources. \\
+7 &
+\texttt{phase7/}\\
+\texttt{run\_phase7\_build\_graph\_dataset.py}\\
+\texttt{run\_phase7\_train\_graph\_ranker.py}\\
+\texttt{run\_phase7\_goodhart\_study.py}\\
+\texttt{run\_phase7\_record\_experiment.py}\\
+\texttt{run\_phase7\_register\_research\_setup.py}\\
+\texttt{run\_phase7\_research\_status.py}\\
+\texttt{run\_phase7\_build\_research\_package.py}
+&
+\texttt{Documentation/person1Phases/phase7\_person1.tex}\\
+\texttt{Documentation/person2Phases/phase7\_person2.tex}\\
+\texttt{Documentation/person2Phases/phase7\_graph\_feature\_contract.md}\\
+\texttt{reports/phase7/}
+&
+Phase 7 likewise has active committed code but not yet a dedicated single-owner phase doc under \texttt{Documentation/phases/}. The graph-feature contract and split-person docs remain supporting active references; generated report artifacts are expected under \texttt{reports/phase7/} when the phase is run locally. \\
+\end{longtable}
+
+\section*{Generated Runtime Artifact Roots}
+\begin{longtable}{p{0.25\linewidth}p{0.18\linewidth}p{0.45\linewidth}}
+\textbf{Artifact Root} & \textbf{Status} & \textbf{Interpretation} \\
+\texttt{data/} & Generated runtime & Not committed in this repo snapshot. When present locally, it contains the durable archives, detector-input logs, replay runs, and related evidence referenced by Phases 2 through 5. \\
+\texttt{reports/phase5/} & Generated runtime & Expected location for replay, validation, and backtesting outputs when Phase 5 workflows are run. No committed Phase 5 report artifacts are present in git here. \\
+\texttt{reports/phase6/} & Generated runtime & Expected location for Phase 6 feature materialization, model artifacts, handoffs, and shadow-score outputs when Phase 6 workflows are run. No committed Phase 6 report artifacts are present in git here. \\
+\texttt{reports/phase7/} & Generated runtime & Expected location for advanced research packages, figures, and experiment artifacts. The directory exists in git, but committed Phase 7 report payloads are not present in this repo snapshot. \\
+\end{longtable}
+
+\section*{Historical and Legacy Material}
+\begin{itemize}
+\item \texttt{Documentation/person1Phases/} and \texttt{Documentation/person2Phases/} are historical by default.
+\item Specific later-phase artifacts inside those folders are still \textbf{supporting active} when no single-owner replacement exists yet, especially for Phase 6 and Phase 7 planning notes.
+\item \texttt{Old-content/} remains historical and should not be cited as the current implementation path.
+\item Compiled PDFs under \texttt{Documentation/} are convenience outputs only; their corresponding \texttt{.tex} sources remain canonical.
+\end{itemize}
+
+\section*{Cleanup Decisions Adopted in Task 1}
+\begin{enumerate}
+\item \texttt{Documentation/phases/} remains the sole canonical folder for single-owner phase planning and closeout.
+\item \texttt{Documentation/SRS.tex} remains the requirements source of truth; this inventory is the canonical map of how committed repo artifacts relate to that source.
+\item For Phase 6 and Phase 7, the active runtime packages and runner scripts are canonical operational artifacts even though the detailed planning docs still have split-person filenames.
+\item Historical filenames such as \texttt{PHASE5\_PERSON1\_RUNBOOK.md}, \texttt{PHASE6\_PERSON1\_RUNBOOK.md}, and \texttt{PHASE6\_PERSON2\_RUNBOOK.md} do \textbf{not} imply current two-person ownership; they are supporting active runbooks until consolidated replacements are written.
+\item \texttt{README.md} and \texttt{Documentation/INDEX.tex} must route readers first to the SRS and this inventory rather than to a stale earlier-phase checkpoint.
+\item When a \texttt{.tex} source and a rendered \texttt{.pdf} both exist, the \texttt{.tex} source is authoritative.
+\end{enumerate}
+
+\section*{Bottom-Line Outcome of Task 1}
+After this cleanup pass, the repo now has one explicit canonical inventory for Phase 1 through Phase 7 artifacts. The documentation path is no longer centered on an outdated Phase 2 checkpoint. Instead, it distinguishes clearly between:
+\begin{itemize}
+\item the canonical requirements source,
+\item the canonical single-owner phase-planning folder,
+\item active runtime code and validation entrypoints,
+\item generated local evidence outputs,
+\item and historical split-person or legacy material.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 8 Task 2 - Frozen End-to-End Reference Path}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, \texttt{Documentation/phases/phase8.tex}, and the generated freeze manifest under \texttt{reports/phase8/reference\_window\_freeze/}.\\
+\textbf{Task goal:} Freeze one defendable end-to-end reproducibility path from raw archive through replay, candidate generation, alerting, validation, and ML or Phase 7 research packaging, with exact paths, versions, and hashes.\\
+\textbf{Status in this repo snapshot:} The reproducibility path is now frozen \textbf{at the provenance level}. The exact code, docs, schema files, expected runtime artifact paths, and database table targets are all enumerated and hashable. However, the current local workspace does \textbf{not} contain materialized runtime rows or saved report artifacts for the later stages, so the frozen chain is presently a \textbf{defendable definition plus evidence-gap record}, not a fully populated runtime packet.
+
+\section*{Chosen Reference Window}
+\textbf{Window:} \texttt{2026-04-20T05:00:00+00:00} to \texttt{2026-04-20T06:00:00+00:00}\\
+\textbf{Primary source system:} \texttt{gamma\_events}
+
+\textbf{Why this window was chosen}
+\begin{itemize}
+\item It is the only exact one-hour raw/replay proof window explicitly named in a canonical committed phase document.
+\item \texttt{Documentation/phases/phase2.tex} already records raw/archive parity and deterministic republish evidence for this hour.
+\item Freezing a later anonymous window without committed proof would be weaker than freezing the exact committed one and recording what downstream stages still need to materialize.
+\end{itemize}
+
+\section*{Frozen Chain Definition}
+\begin{longtable}{p{0.20\linewidth}p{0.34\linewidth}p{0.34\linewidth}}
+\textbf{Stage} & \textbf{Frozen Artifacts} & \textbf{Expected Runtime Output} \\
+Raw archive and replay & \texttt{Documentation/phases/phase2.tex}, \texttt{Documentation/phases/phase2\_gate2\_signoff.tex}, \texttt{utils/event\_log.py}, \texttt{validation/phase2\_replay.py}, \texttt{validation/phase2\_republish.py} & \texttt{data/raw/year=2026/month=04/day=20/hour=05/source\_system=gamma\_events/events.ndjson}, \texttt{data/detector\_input/...}, and the republished replay output path cited in the Phase 2 delivery doc \\
+Candidate generation & \texttt{Documentation/phases/phase3.tex}, \texttt{database/PHASE3\_LOCAL\_RUNBOOK.md}, \texttt{phase3/detector.py}, \texttt{run\_phase3\_live.py} & persisted candidate and feature rows in \texttt{signal\_candidates}, \texttt{signal\_episodes}, and \texttt{signal\_features} \\
+Alert and evidence & \texttt{Documentation/phases/phase4.tex}, \texttt{Documentation/phases/phase4\_gate4\_signoff.tex}, \texttt{phase4/evidence.py}, \texttt{phase4/alerts.py}, \texttt{run\_phase4\_pipeline.py} & persisted evidence and alert rows in \texttt{evidence\_snapshots}, \texttt{alerts}, and \texttt{alert\_delivery\_attempts} \\
+Validation and backtest & \texttt{Documentation/phases/phase5.tex}, \texttt{phase5/replay.py}, \texttt{phase5/simulator.py}, \texttt{phase5/reporting.py}, \texttt{run\_phase5\_replay.py} & Phase 5 replay/validation/backtest outputs under \texttt{reports/phase5/} and stored summary rows in \texttt{validation\_runs} and \texttt{backtest\_artifacts} \\
+ML / research endpoint & \texttt{phase6/training.py}, \texttt{run\_phase6\_train\_ranker.py}, \texttt{phase7/graph\_features.py}, \texttt{phase7/packaging.py}, \texttt{run\_phase7\_build\_research\_package.py} & a Phase 6 evaluation artifact or a Phase 7 research package rooted under \texttt{reports/phase7/} and backed by ledger rows in \texttt{phase7\_experiment\_ledger} \\
+\end{longtable}
+
+\section*{Generated Freeze Manifest}
+Task 2 introduces one machine-readable manifest and one human-readable summary:
+\begin{itemize}
+\item \texttt{reports/phase8/reference\_window\_freeze/phase8\_reference\_window\_manifest.json}
+\item \texttt{reports/phase8/reference\_window\_freeze/phase8\_reference\_window\_summary.md}
+\end{itemize}
+
+These files record:
+\begin{itemize}
+\item the chosen window and why it was selected,
+\item the current git commit,
+\item exact committed file paths and SHA-256 hashes for every frozen code and doc input,
+\item exact runtime artifact paths expected for the same chain,
+\item version constants for Phase 3 through Phase 7,
+\item database table targets and current row counts,
+\item and a stage-by-stage status saying whether the path is fully materialized or only frozen at the provenance level.
+\end{itemize}
+
+\section*{Current Evidence Gap}
+The local committed SQLite file contains the later-phase schema, but the tables used by Phases 2 through 7 are empty in this workspace snapshot. The \texttt{reports/phase7/} directory exists, but it contains no committed research payloads. Therefore:
+\begin{itemize}
+\item the code path and document provenance are now frozen and hashable,
+\item the exact runtime artifact targets are frozen and named,
+\item but the actual end-to-end runtime evidence packet still needs to be materialized in a later closeout pass.
+\end{itemize}
+
+\section*{Why This Still Counts as Task 2 Progress}
+Task 2 is about defending one end-to-end path with exact paths, versions, and hashes. This repo snapshot could not honestly claim a fully populated end-to-end packet, because the runtime outputs are absent. The correct closeout move is therefore:
+\begin{enumerate}
+\item freeze the strongest exact reference window already proven in canonical docs,
+\item hash the committed code and documentation inputs,
+\item name every downstream runtime artifact location precisely,
+\item and record which stages still lack materialized outputs.
+\end{enumerate}
+
+That converts a vague future workflow into a precise reproducibility contract. When Task 2 is revisited with real runtime outputs present, the same manifest path can be regenerated and upgraded from \texttt{frozen\_definition\_with\_missing\_runtime\_outputs} to a materially complete end-to-end evidence packet.
+
+\end{document}

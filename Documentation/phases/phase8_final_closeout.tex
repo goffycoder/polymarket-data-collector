@@ -1,0 +1,155 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 8 Task 5 - Final Handoff and Closeout Package}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, the previously generated Phase 8 Task 1 through Task 4 artifacts, and the generated closeout manifest under \texttt{reports/phase8/final\_closeout/}.\\
+\textbf{Task goal:} Produce one final handoff set for demo, thesis, or defense use: a consolidated runbook path, one architecture and methodology summary, one list of key figures and tables, reproducibility references, and one final closeout memo answering whether the repo is actually v1-complete under the SRS.
+
+\section*{Direct Answer}
+\textbf{Is the project v1-complete according to the SRS?} \textbf{No, not in the current workspace snapshot.}
+
+The repo is now much easier to defend honestly because Phase 8 has already done four important things:
+\begin{itemize}
+\item it classified the canonical artifact path,
+\item it froze one exact reference-window reproducibility chain,
+\item it formalized the canonical v1 operating mode,
+\item and it wrote the final metrics and stop-condition review.
+\end{itemize}
+
+What remains missing is not documentation structure. What remains missing is \textbf{materialized runtime evidence}. The current workspace still lacks the persisted alert, evaluation, replay, backtest, and modern ML artifacts needed to satisfy the SRS completion contract fully.
+
+\section*{Consolidated Handoff Path}
+\textbf{Read order for demo / thesis / defense}
+\begin{enumerate}
+\item \texttt{README.md}
+\item \texttt{Documentation/INDEX.tex}
+\item \texttt{Documentation/SRS.tex}
+\item \texttt{Documentation/phases/phase8\_canonical\_inventory.tex}
+\item \texttt{Documentation/phases/phase8\_reference\_path.tex}
+\item \texttt{Documentation/phases/phase8\_v1\_operating\_mode.tex}
+\item \texttt{Documentation/phases/phase8\_metrics\_review.tex}
+\item \texttt{Documentation/phases/phase8\_final\_closeout.tex}
+\end{enumerate}
+
+\textbf{Operator runbook path}
+\begin{longtable}{p{0.28\linewidth}p{0.22\linewidth}p{0.38\linewidth}}
+\textbf{Runbook} & \textbf{Classification} & \textbf{Why it stays in the handoff path} \\
+\texttt{database/POSTGRES\_LOCAL\_RUNBOOK.md} & canonical & canonical bootstrap for the local PostgreSQL-backed collector and archive path \\
+\texttt{database/PHASE3\_LOCAL\_RUNBOOK.md} & canonical & live detector setup and Gate 3 candidate production \\
+\texttt{database/PHASE4\_LOCAL\_RUNBOOK.md} & supporting active & evidence, alerts, delivery, and analyst workflow still live here even though the runbook retains historical local-machine paths \\
+\texttt{database/PHASE5\_PERSON1\_RUNBOOK.md} & supporting active & replay, validation, and backfill flow remain here until a single-owner replacement exists \\
+\texttt{database/PHASE6\_PERSON1\_RUNBOOK.md} & supporting active & shadow-model registry and scoring flow remain here until a single-owner replacement exists \\
+\texttt{database/PHASE6\_PERSON2\_RUNBOOK.md} & supporting active & starter-ranker training and evaluation flow remain here until a single-owner replacement exists \\
+\end{longtable}
+
+Phase 8 does \textbf{not} hide these historical filenames. Instead, it makes them explicit in the canonical handoff path so a reviewer knows exactly which runtime paths still matter.
+
+\section*{Architecture Summary}
+\textbf{Canonical v1 system story}
+\begin{itemize}
+\item The collector and archive layer provide the local-first replayable system of record.
+\item Phase 3 converts replayable inputs into deterministic candidate episodes.
+\item Phase 4 turns candidates into evidence-backed alerts with suppression and analyst workflow.
+\item Phase 5 is the validation layer: replay integrity, conservative paper-trading, and holdout-style evaluation.
+\item Phase 6 remains in the canonical story, but only as \textbf{shadow ML}: registry control, shadow scoring, calibration, and evaluation.
+\item Phase 7 remains the advanced research layer: graph features, observability studies, ablations, thesis packaging, and scale-up ideas.
+\end{itemize}
+
+\textbf{Canonical v1 operating mode}
+\begin{itemize}
+\item \texttt{rule\_based\_plus\_shadow\_ml}
+\item Rule-based candidate and alert logic stay authoritative.
+\item ML may score, log, calibrate, and inform future promotion decisions, but it does not own the canonical alert decision path.
+\item Phase 7 research outputs do not become deployment authority merely because they exist.
+\end{itemize}
+
+\section*{Methodology Summary}
+\begin{itemize}
+\item Preserve a replayable local-first data plane.
+\item Use exact historical windows and deterministic replay whenever strong claims are made.
+\item Evaluate alert quality in the SRS priority order: usefulness/precision first, then calibration, then lead time, then conservative paper-trade edge.
+\item Keep ML promotion disciplined: shadow-first, reversible, baseline-compared, and calibration-aware.
+\item Treat Phase 7 as thesis or research depth unless a later explicit promotion decision says otherwise.
+\end{itemize}
+
+\section*{Key Figures and Tables for Handoff}
+\begin{longtable}{p{0.28\linewidth}p{0.16\linewidth}p{0.38\linewidth}}
+\textbf{Artifact} & \textbf{Status} & \textbf{Use in final handoff} \\
+Frozen reference chain table in \texttt{Documentation/phases/phase8\_reference\_path.tex} & available & defend the exact raw archive to research-package chain and explain which stages still lack runtime payloads \\
+Operating-mode decision table in \texttt{Documentation/phases/phase8\_v1\_operating\_mode.tex} & available & explain why canonical v1 is rule-based plus shadow ML \\
+Metrics bundle table in \texttt{Documentation/phases/phase8\_metrics\_review.tex} & available & show the final SRS metric order and current evidence status \\
+Stop-condition ledger in \texttt{Documentation/phases/phase8\_metrics\_review.tex} & available & make the remaining risks and pause conditions explicit \\
+Architecture and methodology summary in this document & available & give a reviewer one compact story across the whole repo \\
+Phase 7 thesis-grade figures and ablation tables under \texttt{reports/phase7/} & not materialized in workspace & useful later for thesis depth, but not available in the current local snapshot \\
+\end{longtable}
+
+\section*{Reproducibility References}
+Task 5 extends the Phase 8 generated artifact chain. The core machine-readable records are now:
+\begin{itemize}
+\item \texttt{reports/phase8/reference\_window\_freeze/phase8\_reference\_window\_manifest.json}
+\item \texttt{reports/phase8/operating\_mode/phase8\_v1\_operating\_mode\_manifest.json}
+\item \texttt{reports/phase8/metrics\_review/phase8\_metrics\_review\_manifest.json}
+\item \texttt{reports/phase8/final\_closeout/phase8\_final\_closeout\_manifest.json}
+\end{itemize}
+
+These can be regenerated with:
+\begin{itemize}
+\item \texttt{python run\_phase8\_freeze\_reference\_path.py}
+\item \texttt{python run\_phase8\_decide\_operating\_mode.py}
+\item \texttt{python run\_phase8\_metrics\_review.py}
+\item \texttt{python run\_phase8\_build\_closeout\_package.py}
+\end{itemize}
+
+Together, they define:
+\begin{itemize}
+\item the exact frozen reference window,
+\item the code and documentation provenance for the end-to-end chain,
+\item the canonical v1 promotion boundary,
+\item the current metric and stop-condition truth state,
+\item and the final Phase 8 handoff answer.
+\end{itemize}
+
+\section*{Final Closeout Memo}
+\textbf{Why the answer is still ``not yet''}
+\begin{enumerate}
+\item The frozen reference chain is strong at the provenance level, but it is still missing later-stage runtime outputs in the current workspace.
+\item The current local database snapshot has zero rows for the alert, evaluation, and backtest tables that matter for final claims.
+\item The SRS requires one conservative backtest and one paper-trading evaluation; those artifacts are not materially present here.
+\item The SRS requires one LightGBM or CatBoost ranker evaluated against wallet-unaware baselines; the committed Phase 6 implementation is still a linear starter ranker and the workspace does not contain the required evaluation artifact.
+\end{enumerate}
+
+\textbf{What is defensible right now}
+\begin{itemize}
+\item the repo has one clear canonical documentation and handoff path,
+\item the project can explain its actual v1 operating mode without ambiguity,
+\item the SRS metric order and stop conditions are now explicit and auditable,
+\item and the remaining gaps are stated plainly instead of being hidden behind phase-local claims.
+\end{itemize}
+
+\textbf{What remains intentionally out of scope}
+\begin{itemize}
+\item live capital deployment or autonomous execution,
+\item cloud-first migration or HA redesign before the single-instance path is fully proven,
+\item automatic promotion of Phase 7 research models into canonical alert authority,
+\item presenting thesis-grade research figures as if they were already required operational v1 artifacts.
+\end{itemize}
+
+\textbf{Best final reading of the repo state}
+\begin{itemize}
+\item The project is \textbf{defensible as a serious, structured, local-first system with a rule-based canonical v1 story and shadow ML support}.
+\item The project is \textbf{not yet defensible as fully SRS-complete v1} in this workspace because the final runtime evidence packet is still missing.
+\end{itemize}
+
+\section*{Generated Artifact}
+Task 5 also writes:
+\begin{itemize}
+\item \texttt{reports/phase8/final\_closeout/phase8\_final\_closeout\_manifest.json}
+\item \texttt{reports/phase8/final\_closeout/phase8\_final\_closeout\_summary.md}
+\end{itemize}
+
+These files are the final machine-readable and human-readable handoff packet for Phase 8 closeout.
+
+\end{document}

@@ -1,27 +1,35 @@
 # Polymarket High-Resolution Data Collector
 
-> Phase 2 checkpoint: a replayable local Polymarket data plane with durable raw archives, detector-input logging, and local PostgreSQL support for Phase 3 work.
+> Phase 8 Task 1 checkpoint: a canonical inventory and cleanup pass now maps the active single-owner documentation path across Phase 1 through Phase 7 outputs.
 
 ---
 
 ## Current Status
 
-The canonical roadmap now lives in [Documentation/SRS.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/SRS.tex) and the active phase docs live in [Documentation/phases/](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/phases).
+The canonical roadmap lives in [Documentation/SRS.tex](Documentation/SRS.tex), and the single-owner planning and closeout docs live in [Documentation/phases/](Documentation/phases).
 
-- Phase 1: delivered and signed off in the phase docs.
-- Phase 2: substantially delivered as the durable data plane in [Documentation/phases/phase2.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/phases/phase2.tex).
-- Phase 3: online state, deterministic candidate detection, and checkpointed replay validation are implemented enough to feed downstream alerting.
-- Phase 4 local branch: evidence, alerts, Telegram delivery, analyst workflow, and Gate 4 reporting are implemented in the Phase 4 worktree.
+- Phase 1 through Phase 5 have canonical single-owner phase docs under `Documentation/phases/`.
+- Phase 6 and Phase 7 have active committed runtime code and runner entrypoints, but some detailed planning and runbook material still carries historical split-person filenames.
+- The master artifact classification for committed Phase 1 through Phase 7 outputs now lives in [Documentation/phases/phase8_canonical_inventory.tex](Documentation/phases/phase8_canonical_inventory.tex).
+- The frozen end-to-end reference path for Phase 8 Task 2 now lives in [Documentation/phases/phase8_reference_path.tex](Documentation/phases/phase8_reference_path.tex), with its generated manifest under `reports/phase8/reference_window_freeze/`.
+- The formal v1 operating-mode decision for Phase 8 Task 3 now lives in [Documentation/phases/phase8_v1_operating_mode.tex](Documentation/phases/phase8_v1_operating_mode.tex), with its generated policy manifest under `reports/phase8/operating_mode/`.
+- The final metrics bundle and stop-condition review for Phase 8 Task 4 now lives in [Documentation/phases/phase8_metrics_review.tex](Documentation/phases/phase8_metrics_review.tex), with its generated review manifest under `reports/phase8/metrics_review/`.
+- The final handoff and closeout package for Phase 8 Task 5 now lives in [Documentation/phases/phase8_final_closeout.tex](Documentation/phases/phase8_final_closeout.tex), with its generated handoff manifest under `reports/phase8/final_closeout/`.
+- Runtime outputs under `data/` and `reports/` are generated locally and are not the source of truth in git by themselves.
 
 If you are orienting yourself quickly, read these in order:
 
-1. [README.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/README.md)
-2. [Documentation/INDEX.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/INDEX.tex)
-3. [Documentation/phases/phase2.tex](/Users/vrajpatel/All-projects/polymarket_arbitrage/Documentation/phases/phase2.tex)
-4. [database/POSTGRES_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/POSTGRES_LOCAL_RUNBOOK.md)
-5. [database/PHASE3_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/PHASE3_LOCAL_RUNBOOK.md)
-6. [database/PHASE4_LOCAL_RUNBOOK.md](/private/tmp/polymarket_arbitrage_phase4/database/PHASE4_LOCAL_RUNBOOK.md)
-7. [Documentation/phases/phase4_gate4_signoff.tex](/private/tmp/polymarket_arbitrage_phase4/Documentation/phases/phase4_gate4_signoff.tex)
+1. [README.md](README.md)
+2. [Documentation/INDEX.tex](Documentation/INDEX.tex)
+3. [Documentation/SRS.tex](Documentation/SRS.tex)
+4. [Documentation/phases/phase8_canonical_inventory.tex](Documentation/phases/phase8_canonical_inventory.tex)
+5. [Documentation/phases/phase8_reference_path.tex](Documentation/phases/phase8_reference_path.tex)
+6. [Documentation/phases/phase8_v1_operating_mode.tex](Documentation/phases/phase8_v1_operating_mode.tex)
+7. [Documentation/phases/phase8_metrics_review.tex](Documentation/phases/phase8_metrics_review.tex)
+8. [Documentation/phases/phase8_final_closeout.tex](Documentation/phases/phase8_final_closeout.tex)
+9. [Documentation/phases/phase8.tex](Documentation/phases/phase8.tex)
+10. [Documentation/phases/phase2.tex](Documentation/phases/phase2.tex)
+11. [Documentation/phases/phase4_gate4_signoff.tex](Documentation/phases/phase4_gate4_signoff.tex)
 
 ## What This Is
 
@@ -233,10 +241,10 @@ venv/bin/python database/postgres_migrate.py \
   --target-url 'postgresql+psycopg://USER:PASS@localhost:5432/polymarket'
 ```
 
-The full local Phase 2 runbook is in [database/POSTGRES_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/POSTGRES_LOCAL_RUNBOOK.md).
+The full local Phase 2 runbook is in [database/POSTGRES_LOCAL_RUNBOOK.md](database/POSTGRES_LOCAL_RUNBOOK.md).
 
 For the first real Phase 3 live run and Gate 3 reporting workflow, use
-[database/PHASE3_LOCAL_RUNBOOK.md](/Users/vrajpatel/All-projects/polymarket_arbitrage/database/PHASE3_LOCAL_RUNBOOK.md).
+[database/PHASE3_LOCAL_RUNBOOK.md](database/PHASE3_LOCAL_RUNBOOK.md).
 
 ## Phase 2 Deliverables In This Repo
 
@@ -273,7 +281,9 @@ venv/bin/python run_collector.py
 
 ## What Is Legacy
 
-`Old-content/`, `Documentation/person1Phases/`, and `Documentation/person2Phases/` are retained for historical context. They are useful references, but they are not the canonical source of truth for starting Phase 3.
+`Old-content/` is historical.
+
+`Documentation/person1Phases/` and `Documentation/person2Phases/` are historical by default, but a few later-phase artifacts inside them still remain supporting references until single-owner replacements are written. The authoritative classification now lives in [Documentation/phases/phase8_canonical_inventory.tex](Documentation/phases/phase8_canonical_inventory.tex).
 
 ---
 

@@ -1,0 +1,152 @@
+{
+  "authoritative_v1_path": {
+    "decision_logic": [
+      "phase3 deterministic candidate generation",
+      "phase4 evidence enrichment and alert rendering",
+      "phase4 suppression and analyst workflow"
+    ],
+    "ml_role": [
+      "phase6 feature materialization and model registry",
+      "phase6 shadow scoring with traceable provenance",
+      "phase6 evaluation and calibration as advisory evidence"
+    ],
+    "operator_rule": "Rule-based candidate and alert behavior remains authoritative for v1. ML scores may be recorded, compared, and reviewed, but they do not decide whether an alert exists.",
+    "rollback_rule": "If ML plumbing is disabled, shadow models can be retired or ignored without changing the authoritative rule-based alert path.",
+    "validation_contract": [
+      "phase5 replay reproducibility",
+      "phase5 conservative paper-trading and holdouts"
+    ]
+  },
+  "contract_version": "phase8_v1_operating_mode_v1",
+  "decision": {
+    "canonical_v1_operating_mode": "rule_based_plus_shadow_ml",
+    "rejected_modes": [
+      {
+        "mode": "rule_based_only",
+        "reason": "The repo already contains committed Phase 6 registry, shadow-scoring, and evaluation plumbing that should remain active for v1 learning and auditability."
+      },
+      {
+        "mode": "ml_backed_ranking_with_rollback",
+        "reason": "The committed repo state does not justify promotion of ML to decision authority: Phase 6 is shadow-first by design, the current trainer is still a linear starter ranker, and no materialized local evidence packet proves safe promotion."
+      }
+    ]
+  },
+  "generated_at": "2026-04-22T15:20:23.502091+00:00",
+  "git_commit": "baf344b8e3bff24ffcc37040d6114d628a3f729d",
+  "phase7_classification": {
+    "explicit_non_promotion_rule": "No Phase 7 scoring artifact changes canonical v1 alert generation unless it first clears a separate promotion decision beyond this Task 3 contract.",
+    "may_influence_canonical_v1_story_but_not_decision_logic": [
+      "observability and Goodhart warnings that constrain operator trust and deployment claims",
+      "strict-holdout promotion discipline versus the Phase 6 baseline",
+      "scale, storage, restore, and long-run dashboard guidance from the operational scale-up track",
+      "reproducibility packaging standards for later thesis or defense artifacts"
+    ],
+    "research_only": [
+      "graph-derived feature families",
+      "graph-aware advanced ranker artifacts",
+      "marked Hawkes or TCN experiments",
+      "ablation tables and thesis-quality figures",
+      "phase7 research packages and experiment-ledger narratives as headline model claims"
+    ]
+  },
+  "promotion_decision": {
+    "phase6_ml_authority": "not_promoted_to_authoritative_v1",
+    "phase6_shadow_policy": "allowed_and_recommended",
+    "phase7_model_promotion": "not_promoted_to_authoritative_v1",
+    "promotion_preconditions_missing": [
+      "materialized end-to-end runtime evidence packet in this workspace",
+      "stronger proof that ML gains survive operationally relevant replay windows",
+      "clear evidence that promotion improves outcomes without degrading explainability or rollback safety",
+      "delivery-ready implementation of the full boosted-tree ranker promised by the SRS instead of only the committed linear starter baseline"
+    ]
+  },
+  "rationale": [
+    "The SRS definition of v1 complete requires one ranker to be evaluated against baselines; it does not require ML to become the authoritative alert path.",
+    "The SRS and Phase 6 planning explicitly require shadow mode first.",
+    "Phase 4's canonical single-owner plan keeps the alert loop rule-based and operator-facing before ML promotion.",
+    "The committed Phase 6 implementation is still a linear starter ranker, and its own reporting code labels thresholds as shadow-only recommendations.",
+    "Phase 7 is explicitly framed as advanced research after v1 stability, so it should not silently redefine the canonical v1 operating mode."
+  ],
+  "supporting_evidence": [
+    {
+      "exists": true,
+      "kind": "requirements_source",
+      "note": "Defines v1 completeness, stage gates, Phase 6 shadow-first rollout, and Phase 7 as post-v1 advanced research.",
+      "path": "Documentation/SRS.tex",
+      "sha256": "e3b32cc61b0df38c18142777df71b744aebef23b5a397431f40cb26627842574",
+      "size_bytes": 81753
+    },
+    {
+      "exists": true,
+      "kind": "phase_doc",
+      "note": "States that Phase 4 remains rule-based and operator-facing.",
+      "path": "Documentation/phases/phase4.tex",
+      "sha256": "0eff1d113384e636bfdf9e1f9fcd93e9483706bd7dfca840922735dfe348f07c",
+      "size_bytes": 14661
+    },
+    {
+      "exists": true,
+      "kind": "phase_doc",
+      "note": "Defines the historical validation and conservative paper-trading layer required before strong ranking claims.",
+      "path": "Documentation/phases/phase5.tex",
+      "sha256": "8808a38328048fed669c9eb4a9cc5a7f60ea977acd2540f45c3f522ac9ed455a",
+      "size_bytes": 7830
+    },
+    {
+      "exists": true,
+      "kind": "supporting_doc",
+      "note": "Explicitly says ML integration begins in shadow mode only and rule-based alerting remains authoritative until evidence is convincing.",
+      "path": "Documentation/person1Phases/phase6_person1.tex",
+      "sha256": "be19863565e2945fecd1290d982f111d0cbe788a07092403a15d9764f31254ee",
+      "size_bytes": 5314
+    },
+    {
+      "exists": true,
+      "kind": "supporting_doc",
+      "note": "Frames the model as needing baseline comparisons, calibration, and shadow-mode review before deserving continued shadowing or promotion.",
+      "path": "Documentation/person2Phases/phase6_person2.tex",
+      "sha256": "b5cda2f811797f27ec36584dbff43ca538b8c4a5cf5d29f84dc44b8146b5e424",
+      "size_bytes": 5174
+    },
+    {
+      "exists": true,
+      "kind": "runtime_module",
+      "note": "Committed Phase 6 trainer currently fits a linear starter ranker, not the final boosted-tree model described by the full Phase 6 scope.",
+      "path": "phase6/training.py",
+      "sha256": "0594d59d3069c56b64d497f8bcc8da635e3141df312088bee50e58b2cd748741",
+      "size_bytes": 11331
+    },
+    {
+      "exists": true,
+      "kind": "runtime_module",
+      "note": "Model card text says thresholds are shadow-only recommendations and identifies the starter ranker as a linear baseline foundation.",
+      "path": "phase6/reporting.py",
+      "sha256": "a0bd7158a3bbb5bdbb4bb41efcb99c7e849a87e1dbfce0dcee86c3505bb7c4fa",
+      "size_bytes": 9121
+    },
+    {
+      "exists": true,
+      "kind": "supporting_doc",
+      "note": "Defines Phase 7 as advanced research on top of a stable Phase 6 baseline, not as canonical v1 promotion by default.",
+      "path": "Documentation/person2Phases/phase7_person2.tex",
+      "sha256": "1a508ddb0e3dcc41ef747ef855e3e60798a4ac86a42c822c530e67b72287ec34",
+      "size_bytes": 5133
+    },
+    {
+      "exists": true,
+      "kind": "runtime_module",
+      "note": "Phase 7 strict-holdout assessment only accepts gains that beat the Phase 6 baseline in both validation and test.",
+      "path": "phase7/reporting.py",
+      "sha256": "286e318d9993e95877f28ee1ca1773b77ce08a071ad5b7a70fe2916f636cdb55",
+      "size_bytes": 6387
+    },
+    {
+      "exists": true,
+      "kind": "runtime_module",
+      "note": "Phase 7 observability study generates deployment implications that caution against increasing operator trust without stronger evidence.",
+      "path": "phase7/observability.py",
+      "sha256": "c8c6b7df1726b138289bf2b3f4dbeea3bc53c3537cfb98b226a06e88f95635a9",
+      "size_bytes": 25974
+    }
+  ]
+}

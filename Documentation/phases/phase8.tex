@@ -1,0 +1,157 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 8 Plan - Single Owner}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, especially Section 2.6 ``Definition of v1 Complete'', Section 8 ``Evaluation and Metrics'', Section 9 ``Operations, Security, and Governance'', and Section 11 ``Roadmap and Stage Gates''.\\
+\textbf{Execution status:} Planning only. This document defines the canonical single-owner continuation after the completed Phase 1 through Phase 7 work.\\
+\textbf{Entry assumption:} The repo already contains completed or evidence-backed outputs for ingestion correctness, the durable data plane, deterministic candidate detection, alerting, replay and validation, ML v1, and Phase 7 advanced research artifacts.
+
+\textbf{Phase goal:} Consolidate the completed Phase 1 through Phase 7 work into one defendable, frozen, single-owner v1 package that is operationally reviewable, academically reproducible, and ready for final handoff, demonstration, or thesis defense.\\
+\textbf{Interpretation note:} The SRS roadmap formally ends at Phase 7. Phase 8 is therefore not a new SRS-defined build phase; it is the single-owner consolidation phase derived from the SRS definition of v1 complete and from the fact that Phases 1 through 7 already exist in this repo as completed implementation and documentation tracks.\\
+\textbf{Implementation note:} Phase 8 should prefer integration, freeze, validation, and final packaging over fresh architecture churn. New ideas only belong here if they are required to close a contradiction between existing artifacts and the SRS.
+
+\section*{Why Phase 8 Exists}
+The project now spans multiple completed implementation layers:
+\begin{itemize}
+\item Phase 1 fixed ingestion correctness and wallet-linked trade semantics.
+\item Phase 2 established the replayable raw archive and durable local data plane.
+\item Phase 3 added deterministic online state and candidate generation.
+\item Phase 4 made alerts, evidence snapshots, and analyst workflow operational.
+\item Phase 5 made replay, backtesting, and validation historically defensible.
+\item Phase 6 introduced traceable ML v1 training, registry, and shadow scoring.
+\item Phase 7 added advanced research artifacts, graph-aware modeling, observability analysis, and thesis-grade packaging.
+\end{itemize}
+
+What remains is not another disconnected subsystem. What remains is to freeze the canonical story of the whole system, decide what is promoted versus retained as research-only, and produce one final package that can be defended both operationally and academically.
+
+\section*{Owned Deliverables (Synthesized From SRS + Completed Phases)}
+\begin{enumerate}
+\item Build one canonical v1 artifact inventory covering the active data, detector, alerting, replay, ML, and research outputs.
+\item Freeze one end-to-end reproducibility path from raw archive window to candidate, alert, replay report, validation output, and model or research artifact.
+\item Produce one promotion memo stating which Phase 6 and Phase 7 artifacts are canonical for v1, which remain shadow-only, and which stay research-only.
+\item Produce one final metrics bundle tied to the SRS success hierarchy: ranked alert precision and usefulness, calibration, lead time, and conservative paper-trade edge.
+\item Produce one final limitations and stop-conditions memo that explicitly checks the SRS pause conditions against the actual repo state.
+\item Consolidate operator-facing runbooks for startup, replay, validation, model rollback, archive restore, and research-package regeneration.
+\item Produce one thesis or demo handoff set with architecture summary, methodology summary, figures, result tables, and reproducibility references.
+\item Produce one final single-owner closeout document stating whether the project is v1-complete by the SRS definition and what remains out of scope.
+\end{enumerate}
+
+\section*{Phase 8 Exit Criteria}
+\begin{itemize}
+\item The SRS definition of v1 complete is answered with concrete evidence rather than phase-local claims.
+\item Every canonical artifact needed for a defense, demo, or handoff has an explicit path, version, and ownership status.
+\item One end-to-end historical window can still be defended across the full stack from raw input to final analytical output.
+\item The project has one explicit canonical operating mode for v1 rather than competing parallel stories.
+\item Phase 7 research outputs are clearly labeled as promoted, shadow-only, or research-only.
+\item The project can state its strongest evidence, weakest assumptions, and remaining non-goals without contradiction.
+\end{itemize}
+
+\section*{Locked Scope Decisions}
+\begin{itemize}
+\item Phase 8 is a consolidation phase, not a major new feature phase.
+\item The canonical v1 path remains local-first unless an existing artifact already proves otherwise.
+\item Real-money automation and autonomous execution remain out of scope.
+\item Phase 7 gains are not automatically promoted into canonical v1 behavior; they must survive the same reproducibility, calibration, and rollback standards as Phase 6 artifacts.
+\item Documentation must distinguish clearly between:
+\begin{itemize}
+\item canonical v1 behavior,
+\item shadow-mode ML behavior,
+\item advanced research findings,
+\item deferred future work.
+\end{itemize}
+\item Every final claim must be backed by saved artifacts, hashes, version identifiers, or rerunnable commands.
+\item Phase 8 should resolve ambiguity across existing documents; it should not rewrite history or hide disagreements between earlier phase outputs.
+\end{itemize}
+
+\section*{Concrete Artifacts Required}
+\begin{longtable}{p{0.24\linewidth}p{0.36\linewidth}p{0.26\linewidth}}
+\textbf{Workstream} & \textbf{Artifact} & \textbf{Done Condition} \\
+Artifact inventory & Canonical v1 inventory and path map & Data, model, research, runbook, and report artifacts are all explicitly mapped to one current source of truth \\
+End-to-end proof & One frozen reference window and evidence packet & A reviewer can trace raw inputs through replay, candidates, alerts, validation, and model or research outputs \\
+Promotion policy & v1 promotion and retention memo & The repo states what is canonical, shadow-only, research-only, or deferred \\
+Metrics consolidation & Final metrics bundle & Success metrics are summarized in SRS priority order with caveats and exact artifact references \\
+Governance closeout & Stop-conditions and limitations memo & Open risks, failure modes, and unresolved caveats are stated plainly \\
+Operational handoff & Consolidated runbook set & Startup, restore, replay, validation, rollback, and research regeneration workflows are documented together \\
+Academic packaging & Thesis or demo artifact set & Figures, tables, methodology, and reproducibility references can be handed off without ad hoc explanation \\
+Final closeout & Phase 8 readiness memo & The project can say whether it is v1-complete and what remains intentionally out of scope \\
+\end{longtable}
+
+\section*{Canonical Phase 8 Workflow}
+\begin{enumerate}
+\item Inventory the outputs of Phases 1 through 7 and separate canonical assets from historical or legacy artifacts.
+\item Choose one or more frozen reference windows that can anchor final reproducibility proof.
+\item Re-run or verify the end-to-end path from raw archive through replay, candidate generation, alerting, and evaluation outputs.
+\item Compare Phase 6 operational ML outputs against Phase 7 advanced research outputs and decide promotion status for each family.
+\item Assemble the final metrics bundle in the same priority order used by the SRS.
+\item Write the limitations, stop-conditions, and non-goals memo using the actual observed repo state.
+\item Consolidate runbooks and documentation pointers so a single owner can start, validate, defend, and hand off the system.
+\item Publish the final Phase 8 closeout packet.
+\end{enumerate}
+
+\section*{Concrete Execution Sequence}
+\textbf{Block 1: Canonical inventory and document cleanup}
+\begin{itemize}
+\item Build one map of canonical documents, runbooks, schemas, reports, and research artifacts.
+\item Mark split-by-person materials as historical where needed and point all final references to the single-owner path.
+\item Resolve stale references, duplicate claims, and unclear ownership language across documentation.
+\end{itemize}
+
+\textbf{Block 2: End-to-end reproducibility freeze}
+\begin{itemize}
+\item Freeze one final reference window and the exact artifact set used to defend it.
+\item Verify that replay, candidate output, alert evidence, validation outputs, and model or research summaries are still mutually consistent.
+\item Record exact paths, hashes, versions, and command entrypoints for the frozen package.
+\end{itemize}
+
+\textbf{Block 3: Promotion and operating-mode decision}
+\begin{itemize}
+\item Decide the canonical v1 operating mode:
+\begin{itemize}
+\item rule-based only,
+\item rule-based plus shadow ML,
+\item or promoted ML-backed ranking with rollback.
+\end{itemize}
+\item Decide which Phase 7 findings are thesis evidence only versus operational recommendations.
+\item Write one memo explaining why each retained artifact earned canonical status.
+\end{itemize}
+
+\textbf{Block 4: Metrics and limitations closeout}
+\begin{itemize}
+\item Summarize final precision, calibration, lead-time, and conservative paper-trading evidence.
+\item State known weak regimes, observability caveats, provider limits, and failure modes.
+\item Check the SRS stop conditions explicitly and note whether any remain active concerns.
+\end{itemize}
+
+\textbf{Block 5: Handoff and final packaging}
+\begin{itemize}
+\item Consolidate the operator runbook path for startup, replay, validation, rollback, and artifact regeneration.
+\item Assemble the thesis or demo package from saved figures, tables, and methodology notes.
+\item Write the final closeout statement for whether the repo is v1-complete under the SRS definition.
+\end{itemize}
+
+\section*{Expected Areas To Touch Later}
+\begin{itemize}
+\item \texttt{Documentation/INDEX.tex} and \texttt{Documentation/phases/README.tex} for canonical navigation
+\item \texttt{README.md} for the top-level project story and active path
+\item \texttt{database/*RUNBOOK.md} for consolidated operator workflows
+\item \texttt{Documentation/phases/} for closeout and signoff artifacts
+\item \texttt{reports/phase5/}, \texttt{reports/phase6/}, and \texttt{reports/phase7/} for frozen evidence references
+\item validation or reporting entrypoints only if reproducibility gaps must be resolved during closeout
+\end{itemize}
+
+\section*{Non-Goals}
+\begin{itemize}
+\item No new collector architecture rewrite.
+\item No new experimental model family unless it is required to reconcile existing evidence.
+\item No cloud-first migration or HA redesign as part of Phase 8 closeout.
+\item No live capital deployment or autonomous execution loop.
+\item No retroactive claim that every historical document is canonical; some artifacts will remain intentionally historical.
+\end{itemize}
+
+\section*{Phase 8 Readiness Standard}
+Phase 8 is complete when a single owner can point to one canonical path through the repo and defend the entire system from ingestion through research packaging without switching stories, guessing which document is current, or relying on undocumented assumptions. At that point the project has a final v1-quality narrative: what works, what is proven, what remains research-only, and what future work is intentionally deferred.
+
+\end{document}
