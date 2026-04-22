@@ -349,6 +349,155 @@ CREATE INDEX IF NOT EXISTS idx_shadow_model_scores_model_time
 CREATE UNIQUE INDEX IF NOT EXISTS uq_shadow_model_scores_model_candidate_time
     ON shadow_model_scores(model_version, candidate_id, scored_at);
 
+-- -----------------------------------------------------------------
+-- 8. PHASE 7 SCALE-UP / STORAGE AUDIT
+-- -----------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS storage_audit_runs (
+    storage_audit_run_id     TEXT PRIMARY KEY,
+    audit_scope              TEXT NOT NULL,
+    status                   TEXT NOT NULL,
+    total_partitions         INTEGER DEFAULT 0,
+    total_bytes              BIGINT DEFAULT 0,
+    missing_file_count       INTEGER DEFAULT 0,
+    compact_candidate_count  INTEGER DEFAULT 0,
+    cold_candidate_count     INTEGER DEFAULT 0,
+    output_path              TEXT,
+    summary_json             TEXT,
+    notes                    TEXT,
+    created_at               TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    completed_at             TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_storage_audit_runs_time
+    ON storage_audit_runs(created_at DESC);
+
+CREATE TABLE IF NOT EXISTS archive_tiering_decisions (
+    tiering_decision_id      TEXT PRIMARY KEY,
+    storage_audit_run_id     TEXT NOT NULL,
+    partition_path           TEXT NOT NULL,
+    source_system            TEXT NOT NULL,
+    storage_class            TEXT NOT NULL,
+    recommended_tier         TEXT NOT NULL,
+    recommended_action       TEXT NOT NULL,
+    byte_count               BIGINT DEFAULT 0,
+    age_days                 DOUBLE PRECISION,
+    file_exists              INTEGER DEFAULT 1,
+    metadata_json            TEXT,
+    created_at               TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_archive_tiering_decisions_audit_time
+    ON archive_tiering_decisions(storage_audit_run_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_archive_tiering_decisions_partition
+    ON archive_tiering_decisions(partition_path, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS compaction_plan_runs (
+    compaction_plan_run_id    TEXT PRIMARY KEY,
+    storage_audit_run_id      TEXT,
+    plan_scope                TEXT NOT NULL,
+    status                    TEXT NOT NULL,
+    total_items               INTEGER DEFAULT 0,
+    compact_item_count        INTEGER DEFAULT 0,
+    cold_archive_item_count   INTEGER DEFAULT 0,
+    output_path               TEXT,
+    summary_json              TEXT,
+    created_at                TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    completed_at              TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_compaction_plan_runs_time
+    ON compaction_plan_runs(created_at DESC);
+
+CREATE TABLE IF NOT EXISTS restore_plan_runs (
+    restore_plan_run_id      TEXT PRIMARY KEY,
+    storage_audit_run_id     TEXT,
+    restore_scope            TEXT NOT NULL,
+    requested_start_time     TIMESTAMPTZ,
+    requested_end_time       TIMESTAMPTZ,
+    status                   TEXT NOT NULL,
+    total_items              INTEGER DEFAULT 0,
+    missing_item_count       INTEGER DEFAULT 0,
+    output_path              TEXT,
+    summary_json             TEXT,
+    created_at               TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    completed_at             TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_restore_plan_runs_time
+    ON restore_plan_runs(created_at DESC);
+
+CREATE TABLE IF NOT EXISTS integrity_summary_runs (
+    integrity_summary_run_id   TEXT PRIMARY KEY,
+    storage_audit_run_id       TEXT,
+    summary_scope              TEXT NOT NULL,
+    status                     TEXT NOT NULL,
+    source_count               INTEGER DEFAULT 0,
+    total_partitions           INTEGER DEFAULT 0,
+    missing_file_count         INTEGER DEFAULT 0,
+    compact_candidate_count    INTEGER DEFAULT 0,
+    cold_candidate_count       INTEGER DEFAULT 0,
+    output_path                TEXT,
+    summary_json               TEXT,
+    created_at                 TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    completed_at               TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_integrity_summary_runs_time
+    ON integrity_summary_runs(created_at DESC);
+
+CREATE TABLE IF NOT EXISTS archive_action_runs (
+    archive_action_run_id      TEXT PRIMARY KEY,
+    storage_audit_run_id       TEXT,
+    execution_mode             TEXT NOT NULL,
+    status                     TEXT NOT NULL,
+    total_items                INTEGER DEFAULT 0,
+    compact_item_count         INTEGER DEFAULT 0,
+    cold_archive_item_count    INTEGER DEFAULT 0,
+    investigate_item_count     INTEGER DEFAULT 0,
+    output_path                TEXT,
+    summary_json               TEXT,
+    created_at                 TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    completed_at               TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_archive_action_runs_time
+    ON archive_action_runs(created_at DESC);
+
+CREATE TABLE IF NOT EXISTS archive_action_items (
+    archive_action_item_id     TEXT PRIMARY KEY,
+    archive_action_run_id      TEXT NOT NULL,
+    partition_path             TEXT NOT NULL,
+    source_system              TEXT NOT NULL,
+    storage_class              TEXT NOT NULL,
+    recommended_action         TEXT NOT NULL,
+    enforcement_action         TEXT NOT NULL,
+    status                     TEXT NOT NULL,
+    byte_count                 BIGINT DEFAULT 0,
+    age_days                   DOUBLE PRECISION,
+    file_exists                INTEGER DEFAULT 1,
+    metadata_json              TEXT,
+    created_at                 TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_archive_action_items_run_time
+    ON archive_action_items(archive_action_run_id, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS service_profile_runs (
+    service_profile_run_id     TEXT PRIMARY KEY,
+    profile_scope              TEXT NOT NULL,
+    status                     TEXT NOT NULL,
+    service_count              INTEGER DEFAULT 0,
+    bottleneck_count           INTEGER DEFAULT 0,
+    failure_risk_count         INTEGER DEFAULT 0,
+    output_path                TEXT,
+    summary_json               TEXT,
+    created_at                 TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    completed_at               TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_service_profile_runs_time
+    ON service_profile_runs(created_at DESC);
+
 CREATE TABLE IF NOT EXISTS model_evaluation_runs (
     evaluation_run_id        TEXT PRIMARY KEY,
     model_version            TEXT NOT NULL,

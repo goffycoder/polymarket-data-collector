@@ -1,0 +1,44 @@
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+from database.db_manager import apply_schema
+from phase7.reporting import build_phase7_dashboard
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Render the Phase 7 Person 1 long-run storage/runtime dashboard.")
+    parser.add_argument(
+        "--output",
+        default="reports/phase7/dashboard.json",
+        help="JSON output path.",
+    )
+    parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON.")
+    return parser
+
+
+def main() -> int:
+    args = build_parser().parse_args()
+    apply_schema()
+    output_path = Path(args.output)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    summary, payload = build_phase7_dashboard(output_path=str(output_path))
+    output_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    result = {
+        "summary": summary.to_dict(),
+        "output_path": str(output_path),
+    }
+    if args.json:
+        print(json.dumps(result, indent=2, sort_keys=True))
+    else:
+        print(f"Dashboard audit: {summary.audit_run_id}")
+        print(f"Sources: {summary.source_count}")
+        print(f"Partitions: {summary.total_partitions}")
+        print(f"Report: {output_path}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
