@@ -1,0 +1,412 @@
+{
+  "contract_version": "phase8_metrics_review_v1",
+  "generated_at": "2026-04-22T15:24:56.672869+00:00",
+  "git_commit": "baf344b8e3bff24ffcc37040d6114d628a3f729d",
+  "limitations_review": {
+    "failure_modes": [
+      {
+        "detail": "The Phase 4 signoff memo itself says final validation should use at least one real candidate-to-alert run rather than seeded or purely local test data.",
+        "severity": "high",
+        "title": "Alert-loop claims without real traffic would be overstated"
+      },
+      {
+        "detail": "Phase 6 reporting explicitly says threshold recommendations should stay shadow-only until they survive larger replay windows.",
+        "severity": "medium",
+        "title": "ML thresholds are shadow-only recommendations"
+      },
+      {
+        "detail": "Task 2 froze the path definition but marked the overall reference chain as missing runtime outputs.",
+        "severity": "high",
+        "title": "Replay-to-alert reproducibility is not yet materially demonstrated in this workspace"
+      }
+    ],
+    "observability_caveats": [
+      {
+        "detail": "Phase 7 observability logic is implemented, but no local alert/evidence history exists to populate those metrics in this workspace snapshot.",
+        "severity": "medium",
+        "title": "Goodhart and observability analysis exists as code and policy, not as current measured evidence"
+      },
+      {
+        "detail": "The committed Phase 7 observability study code explicitly warns that better visible precision is not the same as preserved tradable or investigative edge.",
+        "severity": "medium",
+        "title": "Visible operator metrics may not preserve true lead time or hidden candidate edge"
+      }
+    ],
+    "provider_issues": [
+      {
+        "detail": "Current default evidence providers are ['noop_news', 'noop_social'], which means the persistence path exists but richer real retrieval evidence is not the default runtime state.",
+        "severity": "high",
+        "title": "Evidence providers default to placeholder noop adapters"
+      },
+      {
+        "detail": "Telegram and Discord integrations exist, but the settings default to disabled unless credentials are configured.",
+        "severity": "medium",
+        "title": "Live delivery integrations are gated and may be disabled"
+      }
+    ],
+    "weak_regimes": [
+      {
+        "detail": "Phase 2 through Phase 7 tables are present structurally but populated counts are zero in the committed local SQLite snapshot.",
+        "severity": "high",
+        "title": "No materialized later-phase runtime evidence in the current workspace"
+      },
+      {
+        "detail": "Alert precision, calibration, lead time, and paper-trade edge cannot be computed honestly from the current workspace because the required runtime artifacts are absent.",
+        "severity": "high",
+        "title": "Canonical v1 metrics are mostly unavailable rather than merely weak"
+      },
+      {
+        "detail": "The committed Phase 6 trainer fits a linear starter ranker, and the reporting layer explicitly says it is not yet the final boosted-tree model promised by the full Phase 6 scope.",
+        "severity": "medium",
+        "title": "Current ML implementation is still a starter baseline"
+      }
+    ]
+  },
+  "metrics_bundle": [
+    {
+      "blockers": [
+        "alerts table row count is 0",
+        "alert_delivery_attempts table row count is 0",
+        "analyst_feedback table row count is 0",
+        "Phase 4 signoff itself says final evidence should come from a real live candidate-to-alert run"
+      ],
+      "current_value": null,
+      "evidence_sources": [
+        {
+          "exists": true,
+          "kind": "requirements_source",
+          "note": "Defines the success-metric order and stop conditions.",
+          "path": "Documentation/SRS.tex",
+          "sha256": "e3b32cc61b0df38c18142777df71b744aebef23b5a397431f40cb26627842574",
+          "size_bytes": 81753
+        },
+        {
+          "exists": true,
+          "kind": "signoff_doc",
+          "note": "Documents known Phase 4 limitations, especially placeholder providers and missing real traffic evidence.",
+          "path": "Documentation/phases/phase4_gate4_signoff.tex",
+          "sha256": "af2239c54814adede9f5016bcd51306874987cd7a7361cc60a890c1a29c60d71",
+          "size_bytes": 5915
+        },
+        {
+          "exists": true,
+          "kind": "phase8_artifact",
+          "note": "Current end-to-end freeze status and database table counts.",
+          "path": "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
+          "sha256": "1dbf6d7012931f1e9d9d377e0535860b0a0ec1d811bd617e662c9c38537bcb32",
+          "size_bytes": 20806
+        }
+      ],
+      "evidence_summary": "No persisted alerts, delivery attempts, or analyst feedback rows are present in the current workspace snapshot, so alert precision/usefulness cannot be computed honestly.",
+      "metric_key": "alert_precision_usefulness",
+      "metric_name": "Ranked alert precision and operational usefulness",
+      "priority_rank": 1,
+      "status": "not_materialized_in_workspace",
+      "target": "Precision@10 > 0.60 (aspirational), plus meaningful analyst usefulness evidence"
+    },
+    {
+      "blockers": [
+        "model_evaluation_runs table row count is 0",
+        "calibration_profiles table row count is 0",
+        "shadow_model_scores table row count is 0",
+        "Task 3 keeps ML in shadow mode only for canonical v1"
+      ],
+      "current_value": null,
+      "evidence_sources": [
+        {
+          "exists": true,
+          "kind": "requirements_source",
+          "note": "Defines the success-metric order and stop conditions.",
+          "path": "Documentation/SRS.tex",
+          "sha256": "e3b32cc61b0df38c18142777df71b744aebef23b5a397431f40cb26627842574",
+          "size_bytes": 81753
+        },
+        {
+          "exists": true,
+          "kind": "runtime_module",
+          "note": "Contains calibration/reporting logic and explicit caveats about the starter ranker.",
+          "path": "phase6/reporting.py",
+          "sha256": "a0bd7158a3bbb5bdbb4bb41efcb99c7e849a87e1dbfce0dcee86c3505bb7c4fa",
+          "size_bytes": 9121
+        },
+        {
+          "exists": true,
+          "kind": "validation_module",
+          "note": "Summarizes baseline margin and calibration profile status when evaluation runs exist.",
+          "path": "validation/phase6_person2_report.py",
+          "sha256": "09789595967aa22c2eb342f3a9957de5b99025502cedfe7c6f72e4412238e0ca",
+          "size_bytes": 2172
+        },
+        {
+          "exists": true,
+          "kind": "phase8_artifact",
+          "note": "Current end-to-end freeze status and database table counts.",
+          "path": "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
+          "sha256": "1dbf6d7012931f1e9d9d377e0535860b0a0ec1d811bd617e662c9c38537bcb32",
+          "size_bytes": 20806
+        },
+        {
+          "exists": true,
+          "kind": "phase8_artifact",
+          "note": "Canonical v1 operating-mode decision used to interpret shadow ML versus authoritative logic.",
+          "path": "reports/phase8/operating_mode/phase8_v1_operating_mode_manifest.json",
+          "sha256": "e7cc2a49623e36bbc52fae5e30cb432d27e76984736e539a65e1b2c1428c88c8",
+          "size_bytes": 7796
+        },
+        {
+          "exists": true,
+          "kind": "runtime_config",
+          "note": "Defines default evidence providers and precision target thresholds.",
+          "path": "config/settings.py",
+          "sha256": "8f5fe63034f9db28de98835d575e7ab0e7509681ec743ff3de9e407602f65a66",
+          "size_bytes": 10689
+        }
+      ],
+      "evidence_summary": "No model evaluation runs, calibration profiles, or shadow-score rows are present locally. The code supports calibration, but no committed local evidence proves current calibration quality.",
+      "metric_key": "calibration",
+      "metric_name": "Calibration",
+      "priority_rank": 2,
+      "status": "not_materialized_in_workspace",
+      "target": "Brier score < 0.20 (aspirational), with Phase 6 shadow thresholds currently targeting WATCH 0.55, ACTIONABLE 0.65, CRITICAL 0.80 precision slices"
+    },
+    {
+      "blockers": [
+        "alerts table row count is 0",
+        "evidence_snapshots table row count is 0",
+        "evidence_queries table row count is 0",
+        "Phase 7 observability study cannot be meaningfully populated without alert/evidence history"
+      ],
+      "current_value": null,
+      "evidence_sources": [
+        {
+          "exists": true,
+          "kind": "requirements_source",
+          "note": "Defines the success-metric order and stop conditions.",
+          "path": "Documentation/SRS.tex",
+          "sha256": "e3b32cc61b0df38c18142777df71b744aebef23b5a397431f40cb26627842574",
+          "size_bytes": 81753
+        },
+        {
+          "exists": true,
+          "kind": "runtime_module",
+          "note": "Defines measurable observability risks and deployment implications.",
+          "path": "phase7/observability.py",
+          "sha256": "c8c6b7df1726b138289bf2b3f4dbeea3bc53c3537cfb98b226a06e88f95635a9",
+          "size_bytes": 25974
+        },
+        {
+          "exists": true,
+          "kind": "phase8_artifact",
+          "note": "Current end-to-end freeze status and database table counts.",
+          "path": "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
+          "sha256": "1dbf6d7012931f1e9d9d377e0535860b0a0ec1d811bd617e662c9c38537bcb32",
+          "size_bytes": 20806
+        }
+      ],
+      "evidence_summary": "Lead-time analysis requires real alerts, evidence states, and often shadow-score or review data. Those artifacts are absent in the current workspace snapshot.",
+      "metric_key": "lead_time",
+      "metric_name": "Lead time over public corroboration",
+      "priority_rank": 3,
+      "status": "not_materialized_in_workspace",
+      "target": "Median lead time > 30 minutes on the subset where corroboration exists"
+    },
+    {
+      "blockers": [
+        "backtest_artifacts table row count is 0",
+        "validation_runs table row count is 0",
+        "reports/phase5 output root is not materialized"
+      ],
+      "current_value": null,
+      "evidence_sources": [
+        {
+          "exists": true,
+          "kind": "requirements_source",
+          "note": "Defines the success-metric order and stop conditions.",
+          "path": "Documentation/SRS.tex",
+          "sha256": "e3b32cc61b0df38c18142777df71b744aebef23b5a397431f40cb26627842574",
+          "size_bytes": 81753
+        },
+        {
+          "exists": true,
+          "kind": "phase_doc",
+          "note": "Defines replay, validation, and conservative paper-trading requirements.",
+          "path": "Documentation/phases/phase5.tex",
+          "sha256": "8808a38328048fed669c9eb4a9cc5a7f60ea977acd2540f45c3f522ac9ed455a",
+          "size_bytes": 7830
+        },
+        {
+          "exists": true,
+          "kind": "phase8_artifact",
+          "note": "Current end-to-end freeze status and database table counts.",
+          "path": "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
+          "sha256": "1dbf6d7012931f1e9d9d377e0535860b0a0ec1d811bd617e662c9c38537bcb32",
+          "size_bytes": 20806
+        }
+      ],
+      "evidence_summary": "The conservative paper-trading framework exists by design, but this workspace contains no backtest artifacts or validation runs that would justify a PnL or edge claim.",
+      "metric_key": "paper_trade_edge",
+      "metric_name": "Economic edge under conservative execution",
+      "priority_rank": 4,
+      "status": "not_materialized_in_workspace",
+      "target": "Positive paper-trade edge after fees and slippage"
+    }
+  ],
+  "readiness_summary": {
+    "canonical_v1_mode": "rule_based_plus_shadow_ml",
+    "highest_priority_gap": "No real alert/evaluation/backtest evidence exists locally, so none of the SRS priority metrics can be defended numerically in this workspace.",
+    "overall_status": "metrics_bundle_defined_but_not_materialized",
+    "workspace_snapshot_highlights": {
+      "alerts": 0,
+      "analyst_feedback": 0,
+      "backtest_artifacts": 0,
+      "calibration_profiles": 0,
+      "model_evaluation_runs": 0,
+      "shadow_model_scores": 0,
+      "validation_runs": 0
+    }
+  },
+  "srs_targets": {
+    "alert_precision_precision_at_10": "> 0.60 aspirational",
+    "calibration_brier_score": "< 0.20 aspirational",
+    "lead_time_minutes": "> 30 median on corroborated subset",
+    "paper_trade_edge": "positive after fees and slippage",
+    "phase4_alert_thresholds": {
+      "actionable": 0.8,
+      "info": 0.25,
+      "watch": 0.5
+    },
+    "phase6_shadow_precision_targets": {
+      "actionable": 0.65,
+      "critical": 0.8,
+      "watch": 0.55
+    }
+  },
+  "stop_conditions": [
+    {
+      "condition": "raw archive gaps exceed 1 hour",
+      "evidence": {
+        "raw_archive_manifest_rows": 0,
+        "task2_overall_status": "frozen_definition_with_missing_runtime_outputs"
+      },
+      "reason": "No raw archive partitions or manifest rows are present locally, so current archive-gap risk cannot be assessed from this workspace snapshot.",
+      "status": "unresolved_in_current_workspace"
+    },
+    {
+      "condition": "duplicate trade inflation cannot be controlled",
+      "evidence": {
+        "raw_archive_manifest_rows": 0,
+        "replay_rows": 0
+      },
+      "reason": "The repo contains the Phase 1 validation framework, but no current populated trade data or recent validation outputs are present locally to prove duplicate inflation is bounded.",
+      "status": "unresolved_in_current_workspace"
+    },
+    {
+      "condition": "alert false-positive rate remains operationally unusable after suppression tuning",
+      "evidence": {
+        "alerts": 0,
+        "analyst_feedback": 0,
+        "delivery_attempts": 0
+      },
+      "reason": "There are no persisted alerts, delivery attempts, or analyst feedback rows in the workspace, so operational false-positive behavior cannot be measured yet.",
+      "status": "unresolved_in_current_workspace"
+    },
+    {
+      "condition": "evidence-provider spend exceeds budget without measurable lift",
+      "evidence": {
+        "default_evidence_providers": [
+          "noop_news",
+          "noop_social"
+        ]
+      },
+      "reason": "Default providers are noop adapters and no live spend evidence exists locally, so overspend is not currently happening here, but real-provider lift remains unevidenced.",
+      "status": "not_triggered_in_current_workspace_but_not_validated_for_real_providers"
+    },
+    {
+      "condition": "replay cannot reproduce a historical alert end to end",
+      "evidence": {
+        "alerts": 0,
+        "backtest_artifacts": 0,
+        "model_evaluation_runs": 0,
+        "replay_runs": 0,
+        "task2_overall_status": "frozen_definition_with_missing_runtime_outputs",
+        "validation_runs": 0
+      },
+      "reason": "Task 2's frozen reference path concluded with missing runtime outputs across replay, candidate, alert, validation, and ML/research stages, so a full historical-alert reproduction cannot currently be demonstrated from this workspace.",
+      "status": "active_concern"
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "exists": true,
+      "kind": "requirements_source",
+      "note": "Defines the success-metric order and stop conditions.",
+      "path": "Documentation/SRS.tex",
+      "sha256": "e3b32cc61b0df38c18142777df71b744aebef23b5a397431f40cb26627842574",
+      "size_bytes": 81753
+    },
+    {
+      "exists": true,
+      "kind": "signoff_doc",
+      "note": "Documents known Phase 4 limitations, especially placeholder providers and missing real traffic evidence.",
+      "path": "Documentation/phases/phase4_gate4_signoff.tex",
+      "sha256": "af2239c54814adede9f5016bcd51306874987cd7a7361cc60a890c1a29c60d71",
+      "size_bytes": 5915
+    },
+    {
+      "exists": true,
+      "kind": "phase_doc",
+      "note": "Defines replay, validation, and conservative paper-trading requirements.",
+      "path": "Documentation/phases/phase5.tex",
+      "sha256": "8808a38328048fed669c9eb4a9cc5a7f60ea977acd2540f45c3f522ac9ed455a",
+      "size_bytes": 7830
+    },
+    {
+      "exists": true,
+      "kind": "runtime_module",
+      "note": "Contains calibration/reporting logic and explicit caveats about the starter ranker.",
+      "path": "phase6/reporting.py",
+      "sha256": "a0bd7158a3bbb5bdbb4bb41efcb99c7e849a87e1dbfce0dcee86c3505bb7c4fa",
+      "size_bytes": 9121
+    },
+    {
+      "exists": true,
+      "kind": "validation_module",
+      "note": "Summarizes baseline margin and calibration profile status when evaluation runs exist.",
+      "path": "validation/phase6_person2_report.py",
+      "sha256": "09789595967aa22c2eb342f3a9957de5b99025502cedfe7c6f72e4412238e0ca",
+      "size_bytes": 2172
+    },
+    {
+      "exists": true,
+      "kind": "runtime_module",
+      "note": "Defines measurable observability risks and deployment implications.",
+      "path": "phase7/observability.py",
+      "sha256": "c8c6b7df1726b138289bf2b3f4dbeea3bc53c3537cfb98b226a06e88f95635a9",
+      "size_bytes": 25974
+    },
+    {
+      "exists": true,
+      "kind": "phase8_artifact",
+      "note": "Current end-to-end freeze status and database table counts.",
+      "path": "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
+      "sha256": "1dbf6d7012931f1e9d9d377e0535860b0a0ec1d811bd617e662c9c38537bcb32",
+      "size_bytes": 20806
+    },
+    {
+      "exists": true,
+      "kind": "phase8_artifact",
+      "note": "Canonical v1 operating-mode decision used to interpret shadow ML versus authoritative logic.",
+      "path": "reports/phase8/operating_mode/phase8_v1_operating_mode_manifest.json",
+      "sha256": "e7cc2a49623e36bbc52fae5e30cb432d27e76984736e539a65e1b2c1428c88c8",
+      "size_bytes": 7796
+    },
+    {
+      "exists": true,
+      "kind": "runtime_config",
+      "note": "Defines default evidence providers and precision target thresholds.",
+      "path": "config/settings.py",
+      "sha256": "8f5fe63034f9db28de98835d575e7ab0e7509681ec743ff3de9e407602f65a66",
+      "size_bytes": 10689
+    }
+  ]
+}

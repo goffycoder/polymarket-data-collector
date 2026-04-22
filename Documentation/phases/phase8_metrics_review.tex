@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 8 Task 4 - Final Metrics, Limitations, and Stop-Condition Review}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, the generated metrics-review manifest under \texttt{reports/phase8/metrics\_review/}, and the previously generated Phase 8 Task 2 and Task 3 artifacts.\\
+\textbf{Task goal:} Assemble the final metrics bundle in the SRS priority order and write the honest limitations and stop-condition review for the current repo snapshot.
+
+\section*{Bottom-Line Assessment}
+The metric framework is now frozen and documented, but it is \textbf{not materially populated} in this workspace. The correct closeout statement for the current snapshot is therefore:
+\begin{itemize}
+\item the project knows \textbf{which} metrics matter and in what priority order,
+\item the repo contains the code paths and policy layers needed to compute them,
+\item but the current local evidence base is not strong enough to defend any of the four SRS priority metrics numerically.
+\end{itemize}
+
+\section*{Metrics Bundle in SRS Priority Order}
+\begin{longtable}{p{0.23\linewidth}p{0.20\linewidth}p{0.45\linewidth}}
+\textbf{Metric Family} & \textbf{Current Status} & \textbf{Assessment} \\
+Ranked alert precision and usefulness & Not materialized in workspace & There are no persisted alerts, delivery attempts, or analyst-feedback rows in the current local SQLite snapshot, so alert precision/usefulness cannot be computed honestly. \\
+Calibration & Not materialized in workspace & No \texttt{model\_evaluation\_runs}, \texttt{calibration\_profiles}, or \texttt{shadow\_model\_scores} rows exist locally. The code supports calibration, but no current evidence demonstrates it. \\
+Lead time over public corroboration & Not materialized in workspace & Lead-time analysis needs real alerts and evidence states. Those artifacts are absent in the current workspace. \\
+Economic edge under conservative execution & Not materialized in workspace & No \texttt{validation\_runs}, \texttt{backtest\_artifacts}, or \texttt{reports/phase5/} outputs are present locally, so no paper-trade edge claim is defendable. \\
+\end{longtable}
+
+\section*{Reference Targets From the SRS}
+\begin{itemize}
+\item Precision@10 \textgreater{} 0.60
+\item Brier score \textless{} 0.20 for calibrated operational probabilities
+\item median lead time \textgreater{} 30 minutes on the corroborated subset
+\item positive paper-trade edge after fees and slippage
+\end{itemize}
+
+These remain \textbf{aspirational targets}, not satisfied outputs in the current workspace snapshot.
+
+\section*{Honest Limitations Review}
+\textbf{Weak regimes}
+\begin{itemize}
+\item The later-phase runtime tables exist structurally, but their local row counts are zero.
+\item The current workspace lacks real alert traffic, analyst feedback, model evaluations, and backtest artifacts.
+\item The committed Phase 6 trainer is still a linear starter ranker, not the final boosted-tree model described by the full Phase 6 scope.
+\end{itemize}
+
+\textbf{Observability caveats}
+\begin{itemize}
+\item The repo contains a Phase 7 observability / Goodhart study implementation, but there is no local alert/evidence history to populate those metrics here.
+\item The observability code itself warns that visible operator precision is not the same thing as preserved lead time or preserved hidden candidate edge.
+\end{itemize}
+
+\textbf{Provider issues}
+\begin{itemize}
+\item The default evidence providers are placeholder \texttt{noop} adapters, so richer real-provider behavior is not the default runtime state.
+\item Telegram and Discord integrations exist, but they are environment-gated and may be disabled.
+\item The Phase 4 signoff memo explicitly says final validation should use real live candidate-to-alert traffic rather than only local seeded evidence.
+\end{itemize}
+
+\textbf{Failure modes}
+\begin{itemize}
+\item Any current claim of strong alert precision would be overstated because no persisted alert-review evidence exists locally.
+\item Any claim of calibrated ML quality would be overstated because thresholds are still framed as shadow-only recommendations.
+\item Any claim of full replay-to-alert reproducibility would be overstated because Task 2 marked the reference path as missing runtime outputs.
+\end{itemize}
+
+\section*{Stop-Condition Review}
+\begin{longtable}{p{0.36\linewidth}p{0.22\linewidth}p{0.28\linewidth}}
+\textbf{SRS Stop Condition} & \textbf{Status} & \textbf{Assessment} \\
+raw archive gaps exceed 1 hour & Unresolved in current workspace & No local raw archive partitions or manifest rows are present, so archive-gap risk cannot be measured from this snapshot. \\
+duplicate trade inflation cannot be controlled & Unresolved in current workspace & The validation framework exists, but no populated local trade evidence proves duplicate inflation is currently bounded. \\
+alert false-positive rate remains operationally unusable after suppression tuning & Unresolved in current workspace & No local alert, delivery, or analyst-feedback rows exist, so operational false-positive behavior cannot be assessed. \\
+evidence-provider spend exceeds budget without measurable lift & Not triggered in current workspace, but not validated for real providers & Default providers are \texttt{noop} adapters and no live spend evidence exists locally. \\
+replay cannot reproduce a historical alert end to end & Active concern & Task 2 froze the reference path but recorded missing runtime outputs across replay, candidate, alert, validation, and ML/research stages. \\
+\end{longtable}
+
+\section*{What This Means for Phase 8}
+Task 4 should be read as a \textbf{truthfulness checkpoint}. The repo now has a formal metric order, a formal operating mode, and a frozen reference path. What it still does \textbf{not} have in this workspace is the materialized runtime evidence required to defend those metrics numerically. Therefore:
+\begin{itemize}
+\item the metric framework is ready,
+\item the evidence base is not,
+\item and the most serious remaining concern is still the lack of a full replay-to-alert end-to-end reproduction packet.
+\end{itemize}
+
+\section*{Generated Artifact}
+Task 4 also writes:
+\begin{itemize}
+\item \texttt{reports/phase8/metrics\_review/phase8\_metrics\_review\_manifest.json}
+\item \texttt{reports/phase8/metrics\_review/phase8\_metrics\_review\_summary.md}
+\end{itemize}
+
+These files record the metric bundle, evidence status, limitations review, and stop-condition ledger in machine-readable form.
+
+\end{document}

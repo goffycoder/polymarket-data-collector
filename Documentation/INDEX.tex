@@ -6,28 +6,43 @@
 This index is meant to answer two questions quickly:
 \begin{itemize}
 \item what is the canonical source of truth,
-\item which documents are active versus legacy as the repo moves into Phase 3.
+\item which documents and artifact families are active versus legacy as the repo moves through Phase 8 closeout.
 \end{itemize}
 
 \begin{itemize}
 \item \texttt{Documentation/SRS.tex}: v4.1 integrated SRS (source of truth).
+\item \texttt{Documentation/phases/phase8\_canonical\_inventory.tex}: master canonical inventory for Phase 1 through Phase 7 committed artifacts.
+\item \texttt{Documentation/phases/phase8.tex}: single-owner Phase 8 closeout and consolidation plan.
+\item \texttt{Documentation/phases/phase8\_reference\_path.tex}: frozen end-to-end reference path and reproducibility gap record for Phase 8 Task 2.
+\item \texttt{Documentation/phases/phase8\_v1\_operating\_mode.tex}: formal canonical v1 operating-mode decision for Phase 8 Task 3.
+\item \texttt{Documentation/phases/phase8\_metrics\_review.tex}: final metrics bundle, limitations review, and stop-condition ledger for Phase 8 Task 4.
+\item \texttt{Documentation/phases/phase8\_final\_closeout.tex}: final handoff package, consolidated runbook path, and SRS closeout memo for Phase 8 Task 5.
 \item \texttt{Documentation/phases/phase2.tex}: canonical Phase 2 delivery summary and evidence.
 \item \texttt{Documentation/phases/phase2\_gate2\_signoff.tex}: Gate 2 evidence pack and signoff memo.
+\item \texttt{Documentation/phases/phase4.tex}: canonical Phase 4 single-owner alert and evidence workflow plan.
+\item \texttt{Documentation/phases/phase4\_gate4\_signoff.tex}: Gate 4 signoff memo for the local alert loop.
+\item \texttt{Documentation/phases/phase5.tex}: canonical Phase 5 replay, backtesting, and validation plan.
 \item \texttt{Documentation/SRS\_audit.tex}: audit findings (companion).
 \item \texttt{Documentation/polymarket\_research\_srs.tex}: research notes (companion).
 \item \texttt{Documentation/reference\_repo\_analysis.tex}: repo/codebase analysis (companion).
 \item \texttt{Documentation/phases/}: canonical single-owner phase plans.
 \item \texttt{Documentation/references/}: raw reference exports used while drafting the SRS.
-\item \texttt{Documentation/build/}: generated LaTeX build artifacts (ignored by git).
-\item \texttt{Documentation/person1Phases/}: legacy split-by-person planning docs.
-\item \texttt{Documentation/person2Phases/}: legacy split-by-person planning docs and support artifacts.
+\item \texttt{Documentation/person1Phases/}: legacy split-by-person planning docs; some later-phase notes remain supporting references only.
+\item \texttt{Documentation/person2Phases/}: legacy split-by-person planning docs and support artifacts; some later-phase notes remain supporting references only.
 \end{itemize}
 
 \textbf{Canonical path for startup and handoff:}
 \texttt{README.md} $\rightarrow$ \texttt{Documentation/INDEX.tex} $\rightarrow$
-\texttt{Documentation/SRS.tex} $\rightarrow$ \texttt{Documentation/phases/phase2.tex}
+\texttt{Documentation/SRS.tex} $\rightarrow$
+\texttt{Documentation/phases/phase8\_canonical\_inventory.tex} $\rightarrow$
+\texttt{Documentation/phases/phase8\_final\_closeout.tex}
 
-\textbf{Legacy note:} the split-by-person folders are retained for historical
-reference only; active planning should use \texttt{Documentation/phases/}.
+\textbf{Canonical note:} \texttt{Documentation/phases/} is the single-owner
+planning and closeout folder.\\
+\textbf{Authority note:} when both \texttt{.tex} and \texttt{.pdf} versions
+exist, the \texttt{.tex} source is authoritative.\\
+\textbf{Legacy note:} the split-by-person folders are retained mainly for
+historical reference; they should only be used when this index or the Phase 8
+inventory explicitly classifies a later-phase artifact as supporting active.
 
 \end{document}

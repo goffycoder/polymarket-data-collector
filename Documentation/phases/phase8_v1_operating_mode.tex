@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 8 Task 3 - Canonical v1 Operating Mode Decision}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, the generated operating-mode manifest under \texttt{reports/phase8/operating\_mode/}, and the committed Phase 4 through Phase 7 implementation referenced below.\\
+\textbf{Task goal:} Make a formal decision on what counts as the real v1 system and classify which Phase 7 outputs are research-only versus allowed to influence the canonical v1 story.
+
+\section*{Formal Decision}
+\textbf{Canonical v1 operating mode:} \texttt{rule\_based\_plus\_shadow\_ml}
+
+This means:
+\begin{itemize}
+\item deterministic Phase 3 candidate generation remains authoritative,
+\item Phase 4 alerting, evidence, suppression, and analyst workflow remain authoritative,
+\item Phase 5 replay, holdout evaluation, and conservative paper-trading remain the required validation layer,
+\item Phase 6 ML infrastructure remains active in shadow mode for scoring, logging, comparison, calibration, and operator learning,
+\item but ML does \textbf{not} become the authoritative alert-decision path for canonical v1.
+\end{itemize}
+
+\section*{Modes Considered}
+\begin{longtable}{p{0.24\linewidth}p{0.18\linewidth}p{0.44\linewidth}}
+\textbf{Mode} & \textbf{Decision} & \textbf{Reason} \\
+\texttt{rule\_based\_only} & Rejected & Too weak for the actual repo state because the committed Phase 6 registry, shadow-scoring, and evaluation plumbing should remain active as part of the v1 operational story. \\
+\texttt{rule\_based\_plus\_shadow\_ml} & Accepted & Best fit for both the SRS and the committed implementation: the system keeps rule-based authority while ML remains traceable, comparable, and safely reversible. \\
+\texttt{ml\_backed\_ranking\_with\_rollback} & Rejected for canonical v1 & Not justified by the current repo state. Phase 6 is shadow-first by design, the committed trainer is still a linear starter ranker, and this workspace does not contain a materialized evidence packet strong enough to promote ML into authority. \\
+\end{longtable}
+
+\section*{Primary Rationale}
+\begin{enumerate}
+\item The SRS definition of v1 complete requires a ranker to be \textbf{evaluated} against baselines, not automatically promoted into the authoritative alert path.
+\item The SRS Phase 6 plan explicitly says to integrate the ranker in \textbf{shadow mode first}.
+\item The canonical Phase 4 single-owner plan keeps the alert loop rule-based and operator-facing before any ML promotion.
+\item The committed Phase 6 implementation is still a \textbf{linear starter ranker}. Its own reporting code says the thresholds should be treated as \textbf{shadow-only recommendations} and that it is not yet the final boosted-tree model promised by the full Phase 6 scope.
+\item Phase 7 is explicitly framed as \textbf{advanced research after v1 stability}. It should therefore refine governance, observability, and thesis claims, but it must not silently redefine the canonical v1 operating mode.
+\end{enumerate}
+
+\section*{What Counts as the Real v1 System}
+\textbf{Authoritative v1 path}
+\begin{itemize}
+\item Phase 3 deterministic candidate engine
+\item Phase 4 evidence enrichment and explainable alert workflow
+\item Phase 4 suppression and analyst-feedback path
+\item Phase 5 replay, holdouts, and conservative paper-trading evaluation
+\end{itemize}
+
+\textbf{Shadow-only v1 path}
+\begin{itemize}
+\item Phase 6 feature materialization for training and inference
+\item Phase 6 model registry and activation/retirement controls
+\item Phase 6 shadow scoring and score logging
+\item Phase 6 evaluation and calibration reports
+\end{itemize}
+
+\textbf{Operational rollback rule}
+\begin{itemize}
+\item If ML plumbing is disabled or a shadow model is retired, the authoritative rule-based alert path still works unchanged.
+\item Canonical v1 must never require a model artifact to keep the base alert loop alive.
+\end{itemize}
+
+\section*{Phase 7 Classification}
+\textbf{Research-only for canonical v1}
+\begin{itemize}
+\item graph-derived feature families,
+\item graph-aware advanced ranker artifacts,
+\item Hawkes / TCN style experiments,
+\item ablation tables and thesis-quality figures as headline model claims,
+\item Phase 7 research packages as deployment authority.
+\end{itemize}
+
+\textbf{Allowed to influence the canonical v1 story, but not the decision logic}
+\begin{itemize}
+\item observability / Goodhart warnings that constrain how much operator trust should be placed in visible metrics,
+\item strict-holdout promotion discipline when comparing advanced experiments against the Phase 6 baseline,
+\item scale, cost, storage, restore, and long-run dashboard guidance from the Phase 7 operational track,
+\item reproducibility packaging standards for thesis, demo, or defense artifacts.
+\end{itemize}
+
+\textbf{Explicit non-promotion rule}
+\begin{itemize}
+\item No Phase 7 model artifact changes canonical v1 alert generation merely because it exists in the repo.
+\item Any future promotion beyond shadow mode would require a separate explicit decision with stronger operational evidence than is available in this workspace snapshot.
+\end{itemize}
+
+\section*{Implications for Phase 8 Closeout}
+\begin{itemize}
+\item The final v1 story should describe the project as a \textbf{rule-based alerting system with shadow ML evaluation}, not as a fully ML-driven ranking system.
+\item Phase 6 artifacts are part of canonical v1 because they provide traceable shadow scoring, registry control, and evaluation evidence.
+\item Phase 7 artifacts remain valuable, but mainly as research, governance, and observability inputs rather than live decision authority.
+\item README, phase docs, and closeout material should avoid language implying that ML already owns alert gating in canonical v1.
+\end{itemize}
+
+\section*{Generated Policy Artifact}
+Task 3 also writes a machine-readable policy record and a markdown summary:
+\begin{itemize}
+\item \texttt{reports/phase8/operating\_mode/phase8\_v1\_operating\_mode\_manifest.json}
+\item \texttt{reports/phase8/operating\_mode/phase8\_v1\_operating\_mode\_summary.md}
+\end{itemize}
+
+These files record the operating-mode decision, rejected alternatives, supporting evidence paths and hashes, and the formal classification of Phase 7 outputs.
+
+\end{document}
