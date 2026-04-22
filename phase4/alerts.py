@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -24,6 +25,8 @@ from phase4.timefmt import format_eastern
 from utils.logger import get_logger
 
 log = get_logger("phase4_alerts")
+
+WALLET_PATTERN = re.compile(r"\b0x[a-fA-F0-9]{8,}\b")
 
 SEVERITY_RANK = {
     "INFO": 1,
@@ -92,7 +95,7 @@ def render_alert_payload(
         or f"Market {candidate.get('market_id')}"
     )
 
-    return {
+    payload = {
         "title": title,
         "severity": severity,
         "trigger_time_display": format_eastern(candidate.get("trigger_time")),
@@ -114,6 +117,17 @@ def render_alert_payload(
         "detector_version": candidate.get("detector_version"),
         "feature_schema_version": candidate.get("feature_schema_version"),
     }
+    return _redact_wallet_identifiers(payload)
+
+
+def _redact_wallet_identifiers(value: Any) -> Any:
+    if isinstance(value, str):
+        return WALLET_PATTERN.sub("[wallet_redacted]", value)
+    if isinstance(value, list):
+        return [_redact_wallet_identifiers(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _redact_wallet_identifiers(item) for key, item in value.items()}
+    return value
 
 
 class DeliveryChannel(Protocol):

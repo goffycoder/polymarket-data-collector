@@ -1,0 +1,88 @@
+{
+  "contract_version": "phase10_task4_heldout_model_completion_v1",
+  "profiles": [
+    {
+      "actionable_threshold": 0.665739,
+      "critical_threshold": 0.665739,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.499999
+      },
+      "positive_rate": 0.5,
+      "profile_key": "global",
+      "profile_scope": "global",
+      "sample_count": 32,
+      "watch_threshold": 0.665739
+    },
+    {
+      "actionable_threshold": 0.665739,
+      "critical_threshold": 0.665739,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.499999
+      },
+      "positive_rate": 0.5,
+      "profile_key": "tight",
+      "profile_scope": "liquidity_bucket",
+      "sample_count": 32,
+      "watch_threshold": 0.665739
+    },
+    {
+      "actionable_threshold": 0.665739,
+      "critical_threshold": 0.665739,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.514797
+      },
+      "positive_rate": 1.0,
+      "profile_key": "crypto",
+      "profile_scope": "category",
+      "sample_count": 8,
+      "watch_threshold": 0.665739
+    },
+    {
+      "actionable_threshold": 0.428966,
+      "critical_threshold": 0.428966,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.4852
+      },
+      "positive_rate": 0.0,
+      "profile_key": "macro",
+      "profile_scope": "category",
+      "sample_count": 8,
+      "watch_threshold": 0.439621
+    },
+    {
+      "actionable_threshold": 0.428966,
+      "critical_threshold": 0.428966,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.4852
+      },
+      "positive_rate": 0.0,
+      "profile_key": "politics",
+      "profile_scope": "category",
+      "sample_count": 8,
+      "watch_threshold": 0.439621
+    },
+    {
+      "actionable_threshold": 0.665739,
+      "critical_threshold": 0.665739,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.514797
+      },
+      "positive_rate": 1.0,
+      "profile_key": "sports",
+      "profile_scope": "category",
+      "sample_count": 8,
+      "watch_threshold": 0.665739
+    }
+  ],
+  "thresholds": {
+    "actionable": 0.665739,
+    "critical": 0.665739,
+    "watch": 0.665739
+  }
+}

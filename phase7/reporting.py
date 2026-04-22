@@ -213,9 +213,9 @@ def _load_runtime_rollups() -> dict[str, Any]:
     finally:
         conn.close()
     return {
-        "last_24h_candidate_count": int((candidate_count or {}).get("count", 0) if candidate_count else 0),
-        "last_24h_alert_count": int((alert_count or {}).get("count", 0) if alert_count else 0),
-        "last_24h_shadow_score_count": int((shadow_score_count or {}).get("count", 0) if shadow_score_count else 0),
+        "last_24h_candidate_count": int(candidate_count["count"] if candidate_count is not None else 0),
+        "last_24h_alert_count": int(alert_count["count"] if alert_count is not None else 0),
+        "last_24h_shadow_score_count": int(shadow_score_count["count"] if shadow_score_count is not None else 0),
         "active_shadow_model": None
         if active_shadow is None
         else {

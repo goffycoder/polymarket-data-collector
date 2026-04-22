@@ -1,0 +1,217 @@
+{
+  "failure_metrics": {
+    "coverage_insufficient_rows": 0,
+    "metrics_version": "phase5_metrics_v1",
+    "near_resolution_skip_rate": 0.0,
+    "partial_coverage_rows": 0,
+    "skip_due_to_data_rate": 0.0,
+    "top_category_dependency_share": 0.25,
+    "top_event_family_dependency_share": 0.010417
+  },
+  "paper_trade_count": 96,
+  "paper_trade_fills": 96,
+  "paper_trade_metrics": {
+    "fill_rate": 1.0,
+    "hit_rate": 0.5,
+    "loss_rate": 0.5,
+    "mean_bounded_pnl": 14.593359,
+    "median_bounded_pnl": 14.076441,
+    "metrics_version": "phase5_metrics_v1",
+    "paper_trade_count": 96,
+    "skip_reason_counts": [],
+    "status": "overall",
+    "trade_eligibility_rate_proxy": 1.0,
+    "worst_decile_pnl": -44.350877
+  },
+  "paper_trade_skips": 0,
+  "replay_bundles": [
+    {
+      "artifact_version": "phase5_replay_v1",
+      "bundle_id": "2d057e8e1ea145e48436c2c7bbff97eb",
+      "end": "2026-01-15T06:00:00+00:00",
+      "git_commit": "21e1b4e",
+      "output_path": "reports\\phase5\\replay_runs\\phase10_task3\\train_window\\bundles\\2d057e8e1ea145e48436c2c7bbff97eb.json",
+      "overall_status": "ready",
+      "replay_runs": [
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-01-15T06:00:00+00:00",
+          "git_commit": "21e1b4e",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for train_window",
+          "output_path": "reports\\phase5\\replay_runs\\phase10_task3\\train_window\\3a884a58d0544aabac9aa059ec1491ec.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "3a884a58d0544aabac9aa059ec1491ec",
+          "source_system": "phase10_holdout_prices",
+          "start": "2026-01-15T05:00:00+00:00",
+          "status": "completed"
+        },
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-01-15T06:00:00+00:00",
+          "git_commit": "21e1b4e",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for train_window",
+          "output_path": "reports\\phase5\\replay_runs\\phase10_task3\\train_window\\eb04369c09e54752a2e90d0bf1f96802.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "eb04369c09e54752a2e90d0bf1f96802",
+          "source_system": "phase10_holdout_trades",
+          "start": "2026-01-15T05:00:00+00:00",
+          "status": "completed"
+        }
+      ],
+      "source_systems": [
+        "phase10_holdout_prices",
+        "phase10_holdout_trades"
+      ],
+      "start": "2026-01-15T05:00:00+00:00",
+      "total_detector_rows_observed": 2,
+      "total_raw_rows_scanned": 2
+    },
+    {
+      "artifact_version": "phase5_replay_v1",
+      "bundle_id": "df84e071bb8d43cbadb2e60be0a75b7d",
+      "end": "2026-02-15T06:00:00+00:00",
+      "git_commit": "21e1b4e",
+      "output_path": "reports\\phase5\\replay_runs\\phase10_task3\\validation_window\\bundles\\df84e071bb8d43cbadb2e60be0a75b7d.json",
+      "overall_status": "ready",
+      "replay_runs": [
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-02-15T06:00:00+00:00",
+          "git_commit": "21e1b4e",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for validation_window",
+          "output_path": "reports\\phase5\\replay_runs\\phase10_task3\\validation_window\\3ff5da86a1a14d988d55d6417453f3ba.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "3ff5da86a1a14d988d55d6417453f3ba",
+          "source_system": "phase10_holdout_prices",
+          "start": "2026-02-15T05:00:00+00:00",
+          "status": "completed"
+        },
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-02-15T06:00:00+00:00",
+          "git_commit": "21e1b4e",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for validation_window",
+          "output_path": "reports\\phase5\\replay_runs\\phase10_task3\\validation_window\\8e1db9690ff444b89d7bc0ea84bdf984.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "8e1db9690ff444b89d7bc0ea84bdf984",
+          "source_system": "phase10_holdout_trades",
+          "start": "2026-02-15T05:00:00+00:00",
+          "status": "completed"
+        }
+      ],
+      "source_systems": [
+        "phase10_holdout_prices",
+        "phase10_holdout_trades"
+      ],
+      "start": "2026-02-15T05:00:00+00:00",
+      "total_detector_rows_observed": 2,
+      "total_raw_rows_scanned": 2
+    },
+    {
+      "artifact_version": "phase5_replay_v1",
+      "bundle_id": "89257ea15a114a8c8bb8f3667c70449c",
+      "end": "2026-03-15T06:00:00+00:00",
+      "git_commit": "21e1b4e",
+      "output_path": "reports\\phase5\\replay_runs\\phase10_task3\\test_window\\bundles\\89257ea15a114a8c8bb8f3667c70449c.json",
+      "overall_status": "ready",
+      "replay_runs": [
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-03-15T06:00:00+00:00",
+          "git_commit": "21e1b4e",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for test_window",
+          "output_path": "reports\\phase5\\replay_runs\\phase10_task3\\test_window\\6c61249ea7d4404aac562fda24cb139f.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "6c61249ea7d4404aac562fda24cb139f",
+          "source_system": "phase10_holdout_prices",
+          "start": "2026-03-15T05:00:00+00:00",
+          "status": "completed"
+        },
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-03-15T06:00:00+00:00",
+          "git_commit": "21e1b4e",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for test_window",
+          "output_path": "reports\\phase5\\replay_runs\\phase10_task3\\test_window\\0d1f6657d44240a9b69ba7ed335f1cf2.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "0d1f6657d44240a9b69ba7ed335f1cf2",
+          "source_system": "phase10_holdout_trades",
+          "start": "2026-03-15T05:00:00+00:00",
+          "status": "completed"
+        }
+      ],
+      "source_systems": [
+        "phase10_holdout_prices",
+        "phase10_holdout_trades"
+      ],
+      "start": "2026-03-15T05:00:00+00:00",
+      "total_detector_rows_observed": 2,
+      "total_raw_rows_scanned": 2
+    }
+  ],
+  "replay_family_ready": true,
+  "task_contract_version": "phase10_task3_heldout_validation_pack_v1",
+  "window_family": [
+    {
+      "end": "2026-01-15T06:00:00+00:00",
+      "key": "train_window",
+      "role": "train",
+      "start": "2026-01-15T05:00:00+00:00"
+    },
+    {
+      "end": "2026-02-15T06:00:00+00:00",
+      "key": "validation_window",
+      "role": "validation",
+      "start": "2026-02-15T05:00:00+00:00"
+    },
+    {
+      "end": "2026-03-15T06:00:00+00:00",
+      "key": "test_window",
+      "role": "test",
+      "start": "2026-03-15T05:00:00+00:00"
+    }
+  ],
+  "window_family_name": "phase10_canonical_heldout_family"
+}

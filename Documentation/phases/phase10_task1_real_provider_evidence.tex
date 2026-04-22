@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 10 Task 1 - Real-Provider Evidence Hardening}
+
+\textbf{Phase 10 parent doc:} \texttt{Documentation/phases/phase10.tex}\\
+\textbf{Task goal:} Replace the canonical Phase 4 \texttt{noop} evidence path with a real-provider-backed workflow, and persist query timing, cache behavior, provider result metadata, and budget usage for replay-linked alerts.
+
+\section*{Interpretation}
+Task 1 is the evidence-quality upgrade for the canonical alert path.
+\begin{itemize}
+\item A query row is not enough if it is still only a \texttt{noop} adapter.
+\item The task must show at least one live real-provider call and at least one cached replay of that same provider-backed query family.
+\item Budget metadata and cache metadata must be preserved in durable evidence-query and evidence-snapshot artifacts.
+\item The packet must remain replay-linked to the canonical historical hour rather than becoming a detached live-only demo.
+\end{itemize}
+
+\section*{Canonical Command}
+\begin{verbatim}
+python run_phase10_real_provider_evidence.py --json
+\end{verbatim}
+
+\section*{Done Condition}
+Task 1 is complete when:
+\begin{itemize}
+\item at least one replay-linked alert packet uses a real provider rather than \texttt{noop\_*},
+\item evidence-query rows persist cache hit state, freshness, and provider result metadata,
+\item evidence-query rows persist budget usage metadata for live calls,
+\item a compact review packet is written under \texttt{reports/phase10/real\_provider\_evidence\_hardening/}, and
+\item the canonical Phase 4 path can now point to a materially real-provider-backed workflow rather than a placeholder-only one.
+\end{itemize}
+
+\end{document}

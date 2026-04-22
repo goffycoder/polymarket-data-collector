@@ -1,0 +1,1049 @@
+{
+  "alert_review": {
+    "alerts": [
+      {
+        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
+        "alert_status": "useful",
+        "candidate_id": "a4fb12d41cb14602a87e2ac19fce7fe2",
+        "created_at": "2026-04-22T22:41:58.701745+00:00",
+        "event_family_id": "phase9_task2_event_a",
+        "event_id": "phase9_task2_event_a",
+        "evidence_state": "already_public",
+        "market_id": "phase9_task2_market_a",
+        "rendered_payload": {
+          "detector_version": "phase3_detector_v1",
+          "feature_schema_version": "phase3_v1",
+          "invalidates_it": "Material contrary public evidence or a weaker replay-reconciled interpretation.",
+          "market_evidence": {
+            "event_id": "phase9_task2_event_a",
+            "feature_snapshot": {
+              "buy_notional": 240.0,
+              "concentration_ratio": 0.642857,
+              "current_window_notional": 280.0,
+              "directional_imbalance": 0.714286,
+              "episode_end_event_time": "2026-04-20T05:06:00+00:00",
+              "episode_start_event_time": "2026-04-20T05:02:00+00:00",
+              "fresh_wallet_count": 3,
+              "fresh_wallet_notional_share": 1.0,
+              "market_id": "phase9_task2_market_a",
+              "previous_window_notional": 0,
+              "price_point_count": 3,
+              "probability_acceleration": 0.028571,
+              "probability_velocity": 0.028571,
+              "sell_notional": 40.0,
+              "severity_score": 15.127473,
+              "trade_count": 3,
+              "volume_acceleration": 2.0,
+              "wallet_count": 3,
+              "window_seconds": 300
+            },
+            "market_id": "phase9_task2_market_a"
+          },
+          "provider_summary": {
+            "cache_hit_count": 0,
+            "providers": [
+              {
+                "budget": {
+                  "blocked_by_budget": false,
+                  "day_queries_after": 1,
+                  "day_queries_before": 0,
+                  "day_query_cap": 250,
+                  "day_spend_after_usd": 0.0,
+                  "day_spend_before_usd": 0.0,
+                  "estimated_cost_usd": 0.0,
+                  "external_call_made": true,
+                  "month_queries_after": 1,
+                  "month_queries_before": 0,
+                  "month_query_cap": 5000,
+                  "month_spend_after_usd": 0.0,
+                  "month_spend_before_usd": 0.0
+                },
+                "cache_hit": false,
+                "freshness_seconds": null,
+                "provider_mode": "live",
+                "provider_name": "google_news_rss",
+                "query_status": "ok",
+                "query_type": "web_news",
+                "result_count": 10
+              }
+            ],
+            "real_provider_count": 1,
+            "total_estimated_cost_usd": 0.0
+          },
+          "public_evidence_state": "already_public",
+          "severity": "ACTIONABLE",
+          "title": "Bitcoin price and crypto market momentum",
+          "trigger_time_display": "Apr 20, 2026 1:06 AM ET",
+          "what_changed": "Candidate a4fb12d41cb14602a87e2ac19fce7fe2 triggered at Apr 20, 2026 1:06 AM ET",
+          "why_it_looks_informed": "Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=15.127473"
+        },
+        "severity": "ACTIONABLE",
+        "suppression_key": "phase9_task2_event_a",
+        "suppression_state": "mark_useful",
+        "title": "Bitcoin price and crypto market momentum",
+        "trigger_time": "2026-04-20T05:06:00+00:00",
+        "updated_at": "2026-04-22T22:41:58.775374+00:00"
+      },
+      {
+        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
+        "alert_status": "false_positive",
+        "candidate_id": "923c5d0367af4eaab5f334d590d1fda8",
+        "created_at": "2026-04-22T22:41:58.731817+00:00",
+        "event_family_id": "phase9_task2_event_b",
+        "event_id": "phase9_task2_event_b",
+        "evidence_state": "already_public",
+        "market_id": "phase9_task2_market_b",
+        "rendered_payload": {
+          "detector_version": "phase3_detector_v1",
+          "feature_schema_version": "phase3_v1",
+          "invalidates_it": "Material contrary public evidence or a weaker replay-reconciled interpretation.",
+          "market_evidence": {
+            "event_id": "phase9_task2_event_b",
+            "feature_snapshot": {
+              "buy_notional": 230.0,
+              "concentration_ratio": 0.615385,
+              "current_window_notional": 260.0,
+              "directional_imbalance": 0.769231,
+              "episode_end_event_time": "2026-04-20T05:18:00+00:00",
+              "episode_start_event_time": "2026-04-20T05:14:00+00:00",
+              "fresh_wallet_count": 3,
+              "fresh_wallet_notional_share": 1.0,
+              "market_id": "phase9_task2_market_b",
+              "previous_window_notional": 0,
+              "price_point_count": 3,
+              "probability_acceleration": 0.034286,
+              "probability_velocity": 0.034286,
+              "sell_notional": 30.0,
+              "severity_score": 16.579525,
+              "trade_count": 3,
+              "volume_acceleration": 2.0,
+              "wallet_count": 3,
+              "window_seconds": 300
+            },
+            "market_id": "phase9_task2_market_b"
+          },
+          "provider_summary": {
+            "cache_hit_count": 0,
+            "providers": [
+              {
+                "budget": {
+                  "blocked_by_budget": false,
+                  "day_queries_after": 2,
+                  "day_queries_before": 1,
+                  "day_query_cap": 250,
+                  "day_spend_after_usd": 0.0,
+                  "day_spend_before_usd": 0.0,
+                  "estimated_cost_usd": 0.0,
+                  "external_call_made": true,
+                  "month_queries_after": 2,
+                  "month_queries_before": 1,
+                  "month_query_cap": 5000,
+                  "month_spend_after_usd": 0.0,
+                  "month_spend_before_usd": 0.0
+                },
+                "cache_hit": false,
+                "freshness_seconds": null,
+                "provider_mode": "live",
+                "provider_name": "google_news_rss",
+                "query_status": "ok",
+                "query_type": "web_news",
+                "result_count": 10
+              }
+            ],
+            "real_provider_count": 1,
+            "total_estimated_cost_usd": 0.0
+          },
+          "public_evidence_state": "already_public",
+          "severity": "ACTIONABLE",
+          "title": "Federal Reserve interest rates and inflation outlook",
+          "trigger_time_display": "Apr 20, 2026 1:18 AM ET",
+          "what_changed": "Candidate 923c5d0367af4eaab5f334d590d1fda8 triggered at Apr 20, 2026 1:18 AM ET",
+          "why_it_looks_informed": "Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=16.579525"
+        },
+        "severity": "ACTIONABLE",
+        "suppression_key": "phase9_task2_event_b",
+        "suppression_state": "mark_false_positive",
+        "title": "Federal Reserve interest rates and inflation outlook",
+        "trigger_time": "2026-04-20T05:18:00+00:00",
+        "updated_at": "2026-04-22T22:41:58.788347+00:00"
+      },
+      {
+        "alert_id": "1672c39d26dc46e488857d2f478a7515",
+        "alert_status": "suppressed",
+        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "created_at": "2026-04-22T22:41:58.761332+00:00",
+        "event_family_id": "phase9_task2_event_a",
+        "event_id": "phase9_task2_event_a",
+        "evidence_state": "already_public",
+        "market_id": "phase9_task2_market_a",
+        "rendered_payload": {
+          "detector_version": "phase3_detector_v1",
+          "feature_schema_version": "phase3_v1",
+          "invalidates_it": "Material contrary public evidence or a weaker replay-reconciled interpretation.",
+          "market_evidence": {
+            "event_id": "phase9_task2_event_a",
+            "feature_snapshot": {
+              "buy_notional": 240.0,
+              "concentration_ratio": 0.62963,
+              "current_window_notional": 270.0,
+              "directional_imbalance": 0.777778,
+              "episode_end_event_time": "2026-04-20T05:22:00+00:00",
+              "episode_start_event_time": "2026-04-20T05:18:00+00:00",
+              "fresh_wallet_count": 3,
+              "fresh_wallet_notional_share": 1.0,
+              "market_id": "phase9_task2_market_a",
+              "previous_window_notional": 0,
+              "price_point_count": 3,
+              "probability_acceleration": 0.023333,
+              "probability_velocity": 0.023333,
+              "sell_notional": 30.0,
+              "severity_score": 13.886234,
+              "trade_count": 3,
+              "volume_acceleration": 2.0,
+              "wallet_count": 3,
+              "window_seconds": 300
+            },
+            "market_id": "phase9_task2_market_a"
+          },
+          "provider_summary": {
+            "cache_hit_count": 1,
+            "providers": [
+              {
+                "budget": {
+                  "blocked_by_budget": false,
+                  "day_queries_after": 2,
+                  "day_queries_before": 2,
+                  "day_query_cap": 250,
+                  "day_spend_after_usd": 0.0,
+                  "day_spend_before_usd": 0.0,
+                  "estimated_cost_usd": 0.0,
+                  "external_call_made": false,
+                  "month_queries_after": 2,
+                  "month_queries_before": 2,
+                  "month_query_cap": 5000,
+                  "month_spend_after_usd": 0.0,
+                  "month_spend_before_usd": 0.0
+                },
+                "cache_hit": true,
+                "freshness_seconds": 0,
+                "provider_mode": "cache",
+                "provider_name": "google_news_rss",
+                "query_status": "ok",
+                "query_type": "web_news",
+                "result_count": 10
+              }
+            ],
+            "real_provider_count": 1,
+            "total_estimated_cost_usd": 0.0
+          },
+          "public_evidence_state": "already_public",
+          "severity": "ACTIONABLE",
+          "title": "Bitcoin price and crypto market momentum",
+          "trigger_time_display": "Apr 20, 2026 1:22 AM ET",
+          "what_changed": "Candidate 9a6d96963f7d479ba9b118c0d144140c triggered at Apr 20, 2026 1:22 AM ET",
+          "why_it_looks_informed": "Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=13.886234"
+        },
+        "severity": "ACTIONABLE",
+        "suppression_key": "phase9_task2_event_a",
+        "suppression_state": "suppressed_by:2ae1de64f5564db2a67ed80c7f32460a",
+        "title": "Bitcoin price and crypto market momentum",
+        "trigger_time": "2026-04-20T05:22:00+00:00",
+        "updated_at": "2026-04-22T22:41:58.761332+00:00"
+      }
+    ],
+    "created_alert_count": 2,
+    "delivery_attempt_count": 4,
+    "suppressed_alert_count": 1
+  },
+  "analyst_review": {
+    "action_types": [
+      "mark_useful",
+      "mark_false_positive"
+    ],
+    "feedback_row_count": 2,
+    "feedback_rows": [
+      {
+        "action_type": "mark_useful",
+        "actor": "phase10_task2",
+        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
+        "created_at": "2026-04-22T22:41:58.768196+00:00",
+        "feedback_id": "b16c186309764f1e845ff23f713d44db",
+        "follow_up_at": "2026-04-20T06:12:00+00:00",
+        "notes": "Real-provider-backed alert A looked materially useful after replay-linked review."
+      },
+      {
+        "action_type": "mark_false_positive",
+        "actor": "phase10_task2",
+        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
+        "created_at": "2026-04-22T22:41:58.782730+00:00",
+        "feedback_id": "102a5a3556624fa894d6712c4aa50fed",
+        "follow_up_at": "2026-04-20T06:18:00+00:00",
+        "notes": "Second alert episode was reviewable but not strong enough after analyst inspection."
+      }
+    ]
+  },
+  "artifacts": {
+    "review_packet_path": "reports/phase10/analyst_loop_expansion/phase10_task2_review_packet.json",
+    "review_summary_path": "reports/phase10/analyst_loop_expansion/phase10_task2_review_summary.md"
+  },
+  "cleanup_summary": {
+    "cleared_sources": [
+      "phase9_seed_trades",
+      "phase9_seed_prices"
+    ],
+    "deleted_alert_count": 3,
+    "deleted_candidate_count": 3
+  },
+  "delivery_review": {
+    "delivery_attempt_rows": [
+      {
+        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
+        "attempt_number": 1,
+        "attempted_at": "2026-04-22T22:41:58.707624+00:00",
+        "delivery_channel": "telegram",
+        "delivery_status": "skipped",
+        "error_message": null
+      },
+      {
+        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
+        "attempt_number": 2,
+        "attempted_at": "2026-04-22T22:41:58.714548+00:00",
+        "delivery_channel": "discord",
+        "delivery_status": "skipped",
+        "error_message": null
+      },
+      {
+        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
+        "attempt_number": 1,
+        "attempted_at": "2026-04-22T22:41:58.737808+00:00",
+        "delivery_channel": "telegram",
+        "delivery_status": "skipped",
+        "error_message": null
+      },
+      {
+        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
+        "attempt_number": 2,
+        "attempted_at": "2026-04-22T22:41:58.744742+00:00",
+        "delivery_channel": "discord",
+        "delivery_status": "skipped",
+        "error_message": null
+      }
+    ],
+    "delivery_status_counts": [
+      {
+        "count": 4,
+        "delivery_status": "skipped"
+      }
+    ]
+  },
+  "evidence_mode_summary": {
+    "cache_hit_rows": 1,
+    "live_provider_rows": 2,
+    "provider_counts": [
+      {
+        "count": 3,
+        "provider_name": "google_news_rss"
+      }
+    ],
+    "provider_mode_counts": [
+      {
+        "count": 1,
+        "provider_mode": "cache"
+      },
+      {
+        "count": 2,
+        "provider_mode": "live"
+      }
+    ]
+  },
+  "extra_cleanup_summary": {
+    "cleared_sources": [
+      "phase10_task2_seed_trades",
+      "phase10_task2_seed_prices"
+    ]
+  },
+  "fixture_table_counts": {
+    "alert_delivery_attempts": 4,
+    "alerts": 3,
+    "analyst_feedback": 2,
+    "evidence_queries": 3,
+    "evidence_snapshots": 3,
+    "signal_candidates": 3
+  },
+  "generated_at": "2026-04-22T22:41:58.824103+00:00",
+  "phase3": {
+    "candidate_report": {
+      "detector_version": "phase3_detector_v1",
+      "end": "2026-04-20T06:00:00+00:00",
+      "hourly_counts": [
+        {
+          "candidate_count": 3,
+          "hour_bucket": "2026-04-20T05:00:00"
+        }
+      ],
+      "rule_family_counts": [
+        {
+          "candidate_count": 3,
+          "rule_family": "concentrated_directional_flow"
+        },
+        {
+          "candidate_count": 3,
+          "rule_family": "fast_repricing_with_wallet_support"
+        },
+        {
+          "candidate_count": 3,
+          "rule_family": "fresh_wallet_burst"
+        }
+      ],
+      "start": "2026-04-20T05:00:00+00:00",
+      "top_markets": [
+        {
+          "candidate_count": 2,
+          "market_id": "phase9_task2_market_a",
+          "max_severity_score": 15.127473
+        },
+        {
+          "candidate_count": 1,
+          "market_id": "phase9_task2_market_b",
+          "max_severity_score": 16.579525
+        }
+      ],
+      "total_candidates": 3,
+      "unique_markets": 2
+    },
+    "candidates": [
+      {
+        "candidate_id": "a4fb12d41cb14602a87e2ac19fce7fe2",
+        "detector_version": "phase3_detector_v1",
+        "event_family_id": "phase9_task2_event_a",
+        "event_id": "phase9_task2_event_a",
+        "event_slug": "bitcoin-price-and-crypto-market-momentum",
+        "event_title": "Bitcoin price and crypto market momentum",
+        "feature_schema_version": "phase3_v1",
+        "feature_snapshot": {
+          "buy_notional": 240.0,
+          "concentration_ratio": 0.642857,
+          "current_window_notional": 280.0,
+          "directional_imbalance": 0.714286,
+          "episode_end_event_time": "2026-04-20T05:06:00+00:00",
+          "episode_start_event_time": "2026-04-20T05:02:00+00:00",
+          "fresh_wallet_count": 3,
+          "fresh_wallet_notional_share": 1.0,
+          "market_id": "phase9_task2_market_a",
+          "previous_window_notional": 0,
+          "price_point_count": 3,
+          "probability_acceleration": 0.028571,
+          "probability_velocity": 0.028571,
+          "sell_notional": 40.0,
+          "severity_score": 15.127473,
+          "trade_count": 3,
+          "volume_acceleration": 2.0,
+          "wallet_count": 3,
+          "window_seconds": 300
+        },
+        "market_id": "phase9_task2_market_a",
+        "question": "Will Bitcoin price momentum stay elevated through the replay-linked alert windows?",
+        "severity_score": 15.127473,
+        "trigger_time": "2026-04-20T05:06:00+00:00",
+        "triggering_rules": [
+          "fresh_wallet_burst",
+          "concentrated_directional_flow",
+          "fast_repricing_with_wallet_support"
+        ]
+      },
+      {
+        "candidate_id": "923c5d0367af4eaab5f334d590d1fda8",
+        "detector_version": "phase3_detector_v1",
+        "event_family_id": "phase9_task2_event_b",
+        "event_id": "phase9_task2_event_b",
+        "event_slug": "federal-reserve-interest-rates-and-inflation-outlook",
+        "event_title": "Federal Reserve interest rates and inflation outlook",
+        "feature_schema_version": "phase3_v1",
+        "feature_snapshot": {
+          "buy_notional": 230.0,
+          "concentration_ratio": 0.615385,
+          "current_window_notional": 260.0,
+          "directional_imbalance": 0.769231,
+          "episode_end_event_time": "2026-04-20T05:18:00+00:00",
+          "episode_start_event_time": "2026-04-20T05:14:00+00:00",
+          "fresh_wallet_count": 3,
+          "fresh_wallet_notional_share": 1.0,
+          "market_id": "phase9_task2_market_b",
+          "previous_window_notional": 0,
+          "price_point_count": 3,
+          "probability_acceleration": 0.034286,
+          "probability_velocity": 0.034286,
+          "sell_notional": 30.0,
+          "severity_score": 16.579525,
+          "trade_count": 3,
+          "volume_acceleration": 2.0,
+          "wallet_count": 3,
+          "window_seconds": 300
+        },
+        "market_id": "phase9_task2_market_b",
+        "question": "Will Federal Reserve rate expectations move through the replay-linked alert window?",
+        "severity_score": 16.579525,
+        "trigger_time": "2026-04-20T05:18:00+00:00",
+        "triggering_rules": [
+          "fresh_wallet_burst",
+          "concentrated_directional_flow",
+          "fast_repricing_with_wallet_support"
+        ]
+      },
+      {
+        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "detector_version": "phase3_detector_v1",
+        "event_family_id": "phase9_task2_event_a",
+        "event_id": "phase9_task2_event_a",
+        "event_slug": "bitcoin-price-and-crypto-market-momentum",
+        "event_title": "Bitcoin price and crypto market momentum",
+        "feature_schema_version": "phase3_v1",
+        "feature_snapshot": {
+          "buy_notional": 240.0,
+          "concentration_ratio": 0.62963,
+          "current_window_notional": 270.0,
+          "directional_imbalance": 0.777778,
+          "episode_end_event_time": "2026-04-20T05:22:00+00:00",
+          "episode_start_event_time": "2026-04-20T05:18:00+00:00",
+          "fresh_wallet_count": 3,
+          "fresh_wallet_notional_share": 1.0,
+          "market_id": "phase9_task2_market_a",
+          "previous_window_notional": 0,
+          "price_point_count": 3,
+          "probability_acceleration": 0.023333,
+          "probability_velocity": 0.023333,
+          "sell_notional": 30.0,
+          "severity_score": 13.886234,
+          "trade_count": 3,
+          "volume_acceleration": 2.0,
+          "wallet_count": 3,
+          "window_seconds": 300
+        },
+        "market_id": "phase9_task2_market_a",
+        "question": "Will Bitcoin price momentum stay elevated through the replay-linked alert windows?",
+        "severity_score": 13.886234,
+        "trigger_time": "2026-04-20T05:22:00+00:00",
+        "triggering_rules": [
+          "fresh_wallet_burst",
+          "concentrated_directional_flow",
+          "fast_repricing_with_wallet_support"
+        ]
+      }
+    ],
+    "detector_summary": {
+      "candidates_emitted": 3,
+      "candidates_suppressed": 6,
+      "ignored_envelopes": 0,
+      "processed_envelopes": 18,
+      "processed_snapshots": 12,
+      "processed_trades": 15
+    },
+    "detector_version": "phase3_detector_v1",
+    "feature_schema_version": "phase3_v1"
+  },
+  "phase4": {
+    "alert_results": [
+      {
+        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
+        "candidate_id": "a4fb12d41cb14602a87e2ac19fce7fe2",
+        "delivery_channels": [
+          "telegram",
+          "discord"
+        ],
+        "severity": "ACTIONABLE"
+      },
+      {
+        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
+        "candidate_id": "923c5d0367af4eaab5f334d590d1fda8",
+        "delivery_channels": [
+          "telegram",
+          "discord"
+        ],
+        "severity": "ACTIONABLE"
+      },
+      {
+        "alert_id": "1672c39d26dc46e488857d2f478a7515",
+        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "severity": "ACTIONABLE",
+        "status": "suppressed",
+        "suppressed_by": "2ae1de64f5564db2a67ed80c7f32460a"
+      }
+    ],
+    "alert_summary": {
+      "alerts_created": 2,
+      "alerts_suppressed": 1,
+      "alerts_updated": 0,
+      "candidates_seen": 3,
+      "delivery_attempts_written": 4
+    },
+    "analyst_actions": [
+      {
+        "action_type": "mark_useful",
+        "actor": "phase10_task2",
+        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
+        "feedback_id": "b16c186309764f1e845ff23f713d44db",
+        "follow_up_at": "2026-04-20T06:12:00+00:00",
+        "follow_up_at_display": "Apr 20, 2026 2:12 AM ET"
+      },
+      {
+        "action_type": "mark_false_positive",
+        "actor": "phase10_task2",
+        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
+        "feedback_id": "102a5a3556624fa894d6712c4aa50fed",
+        "follow_up_at": "2026-04-20T06:18:00+00:00",
+        "follow_up_at_display": "Apr 20, 2026 2:18 AM ET"
+      }
+    ],
+    "analyst_summary": {
+      "actions_recorded": 2
+    },
+    "evidence_results": [
+      {
+        "candidate_id": "a4fb12d41cb14602a87e2ac19fce7fe2",
+        "confidence_modifier": -0.25,
+        "evidence_snapshot_id": "6c017d495a864d6b9178888a4b1c343c",
+        "evidence_state": "already_public",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "923c5d0367af4eaab5f334d590d1fda8",
+        "confidence_modifier": -0.25,
+        "evidence_snapshot_id": "14ae51113ebe44e49b926774e158867b",
+        "evidence_state": "already_public",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "confidence_modifier": -0.25,
+        "evidence_snapshot_id": "2829cf61272448319cfed2fa7de6bab2",
+        "evidence_state": "already_public",
+        "providers": [
+          "google_news_rss"
+        ]
+      }
+    ],
+    "evidence_summary": {
+      "candidates_processed": 3,
+      "candidates_seen": 3,
+      "evidence_queries_written": 3,
+      "evidence_snapshots_written": 3
+    },
+    "gate4_report": {
+      "alert_summary": {
+        "delivered_or_reviewed_alerts": 2,
+        "severity_counts": [
+          {
+            "count": 3,
+            "severity": "ACTIONABLE"
+          }
+        ],
+        "suppressed_alerts": 1,
+        "total_alerts": 3
+      },
+      "analyst_summary": {
+        "action_counts": [
+          {
+            "action_type": "mark_false_positive",
+            "count": 1
+          },
+          {
+            "action_type": "mark_useful",
+            "count": 1
+          }
+        ],
+        "total_feedback_rows": 2
+      },
+      "assessment": {
+        "analyst_feedback_rows": 2,
+        "status": "end_to_end_live",
+        "suppressed_alerts": 1,
+        "total_alerts": 3,
+        "total_delivery_attempts": 4
+      },
+      "delivery_summary": {
+        "channel_counts": [
+          {
+            "count": 2,
+            "delivery_channel": "discord"
+          },
+          {
+            "count": 2,
+            "delivery_channel": "telegram"
+          }
+        ],
+        "configured_channels": [
+          "telegram",
+          "discord"
+        ],
+        "error_attempts": 0,
+        "sent_attempts": 0,
+        "skipped_attempts": 4,
+        "total_attempts": 4
+      },
+      "latest_alert_example": {
+        "alert_id": "1672c39d26dc46e488857d2f478a7515",
+        "alert_status": "suppressed",
+        "analyst_feedback": [],
+        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "created_at": "2026-04-22T22:41:58.761332+00:00",
+        "created_at_display": "Apr 22, 2026 6:41 PM ET",
+        "delivery_attempts": [],
+        "evidence_state": "already_public",
+        "payload": {
+          "detector_version": "phase3_detector_v1",
+          "feature_schema_version": "phase3_v1",
+          "invalidates_it": "Material contrary public evidence or a weaker replay-reconciled interpretation.",
+          "market_evidence": {
+            "event_id": "phase9_task2_event_a",
+            "feature_snapshot": {
+              "buy_notional": 240.0,
+              "concentration_ratio": 0.62963,
+              "current_window_notional": 270.0,
+              "directional_imbalance": 0.777778,
+              "episode_end_event_time": "2026-04-20T05:22:00+00:00",
+              "episode_start_event_time": "2026-04-20T05:18:00+00:00",
+              "fresh_wallet_count": 3,
+              "fresh_wallet_notional_share": 1.0,
+              "market_id": "phase9_task2_market_a",
+              "previous_window_notional": 0,
+              "price_point_count": 3,
+              "probability_acceleration": 0.023333,
+              "probability_velocity": 0.023333,
+              "sell_notional": 30.0,
+              "severity_score": 13.886234,
+              "trade_count": 3,
+              "volume_acceleration": 2.0,
+              "wallet_count": 3,
+              "window_seconds": 300
+            },
+            "market_id": "phase9_task2_market_a"
+          },
+          "provider_summary": {
+            "cache_hit_count": 1,
+            "providers": [
+              {
+                "budget": {
+                  "blocked_by_budget": false,
+                  "day_queries_after": 2,
+                  "day_queries_before": 2,
+                  "day_query_cap": 250,
+                  "day_spend_after_usd": 0.0,
+                  "day_spend_before_usd": 0.0,
+                  "estimated_cost_usd": 0.0,
+                  "external_call_made": false,
+                  "month_queries_after": 2,
+                  "month_queries_before": 2,
+                  "month_query_cap": 5000,
+                  "month_spend_after_usd": 0.0,
+                  "month_spend_before_usd": 0.0
+                },
+                "cache_hit": true,
+                "freshness_seconds": 0,
+                "provider_mode": "cache",
+                "provider_name": "google_news_rss",
+                "query_status": "ok",
+                "query_type": "web_news",
+                "result_count": 10
+              }
+            ],
+            "real_provider_count": 1,
+            "total_estimated_cost_usd": 0.0
+          },
+          "public_evidence_state": "already_public",
+          "severity": "ACTIONABLE",
+          "title": "Bitcoin price and crypto market momentum",
+          "trigger_time_display": "Apr 20, 2026 1:22 AM ET",
+          "what_changed": "Candidate 9a6d96963f7d479ba9b118c0d144140c triggered at Apr 20, 2026 1:22 AM ET",
+          "why_it_looks_informed": "Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=13.886234"
+        },
+        "provider_summary": {
+          "cache_hit_count": 1,
+          "providers": [
+            {
+              "budget": {
+                "blocked_by_budget": false,
+                "day_queries_after": 2,
+                "day_queries_before": 2,
+                "day_query_cap": 250,
+                "day_spend_after_usd": 0.0,
+                "day_spend_before_usd": 0.0,
+                "estimated_cost_usd": 0.0,
+                "external_call_made": false,
+                "month_queries_after": 2,
+                "month_queries_before": 2,
+                "month_query_cap": 5000,
+                "month_spend_after_usd": 0.0,
+                "month_spend_before_usd": 0.0
+              },
+              "cache_hit": true,
+              "freshness_seconds": 0,
+              "provider_mode": "cache",
+              "provider_name": "google_news_rss",
+              "query_status": "ok",
+              "query_type": "web_news",
+              "result_count": 10
+            }
+          ],
+          "real_provider_count": 1,
+          "total_estimated_cost_usd": 0.0
+        },
+        "severity": "ACTIONABLE",
+        "suppression_state": "suppressed_by:2ae1de64f5564db2a67ed80c7f32460a",
+        "title": "Bitcoin price and crypto market momentum"
+      },
+      "workflow_registration": {
+        "alert_schema_version": "phase4_alert_payload_v1",
+        "created_at": "2026-04-22T20:18:25.587549+00:00",
+        "created_at_display": "Apr 22, 2026 4:18 PM ET",
+        "delivery_channels": [
+          "telegram",
+          "discord"
+        ],
+        "evidence_schema_version": "phase4_evidence_v1",
+        "last_used_at": "2026-04-22T22:41:56.457839+00:00",
+        "last_used_at_display": "Apr 22, 2026 6:41 PM ET",
+        "notes": "Phase 10 Task 2 analyst-loop expansion and suppression review over repeated real-provider alert episodes.",
+        "workflow_version": "phase4_alerts_v1"
+      },
+      "workflow_version": "phase4_alerts_v1"
+    }
+  },
+  "review_packet_expectation": {
+    "alerts": "More than one real-provider-backed alert episode reached the canonical alert path.",
+    "analyst_feedback": "More than one persisted analyst action exists, including usefulness and false-positive review outcomes.",
+    "delivery": "Delivery attempts exist for multiple created alerts even if outbound channels remain locally disabled.",
+    "suppression": "At least one later candidate in the same event family was suppressed by duplicate-alert policy."
+  },
+  "seed_summary": {
+    "detector_input_files": [
+      "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson",
+      "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_trades/events.ndjson"
+    ],
+    "prices": [
+      {
+        "captured_at": "2026-04-20T05:00:00+00:00",
+        "envelope_id": "fb5f2140682e46a499c862c8a5d40dc0",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-prices-001",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:02:00+00:00",
+        "envelope_id": "7b64291e5c42474db1775b5d9d62bc90",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-prices-002",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:04:00+00:00",
+        "envelope_id": "4437fa60845c41419890897996c8c2f1",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-prices-003",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:05:30+00:00",
+        "envelope_id": "655781791f6e4c0fad5970f6b04dea92",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-prices-004",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:12:00+00:00",
+        "envelope_id": "13f7d32734a7432fa748ac0c0780e022",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase10-task2-prices-005",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:14:00+00:00",
+        "envelope_id": "a8ceb58e7a7e4121a62242140b2ce6a4",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase10-task2-prices-006",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:16:00+00:00",
+        "envelope_id": "3ff523b7f26e4fa79f54ac64129a9ca6",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase10-task2-prices-007",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:17:30+00:00",
+        "envelope_id": "2e9a7387357f47b98542e1dc074a74b9",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase10-task2-prices-008",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:18:00+00:00",
+        "envelope_id": "5a3b5447a76e4c59acda49ce5fe9443f",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-prices-009",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:20:00+00:00",
+        "envelope_id": "7ce53f6a87d54b4d937d8c096fc50176",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-prices-010",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:21:00+00:00",
+        "envelope_id": "fa2a558d07e24981bbd0a8b9f5716f23",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-prices-011",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:22:30+00:00",
+        "envelope_id": "f99cc496ffcb450f9c11b53b249709f7",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-prices-012",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson"
+      }
+    ],
+    "trades": [
+      {
+        "captured_at": "2026-04-20T05:02:00+00:00",
+        "envelope_id": "e70ef73f0af448529e7bc8b56374b836",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-trades-001",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_trades/events.ndjson",
+        "trade_ids": [
+          "phase10-task2-a1-old-1",
+          "phase10-task2-a1-old-2"
+        ]
+      },
+      {
+        "captured_at": "2026-04-20T05:06:00+00:00",
+        "envelope_id": "215f1be3d70b4420a768f6e1917db346",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-trades-002",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_trades/events.ndjson",
+        "trade_ids": [
+          "phase10-task2-a1-fresh-1",
+          "phase10-task2-a1-fresh-2",
+          "phase10-task2-a1-fresh-3"
+        ]
+      },
+      {
+        "captured_at": "2026-04-20T05:14:00+00:00",
+        "envelope_id": "549e0ff4e24a4a1bbb69be6d92a0fb7c",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase10-task2-trades-003",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_trades/events.ndjson",
+        "trade_ids": [
+          "phase10-task2-b-old-1",
+          "phase10-task2-b-old-2"
+        ]
+      },
+      {
+        "captured_at": "2026-04-20T05:18:00+00:00",
+        "envelope_id": "7c90bfcf8374499db8ca3b3fd85adebf",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase10-task2-trades-004",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_trades/events.ndjson",
+        "trade_ids": [
+          "phase10-task2-b-fresh-1",
+          "phase10-task2-b-fresh-2",
+          "phase10-task2-b-fresh-3"
+        ]
+      },
+      {
+        "captured_at": "2026-04-20T05:18:10+00:00",
+        "envelope_id": "c7ff462d42b3445b949d1213d47e4353",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-trades-005",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_trades/events.ndjson",
+        "trade_ids": [
+          "phase10-task2-a2-old-1",
+          "phase10-task2-a2-old-2"
+        ]
+      },
+      {
+        "captured_at": "2026-04-20T05:22:00+00:00",
+        "envelope_id": "e3b71a101fdd4de8b3529804f3f28da4",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase10-task2-trades-006",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_trades/events.ndjson",
+        "trade_ids": [
+          "phase10-task2-a2-fresh-1",
+          "phase10-task2-a2-fresh-2",
+          "phase10-task2-a2-fresh-3"
+        ]
+      }
+    ]
+  },
+  "suppression_review": {
+    "suppressed_alert_count": 1,
+    "suppressed_examples": [
+      {
+        "alert_id": "1672c39d26dc46e488857d2f478a7515",
+        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "event_family_id": "phase9_task2_event_a",
+        "evidence_state": "already_public",
+        "parent_evidence_state": "already_public",
+        "parent_severity": "ACTIONABLE",
+        "same_event_family_as_parent": true,
+        "same_evidence_state_as_parent": true,
+        "severity": "ACTIONABLE",
+        "suppressed_by": "2ae1de64f5564db2a67ed80c7f32460a",
+        "title": "Bitcoin price and crypto market momentum"
+      }
+    ]
+  },
+  "task_contract_version": "phase10_task2_analyst_loop_expansion_v1",
+  "task_name": "Phase 10 Task 2 - Analyst Loop Expansion and Suppression Review",
+  "window": {
+    "alignment": "Uses the canonical replay-linked hour with repeated real-provider alert episodes for one event family.",
+    "detector_input_source_systems": [
+      "phase10_task2_seed_prices",
+      "phase10_task2_seed_trades"
+    ],
+    "end": "2026-04-20T06:00:00+00:00",
+    "start": "2026-04-20T05:00:00+00:00"
+  }
+}

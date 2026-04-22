@@ -12,6 +12,7 @@ from database.db_manager import apply_schema, get_conn
 from phase3.detector import Phase3Repository, run_phase3_detector_window
 from phase3.state_store import MemoryStateStore
 from phase4 import (
+    NoopEvidenceProvider,
     Phase4AlertWorker,
     Phase4AnalystWorkflow,
     Phase4EvidenceWorker,
@@ -609,7 +610,13 @@ async def materialize_phase9_task2(output_dir: str = "reports/phase9/candidate_t
     phase4_repository.register_workflow_version(
         notes="Phase 9 Task 2 candidate-to-alert materialization over seeded detector-input envelopes."
     )
-    evidence_worker = Phase4EvidenceWorker(repository=phase4_repository)
+    evidence_worker = Phase4EvidenceWorker(
+        repository=phase4_repository,
+        providers=[
+            NoopEvidenceProvider(name="noop_news", query_type="web_news"),
+            NoopEvidenceProvider(name="noop_social", query_type="social"),
+        ],
+    )
     evidence_results = await evidence_worker.process_pending_candidates(limit=10)
     alert_worker = Phase4AlertWorker(repository=phase4_repository)
     alert_results = alert_worker.process_pending_candidates(limit=10)

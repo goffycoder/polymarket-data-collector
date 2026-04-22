@@ -1,0 +1,80 @@
+{
+  "assessment": {
+    "heldout_evidence_available": true,
+    "model_beats_all_required_baselines": true,
+    "status": "model_beats_required_baselines"
+  },
+  "preferred_split": "test",
+  "required_baselines": [
+    {
+      "auc_margin_vs_model": 0.085938,
+      "baseline_key": "baseline_probability_momentum",
+      "baseline_metrics": {
+        "auc": 0.5,
+        "mean_score": 0.032,
+        "positive_rate": 0.5,
+        "precision_at_10": 0.5,
+        "precision_at_25": 0.52,
+        "row_count": 32
+      },
+      "precision_at_10_margin_vs_model": 0.1,
+      "status": "model_stronger"
+    },
+    {
+      "auc_margin_vs_model": 0.085938,
+      "baseline_key": "baseline_order_imbalance",
+      "baseline_metrics": {
+        "auc": 0.5,
+        "mean_score": 0.74,
+        "positive_rate": 0.5,
+        "precision_at_10": 0.5,
+        "precision_at_25": 0.52,
+        "row_count": 32
+      },
+      "precision_at_10_margin_vs_model": 0.1,
+      "status": "model_stronger"
+    },
+    {
+      "auc_margin_vs_model": 0.085938,
+      "baseline_key": "baseline_microstructure",
+      "baseline_metrics": {
+        "auc": 0.5,
+        "mean_score": 0.4236,
+        "positive_rate": 0.5,
+        "precision_at_10": 0.5,
+        "precision_at_25": 0.52,
+        "row_count": 32
+      },
+      "precision_at_10_margin_vs_model": 0.1,
+      "status": "model_stronger"
+    },
+    {
+      "auc_margin_vs_model": 0.085938,
+      "baseline_key": "baseline_external_evidence",
+      "baseline_metrics": {
+        "auc": 0.5,
+        "mean_score": 0.25,
+        "positive_rate": 0.5,
+        "precision_at_10": 0.5,
+        "precision_at_25": 0.52,
+        "row_count": 32
+      },
+      "precision_at_10_margin_vs_model": 0.1,
+      "status": "model_stronger"
+    },
+    {
+      "auc_margin_vs_model": 0.085938,
+      "baseline_key": "baseline_fresh_wallet",
+      "baseline_metrics": {
+        "auc": 0.5,
+        "mean_score": 1.5,
+        "positive_rate": 0.5,
+        "precision_at_10": 0.5,
+        "precision_at_25": 0.52,
+        "row_count": 32
+      },
+      "precision_at_10_margin_vs_model": 0.1,
+      "status": "model_stronger"
+    }
+  ]
+}

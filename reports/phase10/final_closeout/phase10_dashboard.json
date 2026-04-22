@@ -1,0 +1,876 @@
+{
+  "action_rollups": {
+    "retain_hot": 4,
+    "retain_warm": 12
+  },
+  "generated_at": "2026-04-22T23:01:11.737894+00:00",
+  "largest_partitions": [
+    {
+      "age_days": 66.751,
+      "byte_count": 27652,
+      "created_at": "2026-04-22 23:01:11",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 27652,
+        "entity_kind": "recent_trades_page",
+        "first_captured_at": "2026-02-15T05:00:00+00:00",
+        "last_captured_at": "2026-02-15T05:00:00+00:00",
+        "row_count": 1,
+        "schema_version": "normalized_envelope.v2"
+      },
+      "partition_path": "data/detector_input/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+      "recommended_action": "retain_warm",
+      "recommended_tier": "warm",
+      "source_system": "phase10_holdout_trades",
+      "storage_class": "detector_input",
+      "tiering_decision_id": "71bde524a99a4d46a5f885a181184634"
+    },
+    {
+      "age_days": 66.751,
+      "byte_count": 27579,
+      "created_at": "2026-04-22 23:01:11",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 27579,
+        "entity_kind": "recent_trades_page",
+        "first_captured_at": "2026-02-15T05:00:00+00:00",
+        "last_captured_at": "2026-02-15T05:00:00+00:00",
+        "row_count": 1,
+        "schema_version": "raw_event_envelope.v1"
+      },
+      "partition_path": "data/raw/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+      "recommended_action": "retain_warm",
+      "recommended_tier": "warm",
+      "source_system": "phase10_holdout_trades",
+      "storage_class": "raw",
+      "tiering_decision_id": "ed0b78d0ec2e42c4bba39c217dabdcbf"
+    },
+    {
+      "age_days": 97.751,
+      "byte_count": 26687,
+      "created_at": "2026-04-22 23:01:11",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 26687,
+        "entity_kind": "recent_trades_page",
+        "first_captured_at": "2026-01-15T05:00:00+00:00",
+        "last_captured_at": "2026-01-15T05:00:00+00:00",
+        "row_count": 1,
+        "schema_version": "normalized_envelope.v2"
+      },
+      "partition_path": "data/detector_input/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+      "recommended_action": "retain_warm",
+      "recommended_tier": "warm",
+      "source_system": "phase10_holdout_trades",
+      "storage_class": "detector_input",
+      "tiering_decision_id": "1b7849c655354db1b0e195ef1c8b3bc9"
+    },
+    {
+      "age_days": 97.751,
+      "byte_count": 26609,
+      "created_at": "2026-04-22 23:01:11",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 26609,
+        "entity_kind": "recent_trades_page",
+        "first_captured_at": "2026-01-15T05:00:00+00:00",
+        "last_captured_at": "2026-01-15T05:00:00+00:00",
+        "row_count": 1,
+        "schema_version": "raw_event_envelope.v1"
+      },
+      "partition_path": "data/raw/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+      "recommended_action": "retain_warm",
+      "recommended_tier": "warm",
+      "source_system": "phase10_holdout_trades",
+      "storage_class": "raw",
+      "tiering_decision_id": "d3456eef8bc847fe9914ca271b3e7f1c"
+    },
+    {
+      "age_days": 38.751,
+      "byte_count": 26494,
+      "created_at": "2026-04-22 23:01:11",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 26494,
+        "entity_kind": "recent_trades_page",
+        "first_captured_at": "2026-03-15T05:00:00+00:00",
+        "last_captured_at": "2026-03-15T05:00:00+00:00",
+        "row_count": 1,
+        "schema_version": "normalized_envelope.v2"
+      },
+      "partition_path": "data/detector_input/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+      "recommended_action": "retain_warm",
+      "recommended_tier": "warm",
+      "source_system": "phase10_holdout_trades",
+      "storage_class": "detector_input",
+      "tiering_decision_id": "0792003689384fd8bad0efb620dbed7b"
+    },
+    {
+      "age_days": 38.751,
+      "byte_count": 26415,
+      "created_at": "2026-04-22 23:01:11",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 26415,
+        "entity_kind": "recent_trades_page",
+        "first_captured_at": "2026-03-15T05:00:00+00:00",
+        "last_captured_at": "2026-03-15T05:00:00+00:00",
+        "row_count": 1,
+        "schema_version": "raw_event_envelope.v1"
+      },
+      "partition_path": "data/raw/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+      "recommended_action": "retain_warm",
+      "recommended_tier": "warm",
+      "source_system": "phase10_holdout_trades",
+      "storage_class": "raw",
+      "tiering_decision_id": "9e1482517e6745b4a3de866477044e4f"
+    },
+    {
+      "age_days": 2.735,
+      "byte_count": 5422,
+      "created_at": "2026-04-22 23:01:11",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 5422,
+        "entity_kind": "prices_batch",
+        "first_captured_at": "2026-04-20T05:00:00+00:00",
+        "last_captured_at": "2026-04-20T05:22:30+00:00",
+        "row_count": 12,
+        "schema_version": "normalized_envelope.v2"
+      },
+      "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "source_system": "phase10_task2_seed_prices",
+      "storage_class": "detector_input",
+      "tiering_decision_id": "3e9a21f8454a4c3c8d24102dc9a048f8"
+    },
+    {
+      "age_days": 2.736,
+      "byte_count": 5357,
+      "created_at": "2026-04-22 23:01:11",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 5357,
+        "entity_kind": "recent_trades_page",
+        "first_captured_at": "2026-04-20T05:02:00+00:00",
+        "last_captured_at": "2026-04-20T05:22:00+00:00",
+        "row_count": 6,
+        "schema_version": "normalized_envelope.v2"
+      },
+      "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_trades/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "source_system": "phase10_task2_seed_trades",
+      "storage_class": "detector_input",
+      "tiering_decision_id": "06fa425867dd4ea6bc3b3ae9955efb7b"
+    },
+    {
+      "age_days": 66.751,
+      "byte_count": 4226,
+      "created_at": "2026-04-22 23:01:11",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 4226,
+        "entity_kind": "prices_batch",
+        "first_captured_at": "2026-02-15T05:00:00+00:00",
+        "last_captured_at": "2026-02-15T05:00:00+00:00",
+        "row_count": 1,
+        "schema_version": "normalized_envelope.v2"
+      },
+      "partition_path": "data/detector_input/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+      "recommended_action": "retain_warm",
+      "recommended_tier": "warm",
+      "source_system": "phase10_holdout_prices",
+      "storage_class": "detector_input",
+      "tiering_decision_id": "1ef25198b7f1430bb2886512c846acc9"
+    },
+    {
+      "age_days": 66.751,
+      "byte_count": 4159,
+      "created_at": "2026-04-22 23:01:11",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 4159,
+        "entity_kind": "prices_batch",
+        "first_captured_at": "2026-02-15T05:00:00+00:00",
+        "last_captured_at": "2026-02-15T05:00:00+00:00",
+        "row_count": 1,
+        "schema_version": "raw_event_envelope.v1"
+      },
+      "partition_path": "data/raw/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+      "recommended_action": "retain_warm",
+      "recommended_tier": "warm",
+      "source_system": "phase10_holdout_prices",
+      "storage_class": "raw",
+      "tiering_decision_id": "92f2bc71592d4729b046698715cee5df"
+    }
+  ],
+  "latest_storage_audit": {
+    "audit_scope": "phase10_closeout",
+    "cold_candidate_count": 0,
+    "compact_candidate_count": 0,
+    "created_at": "2026-04-22 23:01:11",
+    "missing_file_count": 0,
+    "output_path": "C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\reports\\phase10\\final_closeout\\phase10_storage_audit.json",
+    "storage_audit_run_id": "0874c969ae7c446cb4a284b1f0b0f9e4",
+    "summary_json": {
+      "audit_scope": "phase10_closeout",
+      "generated_at": "2026-04-22T23:01:11.705647+00:00",
+      "largest_partitions": [
+        {
+          "actual_bytes": 27652,
+          "age_days": 66.751,
+          "byte_count": 27652,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-02-15T05:00:00+00:00",
+          "last_captured_at": "2026-02-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 27579,
+          "age_days": 66.751,
+          "byte_count": 27579,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-02-15T05:00:00+00:00",
+          "last_captured_at": "2026-02-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 26687,
+          "age_days": 97.751,
+          "byte_count": 26687,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-01-15T05:00:00+00:00",
+          "last_captured_at": "2026-01-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 26609,
+          "age_days": 97.751,
+          "byte_count": 26609,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-01-15T05:00:00+00:00",
+          "last_captured_at": "2026-01-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 26494,
+          "age_days": 38.751,
+          "byte_count": 26494,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-03-15T05:00:00+00:00",
+          "last_captured_at": "2026-03-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 26415,
+          "age_days": 38.751,
+          "byte_count": 26415,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-03-15T05:00:00+00:00",
+          "last_captured_at": "2026-03-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 5422,
+          "age_days": 2.735,
+          "byte_count": 5422,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-04-20T05:00:00+00:00",
+          "last_captured_at": "2026-04-20T05:22:30+00:00",
+          "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson",
+          "recommended_action": "retain_hot",
+          "recommended_tier": "hot",
+          "row_count": 12,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_task2_seed_prices",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 5357,
+          "age_days": 2.736,
+          "byte_count": 5357,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-04-20T05:02:00+00:00",
+          "last_captured_at": "2026-04-20T05:22:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_trades/events.ndjson",
+          "recommended_action": "retain_hot",
+          "recommended_tier": "hot",
+          "row_count": 6,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_task2_seed_trades",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 4226,
+          "age_days": 66.751,
+          "byte_count": 4226,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-02-15T05:00:00+00:00",
+          "last_captured_at": "2026-02-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 4159,
+          "age_days": 66.751,
+          "byte_count": 4159,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-02-15T05:00:00+00:00",
+          "last_captured_at": "2026-02-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 4061,
+          "age_days": 97.751,
+          "byte_count": 4061,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-01-15T05:00:00+00:00",
+          "last_captured_at": "2026-01-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 4028,
+          "age_days": 38.751,
+          "byte_count": 4028,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-03-15T05:00:00+00:00",
+          "last_captured_at": "2026-03-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 3989,
+          "age_days": 97.751,
+          "byte_count": 3989,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-01-15T05:00:00+00:00",
+          "last_captured_at": "2026-01-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 3955,
+          "age_days": 38.751,
+          "byte_count": 3955,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-03-15T05:00:00+00:00",
+          "last_captured_at": "2026-03-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 3358,
+          "age_days": 2.739,
+          "byte_count": 3358,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-04-20T05:00:00+00:00",
+          "last_captured_at": "2026-04-20T05:17:30+00:00",
+          "partition_path": "data/raw/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson",
+          "recommended_action": "retain_hot",
+          "recommended_tier": "hot",
+          "row_count": 8,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase9_seed_prices",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 3350,
+          "age_days": 2.738,
+          "byte_count": 3350,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-04-20T05:02:00+00:00",
+          "last_captured_at": "2026-04-20T05:18:00+00:00",
+          "partition_path": "data/raw/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_trades/events.ndjson",
+          "recommended_action": "retain_hot",
+          "recommended_tier": "hot",
+          "row_count": 4,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase9_seed_trades",
+          "storage_class": "raw"
+        }
+      ],
+      "source_rollups": [
+        {
+          "missing_file_count": 0,
+          "partition_count": 6,
+          "recommended_tiers": {
+            "warm": 6
+          },
+          "source_system": "phase10_holdout_trades",
+          "storage_classes": [
+            "detector_input",
+            "raw"
+          ],
+          "total_bytes": 161436
+        },
+        {
+          "missing_file_count": 0,
+          "partition_count": 6,
+          "recommended_tiers": {
+            "warm": 6
+          },
+          "source_system": "phase10_holdout_prices",
+          "storage_classes": [
+            "detector_input",
+            "raw"
+          ],
+          "total_bytes": 24418
+        },
+        {
+          "missing_file_count": 0,
+          "partition_count": 1,
+          "recommended_tiers": {
+            "hot": 1
+          },
+          "source_system": "phase10_task2_seed_prices",
+          "storage_classes": [
+            "detector_input"
+          ],
+          "total_bytes": 5422
+        },
+        {
+          "missing_file_count": 0,
+          "partition_count": 1,
+          "recommended_tiers": {
+            "hot": 1
+          },
+          "source_system": "phase10_task2_seed_trades",
+          "storage_classes": [
+            "detector_input"
+          ],
+          "total_bytes": 5357
+        },
+        {
+          "missing_file_count": 0,
+          "partition_count": 1,
+          "recommended_tiers": {
+            "hot": 1
+          },
+          "source_system": "phase9_seed_prices",
+          "storage_classes": [
+            "raw"
+          ],
+          "total_bytes": 3358
+        },
+        {
+          "missing_file_count": 0,
+          "partition_count": 1,
+          "recommended_tiers": {
+            "hot": 1
+          },
+          "source_system": "phase9_seed_trades",
+          "storage_classes": [
+            "raw"
+          ],
+          "total_bytes": 3350
+        }
+      ],
+      "tiering_decisions": [
+        {
+          "actual_bytes": 5422,
+          "age_days": 2.735,
+          "byte_count": 5422,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-04-20T05:00:00+00:00",
+          "last_captured_at": "2026-04-20T05:22:30+00:00",
+          "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson",
+          "recommended_action": "retain_hot",
+          "recommended_tier": "hot",
+          "row_count": 12,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_task2_seed_prices",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 5357,
+          "age_days": 2.736,
+          "byte_count": 5357,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-04-20T05:02:00+00:00",
+          "last_captured_at": "2026-04-20T05:22:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_trades/events.ndjson",
+          "recommended_action": "retain_hot",
+          "recommended_tier": "hot",
+          "row_count": 6,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_task2_seed_trades",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 3358,
+          "age_days": 2.739,
+          "byte_count": 3358,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-04-20T05:00:00+00:00",
+          "last_captured_at": "2026-04-20T05:17:30+00:00",
+          "partition_path": "data/raw/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson",
+          "recommended_action": "retain_hot",
+          "recommended_tier": "hot",
+          "row_count": 8,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase9_seed_prices",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 3350,
+          "age_days": 2.738,
+          "byte_count": 3350,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-04-20T05:02:00+00:00",
+          "last_captured_at": "2026-04-20T05:18:00+00:00",
+          "partition_path": "data/raw/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_trades/events.ndjson",
+          "recommended_action": "retain_hot",
+          "recommended_tier": "hot",
+          "row_count": 4,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase9_seed_trades",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 27652,
+          "age_days": 66.751,
+          "byte_count": 27652,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-02-15T05:00:00+00:00",
+          "last_captured_at": "2026-02-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 27579,
+          "age_days": 66.751,
+          "byte_count": 27579,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-02-15T05:00:00+00:00",
+          "last_captured_at": "2026-02-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 26687,
+          "age_days": 97.751,
+          "byte_count": 26687,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-01-15T05:00:00+00:00",
+          "last_captured_at": "2026-01-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 26609,
+          "age_days": 97.751,
+          "byte_count": 26609,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-01-15T05:00:00+00:00",
+          "last_captured_at": "2026-01-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 26494,
+          "age_days": 38.751,
+          "byte_count": 26494,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-03-15T05:00:00+00:00",
+          "last_captured_at": "2026-03-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 26415,
+          "age_days": 38.751,
+          "byte_count": 26415,
+          "entity_kind": "recent_trades_page",
+          "file_exists": true,
+          "first_captured_at": "2026-03-15T05:00:00+00:00",
+          "last_captured_at": "2026-03-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_trades",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 4226,
+          "age_days": 66.751,
+          "byte_count": 4226,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-02-15T05:00:00+00:00",
+          "last_captured_at": "2026-02-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 4159,
+          "age_days": 66.751,
+          "byte_count": 4159,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-02-15T05:00:00+00:00",
+          "last_captured_at": "2026-02-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 4061,
+          "age_days": 97.751,
+          "byte_count": 4061,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-01-15T05:00:00+00:00",
+          "last_captured_at": "2026-01-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 4028,
+          "age_days": 38.751,
+          "byte_count": 4028,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-03-15T05:00:00+00:00",
+          "last_captured_at": "2026-03-15T05:00:00+00:00",
+          "partition_path": "data/detector_input/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "normalized_envelope.v2",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "detector_input"
+        },
+        {
+          "actual_bytes": 3989,
+          "age_days": 97.751,
+          "byte_count": 3989,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-01-15T05:00:00+00:00",
+          "last_captured_at": "2026-01-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "raw"
+        },
+        {
+          "actual_bytes": 3955,
+          "age_days": 38.751,
+          "byte_count": 3955,
+          "entity_kind": "prices_batch",
+          "file_exists": true,
+          "first_captured_at": "2026-03-15T05:00:00+00:00",
+          "last_captured_at": "2026-03-15T05:00:00+00:00",
+          "partition_path": "data/raw/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "recommended_action": "retain_warm",
+          "recommended_tier": "warm",
+          "row_count": 1,
+          "schema_version": "raw_event_envelope.v1",
+          "source_system": "phase10_holdout_prices",
+          "storage_class": "raw"
+        }
+      ],
+      "totals": {
+        "missing_file_count": 0,
+        "partition_count": 16,
+        "total_bytes": 203341
+      }
+    },
+    "total_bytes": 203341,
+    "total_partitions": 16
+  },
+  "runtime_rollups": {
+    "active_shadow_model": {
+      "deployed_at": "2026-04-22T23:01:10.500814+00:00",
+      "deployment_status": "shadow",
+      "model_name": "phase6_ranker_v1",
+      "model_version": "phase10_task4_lightgbm_v1",
+      "shadow_enabled": true
+    },
+    "last_24h_alert_count": 3,
+    "last_24h_candidate_count": 0,
+    "last_24h_shadow_score_count": 98
+  },
+  "status": "ok",
+  "tier_rollups": {
+    "hot": 4,
+    "warm": 12
+  },
+  "top_sources": [
+    {
+      "missing_file_count": 0,
+      "partition_count": 6,
+      "source_system": "phase10_holdout_trades",
+      "total_bytes": 161436
+    },
+    {
+      "missing_file_count": 0,
+      "partition_count": 6,
+      "source_system": "phase10_holdout_prices",
+      "total_bytes": 24418
+    },
+    {
+      "missing_file_count": 0,
+      "partition_count": 1,
+      "source_system": "phase10_task2_seed_prices",
+      "total_bytes": 5422
+    },
+    {
+      "missing_file_count": 0,
+      "partition_count": 1,
+      "source_system": "phase10_task2_seed_trades",
+      "total_bytes": 5357
+    },
+    {
+      "missing_file_count": 0,
+      "partition_count": 1,
+      "source_system": "phase9_seed_prices",
+      "total_bytes": 3358
+    },
+    {
+      "missing_file_count": 0,
+      "partition_count": 1,
+      "source_system": "phase9_seed_trades",
+      "total_bytes": 3350
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 10 Task 3 - Held-Out Phase 5 Validation Pack}
+
+\textbf{Phase 10 parent doc:} \texttt{Documentation/phases/phase10.tex}\\
+\textbf{Task goal:} Freeze a canonical held-out window family, regenerate replay-linked evaluation inputs without leakage, and produce defensible Phase 5 time-split validation and conservative backtest artifacts on more than the tiny Phase 9 sample.
+
+\section*{Canonical Command}
+\begin{verbatim}
+python run_phase10_heldout_validation_pack.py --json
+\end{verbatim}
+
+\section*{Done Condition}
+Task 3 is complete when:
+\begin{itemize}
+\item the canonical held-out family is frozen explicitly,
+\item replay bundle artifacts exist for each held-out window,
+\item the combined validation report uses a larger replay-linked sample than Phase 9,
+\item time-split holdout regimes are scored rather than only descriptive, and
+\item conservative backtest artifacts exist under \texttt{reports/phase5/}.
+\end{itemize}
+
+\end{document}
