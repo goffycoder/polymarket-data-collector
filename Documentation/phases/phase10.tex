@@ -1,0 +1,140 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 10 Plan - Single Owner}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, especially Section 2.5 ``Implementation Readiness Checklist'', Section 2.6 ``Definition of v1 Complete'', Section 7 ``Evidence, Alerting, and Analyst Workflow'', Section 8 ``Replay, Backtesting, and Validation'', Section 9 ``Operations, Security, and Governance'', Section 10 ``Cost Model and Budget'', and Section 11 ``Roadmap and Stage Gates'', plus the Phase 8 and Phase 9 closeout artifacts under \texttt{Documentation/phases/} and \texttt{reports/phase9/}.\\
+\textbf{Execution status:} Planned single-owner follow-on after the Phase 9 closeout refresh.\\
+\textbf{Entry assumption:} Phase 9 already produced a materially populated local evidence packet through Phase 6, but the repo still does \textbf{not} qualify as SRS-complete v1 because the current evidence path is still noop-provider-backed and the current boosted-tree model evidence is still too small and train-only to support a held-out-strength claim.
+
+\textbf{Phase goal:} Convert the repo from \textbf{materially populated but not SRS-complete v1} into a \textbf{defensible, operator-hardened, real-provider-validated v1 package} that can satisfy the SRS completion contract without caveating away evidence quality.\\
+\textbf{Interpretation note:} The formal SRS roadmap ends at Phase 7. Phase 8 handled consolidation and truthfulness, and Phase 9 handled evidence materialization. Phase 10 is therefore a \textbf{single-owner operational-hardening and evidence-quality phase} derived from the exact blockers left open by Phase 9 and from the mandatory SRS requirements that remain stronger than the current committed proof.\\
+\textbf{Implementation note:} Phase 10 must prefer stronger evidence quality, held-out validation, operator readiness, and governance enforcement over adding fresh research breadth.
+
+\section*{Why Phase 10 Exists}
+Phase 9 solved the ``empty artifacts'' problem but did not yet solve the ``credible final claim'' problem.
+\begin{itemize}
+\item The repo now has a replay-linked local packet from candidate generation through alerting, validation, and shadow ML.
+\item The current Phase 4 evidence path is still based on local seeded or noop-provider behavior rather than a stronger real-provider-backed evidence packet.
+\item The current Phase 6 LightGBM artifact is still tiny and train-only, so it cannot honestly carry the SRS requirement for meaningful model evaluation against wallet-unaware baselines.
+\item The SRS still requires monitoring, secrets discipline, redaction policy, analyst-feedback capture, and budget guardrails to be treated as first-class runtime requirements.
+\item The remaining work is therefore not another speculative subsystem. It is the final conversion from a believable prototype package into a defensible operational v1.
+\end{itemize}
+
+\section*{Owned Deliverables (Synthesized From SRS + Phase 9 Findings)}
+\begin{enumerate}
+\item Replace the canonical Phase 4 noop-provider path with one real-provider-backed evidence workflow that records timestamped queries, results, cache behavior, and budget usage for replay-linked alerts.
+\item Materialize a stronger analyst-feedback corpus across more than one alert window so suppression, severity policy, and usefulness labels are no longer supported by only a single example path.
+\item Produce Phase 5 validation on a held-out-strength window family with exact time-split or category-holdout boundaries that match the SRS validation contract.
+\item Produce Phase 6 boosted-tree evaluation on a meaningfully larger dataset with required wallet-unaware baselines, held-out reporting, calibration outputs, and threshold recommendations that are not train-only.
+\item Add the mandatory SRS operational controls: monitoring coverage, archive and database integrity checks, incident runbooks, backup discipline, and budget guardrails for evidence-provider usage.
+\item Add the mandatory SRS security and governance controls: secret storage policy, role-scoped DB usage where applicable, wallet redaction in user-facing alerts, and deployment or model-version audit logging.
+\item Write one promotion memo stating whether the canonical operating mode remains \texttt{rule\_based\_plus\_shadow\_ml} or whether any part of the model stack is now strong enough for a stricter operational role.
+\item Produce one final completion memo that answers the SRS v1-complete question with the strongest honest answer the evidence supports.
+\end{enumerate}
+
+\section*{Phase 10 Exit Criteria}
+\begin{itemize}
+\item At least one canonical alert-evidence packet is backed by real providers rather than noop-provider placeholders.
+\item Analyst feedback and suppression behavior are supported by repeated examples, not only a single seeded demonstration.
+\item Phase 5 validation includes held-out-strength reporting that can be cited without leakage caveats.
+\item Phase 6 evaluation includes a boosted-tree ranker compared against wallet-unaware baselines on non-trivial held-out data with saved calibration outputs.
+\item Mandatory SRS monitoring, incident, security, governance, and budget guardrails are documented and materially implemented for the canonical v1 path.
+\item The repo can answer either ``SRS-complete v1'' or ``still blocked'' with a small, explicit blocker list rather than broad uncertainty.
+\end{itemize}
+
+\section*{Locked Scope Decisions}
+\begin{itemize}
+\item Phase 10 is a hardening and completion phase, not a new Phase 7 research branch.
+\item Canonical v1 remains local-first unless a separately documented architecture decision proves a stronger path.
+\item No autonomous execution, live capital deployment, or cloud-first redesign belongs in this phase.
+\item A real-provider-backed evidence packet must respect explicit daily and monthly provider budgets.
+\item Train-only wins do not count as final model proof.
+\item If held-out evidence is still weak after Phase 10, the repo must say so plainly rather than promoting weaker claims.
+\item Governance language from the SRS remains binding: no user-facing output may call a wallet or cluster an insider.
+\end{itemize}
+
+\section*{Concrete Artifacts Required}
+\begin{longtable}{p{0.24\linewidth}p{0.36\linewidth}p{0.26\linewidth}}
+\textbf{Workstream} & \textbf{Artifact} & \textbf{Done Condition} \\
+Real-provider evidence & Provider-backed alert packet and evidence review memo & Queries, snapshots, cache metadata, budget usage, and alert payload all exist for a canonical window \\
+Analyst loop expansion & Multi-alert feedback summary and suppression review & Multiple alerts have persisted analyst actions and a documented false-positive or usefulness review path \\
+Held-out validation & Time-split or category-holdout validation pack & Phase 5 reporting uses exact held-out boundaries and can be defended against leakage concerns \\
+Phase 6 completion & Larger held-out LightGBM or CatBoost evaluation bundle & Baselines, calibration, thresholds, and model card exist on non-trivial held-out data \\
+Ops hardening & Monitoring and incident runbook bundle & SRS-required metrics, integrity checks, and failure-response workflows are documented and wired into the canonical path \\
+Security and governance & Redaction, secrets, audit, and policy memo & User-facing alerts redact wallet identifiers by default and operator-sensitive actions are governed explicitly \\
+Final decision & Phase 10 completion memo & The repo states whether v1 is complete and what exact blocker remains if not \\
+\end{longtable}
+
+\section*{Canonical Phase 10 Workflow}
+\begin{enumerate}
+\item Choose the canonical held-out window family and the canonical live or replay-backed alert windows that will support the final claim.
+\item Replace or upgrade the current evidence-provider path so the chosen alert packets use real provider calls, timestamps, caching, and budget accounting.
+\item Run the alert loop repeatedly enough to evaluate suppression, severity, and analyst usefulness on more than one example.
+\item Run held-out Phase 5 validation on the same feature and label contracts used by the canonical Phase 6 evaluation.
+\item Train and evaluate the boosted-tree ranker on a larger dataset with held-out reporting, calibration, and baseline comparisons.
+\item Implement or verify the mandatory SRS operations, security, governance, and budget controls on the canonical path.
+\item Write the operating-mode promotion memo and the final completion memo.
+\end{enumerate}
+
+\section*{Concrete Execution Sequence}
+\textbf{Block 1: Evidence-provider hardening}
+\begin{itemize}
+\item Replace noop-provider defaults on the canonical Phase 4 path with real-provider-backed retrieval where feasible.
+\item Log provider, query time, timeout, cache hit state, and spend or quota metadata for each evidence fetch.
+\item Produce one review packet that shows the evidence layer is no longer only a seeded local demonstration.
+\end{itemize}
+
+\textbf{Block 2: Analyst-loop expansion and suppression tuning}
+\begin{itemize}
+\item Materialize more than one alert episode through the canonical delivery path.
+\item Capture structured analyst actions, follow-up notes, and resolution outcomes where available.
+\item Review duplicate suppression, severity inflation, and false-positive handling against real alert traffic.
+\end{itemize}
+
+\textbf{Block 3: Held-out replay and model evaluation}
+\begin{itemize}
+\item Freeze exact held-out boundaries before rerunning Phase 5 and Phase 6 evaluation.
+\item Regenerate replay-derived training or evaluation inputs without future leakage.
+\item Compare the boosted-tree ranker against the required wallet-unaware baselines on non-trivial held-out data.
+\item Update calibration, threshold recommendations, and the model card from held-out outputs rather than train-only summaries.
+\end{itemize}
+
+\textbf{Block 4: Ops, security, and governance closeout}
+\begin{itemize}
+\item Verify monitoring coverage for collector health, archive writes, detector backlog, Redis usage, PostgreSQL latency, candidate rate, alert rate, and evidence latency.
+\item Consolidate incident runbooks for collector death, reconnect storms, disk pressure, schema drift, and daily integrity checks.
+\item Enforce secret handling, wallet redaction, deployment logging, and evidence budget caps on the canonical path.
+\end{itemize}
+
+\textbf{Block 5: Final completion decision}
+\begin{itemize}
+\item Decide whether the canonical operating mode stays \texttt{rule\_based\_plus\_shadow\_ml} or whether stronger promotion is justified.
+\item Refresh the closeout documents with the new evidence-quality and hardening results.
+\item Write the final Phase 10 memo with either a complete SRS-v1 claim or a minimal explicit blocker list.
+\end{itemize}
+
+\section*{Expected Areas To Touch}
+\begin{itemize}
+\item \texttt{Documentation/phases/phase10.tex}
+\item \texttt{Documentation/INDEX.tex} and \texttt{Documentation/phases/README.tex}
+\item \texttt{phase4/} evidence-provider integrations and alert rendering paths
+\item \texttt{phase5/}, \texttt{phase6/}, and their runner entrypoints for held-out evaluation
+\item \texttt{database/*RUNBOOK.md} and related operator documentation
+\item generated outputs under \texttt{reports/phase10/}, \texttt{reports/phase5/}, \texttt{reports/phase6/}, and refreshed closeout artifacts
+\end{itemize}
+
+\section*{Non-Goals}
+\begin{itemize}
+\item No new graph-model or deep-sequence research branch as part of this phase.
+\item No broad architecture rewrite that resets the proven local-first path.
+\item No attempt to inflate evidence quality by widening the claim while keeping tiny datasets.
+\item No hiding of provider limitations, quota failures, or weak alert quality behind more polished docs.
+\end{itemize}
+
+\section*{Phase 10 Readiness Standard}
+Phase 10 is complete when the repo can defend a real-provider-backed alert path, a held-out-strength validation path, and the mandatory SRS operations and governance controls as one coherent local-first v1 system. At that point the project is no longer only materially populated. It is either honestly SRS-complete v1 or close enough that the remaining blocker list is narrow, concrete, and operational rather than structural.
+
+\end{document}
