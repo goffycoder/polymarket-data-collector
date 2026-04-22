@@ -1,0 +1,463 @@
+{
+  "artifacts": {
+    "review_packet_path": "reports/phase9/candidate_to_alert_materialization/phase9_task2_review_packet.json",
+    "review_summary_path": "reports/phase9/candidate_to_alert_materialization/phase9_task2_review_summary.md"
+  },
+  "cleanup_summary": {
+    "cleared_sources": [
+      "phase9_seed_trades",
+      "phase9_seed_prices"
+    ],
+    "deleted_alert_count": 2,
+    "deleted_candidate_count": 2
+  },
+  "phase3": {
+    "candidate_report": {
+      "detector_version": "phase3_detector_v1",
+      "end": "2026-04-20T06:00:00+00:00",
+      "hourly_counts": [
+        {
+          "candidate_count": 2,
+          "hour_bucket": "2026-04-20T05:00:00"
+        }
+      ],
+      "rule_family_counts": [
+        {
+          "candidate_count": 2,
+          "rule_family": "concentrated_directional_flow"
+        },
+        {
+          "candidate_count": 2,
+          "rule_family": "fast_repricing_with_wallet_support"
+        },
+        {
+          "candidate_count": 2,
+          "rule_family": "fresh_wallet_burst"
+        }
+      ],
+      "start": "2026-04-20T05:00:00+00:00",
+      "top_markets": [
+        {
+          "candidate_count": 1,
+          "market_id": "phase9_task2_market_b",
+          "max_severity_score": 17.29381
+        },
+        {
+          "candidate_count": 1,
+          "market_id": "phase9_task2_market_a",
+          "max_severity_score": 15.127473
+        }
+      ],
+      "total_candidates": 2,
+      "unique_markets": 2
+    },
+    "detector_summary": {
+      "candidates_emitted": 2,
+      "candidates_suppressed": 4,
+      "ignored_envelopes": 0,
+      "processed_envelopes": 12,
+      "processed_snapshots": 8,
+      "processed_trades": 10
+    },
+    "detector_version": "phase3_detector_v1",
+    "feature_schema_version": "phase3_v1"
+  },
+  "phase4": {
+    "alert_results": [
+      {
+        "alert_id": "d1c2402ed3274b198cc74146a62690ea",
+        "candidate_id": "d839f0b577cc40d39fc6b827d52929ad",
+        "delivery_channels": [
+          "telegram",
+          "discord"
+        ],
+        "severity": "ACTIONABLE"
+      },
+      {
+        "alert_id": "b64d7badf1004ac0b8cdad9bc02fb46f",
+        "candidate_id": "333f45767c93481e978a92721190d4f8",
+        "delivery_channels": [
+          "telegram",
+          "discord"
+        ],
+        "severity": "ACTIONABLE"
+      }
+    ],
+    "alert_summary": {
+      "alerts_created": 2,
+      "alerts_suppressed": 0,
+      "alerts_updated": 0,
+      "candidates_seen": 2,
+      "delivery_attempts_written": 4
+    },
+    "analyst_result": {
+      "action_type": "mark_useful",
+      "actor": "phase9_task2",
+      "alert_id": "b64d7badf1004ac0b8cdad9bc02fb46f",
+      "feedback_id": "315ab6c0ee8f42e8a14f2295a022c9a1",
+      "follow_up_at": "2026-04-20T06:05:00+00:00",
+      "follow_up_at_display": "Apr 20, 2026 2:05 AM ET"
+    },
+    "evidence_results": [
+      {
+        "candidate_id": "d839f0b577cc40d39fc6b827d52929ad",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "9cd9edee5aae4f4e99e45361a7e82947",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "noop_news",
+          "noop_social"
+        ]
+      },
+      {
+        "candidate_id": "333f45767c93481e978a92721190d4f8",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "cca84bcdff4641aabf042c273db023e9",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "noop_news",
+          "noop_social"
+        ]
+      }
+    ],
+    "evidence_summary": {
+      "candidates_processed": 2,
+      "candidates_seen": 2,
+      "evidence_queries_written": 4,
+      "evidence_snapshots_written": 2
+    },
+    "gate4_report": {
+      "alert_summary": {
+        "delivered_or_reviewed_alerts": 1,
+        "severity_counts": [
+          {
+            "count": 2,
+            "severity": "ACTIONABLE"
+          }
+        ],
+        "suppressed_alerts": 0,
+        "total_alerts": 2
+      },
+      "analyst_summary": {
+        "action_counts": [
+          {
+            "action_type": "mark_useful",
+            "count": 1
+          }
+        ],
+        "total_feedback_rows": 1
+      },
+      "assessment": {
+        "analyst_feedback_rows": 1,
+        "status": "end_to_end_live",
+        "suppressed_alerts": 0,
+        "total_alerts": 2,
+        "total_delivery_attempts": 4
+      },
+      "delivery_summary": {
+        "channel_counts": [
+          {
+            "count": 2,
+            "delivery_channel": "discord"
+          },
+          {
+            "count": 2,
+            "delivery_channel": "telegram"
+          }
+        ],
+        "configured_channels": [
+          "telegram",
+          "discord"
+        ],
+        "error_attempts": 0,
+        "sent_attempts": 0,
+        "skipped_attempts": 4,
+        "total_attempts": 4
+      },
+      "latest_alert_example": {
+        "alert_id": "b64d7badf1004ac0b8cdad9bc02fb46f",
+        "alert_status": "useful",
+        "analyst_feedback": [
+          {
+            "action_type": "mark_useful",
+            "actor": "phase9_task2",
+            "created_at": "2026-04-22T20:18:52.808196+00:00",
+            "created_at_display": "Apr 22, 2026 4:18 PM ET",
+            "notes": "Seeded Phase 9 Task 2 candidate-to-alert materialization reviewed successfully."
+          }
+        ],
+        "candidate_id": "333f45767c93481e978a92721190d4f8",
+        "created_at": "2026-04-22T20:18:52.772922+00:00",
+        "created_at_display": "Apr 22, 2026 4:18 PM ET",
+        "delivery_attempts": [
+          {
+            "attempted_at": "2026-04-22T20:18:52.786290+00:00",
+            "attempted_at_display": "Apr 22, 2026 4:18 PM ET",
+            "delivery_channel": "telegram",
+            "delivery_status": "skipped",
+            "error_message": null
+          },
+          {
+            "attempted_at": "2026-04-22T20:18:52.792319+00:00",
+            "attempted_at_display": "Apr 22, 2026 4:18 PM ET",
+            "delivery_channel": "discord",
+            "delivery_status": "skipped",
+            "error_message": null
+          }
+        ],
+        "evidence_state": "not_publicly_explained",
+        "payload": {
+          "detector_version": "phase3_detector_v1",
+          "feature_schema_version": "phase3_v1",
+          "invalidates_it": "Material contrary public evidence or a weaker replay-reconciled interpretation.",
+          "market_evidence": {
+            "event_id": "phase9_task2_event_a",
+            "feature_snapshot": {
+              "buy_notional": 240.0,
+              "concentration_ratio": 0.642857,
+              "current_window_notional": 280.0,
+              "directional_imbalance": 0.714286,
+              "episode_end_event_time": "2026-04-20T05:06:00+00:00",
+              "episode_start_event_time": "2026-04-20T05:02:00+00:00",
+              "fresh_wallet_count": 3,
+              "fresh_wallet_notional_share": 1.0,
+              "market_id": "phase9_task2_market_a",
+              "previous_window_notional": 0,
+              "price_point_count": 3,
+              "probability_acceleration": 0.028571,
+              "probability_velocity": 0.028571,
+              "sell_notional": 40.0,
+              "severity_score": 15.127473,
+              "trade_count": 3,
+              "volume_acceleration": 2.0,
+              "wallet_count": 3,
+              "window_seconds": 300
+            },
+            "market_id": "phase9_task2_market_a"
+          },
+          "provider_summary": {
+            "providers": [
+              {
+                "provider_name": "noop_news",
+                "query_status": "no_results",
+                "query_type": "web_news",
+                "result_count": 0
+              },
+              {
+                "provider_name": "noop_social",
+                "query_status": "no_results",
+                "query_type": "social",
+                "result_count": 0
+              }
+            ]
+          },
+          "public_evidence_state": "not_publicly_explained",
+          "severity": "ACTIONABLE",
+          "title": "Phase 9 Task 2 Reference Event A",
+          "trigger_time_display": "Apr 20, 2026 1:06 AM ET",
+          "what_changed": "Candidate 333f45767c93481e978a92721190d4f8 triggered at Apr 20, 2026 1:06 AM ET",
+          "why_it_looks_informed": "Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=15.127473"
+        },
+        "provider_summary": {
+          "providers": [
+            {
+              "provider_name": "noop_news",
+              "query_status": "no_results",
+              "query_type": "web_news",
+              "result_count": 0
+            },
+            {
+              "provider_name": "noop_social",
+              "query_status": "no_results",
+              "query_type": "social",
+              "result_count": 0
+            }
+          ]
+        },
+        "severity": "ACTIONABLE",
+        "suppression_state": "mark_useful",
+        "title": "Phase 9 Task 2 Reference Event A"
+      },
+      "workflow_registration": {
+        "alert_schema_version": "phase4_alert_payload_v1",
+        "created_at": "2026-04-22T20:18:25.587549+00:00",
+        "created_at_display": "Apr 22, 2026 4:18 PM ET",
+        "delivery_channels": [
+          "telegram",
+          "discord"
+        ],
+        "evidence_schema_version": "phase4_evidence_v1",
+        "last_used_at": "2026-04-22T20:18:52.699181+00:00",
+        "last_used_at_display": "Apr 22, 2026 4:18 PM ET",
+        "notes": "Phase 9 Task 2 candidate-to-alert materialization over seeded detector-input envelopes.",
+        "workflow_version": "phase4_alerts_v1"
+      },
+      "workflow_version": "phase4_alerts_v1"
+    },
+    "task1_gate4_report_path": "reports/phase9/reference_window_preparation/phase9_task1_gate4_report.json"
+  },
+  "review_packet_expectation": {
+    "how_analyst_responded": "One analyst feedback row was recorded against the latest fixture alert.",
+    "what_evidence_existed": "Phase 4 noop evidence queries and snapshots recorded for each candidate.",
+    "what_triggered": "Phase 3 candidate rows seeded through the native detector-input path.",
+    "what_was_delivered": "Alert delivery attempts were persisted even with disabled outbound channels."
+  },
+  "seed_summary": {
+    "detector_input_files": [
+      "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson",
+      "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_trades/events.ndjson"
+    ],
+    "prices": [
+      {
+        "captured_at": "2026-04-20T05:00:00+00:00",
+        "envelope_id": "de08bca70208484395843d7c7cb858c7",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase9-prices-001",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:02:00+00:00",
+        "envelope_id": "f7a4602190e5447d89e4522b8b1c06bc",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase9-prices-002",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:04:00+00:00",
+        "envelope_id": "7267f44d4baf453f8dc62f5b1f259d5c",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase9-prices-003",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:05:30+00:00",
+        "envelope_id": "f28823ec447c4229a73ec8e3c6c149a3",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase9-prices-004",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:12:00+00:00",
+        "envelope_id": "f4637788e3f0449c877df073584131bc",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase9-prices-005",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:14:00+00:00",
+        "envelope_id": "f64fd9815e6b41248ebc1da5b5884f11",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase9-prices-006",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:16:00+00:00",
+        "envelope_id": "0f6b5865a4c540e2b652f11aa4550f49",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase9-prices-007",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson"
+      },
+      {
+        "captured_at": "2026-04-20T05:17:30+00:00",
+        "envelope_id": "9aa61d69593144f290da10486b84d099",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase9-prices-008",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson"
+      }
+    ],
+    "trades": [
+      {
+        "captured_at": "2026-04-20T05:02:00+00:00",
+        "envelope_id": "c913148361c04bafbec84159537499cd",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase9-trades-001",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_trades/events.ndjson",
+        "trade_ids": [
+          "phase9-a-old-1",
+          "phase9-a-old-2"
+        ]
+      },
+      {
+        "captured_at": "2026-04-20T05:06:00+00:00",
+        "envelope_id": "c2d11ceabd7a42c4899e2602f8e508ac",
+        "market_ids": [
+          "phase9_task2_market_a"
+        ],
+        "ordering_key": "phase9-trades-002",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_trades/events.ndjson",
+        "trade_ids": [
+          "phase9-a-fresh-1",
+          "phase9-a-fresh-2",
+          "phase9-a-fresh-3"
+        ]
+      },
+      {
+        "captured_at": "2026-04-20T05:14:00+00:00",
+        "envelope_id": "4e01a7f81fa9448997406ac1ac4b87a3",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase9-trades-003",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_trades/events.ndjson",
+        "trade_ids": [
+          "phase9-b-old-1",
+          "phase9-b-old-2"
+        ]
+      },
+      {
+        "captured_at": "2026-04-20T05:18:00+00:00",
+        "envelope_id": "6b43085535f3428a8f35abba8205f4f3",
+        "market_ids": [
+          "phase9_task2_market_b"
+        ],
+        "ordering_key": "phase9-trades-004",
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_trades/events.ndjson",
+        "trade_ids": [
+          "phase9-b-fresh-1",
+          "phase9-b-fresh-2",
+          "phase9-b-fresh-3"
+        ]
+      }
+    ]
+  },
+  "table_counts_after": {
+    "alert_delivery_attempts": 4,
+    "alerts": 2,
+    "analyst_feedback": 1,
+    "detector_input_manifests": 2,
+    "evidence_queries": 4,
+    "evidence_snapshots": 2,
+    "signal_candidates": 2,
+    "signal_episodes": 2,
+    "signal_features": 32
+  },
+  "task_contract_version": "phase9_task2_candidate_to_alert_v1",
+  "task_name": "Phase 9 Task 2 - Candidate-to-Alert Materialization",
+  "window": {
+    "detector_input_source_systems": [
+      "phase9_seed_prices",
+      "phase9_seed_trades"
+    ],
+    "end": "2026-04-20T06:00:00+00:00",
+    "reference_alignment": "Uses the same canonical Phase 9 hour selected in Task 1.",
+    "start": "2026-04-20T05:00:00+00:00"
+  }
+}

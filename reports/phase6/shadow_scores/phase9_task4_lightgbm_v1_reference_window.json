@@ -1,0 +1,73 @@
+{
+  "contract_version": "phase9_task4_phase6_model_completion_v1",
+  "feature_schema_version": "phase6_features_v1",
+  "model_version": "phase9_task4_lightgbm_v1",
+  "score_rows": [
+    {
+      "alert_id": "b64d7badf1004ac0b8cdad9bc02fb46f",
+      "candidate_id": "333f45767c93481e978a92721190d4f8",
+      "decision_timestamp": "2026-04-20T05:06:45+00:00",
+      "event_family_id": "phase9_task2_event_a",
+      "event_id": "phase9_task2_event_a",
+      "market_id": "phase9_task2_market_a",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.5,
+          "critical": 0.5,
+          "watch": 0.5
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "d1c2402ed3274b198cc74146a62690ea",
+      "candidate_id": "d839f0b577cc40d39fc6b827d52929ad",
+      "decision_timestamp": "2026-04-20T05:18:45+00:00",
+      "event_family_id": "phase9_task2_event_b",
+      "event_id": "phase9_task2_event_b",
+      "market_id": "phase9_task2_market_b",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.5,
+          "critical": 0.5,
+          "watch": 0.5
+        }
+      },
+      "score_value": 0.5
+    }
+  ],
+  "window": {
+    "end": "2026-04-20T06:00:00+00:00",
+    "start": "2026-04-20T05:00:00+00:00"
+  }
+}

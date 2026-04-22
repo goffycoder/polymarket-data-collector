@@ -7,7 +7,16 @@ from phase6 import Phase6Repository
 
 def _best_baseline_auc(test_metrics: dict) -> float | None:
     candidates = []
-    for key in ("baseline_severity", "baseline_wallet", "baseline_velocity"):
+    for key in (
+        "baseline_probability_momentum",
+        "baseline_order_imbalance",
+        "baseline_microstructure",
+        "baseline_external_evidence",
+        "baseline_fresh_wallet",
+        "baseline_severity",
+        "baseline_wallet",
+        "baseline_velocity",
+    ):
         auc_value = ((test_metrics or {}).get(key) or {}).get("auc")
         if auc_value is not None:
             candidates.append(float(auc_value))
@@ -31,12 +40,22 @@ def build_phase6_person2_report(*, limit: int = 10) -> dict:
     baseline_margin = None
     if latest:
         splits = ((latest.get("summary_json") or {}).get("score_report") or {}).get("splits") or {}
-        test_metrics = splits.get("test") or {}
-        model_auc = ((test_metrics.get("model") or {}).get("auc"))
-        baseline_auc = _best_baseline_auc(test_metrics)
+        chosen_split = {}
+        chosen_split_name = None
+        for split_name in ("test", "validation", "train"):
+            payload = splits.get(split_name) or {}
+            if ((payload.get("model") or {}).get("row_count") or 0) > 0:
+                chosen_split = payload
+                chosen_split_name = split_name
+                break
+        model_auc = ((chosen_split.get("model") or {}).get("auc"))
+        baseline_auc = _best_baseline_auc(chosen_split)
         if model_auc is not None and baseline_auc is not None:
             baseline_margin = round(float(model_auc) - float(baseline_auc), 6)
-            assessment_status = "model_beats_baseline" if baseline_margin >= 0 else "baseline_still_stronger"
+            if chosen_split_name not in {"test", "validation"}:
+                assessment_status = "descriptive_only"
+            else:
+                assessment_status = "model_beats_baseline" if baseline_margin >= 0 else "baseline_still_stronger"
         else:
             assessment_status = "descriptive_only"
 

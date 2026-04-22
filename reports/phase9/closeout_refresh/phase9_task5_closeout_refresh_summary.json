@@ -1,0 +1,271 @@
+{
+  "artifacts": {
+    "phase8_final_closeout": {
+      "manifest_path": "reports/phase8/final_closeout/phase8_final_closeout_manifest.json",
+      "manifest_sha256": "457f8299af521cc92006696db4d4de09ae58ac7a1ae6929ae990e5b2cfb080ae",
+      "summary_path": "reports/phase8/final_closeout/phase8_final_closeout_summary.md",
+      "summary_sha256": "647ac6a4ea835bb449cf730fdd2047f23aba50adbbc44cd8029d830809547e6f"
+    },
+    "phase8_metrics_review": {
+      "manifest_path": "reports/phase8/metrics_review/phase8_metrics_review_manifest.json",
+      "manifest_sha256": "87d19bdac6f708d2ac3c8e9ea9b38b064880613473860b0d410d72c0e879a01e",
+      "summary_path": "reports/phase8/metrics_review/phase8_metrics_review_summary.md",
+      "summary_sha256": "9ea5d9ca197b649e0e837dbdf94d041f8f88ccfda025208d6c76d664d9414cd7"
+    },
+    "phase8_operating_mode": {
+      "manifest_path": "reports/phase8/operating_mode/phase8_v1_operating_mode_manifest.json",
+      "manifest_sha256": "195c884405a2c04094be6a4791d1b7692d63815c40f20ff07850c5aeb15bf438",
+      "summary_path": "reports/phase8/operating_mode/phase8_v1_operating_mode_summary.md",
+      "summary_sha256": "be5224340be677b90e18e0bd87e2fb6b839d7f0233a77e89add9a21618959b73"
+    },
+    "phase8_reference_freeze": {
+      "manifest_path": "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
+      "manifest_sha256": "780c48430217fbab6a2936dfb206962dec83e53033f8b5ae87bb3e0d4a3da2da",
+      "summary_path": "reports/phase8/reference_window_freeze/phase8_reference_window_summary.md",
+      "summary_sha256": "48bf27ea18fffaf5f1c7ce56da2c2527179cecb6700dd00efb541622b90b5b0b"
+    }
+  },
+  "generated_at": "2026-04-22T21:06:59.823456+00:00",
+  "phase8_final_closeout": {
+    "final_closeout_memo": {
+      "canonical_v1_mode": "rule_based_plus_shadow_ml",
+      "direct_answer": "No. Phase 9 materially improved the repo and now provides a replay-linked local evidence packet through Phase 6, but the project is still not SRS-complete v1 because the remaining blocker is evidence quality rather than missing artifacts: the current Phase 4 path is still noop-provider-backed and the current Phase 6 LightGBM evidence is still too small and train-only to defend a held-out claim.",
+      "intentionally_out_of_scope": [
+        "live capital deployment or autonomous execution",
+        "cloud-first migration, HA redesign, or redundancy before the single-instance path is fully proven",
+        "promotion of Phase 7 research models into canonical alert authority",
+        "treating thesis-grade ablation figures as if they were required canonical v1 operating artifacts"
+      ],
+      "next_required_actions_before_v1_complete": [
+        "materialize one real-provider-backed end-to-end replay-to-alert evidence packet for the frozen or equivalent reference window",
+        "expand Phase 5 evaluation beyond the tiny seeded packet so conservative edge and lead-time claims survive a less fragile sample",
+        "re-run the LightGBM or CatBoost path on a held-out-sized dataset and preserve evidence that comparisons remain strong off-train",
+        "treat the new single-owner runbooks as the default operator path and retire person-labeled instructions from primary use"
+      ],
+      "overall_status": "materially_populated_but_not_srs_complete_v1",
+      "primary_blockers": [
+        "The project now has a materially populated end-to-end local packet, but the remaining blocker is stronger real-provider-backed and held-out-sized evidence rather than missing artifacts.",
+        "The canonical Phase 4 evidence path is still seeded local replay with noop providers rather than a real-provider-backed alert-evidence packet.",
+        "The canonical Phase 6 LightGBM evaluation is still train-only on a tiny dataset, so it does not yet justify a held-out-strength SRS completion claim."
+      ],
+      "srs_checklist": [
+        {
+          "assessment": "The repo and earlier docs support the collector story, but Task 5 does not add a fresh live-run proof packet.",
+          "criterion": "the collector runs stably across the intended market universe",
+          "evidence": [
+            {
+              "exists": true,
+              "kind": "document",
+              "note": null,
+              "path": "README.md",
+              "sha256": "42be0f1f2596919f9a681ed17850939c06ef3af7373a0cef1c0896320d24b8e9",
+              "size_bytes": 19361
+            },
+            {
+              "exists": true,
+              "kind": "phase_doc",
+              "note": null,
+              "path": "Documentation/phases/phase2.tex",
+              "sha256": "90c7c7805b830e08818ed14d877b9617bd8aabedc9288d82a491ca7bd0f197d9",
+              "size_bytes": 7280
+            }
+          ],
+          "status": "historically_supported_not_reverified_in_phase8"
+        },
+        {
+          "assessment": "The canonical local packet now has raw-archive and detector-input manifest rows plus replay artifacts for the frozen hour, though the path is still a seeded local proof rather than a broad operational packet.",
+          "criterion": "the raw archive and replay path are working",
+          "evidence": [
+            {
+              "exists": true,
+              "kind": "phase_doc",
+              "note": null,
+              "path": "Documentation/phases/phase2.tex",
+              "sha256": "90c7c7805b830e08818ed14d877b9617bd8aabedc9288d82a491ca7bd0f197d9",
+              "size_bytes": 7280
+            },
+            {
+              "exists": true,
+              "kind": "phase8_artifact",
+              "note": null,
+              "path": "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
+              "sha256": "272fe1f5261dee50b10b7f02b45b609851bc98f3ef1a87c36d1187856f955861",
+              "size_bytes": 21678
+            },
+            {
+              "child_count": 3,
+              "exists": true,
+              "kind": "phase5_artifact",
+              "note": null,
+              "path": "reports/phase5/replay_runs/phase9_task3",
+              "sha256": null
+            }
+          ],
+          "status": "materialized_for_canonical_local_packet"
+        },
+        {
+          "assessment": "Phase 9 Task 2 regenerated deterministic candidate rows for the canonical window through the native detector path.",
+          "criterion": "deterministic candidate episodes can be regenerated from replay",
+          "evidence": [
+            {
+              "exists": true,
+              "kind": "phase_doc",
+              "note": null,
+              "path": "Documentation/phases/phase3.tex",
+              "sha256": "4dbbe258bf155fb9fa03bcb7cccf1412ea09639d37a6569b583ccad7cf055c88",
+              "size_bytes": 15718
+            },
+            {
+              "exists": true,
+              "kind": "phase9_artifact",
+              "note": null,
+              "path": "reports/phase9/candidate_to_alert_materialization/phase9_task2_review_packet.json",
+              "sha256": "0c1b44c65543a78cae251a198bf65e33086d30f0bd3629501a67f36c56b83551",
+              "size_bytes": 16570
+            }
+          ],
+          "status": "materialized_for_canonical_local_packet"
+        },
+        {
+          "assessment": "The canonical packet now includes persisted alerts, delivery attempts, and analyst feedback, but the evidence providers are noop adapters and outbound delivery was skipped locally, so this is not yet a strong real-world Phase 4 proof.",
+          "criterion": "evidence-backed alerts are live with analyst feedback capture",
+          "evidence": [
+            {
+              "exists": true,
+              "kind": "signoff_doc",
+              "note": null,
+              "path": "Documentation/phases/phase4_gate4_signoff.tex",
+              "sha256": "af2239c54814adede9f5016bcd51306874987cd7a7361cc60a890c1a29c60d71",
+              "size_bytes": 5915
+            },
+            {
+              "exists": true,
+              "kind": "phase9_artifact",
+              "note": null,
+              "path": "reports/phase9/candidate_to_alert_materialization/phase9_task2_review_packet.json",
+              "sha256": "0c1b44c65543a78cae251a198bf65e33086d30f0bd3629501a67f36c56b83551",
+              "size_bytes": 16570
+            }
+          ],
+          "status": "materialized_but_not_real_provider_backed"
+        },
+        {
+          "assessment": "Phase 9 Task 3 now provides replay, holdout validation, and conservative paper-trading artifacts under reports/phase5/, with honest caveats that the sample is tiny.",
+          "criterion": "one conservative backtest and one paper-trading evaluation exist",
+          "evidence": [
+            {
+              "exists": true,
+              "kind": "phase_doc",
+              "note": null,
+              "path": "Documentation/phases/phase5.tex",
+              "sha256": "8808a38328048fed669c9eb4a9cc5a7f60ea977acd2540f45c3f522ac9ed455a",
+              "size_bytes": 7830
+            },
+            {
+              "exists": true,
+              "kind": "phase5_artifact",
+              "note": null,
+              "path": "reports/phase5/validation/phase9_task3_holdout_validation.json",
+              "sha256": "ae2909fd1af5d1993dce5fe5ac71746166915a3e381ea0987a51da6759c8054c",
+              "size_bytes": 19371
+            },
+            {
+              "exists": true,
+              "kind": "phase5_artifact",
+              "note": null,
+              "path": "reports/phase5/backtests/phase9_task3_conservative_backtest.json",
+              "sha256": "f745f55575a1e0d6bc4bf7ca281dade077e30647970adb07509bdaec7defd28e",
+              "size_bytes": 1372
+            }
+          ],
+          "status": "satisfied_for_canonical_local_packet"
+        },
+        {
+          "assessment": "Phase 9 Task 4 now evaluates a LightGBM ranker against the required wallet-unaware baselines and persists calibration, threshold, registry, and shadow-score artifacts, but the evidence is still train-only on a tiny dataset.",
+          "criterion": "one LightGBM or CatBoost ranker is evaluated against the wallet-unaware baselines",
+          "evidence": [
+            {
+              "exists": true,
+              "kind": "phase_doc",
+              "note": null,
+              "path": "Documentation/phases/phase9_task4_phase6_model_completion.tex",
+              "sha256": "ce5ba1397afa6d9a1967c12fd52b31aa64b6c9cf0db95409695951e7ae8efdb8",
+              "size_bytes": 2445
+            },
+            {
+              "exists": true,
+              "kind": "phase9_artifact",
+              "note": null,
+              "path": "reports/phase9/phase6_model_completion/phase9_task4_summary.json",
+              "sha256": "7f8e350f5a8166d7d5fdd96965a0e7a1e4a351858e1effdd600200470172d95f",
+              "size_bytes": 7969
+            }
+          ],
+          "status": "artifact_contract_satisfied_but_not_strong_enough_for_v1_claim"
+        }
+      ],
+      "srs_v1_complete": false,
+      "strongest_defensible_claims": [
+        "The repo now has one explicit canonical documentation path for single-owner handoff.",
+        "One exact reference window is frozen with paths, versions, hashes, and stage-by-stage evidence-gap status.",
+        "Canonical v1 is formally defined as rule-based plus shadow ML, with clear rollback semantics.",
+        "The final metrics order, limitations review, and stop-condition ledger are now explicit and machine-readable.",
+        "Phase 9 now provides a materially populated local evidence packet spanning candidate generation, alerting, validation, conservative paper trading, and LightGBM shadow evaluation."
+      ]
+    }
+  },
+  "phase8_metrics_review": {
+    "readiness_summary": {
+      "canonical_v1_mode": "rule_based_plus_shadow_ml",
+      "highest_priority_gap": "The project now has a materially populated end-to-end local packet, but the remaining blocker is stronger real-provider-backed and held-out-sized evidence rather than missing artifacts.",
+      "overall_status": "metrics_materialized_but_not_yet_defendable_for_srs_v1",
+      "workspace_snapshot_highlights": {
+        "alerts": 2,
+        "analyst_feedback": 1,
+        "backtest_artifacts": 1,
+        "calibration_profiles": 6,
+        "evidence_queries": 4,
+        "evidence_snapshots": 2,
+        "model_evaluation_runs": 2,
+        "seeded_provider_only": true,
+        "shadow_model_scores": 2,
+        "validation_runs": 1
+      }
+    }
+  },
+  "phase8_operating_mode": {
+    "decision": {
+      "canonical_v1_operating_mode": "rule_based_plus_shadow_ml",
+      "rejected_modes": [
+        {
+          "mode": "rule_based_only",
+          "reason": "The repo already contains committed Phase 6 registry, shadow-scoring, and evaluation plumbing that should remain active for v1 learning and auditability."
+        },
+        {
+          "mode": "ml_backed_ranking_with_rollback",
+          "reason": "The committed repo state still does not justify promotion of ML to decision authority: Phase 6 is shadow-first by design, the local LightGBM evidence packet is still descriptive rather than held-out-defensible, and the Phase 4 provider path is not yet real-provider-backed in this workspace."
+        }
+      ]
+    }
+  },
+  "phase8_reference_freeze": {
+    "overall_status": "materially_populated_seeded_reference_window",
+    "reference_window": {
+      "end": "2026-04-20T06:00:00+00:00",
+      "selected_from": "Documentation/phases/phase2.tex",
+      "selection_reason": "Chosen from the committed Phase 2 delivery doc because it is the only canonical artifact in git that names an exact one-hour raw/replay proof window.",
+      "source_system": "gamma_events",
+      "start": "2026-04-20T05:00:00+00:00"
+    }
+  },
+  "single_owner_runbooks": [
+    "database/PHASE5_SINGLE_OWNER_RUNBOOK.md",
+    "database/PHASE6_SINGLE_OWNER_RUNBOOK.md"
+  ],
+  "task5_artifacts": {
+    "summary_markdown_path": "reports/phase9/closeout_refresh/phase9_task5_closeout_refresh_summary.md",
+    "summary_markdown_sha256": "3471163a6270064fdbd8af290e117cd800b41d47e566c67788eaf6c5757374c5",
+    "summary_path": "reports/phase9/closeout_refresh/phase9_task5_closeout_refresh_summary.json"
+  },
+  "task_contract_version": "phase9_task5_closeout_refresh_v1"
+}

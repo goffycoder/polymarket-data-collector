@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 9 Task 2 - Candidate-to-Alert Materialization}
+
+\textbf{Source of truth:} \texttt{Documentation/phases/phase9.tex}, \texttt{Documentation/phases/phase9\_task1\_reference\_window.tex}, and the generated review packet under \texttt{reports/phase9/candidate\_to\_alert\_materialization/}.\\
+\textbf{Task goal:} Run the Phase 3 to Phase 4 path so the chosen Phase 9 reference hour produces persisted candidates, evidence queries, evidence snapshots, alerts, delivery attempts, and analyst-feedback records.\\
+\textbf{Execution note:} The original raw archive for the canonical hour is still absent in this workspace. Therefore Task 2 materializes the \textbf{later-phase} path honestly by seeding detector-input envelopes inside the same canonical hour and then running the native Phase 3 and Phase 4 code on top of that seeded detector-input stream.
+
+\section*{What Task 2 Must Achieve}
+From \texttt{Documentation/phases/phase9.tex}, the desired Task 2 outcome is:
+\begin{itemize}
+\item Phase 3 candidate outputs are present and linked to the chosen window.
+\item Phase 4 evidence, alerting, delivery, and analyst workflow are all persisted.
+\item One concise review packet exists showing what triggered, what evidence existed, what was delivered, and how an analyst responded.
+\end{itemize}
+
+\section*{Materialization Strategy}
+\begin{enumerate}
+\item Seed fixture \texttt{events} and \texttt{markets} for two Phase 9 reference markets.
+\item Seed detector-input envelopes for:
+\begin{itemize}
+\item one custom trade source system: \texttt{phase9\_seed\_trades}
+\item one custom price source system: \texttt{phase9\_seed\_prices}
+\end{itemize}
+\item Run the native Phase 3 detector over the canonical hour with those two source systems.
+\item Run the native Phase 4 evidence worker and alert worker.
+\item Record one analyst action against the latest materialized alert.
+\item Save one review packet and one summary markdown file.
+\end{enumerate}
+
+\section*{Chosen Window}
+\textbf{Window:} \texttt{2026-04-20T05:00:00+00:00} to \texttt{2026-04-20T06:00:00+00:00}\\
+\textbf{Alignment note:} This is the same canonical Phase 9 reference hour selected in Task 1.
+
+\section*{Native Runtime Path Used}
+\begin{longtable}{p{0.24\linewidth}p{0.38\linewidth}p{0.26\linewidth}}
+\textbf{Layer} & \textbf{Implementation Used} & \textbf{Task 2 Role} \\
+Phase 3 input & \texttt{utils/event\_log.publish\_detector\_input()} & writes seeded detector-input envelopes into the canonical local partition layout \\
+Phase 3 detector & \texttt{phase3.detector.run\_phase3\_detector\_window()} & emits persisted candidates, episodes, and feature rows \\
+Phase 4 evidence & \texttt{phase4.Phase4EvidenceWorker} & writes evidence queries and evidence snapshots \\
+Phase 4 alerts & \texttt{phase4.Phase4AlertWorker} & writes alerts and delivery attempts \\
+Phase 4 analyst workflow & \texttt{phase4.Phase4AnalystWorkflow} & writes analyst feedback and updates alert status \\
+Review reporting & \texttt{validation.phase3\_candidate\_report} and \texttt{validation.phase4\_gate4\_report} & summarizes what triggered and what the alert loop produced \\
+\end{longtable}
+
+\section*{Generated Artifacts}
+\begin{itemize}
+\item \texttt{reports/phase9/candidate\_to\_alert\_materialization/phase9\_task2\_review\_packet.json}
+\item \texttt{reports/phase9/candidate\_to\_alert\_materialization/phase9\_task2\_review\_summary.md}
+\item \texttt{reports/phase9/reference\_window\_preparation/phase9\_task1\_gate4\_report.json}
+\end{itemize}
+
+\section*{Success Standard}
+Task 2 is achieved when the generated review packet shows non-zero persisted rows for:
+\begin{itemize}
+\item \texttt{signal\_candidates}
+\item \texttt{evidence\_queries}
+\item \texttt{evidence\_snapshots}
+\item \texttt{alerts}
+\item \texttt{alert\_delivery\_attempts}
+\item \texttt{analyst\_feedback}
+\end{itemize}
+
+\section*{Bottom-Line Assessment}
+Task 2 is the first point in Phase 9 where the repo stops being purely structural and starts carrying real later-phase runtime evidence. It does not yet solve the missing raw-archive problem from Task 1, but it does fulfill the candidate-to-alert materialization requirement from \texttt{phase9.tex} by producing a real native Phase 3 to Phase 4 artifact chain inside the canonical reference hour.
+
+\end{document}

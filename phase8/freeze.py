@@ -296,7 +296,7 @@ def build_reference_freeze_manifest(
             ],
             "runtime_artifacts": alert_runtime,
             "database_tables": alert_stage_tables,
-            "note": "The alert stage is frozen as persisted evidence and alert workflow outputs over the same historical slice, even though this workspace currently contains no materialized rows.",
+            "note": "The alert stage is now materially populated for the canonical reference window, but the current evidence path is still seeded local replay with noop providers rather than a real-provider-backed live evidence packet.",
         }
     )
 
@@ -325,7 +325,8 @@ def build_reference_freeze_manifest(
             "stage_window": {"start": start, "end": end},
             "committed_inputs": [
                 _file_artifact("Documentation/phases/phase5.tex", kind="phase_doc"),
-                _file_artifact("database/PHASE5_PERSON1_RUNBOOK.md", kind="runbook"),
+                _file_artifact("database/PHASE5_SINGLE_OWNER_RUNBOOK.md", kind="runbook"),
+                _file_artifact("Documentation/phases/phase9_task3_replay_validation.tex", kind="phase_doc"),
                 _file_artifact("phase5/replay.py", kind="runtime_module"),
                 _file_artifact("phase5/simulator.py", kind="runtime_module"),
                 _file_artifact("phase5/reporting.py", kind="runtime_module"),
@@ -334,11 +335,12 @@ def build_reference_freeze_manifest(
             ],
             "runtime_artifacts": validation_runtime,
             "database_tables": validation_stage_tables,
-            "note": "This stage ties the frozen window to replay validation and conservative paper-trading outputs.",
+            "note": "This stage now ties the frozen window to materialized replay validation and conservative paper-trading outputs under reports/phase5/, with honest caveats that the packet is still very small and descriptive.",
         }
     )
 
     ml_runtime = [
+        _file_artifact("reports/phase6", kind="report_root", note="Expected Phase 6 feature, model, calibration, and shadow-score artifact root."),
         _file_artifact("reports/phase7", kind="report_root", note="Expected advanced research package root."),
         _logical_artifact(
             "database/polymarket_state.db::model_evaluation_runs",
@@ -362,10 +364,10 @@ def build_reference_freeze_manifest(
             "status": _stage_status(runtime_artifacts=ml_runtime, table_counts=ml_stage_tables),
             "stage_window": {"start": start, "end": end},
             "committed_inputs": [
+                _file_artifact("Documentation/phases/phase9_task4_phase6_model_completion.tex", kind="phase_doc"),
                 _file_artifact("Documentation/person2Phases/phase7_graph_feature_contract.md", kind="supporting_doc"),
                 _file_artifact("Documentation/person2Phases/phase7_person2.tex", kind="supporting_doc"),
-                _file_artifact("database/PHASE6_PERSON1_RUNBOOK.md", kind="runbook"),
-                _file_artifact("database/PHASE6_PERSON2_RUNBOOK.md", kind="runbook"),
+                _file_artifact("database/PHASE6_SINGLE_OWNER_RUNBOOK.md", kind="runbook"),
                 _file_artifact("phase6/training.py", kind="runtime_module"),
                 _file_artifact("run_phase6_train_ranker.py", kind="runner"),
                 _file_artifact("phase7/graph_features.py", kind="runtime_module"),
@@ -375,11 +377,15 @@ def build_reference_freeze_manifest(
             ],
             "runtime_artifacts": ml_runtime,
             "database_tables": ml_stage_tables,
-            "note": "The terminal stage is frozen as either a Phase 6 ML artifact or a Phase 7 research package, with the research-package runner chosen as the preferred end-state for Phase 8 closeout.",
+            "note": "The terminal stage is now materially populated at the Phase 6 shadow-ML level with a LightGBM artifact, calibration rows, registry state, and shadow scores, while Phase 7 remains research-only for canonical v1.",
         }
     )
 
-    overall_status = "fully_materialized" if all(stage["status"] == "partially_materialized" for stage in stages) else "frozen_definition_with_missing_runtime_outputs"
+    overall_status = (
+        "materially_populated_seeded_reference_window"
+        if all(stage["status"] == "partially_materialized" for stage in stages)
+        else "frozen_definition_with_missing_runtime_outputs"
+    )
     return {
         "freeze_contract_version": FREEZE_CONTRACT_VERSION,
         "generated_at": _iso_now(),
@@ -398,7 +404,7 @@ def build_reference_freeze_manifest(
         },
         "stages": stages,
         "overall_status": overall_status,
-        "closeout_note": "This manifest freezes the exact committed code and document provenance for the end-to-end chain, and records which runtime outputs are currently missing in the local workspace.",
+        "closeout_note": "This manifest freezes the exact committed code and document provenance for the end-to-end chain, and now records a materially populated local reference packet with explicit truthfulness caveats about seeded evidence and limited sample size.",
     }
 
 

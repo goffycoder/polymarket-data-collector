@@ -8,6 +8,7 @@ from phase6.repository import (
     Phase6Repository,
 )
 from phase6.reporting import (
+    build_required_baseline_comparison,
     build_calibration_profiles,
     build_model_card_markdown,
     build_score_report,
@@ -21,7 +22,9 @@ from phase6.training import (
     Phase6DatasetBuildSummary,
     Phase6ModelFitSummary,
     build_training_frame,
+    fit_lightgbm_ranker,
     fit_linear_ranker,
+    prepare_model_input_frame,
     score_training_frame,
 )
 
@@ -36,12 +39,15 @@ __all__ = [
     "Phase6ShadowScoreSummary",
     "Phase6ShadowRunSummary",
     "Phase6Repository",
+    "build_required_baseline_comparison",
     "build_calibration_profiles",
     "build_model_card_markdown",
     "build_shadow_scores",
     "build_score_report",
     "build_training_frame",
+    "fit_lightgbm_ranker",
     "fit_linear_ranker",
     "load_model_spec",
+    "prepare_model_input_frame",
     "score_training_frame",
 ]

@@ -8,6 +8,10 @@ from hashlib import sha256
 from typing import Any
 
 import pandas as pd
+try:
+    import lightgbm as lgb
+except ImportError:  # pragma: no cover - optional dependency is validated at runtime.
+    lgb = None
 
 from config.settings import (
     PHASE6_FEATURE_SCHEMA_VERSION,
@@ -63,12 +67,70 @@ NUMERIC_MODEL_FEATURES = [
     "volume_acceleration",
 ]
 
+EVIDENCE_STATE_SCORES = {
+    "confirmed_public_reporting": 1.0,
+    "plausible_open_source_signal": 0.8,
+    "not_publicly_explained": 0.5,
+    "pending_evidence": 0.25,
+    "contradicted_or_explained": 0.05,
+}
+
 
 def _safe_float(value: Any, default: float = 0.0) -> float:
     try:
         return float(value)
     except (TypeError, ValueError):
         return default
+
+
+def prepare_model_input_frame(
+    frame: pd.DataFrame,
+    *,
+    feature_order: list[str] | None = None,
+) -> pd.DataFrame:
+    prepared = frame.copy()
+    if "probability_velocity_abs" not in prepared.columns and "probability_velocity" in prepared.columns:
+        prepared["probability_velocity_abs"] = prepared["probability_velocity"].fillna(0.0).astype(float).abs()
+    if "probability_acceleration_abs" not in prepared.columns and "probability_acceleration" in prepared.columns:
+        prepared["probability_acceleration_abs"] = (
+            prepared["probability_acceleration"].fillna(0.0).astype(float).abs()
+        )
+    if feature_order:
+        for column in feature_order:
+            if column not in prepared.columns:
+                prepared[column] = 0.0
+    return prepared
+
+
+def _append_required_baseline_scores(frame: pd.DataFrame) -> pd.DataFrame:
+    enriched = prepare_model_input_frame(frame)
+    enriched["baseline_severity_score"] = enriched["candidate_severity_score"].fillna(0.0).astype(float)
+    enriched["baseline_probability_momentum_score"] = (
+        enriched["probability_velocity_abs"].fillna(0.0).astype(float)
+    )
+    enriched["baseline_order_imbalance_score"] = (
+        enriched["directional_imbalance"].fillna(0.0).astype(float).abs()
+    )
+    enriched["baseline_microstructure_score"] = (
+        enriched["baseline_probability_momentum_score"] * 0.35
+        + enriched["baseline_order_imbalance_score"] * 0.25
+        + enriched["probability_acceleration_abs"].fillna(0.0).astype(float) * 0.20
+        + enriched["concentration_ratio"].fillna(0.0).astype(float) * 0.10
+        + enriched["volume_acceleration"].fillna(0.0).astype(float) * 0.10
+    )
+    enriched["baseline_external_evidence_score"] = (
+        enriched.get("evidence_state", pd.Series(["pending_evidence"] * len(enriched), index=enriched.index))
+        .astype(str)
+        .map(lambda value: EVIDENCE_STATE_SCORES.get(value, EVIDENCE_STATE_SCORES["pending_evidence"]))
+        .astype(float)
+    )
+    enriched["baseline_fresh_wallet_score"] = (
+        (enriched["fresh_wallet_count"].fillna(0.0).astype(float) >= 3.0).astype(float)
+        + (enriched["fresh_wallet_notional_share"].fillna(0.0).astype(float) >= 0.5).astype(float) * 0.5
+    )
+    enriched["baseline_wallet_score"] = enriched["baseline_fresh_wallet_score"]
+    enriched["baseline_velocity_score"] = enriched["baseline_probability_momentum_score"]
+    return enriched
 
 
 def _positive_label(row: EvaluationRow) -> int | None:
@@ -262,27 +324,107 @@ def fit_linear_ranker(
     return model_spec, summary
 
 
+def fit_lightgbm_ranker(
+    frame: pd.DataFrame,
+    *,
+    model_version: str,
+    dataset_hash: str,
+    feature_order: list[str] | None = None,
+) -> tuple[dict[str, Any], Phase6ModelFitSummary]:
+    if lgb is None:
+        raise ImportError("lightgbm is required for the boosted Phase 6 ranker.")
+
+    feature_order = list(feature_order or NUMERIC_MODEL_FEATURES)
+    prepared = prepare_model_input_frame(frame, feature_order=feature_order)
+    train = prepared[(prepared["dataset_partition"] == "train") & (prepared["label_available"])]
+    if train.empty:
+        train = prepared[prepared["label_available"]]
+    if train.empty:
+        raise ValueError("No labeled training rows available for Phase 6 boosted model fitting.")
+
+    labels = train["label_success"].astype(int)
+    positives = int((labels == 1).sum())
+    negatives = int((labels == 0).sum())
+    if positives == 0 or negatives == 0:
+        raise ValueError("Training rows must include both positive and negative labels.")
+
+    feature_matrix = train[feature_order].fillna(0.0).astype(float)
+    train_dataset = lgb.Dataset(feature_matrix, label=labels, feature_name=feature_order, free_raw_data=False)
+    booster = lgb.train(
+        params={
+            "objective": "binary",
+            "metric": ["binary_logloss"],
+            "learning_rate": 0.15,
+            "num_leaves": 4,
+            "min_data_in_leaf": 1,
+            "min_sum_hessian_in_leaf": 0.0,
+            "feature_pre_filter": False,
+            "verbosity": -1,
+            "seed": 42,
+            "deterministic": True,
+            "force_col_wise": True,
+        },
+        train_set=train_dataset,
+        num_boost_round=max(8, min(32, len(train.index) * 8)),
+    )
+
+    base_rate = float(labels.mean())
+    model_spec = {
+        "kind": "phase6_lightgbm_ranker_v1",
+        "model_version": model_version,
+        "dataset_hash": dataset_hash,
+        "feature_schema_version": str(prepared["feature_schema_version"].iloc[0]),
+        "feature_order": feature_order,
+        "library": "lightgbm",
+        "library_version": getattr(lgb, "__version__", "unknown"),
+        "booster_model_str": booster.model_to_string(num_iteration=booster.current_iteration()),
+        "feature_importance_gain": {
+            name: round(float(value), 8)
+            for name, value in zip(feature_order, booster.feature_importance(importance_type="gain"))
+        },
+        "training_summary": {
+            "positive_rows": positives,
+            "negative_rows": negatives,
+            "num_iterations": int(booster.current_iteration() or 0),
+        },
+    }
+    summary = Phase6ModelFitSummary(
+        model_version=model_version,
+        dataset_hash=dataset_hash,
+        labeled_row_count=int(prepared["label_available"].sum()),
+        train_row_count=int(len(train)),
+        feature_count=len(feature_order),
+        base_rate=round(base_rate, 6),
+    )
+    return model_spec, summary
+
+
 def score_training_frame(frame: pd.DataFrame, *, model_spec: dict[str, Any]) -> pd.DataFrame:
-    scored = frame.copy()
-    weights = model_spec.get("weights", {})
-    feature_stats = model_spec.get("feature_stats", {})
-    linear = pd.Series(float(model_spec.get("intercept", 0.0)), index=scored.index, dtype="float64")
+    feature_order = [str(item) for item in model_spec.get("feature_order", [])]
+    scored = prepare_model_input_frame(frame, feature_order=feature_order)
+    kind = str(model_spec.get("kind") or "phase6_linear_ranker_v1")
 
-    for column in model_spec.get("feature_order", []):
-        stats = feature_stats.get(column, {})
-        mean_value = _safe_float(stats.get("mean"), 0.0)
-        std_value = max(1e-9, _safe_float(stats.get("std"), 1.0))
-        normalized = (scored[column].fillna(0.0).astype(float) - mean_value) / std_value
-        linear = linear + (normalized * _safe_float(weights.get(column), 0.0))
+    if kind == "phase6_lightgbm_ranker_v1":
+        if lgb is None:
+            raise ImportError("lightgbm is required for scoring the boosted Phase 6 ranker.")
+        booster = lgb.Booster(model_str=str(model_spec.get("booster_model_str") or ""))
+        feature_matrix = scored[feature_order].fillna(0.0).astype(float)
+        scored["model_linear_score"] = pd.Series([None] * len(scored.index), index=scored.index, dtype="object")
+        scored["model_score"] = booster.predict(feature_matrix)
+    else:
+        weights = model_spec.get("weights", {})
+        feature_stats = model_spec.get("feature_stats", {})
+        linear = pd.Series(float(model_spec.get("intercept", 0.0)), index=scored.index, dtype="float64")
+        for column in feature_order:
+            stats = feature_stats.get(column, {})
+            mean_value = _safe_float(stats.get("mean"), 0.0)
+            std_value = max(1e-9, _safe_float(stats.get("std"), 1.0))
+            normalized = (scored[column].fillna(0.0).astype(float) - mean_value) / std_value
+            linear = linear + (normalized * _safe_float(weights.get(column), 0.0))
+        scored["model_linear_score"] = linear
+        scored["model_score"] = linear.map(
+            lambda value: 1.0 / (1.0 + math.exp(max(-50.0, min(50.0, -float(value)))))
+        )
 
-    scored["model_linear_score"] = linear
-    scored["model_score"] = linear.map(
-        lambda value: 1.0 / (1.0 + math.exp(max(-50.0, min(50.0, -float(value)))))
-    )
-    scored["baseline_severity_score"] = scored["candidate_severity_score"].fillna(0.0).astype(float)
-    scored["baseline_wallet_score"] = (
-        scored["fresh_wallet_count"].fillna(0.0).astype(float)
-        + scored["fresh_wallet_notional_share"].fillna(0.0).astype(float)
-    )
-    scored["baseline_velocity_score"] = scored["probability_velocity_abs"].fillna(0.0).astype(float)
-    return scored
+    scored["model_score"] = scored["model_score"].fillna(0.0).astype(float)
+    return _append_required_baseline_scores(scored)

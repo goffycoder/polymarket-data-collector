@@ -1,0 +1,49 @@
+{
+  "contract_version": "phase9_task4_phase6_model_completion_v1",
+  "profiles": [
+    {
+      "actionable_threshold": 0.5,
+      "critical_threshold": 0.5,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.5
+      },
+      "positive_rate": 0.5,
+      "profile_key": "global",
+      "profile_scope": "global",
+      "sample_count": 2,
+      "watch_threshold": 0.5
+    },
+    {
+      "actionable_threshold": 0.5,
+      "critical_threshold": 0.5,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.5
+      },
+      "positive_rate": 0.5,
+      "profile_key": "tight",
+      "profile_scope": "liquidity_bucket",
+      "sample_count": 2,
+      "watch_threshold": 0.5
+    },
+    {
+      "actionable_threshold": 0.5,
+      "critical_threshold": 0.5,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.5
+      },
+      "positive_rate": 0.5,
+      "profile_key": "phase9_fixture",
+      "profile_scope": "category",
+      "sample_count": 2,
+      "watch_threshold": 0.5
+    }
+  ],
+  "thresholds": {
+    "actionable": 0.5,
+    "critical": 0.5,
+    "watch": 0.5
+  }
+}

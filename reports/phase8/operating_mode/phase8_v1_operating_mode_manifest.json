@@ -27,12 +27,12 @@
       },
       {
         "mode": "ml_backed_ranking_with_rollback",
-        "reason": "The committed repo state does not justify promotion of ML to decision authority: Phase 6 is shadow-first by design, the current trainer is still a linear starter ranker, and no materialized local evidence packet proves safe promotion."
+        "reason": "The committed repo state still does not justify promotion of ML to decision authority: Phase 6 is shadow-first by design, the local LightGBM evidence packet is still descriptive rather than held-out-defensible, and the Phase 4 provider path is not yet real-provider-backed in this workspace."
       }
     ]
   },
-  "generated_at": "2026-04-22T15:20:23.502091+00:00",
-  "git_commit": "baf344b8e3bff24ffcc37040d6114d628a3f729d",
+  "generated_at": "2026-04-22T21:06:59.533909+00:00",
+  "git_commit": "96df0118cc4bf84262597dab67ee60d0c758d235",
   "phase7_classification": {
     "explicit_non_promotion_rule": "No Phase 7 scoring artifact changes canonical v1 alert generation unless it first clears a separate promotion decision beyond this Task 3 contract.",
     "may_influence_canonical_v1_story_but_not_decision_logic": [
@@ -55,16 +55,16 @@
     "phase7_model_promotion": "not_promoted_to_authoritative_v1",
     "promotion_preconditions_missing": [
       "materialized end-to-end runtime evidence packet in this workspace",
-      "stronger proof that ML gains survive operationally relevant replay windows",
-      "clear evidence that promotion improves outcomes without degrading explainability or rollback safety",
-      "delivery-ready implementation of the full boosted-tree ranker promised by the SRS instead of only the committed linear starter baseline"
+      "real-provider-backed Phase 4 evidence behavior on the canonical path rather than seeded noop evidence only",
+      "stronger proof that ML gains survive operationally relevant held-out replay windows",
+      "clear evidence that promotion improves outcomes without degrading explainability or rollback safety"
     ]
   },
   "rationale": [
     "The SRS definition of v1 complete requires one ranker to be evaluated against baselines; it does not require ML to become the authoritative alert path.",
     "The SRS and Phase 6 planning explicitly require shadow mode first.",
     "Phase 4's canonical single-owner plan keeps the alert loop rule-based and operator-facing before ML promotion.",
-    "The committed Phase 6 implementation is still a linear starter ranker, and its own reporting code labels thresholds as shadow-only recommendations.",
+    "The committed Phase 6 implementation now supports a LightGBM shadow ranker, but its own reporting path still keeps thresholds advisory and the refreshed evidence remains too small for authoritative promotion.",
     "Phase 7 is explicitly framed as advanced research after v1 stability, so it should not silently redefine the canonical v1 operating mode."
   ],
   "supporting_evidence": [
@@ -111,18 +111,34 @@
     {
       "exists": true,
       "kind": "runtime_module",
-      "note": "Committed Phase 6 trainer currently fits a linear starter ranker, not the final boosted-tree model described by the full Phase 6 scope.",
+      "note": "The committed Phase 6 trainer now supports a LightGBM shadow ranker, but the current local evidence packet is still too small to justify authoritative promotion.",
       "path": "phase6/training.py",
-      "sha256": "0594d59d3069c56b64d497f8bcc8da635e3141df312088bee50e58b2cd748741",
-      "size_bytes": 11331
+      "sha256": "f5a06507209d1986bf4110a07b0f8385c0160cf2c0aaea9f1b1b2f03d5c092c2",
+      "size_bytes": 17492
     },
     {
       "exists": true,
       "kind": "runtime_module",
-      "note": "Model card text says thresholds are shadow-only recommendations and identifies the starter ranker as a linear baseline foundation.",
+      "note": "Model card text keeps thresholds shadow-only and now writes required-baseline comparisons for the boosted-tree path.",
       "path": "phase6/reporting.py",
-      "sha256": "a0bd7158a3bbb5bdbb4bb41efcb99c7e849a87e1dbfce0dcee86c3505bb7c4fa",
-      "size_bytes": 9121
+      "sha256": "3d16df0d2874b501268103d8563757e0c755bc9415b4b2b199f44e860e4d5a6b",
+      "size_bytes": 13808
+    },
+    {
+      "exists": true,
+      "kind": "runbook",
+      "note": "Canonical single-owner operator path for Phase 6 feature, training, registry, and shadow scoring flows.",
+      "path": "database/PHASE6_SINGLE_OWNER_RUNBOOK.md",
+      "sha256": "54e3a64aa192f7663bdcae054e79308b131348ba5e7af8ccaebb54f4c0a0c3df",
+      "size_bytes": 3736
+    },
+    {
+      "exists": true,
+      "kind": "phase9_artifact",
+      "note": "Phase 9 Task 4 proof that a LightGBM shadow artifact, registry entry, calibration rows, and shadow scores now exist locally.",
+      "path": "reports/phase9/phase6_model_completion/phase9_task4_summary.json",
+      "sha256": "7f8e350f5a8166d7d5fdd96965a0e7a1e4a351858e1effdd600200470172d95f",
+      "size_bytes": 7969
     },
     {
       "exists": true,

@@ -7,6 +7,12 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
+try:
+    import lightgbm as lgb
+except ImportError:  # pragma: no cover - dependency is checked by callers.
+    lgb = None
+
+from phase6.training import prepare_model_input_frame
 
 
 DEFAULT_LINEAR_WEIGHTS = {
@@ -66,23 +72,35 @@ def build_shadow_scores(
     *,
     model_spec: dict[str, Any],
 ) -> list[dict[str, Any]]:
-    weights = model_spec.get("weights")
-    if not isinstance(weights, dict) or not weights:
-        weights = DEFAULT_LINEAR_WEIGHTS
+    kind = str(model_spec.get("kind") or "phase6_linear_ranker_v1")
+    feature_order = [str(item) for item in model_spec.get("feature_order", [])]
+    prepared = prepare_model_input_frame(frame, feature_order=feature_order)
     thresholds = model_spec.get("thresholds")
     if not isinstance(thresholds, dict):
         thresholds = {"watch": 0.5, "actionable": 0.75, "critical": 0.9}
 
+    score_values: list[float] = []
+    if kind == "phase6_lightgbm_ranker_v1":
+        if lgb is None:
+            raise ImportError("lightgbm is required for scoring the boosted Phase 6 model.")
+        booster = lgb.Booster(model_str=str(model_spec.get("booster_model_str") or ""))
+        feature_matrix = prepared[feature_order].fillna(0.0).astype(float)
+        score_values = [round(float(value), 6) for value in booster.predict(feature_matrix)]
+        records = prepared.to_dict(orient="records")
+    else:
+        weights = model_spec.get("weights")
+        if not isinstance(weights, dict) or not weights:
+            weights = DEFAULT_LINEAR_WEIGHTS
+        records = prepared.to_dict(orient="records")
+        for record in records:
+            linear_value = 0.0
+            for feature_name, weight in weights.items():
+                feature_value = float(record.get(feature_name) or 0.0)
+                linear_value += float(weight) * feature_value
+            score_values.append(round(_clamp(_sigmoid(linear_value)), 6))
+
     score_rows: list[dict[str, Any]] = []
-    for record in frame.to_dict(orient="records"):
-        linear_value = 0.0
-        contributions: dict[str, float] = {}
-        for feature_name, weight in weights.items():
-            feature_value = float(record.get(feature_name) or 0.0)
-            contrib = float(weight) * feature_value
-            linear_value += contrib
-            contributions[feature_name] = round(contrib, 8)
-        score_value = round(_clamp(_sigmoid(linear_value)), 6)
+    for record, score_value in zip(records, score_values):
         score_rows.append(
             {
                 "candidate_id": record["candidate_id"],
@@ -94,11 +112,9 @@ def build_shadow_scores(
                 "score_value": score_value,
                 "score_label": _score_label(score_value, thresholds),
                 "score_metadata": {
-                    "model_kind": str(model_spec.get("kind") or "linear_ranker"),
-                    "weights": weights,
+                    "model_kind": kind,
+                    "feature_order": feature_order,
                     "thresholds": thresholds,
-                    "linear_value": round(linear_value, 8),
-                    "contributions": contributions,
                 },
             }
         )

@@ -1,8 +1,8 @@
 # Phase 8 Canonical v1 Operating Mode
 
 - Contract version: `phase8_v1_operating_mode_v1`
-- Generated at: `2026-04-22T15:20:23.502091+00:00`
-- Git commit: `baf344b8e3bff24ffcc37040d6114d628a3f729d`
+- Generated at: `2026-04-22T21:06:59.533909+00:00`
+- Git commit: `96df0118cc4bf84262597dab67ee60d0c758d235`
 - Canonical mode: `rule_based_plus_shadow_ml`
 
 ## Authoritative v1 Rule
@@ -11,7 +11,7 @@
 
 ## Rejected Modes
 - `rule_based_only`: The repo already contains committed Phase 6 registry, shadow-scoring, and evaluation plumbing that should remain active for v1 learning and auditability.
-- `ml_backed_ranking_with_rollback`: The committed repo state does not justify promotion of ML to decision authority: Phase 6 is shadow-first by design, the current trainer is still a linear starter ranker, and no materialized local evidence packet proves safe promotion.
+- `ml_backed_ranking_with_rollback`: The committed repo state still does not justify promotion of ML to decision authority: Phase 6 is shadow-first by design, the local LightGBM evidence packet is still descriptive rather than held-out-defensible, and the Phase 4 provider path is not yet real-provider-backed in this workspace.
 
 ## Phase 7 Classification
 - Research-only: graph-derived feature families
@@ -28,5 +28,5 @@
 - The SRS definition of v1 complete requires one ranker to be evaluated against baselines; it does not require ML to become the authoritative alert path.
 - The SRS and Phase 6 planning explicitly require shadow mode first.
 - Phase 4's canonical single-owner plan keeps the alert loop rule-based and operator-facing before ML promotion.
-- The committed Phase 6 implementation is still a linear starter ranker, and its own reporting code labels thresholds as shadow-only recommendations.
+- The committed Phase 6 implementation now supports a LightGBM shadow ranker, but its own reporting path still keeps thresholds advisory and the refreshed evidence remains too small for authoritative promotion.
 - Phase 7 is explicitly framed as advanced research after v1 stability, so it should not silently redefine the canonical v1 operating mode.

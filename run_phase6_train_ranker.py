@@ -8,23 +8,31 @@ from config.settings import PHASE6_DEFAULT_MODEL_NAME
 from phase5.repository import Phase5Repository
 from phase6 import (
     Phase6Repository,
+    build_required_baseline_comparison,
     build_calibration_profiles,
     build_model_card_markdown,
     build_score_report,
     build_training_frame,
+    fit_lightgbm_ranker,
     fit_linear_ranker,
     score_training_frame,
 )
 
 
 def _build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Train and evaluate the Phase 6 Person 2 starter ranker.")
+    parser = argparse.ArgumentParser(description="Train and evaluate the Phase 6 boosted or linear ranker.")
     parser.add_argument("--start", required=True, help="UTC ISO8601 inclusive start timestamp.")
     parser.add_argument("--end", required=True, help="UTC ISO8601 exclusive end timestamp.")
     parser.add_argument(
         "--model-version",
         default=f"{PHASE6_DEFAULT_MODEL_NAME}_person2_v1",
         help="Model version label for the generated artifact.",
+    )
+    parser.add_argument(
+        "--model-family",
+        default="lightgbm",
+        choices=("lightgbm", "linear"),
+        help="Model family to train. The SRS-compliant default is LightGBM.",
     )
     parser.add_argument(
         "--output-dir",
@@ -40,21 +48,41 @@ def main() -> int:
     repository = Phase5Repository()
     rows = repository.load_evaluation_rows(start=args.start, end=args.end)
     frame, dataset_summary = build_training_frame(rows, repository=repository)
-    model_spec, fit_summary = fit_linear_ranker(
-        frame,
-        model_version=args.model_version,
-        dataset_hash=dataset_summary.dataset_hash,
-    )
+    if args.model_family == "linear":
+        model_spec, fit_summary = fit_linear_ranker(
+            frame,
+            model_version=args.model_version,
+            dataset_hash=dataset_summary.dataset_hash,
+        )
+    else:
+        model_spec, fit_summary = fit_lightgbm_ranker(
+            frame,
+            model_version=args.model_version,
+            dataset_hash=dataset_summary.dataset_hash,
+        )
     scored = score_training_frame(frame, model_spec=model_spec)
     score_report = build_score_report(scored)
+    required_baseline_report = build_required_baseline_comparison(score_report)
     calibration_profiles = build_calibration_profiles(scored)
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     model_path = output_dir / f"{args.model_version}.json"
     report_path = output_dir / f"{args.model_version}_report.json"
+    baseline_report_path = output_dir / f"{args.model_version}_required_baselines.json"
     model_card_path = output_dir / f"{args.model_version}_model_card.md"
     scored_csv_path = output_dir / f"{args.model_version}_scored.csv"
+
+    global_profile = next(
+        (profile for profile in calibration_profiles if profile.profile_scope == "global" and profile.profile_key == "global"),
+        None,
+    )
+    if global_profile is not None:
+        model_spec["thresholds"] = {
+            "watch": global_profile.watch_threshold,
+            "actionable": global_profile.actionable_threshold,
+            "critical": global_profile.critical_threshold,
+        }
 
     model_path.write_text(json.dumps(model_spec, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     scored.to_csv(scored_csv_path, index=False)
@@ -63,6 +91,7 @@ def main() -> int:
         "dataset_summary": dataset_summary.to_dict(),
         "fit_summary": fit_summary.to_dict(),
         "score_report": score_report,
+        "required_baseline_report": required_baseline_report,
         "calibration_profiles": [profile.to_dict() for profile in calibration_profiles],
         "artifacts": {
             "model_path": str(model_path),
@@ -70,12 +99,18 @@ def main() -> int:
         },
     }
     report_path.write_text(json.dumps(score_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    baseline_report_path.write_text(
+        json.dumps(required_baseline_report, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     model_card_path.write_text(
         build_model_card_markdown(
             model_version=args.model_version,
             dataset_hash=dataset_summary.dataset_hash,
             score_report=score_report,
             calibration_profiles=calibration_profiles,
+            model_kind=str(model_spec.get("kind")),
+            required_baseline_report=required_baseline_report,
         ),
         encoding="utf-8",
     )
@@ -117,6 +152,7 @@ def main() -> int:
         "artifacts": {
             "model_path": str(model_path),
             "report_path": str(report_path),
+            "baseline_report_path": str(baseline_report_path),
             "model_card_path": str(model_card_path),
             "scored_csv_path": str(scored_csv_path),
         },

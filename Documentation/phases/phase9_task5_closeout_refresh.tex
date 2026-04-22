@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 9 Task 5 - Single-Owner Closeout Refresh}
+
+\textbf{Phase 9 parent doc:} \texttt{Documentation/phases/phase9.tex}\\
+\textbf{Task goal:} Consolidate the active Phase 5 and Phase 6 operator path into single-owner runbooks, regenerate the Phase 8 reference-path, operating-mode, metrics, and closeout artifacts using the newly materialized evidence, and write the final memo stating whether the repo is now SRS-complete v1.
+
+\section*{Interpretation}
+Task 5 is the final honesty pass. It is not allowed to erase caveats that remain true after Task 2 through Task 4.
+\begin{itemize}
+\item The refreshed Phase 8 package must cite the new runtime evidence.
+\item The historical person-labeled Phase 5 and Phase 6 operator instructions should no longer be the primary handoff path.
+\item The final memo must answer the SRS-complete question directly.
+\item If the repo is still not SRS-complete, the memo must name the exact remaining blocker rather than using vague language.
+\end{itemize}
+
+\section*{Canonical Commands}
+\begin{verbatim}
+python run_phase8_freeze_reference_path.py
+python run_phase8_decide_operating_mode.py
+python run_phase8_metrics_review.py
+python run_phase8_build_closeout_package.py
+\end{verbatim}
+
+\section*{Done Condition}
+Task 5 is complete when:
+\begin{itemize}
+\item the canonical handoff path points at single-owner Phase 5 and Phase 6 runbooks,
+\item the refreshed Phase 8 manifests and markdown summaries reflect the new Task 2 through Task 4 evidence,
+\item the final closeout memo is regenerated from the refreshed manifests, and
+\item the repo can state honestly whether Phase 9 made the project SRS-complete v1 or which blocker still remains.
+\end{itemize}
+
+\end{document}

@@ -37,12 +37,21 @@ def _parse_json(value: str | None, default: Any) -> Any:
         return default
 
 
+def _row_value(row: Any, key: str) -> Any:
+    if isinstance(row, dict):
+        return row.get(key)
+    try:
+        return row[key]
+    except (KeyError, IndexError, TypeError):
+        return None
+
+
 def _normalize_category(row: Any) -> str:
-    raw_category = str(row.get("category") or "").strip().lower()
+    raw_category = str(_row_value(row, "category") or "").strip().lower()
     if raw_category:
         return raw_category
 
-    tags = _parse_json(row.get("tags"), [])
+    tags = _parse_json(_row_value(row, "tags"), [])
     if isinstance(tags, list):
         for tag in tags:
             text = str(tag).strip().lower()

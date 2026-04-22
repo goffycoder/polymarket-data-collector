@@ -1,0 +1,147 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 9 Plan - Single Owner}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, especially Section 2.5 ``Implementation Readiness Checklist'', Section 2.6 ``Definition of v1 Complete'', Section 8 ``Replay, Backtesting, and Validation'', Section 9 ``Operations, Security, and Governance'', and Section 11 ``Roadmap and Stage Gates'', plus the Phase 8 closeout set in \texttt{Documentation/phases/phase8\_reference\_path.tex}, \texttt{Documentation/phases/phase8\_v1\_operating\_mode.tex}, \texttt{Documentation/phases/phase8\_metrics\_review.tex}, and \texttt{Documentation/phases/phase8\_final\_closeout.tex}.\\
+\textbf{Execution status:} Planned single-owner follow-on after Phase 8 closeout.\\
+\textbf{Entry assumption:} Phase 1 through Phase 8 already established the canonical repo structure, the local-first operating mode, and the exact reasons the project is still not defensible as fully SRS-complete v1 in the current workspace snapshot.
+
+\textbf{Phase goal:} Convert the repo from \textbf{provenance-complete but evidence-incomplete} into a materially populated, replay-defensible, single-owner v1 package that satisfies the remaining SRS completion requirements.\\
+\textbf{Interpretation note:} The original SRS roadmap ends at Phase 7, and Phase 8 already handled single-owner consolidation and truthfulness. Phase 9 is therefore not a new aspirational research phase. It is a \textbf{single-owner remediation and evidence-materialization phase} derived from the SRS completion contract and from the explicit ``not yet'' result recorded in Phase 8.\\
+\textbf{Implementation note:} There is no Person 1 / Person 2 split for Phase 9. Historical split runbooks and notes remain useful inputs, but Phase 9 ownership is intentionally unified into one end-to-end workflow.
+
+\section*{Why Phase 9 Exists}
+Phase 8 clarified that the main blocker is no longer documentation ambiguity. The remaining blocker is missing runtime evidence.
+\begin{itemize}
+\item The canonical repo path is now clear.
+\item The frozen reference window and operating mode are already documented.
+\item The current workspace still lacks materialized later-phase outputs for alerts, analyst feedback, validation, backtesting, and modern ML evaluation.
+\item The current committed Phase 6 trainer is still a linear starter ranker, while the SRS requires one LightGBM or CatBoost ranker evaluated against wallet-unaware baselines.
+\item The current workspace still cannot defend one fully populated replay-to-alert-to-evaluation evidence packet end to end.
+\end{itemize}
+
+Phase 9 therefore exists to close the exact gap between:
+\begin{itemize}
+\item a repo that is architecturally coherent and honestly documented, and
+\item a repo that is materially strong enough to claim SRS-complete v1 status.
+\end{itemize}
+
+\section*{Owned Deliverables (Synthesized From SRS + Phase 8 Findings)}
+\begin{enumerate}
+\item Materialize one canonical reference window from raw archive through Phase 3 candidate generation, Phase 4 evidence and alerting, Phase 5 validation/backtesting, and Phase 6 shadow ML evaluation.
+\item Produce persisted Phase 4 evidence-query, evidence-snapshot, alert, delivery-attempt, and analyst-feedback rows tied to the chosen reference window.
+\item Produce Phase 5 replay, holdout-validation, and conservative paper-trading artifacts under \texttt{reports/phase5/} and the corresponding database summary rows.
+\item Upgrade Phase 6 from the current linear starter ranker to at least one SRS-compliant LightGBM or CatBoost ranker evaluated against the required wallet-unaware baselines.
+\item Produce calibration outputs, severity-threshold recommendations, and model-card evidence for the promoted Phase 6 shadow model candidate.
+\item Consolidate the still-active historical runbook path for Phase 5 and Phase 6 into clear single-owner operator guidance where needed.
+\item Regenerate the Phase 8 Task 2 through Task 5 closeout artifacts after runtime evidence is materialized, so the final SRS-completion answer reflects actual populated evidence rather than only frozen provenance.
+\item Write one final single-owner memo stating whether the project is now SRS-complete v1 or which exact blocker still remains active.
+\end{enumerate}
+
+\section*{Phase 9 Exit Criteria}
+\begin{itemize}
+\item One exact historical window can be defended from raw input through alert, validation, and ML-shadow evidence with saved artifacts and non-zero persisted later-phase rows.
+\item Phase 4 has real evidence and alert artifacts that are replay-linked and reviewable.
+\item Phase 5 has at least one conservative backtest and one paper-trading evaluation that can be cited honestly.
+\item Phase 6 has at least one LightGBM or CatBoost ranker evaluated against wallet-unaware baselines with saved calibration outputs.
+\item The canonical v1 operating mode remains traceable as \texttt{rule\_based\_plus\_shadow\_ml} unless a separate later promotion memo says otherwise.
+\item The final Phase 8 closeout answer can be refreshed using materialized evidence rather than only structure and policy.
+\end{itemize}
+
+\section*{Locked Scope Decisions}
+\begin{itemize}
+\item Phase 9 is an evidence-completion phase, not a new architecture rewrite.
+\item Canonical v1 remains local-first and \texttt{rule\_based\_plus\_shadow\_ml} during this phase.
+\item Phase 9 must prioritize one or a small number of exact reference windows with saved hashes and rerunnable commands over broad but weak anecdotal coverage.
+\item Phase 7 research artifacts remain research-only unless a separate explicit promotion decision is written after stronger Phase 6 evidence exists.
+\item If later-phase tables remain empty, Phase 9 must say so plainly; documentation-only claims do not count as completion.
+\item Placeholder or disabled evidence-provider paths do not count as strong final Phase 4 validation. Phase 9 must either materialize real provider-backed evidence behavior or record that the SRS evidence requirement remains partially unmet.
+\item Live capital deployment, autonomous execution, cloud migration, and HA redesign remain out of scope.
+\end{itemize}
+
+\section*{Concrete Artifacts Required}
+\begin{longtable}{p{0.24\linewidth}p{0.36\linewidth}p{0.26\linewidth}}
+\textbf{Workstream} & \textbf{Artifact} & \textbf{Done Condition} \\
+Reference window materialization & One replay-linked end-to-end evidence packet & Raw archive, detector-input, candidate, alert, validation, and ML-shadow outputs all exist for the same exact window \\
+Phase 4 runtime evidence & Persisted alert/evidence/analyst artifacts plus a compact review memo & The repo can show real later-phase rows rather than empty tables and planning-only docs \\
+Phase 5 validation & Replay report, holdout report, backtest report, and summary tables & Historical evaluation is point-in-time honest and materially populated \\
+Phase 6 completion & LightGBM or CatBoost model artifact, baseline comparison, calibration outputs, and model card & The SRS Phase 6 model requirement is met at shadow-evaluation level \\
+Runbook consolidation & Single-owner operator path for replay, validation, training, and rollback & A reviewer no longer has to infer ownership from historical person-labeled runbooks \\
+Closeout refresh & Updated Phase 8 generated manifests and final completion memo & The v1-complete answer is based on refreshed evidence, not stale empty-state review \\
+\end{longtable}
+
+\section*{Canonical Phase 9 Workflow}
+\begin{enumerate}
+\item Choose the exact reference window or windows that will anchor the final SRS completion claim.
+\item Rebuild or republish the relevant replay inputs and verify that Phase 3 emits reproducible candidates for the same window.
+\item Run Phase 4 evidence, alerting, delivery, and analyst workflow so the chosen window has materialized later-phase runtime evidence.
+\item Run Phase 5 replay validation, holdouts, and conservative paper-trading on the same reference path.
+\item Train and evaluate one SRS-compliant boosted-tree ranker in Phase 6 shadow mode and persist the evaluation artifacts.
+\item Refresh the Phase 8 reference-path, metrics, operating-mode, and final-closeout outputs against the newly materialized evidence.
+\item Write the final single-owner completion memo.
+\end{enumerate}
+
+\section*{Concrete Execution Sequence}
+\textbf{Block 1: Reference-window preparation}
+\begin{itemize}
+\item Reuse the strongest exact window already frozen by Phase 8 unless a stronger fully populated window is now available.
+\item Verify raw archive partitions, detector-input manifests, and replay prerequisites before later-phase runs begin.
+\item Freeze the exact command path and output directories that Phase 9 will treat as canonical.
+\end{itemize}
+
+\textbf{Block 2: Candidate-to-alert materialization}
+\begin{itemize}
+\item Ensure Phase 3 candidate outputs are present and linked to the chosen window.
+\item Run the Phase 4 pipeline so evidence queries, evidence snapshots, alerts, delivery attempts, and analyst actions are all persisted.
+\item Archive one concise review packet showing what triggered, what evidence existed, what was delivered, and how an analyst responded.
+\end{itemize}
+
+\textbf{Block 3: Historical validation and conservative evaluation}
+\begin{itemize}
+\item Run the Phase 5 replay bundle, holdout evaluation, and conservative paper-trading workflow on the same reference path.
+\item Save the resulting reports under \texttt{reports/phase5/} and confirm their matching summary rows exist in durable tables.
+\item Reject any result that depends on future leakage, optimistic fills, or undocumented manual cleanup.
+\end{itemize}
+
+\textbf{Block 4: SRS-compliant Phase 6 model evidence}
+\begin{itemize}
+\item Build or extend the training dataset from replay-derived Phase 5 outputs.
+\item Train at least one LightGBM or CatBoost ranker and compare it against the required wallet-unaware baselines.
+\item Persist calibration profiles, threshold recommendations, model-card outputs, registry metadata, and shadow-score evidence.
+\item Keep the canonical operating mode rule-based plus shadow ML unless a separate later memo justifies promotion.
+\end{itemize}
+
+\textbf{Block 5: Single-owner runbook and closeout refresh}
+\begin{itemize}
+\item Replace the most important historical person-labeled operator instructions with clear single-owner guidance.
+\item Regenerate the Phase 8 Task 2 through Task 5 outputs after evidence is materialized.
+\item Write one final memo saying either ``SRS-complete v1'' or naming the exact unresolved blocker still preventing that claim.
+\end{itemize}
+
+\section*{Expected Areas To Touch}
+\begin{itemize}
+\item \texttt{Documentation/phases/phase9.tex}
+\item \texttt{Documentation/phases/phase8\_reference\_path.tex}
+\item \texttt{Documentation/phases/phase8\_metrics\_review.tex}
+\item \texttt{Documentation/phases/phase8\_final\_closeout.tex}
+\item \texttt{database/PHASE4\_LOCAL\_RUNBOOK.md}
+\item \texttt{database/PHASE5\_PERSON1\_RUNBOOK.md} and \texttt{database/PHASE6\_PERSON1\_RUNBOOK.md} / \texttt{database/PHASE6\_PERSON2\_RUNBOOK.md} until single-owner replacements exist
+\item \texttt{phase5/}, \texttt{phase6/}, and their runner entrypoints
+\item generated outputs under \texttt{reports/phase5/}, \texttt{reports/phase6/}, and \texttt{reports/phase8/}
+\end{itemize}
+
+\section*{Non-Goals}
+\begin{itemize}
+\item No new Phase 7 research branch as part of Phase 9 completion work.
+\item No automatic promotion of ML into authoritative alert gating.
+\item No attempt to hide empty or weak runtime evidence behind stronger wording.
+\item No return to split-by-person planning for this phase.
+\end{itemize}
+
+\section*{Phase 9 Readiness Standard}
+Phase 9 is complete when a single owner can point to one exact replay-linked window and defend the entire later-phase story with materially populated evidence: candidate generation, alerting, analyst workflow, replay validation, conservative backtesting, and SRS-compliant shadow ML evaluation. At that point the project is no longer merely well-structured and honestly documented. It becomes materially strong enough to answer the SRS v1-complete question with evidence rather than with caveats.
+
+\end{document}

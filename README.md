@@ -15,6 +15,12 @@ The canonical roadmap lives in [Documentation/SRS.tex](Documentation/SRS.tex), a
 - The formal v1 operating-mode decision for Phase 8 Task 3 now lives in [Documentation/phases/phase8_v1_operating_mode.tex](Documentation/phases/phase8_v1_operating_mode.tex), with its generated policy manifest under `reports/phase8/operating_mode/`.
 - The final metrics bundle and stop-condition review for Phase 8 Task 4 now lives in [Documentation/phases/phase8_metrics_review.tex](Documentation/phases/phase8_metrics_review.tex), with its generated review manifest under `reports/phase8/metrics_review/`.
 - The final handoff and closeout package for Phase 8 Task 5 now lives in [Documentation/phases/phase8_final_closeout.tex](Documentation/phases/phase8_final_closeout.tex), with its generated handoff manifest under `reports/phase8/final_closeout/`.
+- The next single-owner remediation plan now lives in [Documentation/phases/phase9.tex](Documentation/phases/phase9.tex). It translates the Phase 8 closeout gaps into one explicit evidence-materialization path for reaching SRS-complete v1.
+- The first concrete Phase 9 execution artifact now lives in [Documentation/phases/phase9_task1_reference_window.tex](Documentation/phases/phase9_task1_reference_window.tex), with generated Task 1 outputs under `reports/phase9/reference_window_preparation/`.
+- The next concrete Phase 9 execution artifact now lives in [Documentation/phases/phase9_task2_candidate_to_alert.tex](Documentation/phases/phase9_task2_candidate_to_alert.tex), with generated Task 2 outputs under `reports/phase9/candidate_to_alert_materialization/`.
+- The next concrete Phase 9 execution artifact now lives in [Documentation/phases/phase9_task3_replay_validation.tex](Documentation/phases/phase9_task3_replay_validation.tex), with generated Task 3 outputs under `reports/phase5/`.
+- The next concrete Phase 9 execution artifact now lives in [Documentation/phases/phase9_task4_phase6_model_completion.tex](Documentation/phases/phase9_task4_phase6_model_completion.tex), with generated Task 4 outputs under `reports/phase6/`.
+- The final concrete Phase 9 execution artifact now lives in [Documentation/phases/phase9_task5_closeout_refresh.tex](Documentation/phases/phase9_task5_closeout_refresh.tex), with refreshed closeout outputs under `reports/phase9/closeout_refresh/` and regenerated Phase 8 artifacts under `reports/phase8/`.
 - Runtime outputs under `data/` and `reports/` are generated locally and are not the source of truth in git by themselves.
 
 If you are orienting yourself quickly, read these in order:
@@ -27,9 +33,15 @@ If you are orienting yourself quickly, read these in order:
 6. [Documentation/phases/phase8_v1_operating_mode.tex](Documentation/phases/phase8_v1_operating_mode.tex)
 7. [Documentation/phases/phase8_metrics_review.tex](Documentation/phases/phase8_metrics_review.tex)
 8. [Documentation/phases/phase8_final_closeout.tex](Documentation/phases/phase8_final_closeout.tex)
-9. [Documentation/phases/phase8.tex](Documentation/phases/phase8.tex)
-10. [Documentation/phases/phase2.tex](Documentation/phases/phase2.tex)
-11. [Documentation/phases/phase4_gate4_signoff.tex](Documentation/phases/phase4_gate4_signoff.tex)
+9. [Documentation/phases/phase9.tex](Documentation/phases/phase9.tex)
+10. [Documentation/phases/phase9_task1_reference_window.tex](Documentation/phases/phase9_task1_reference_window.tex)
+11. [Documentation/phases/phase9_task2_candidate_to_alert.tex](Documentation/phases/phase9_task2_candidate_to_alert.tex)
+12. [Documentation/phases/phase9_task3_replay_validation.tex](Documentation/phases/phase9_task3_replay_validation.tex)
+13. [Documentation/phases/phase9_task4_phase6_model_completion.tex](Documentation/phases/phase9_task4_phase6_model_completion.tex)
+14. [Documentation/phases/phase9_task5_closeout_refresh.tex](Documentation/phases/phase9_task5_closeout_refresh.tex)
+15. [Documentation/phases/phase8.tex](Documentation/phases/phase8.tex)
+16. [Documentation/phases/phase2.tex](Documentation/phases/phase2.tex)
+17. [Documentation/phases/phase4_gate4_signoff.tex](Documentation/phases/phase4_gate4_signoff.tex)
 
 ## What This Is
 

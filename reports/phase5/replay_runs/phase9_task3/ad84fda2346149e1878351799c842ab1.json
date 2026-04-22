@@ -1,0 +1,48 @@
+{
+  "artifact_version": "phase5_replay_v1",
+  "config": {
+    "end": "2026-04-20T06:00:00+00:00",
+    "source_system": "phase9_seed_prices",
+    "start": "2026-04-20T05:00:00+00:00"
+  },
+  "git_commit": "96df011",
+  "integrity": {
+    "detector_manifest_mismatches": 0,
+    "detector_missing_partitions": 0,
+    "integrity_status": "ready",
+    "raw_manifest_mismatches": 0,
+    "raw_missing_partitions": 0
+  },
+  "replay_run_id": "ad84fda2346149e1878351799c842ab1",
+  "report": {
+    "detector_partitions": [
+      {
+        "exists": true,
+        "manifest_byte_count": 3494,
+        "manifest_row_count": 8,
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson",
+        "rows_in_window": 8,
+        "total_rows": 8
+      }
+    ],
+    "end": "2026-04-20T06:00:00+00:00",
+    "raw_partitions": [
+      {
+        "exists": true,
+        "manifest_byte_count": 3358,
+        "manifest_row_count": 8,
+        "partition_path": "data/raw/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson",
+        "rows_in_window": 8,
+        "total_rows": 8
+      }
+    ],
+    "source_system": "phase9_seed_prices",
+    "start": "2026-04-20T05:00:00+00:00",
+    "summary": {
+      "detector_partitions_found": 1,
+      "detector_rows_in_window": 8,
+      "raw_partitions_found": 1,
+      "raw_rows_in_window": 8
+    }
+  }
+}
