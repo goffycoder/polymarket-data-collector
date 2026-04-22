@@ -418,6 +418,107 @@ CREATE INDEX IF NOT EXISTS idx_calibration_profiles_scope_key
     ON calibration_profiles(profile_scope, profile_key, created_at DESC);
 
 -- -----------------------------------------------------------------
+-- 7b. PHASE 7 ADVANCED RESEARCH REPRODUCIBILITY
+-- -----------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS phase7_research_datasets (
+    dataset_key               TEXT PRIMARY KEY,
+    dataset_role              TEXT NOT NULL,
+    dataset_hash              TEXT NOT NULL,
+    manifest_hash             TEXT NOT NULL,
+    dataset_index_version     TEXT NOT NULL,
+    feature_schema_version    TEXT NOT NULL,
+    label_schema_version      TEXT NOT NULL,
+    dataset_path              TEXT,
+    dataset_created_at        DATETIME,
+    handoff_source            TEXT,
+    handoff_artifact_path     TEXT,
+    restore_guarantee_status  TEXT NOT NULL,
+    restore_guarantee_json    TEXT NOT NULL,
+    baseline_model_versions   TEXT NOT NULL,
+    notes                     TEXT,
+    created_at                DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at                DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_phase7_research_datasets_created
+    ON phase7_research_datasets(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_phase7_research_datasets_hash
+    ON phase7_research_datasets(dataset_hash, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS phase7_research_windows (
+    window_key                TEXT PRIMARY KEY,
+    dataset_key               TEXT NOT NULL,
+    window_label              TEXT,
+    start_time                DATETIME NOT NULL,
+    end_time                  DATETIME NOT NULL,
+    category                  TEXT,
+    evaluation_scope          TEXT NOT NULL,
+    split_key                 TEXT,
+    window_metadata_json      TEXT NOT NULL,
+    notes                     TEXT,
+    created_at                DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(dataset_key) REFERENCES phase7_research_datasets(dataset_key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_phase7_research_windows_dataset_time
+    ON phase7_research_windows(dataset_key, start_time DESC);
+CREATE INDEX IF NOT EXISTS idx_phase7_research_windows_scope
+    ON phase7_research_windows(evaluation_scope, start_time DESC);
+
+CREATE TABLE IF NOT EXISTS phase7_research_scopes (
+    scope_id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    dataset_key               TEXT NOT NULL,
+    scope_type                TEXT NOT NULL,
+    scope_key                 TEXT NOT NULL,
+    scope_label               TEXT,
+    scope_definition_json     TEXT NOT NULL,
+    scope_index_version       TEXT NOT NULL,
+    created_at                DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(dataset_key, scope_type, scope_key),
+    FOREIGN KEY(dataset_key) REFERENCES phase7_research_datasets(dataset_key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_phase7_research_scopes_dataset_type
+    ON phase7_research_scopes(dataset_key, scope_type, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS phase7_experiment_ledger (
+    experiment_run_id         TEXT PRIMARY KEY,
+    experiment_name           TEXT NOT NULL,
+    experiment_family         TEXT NOT NULL,
+    experiment_version        TEXT NOT NULL,
+    ledger_version            TEXT NOT NULL,
+    dataset_key               TEXT NOT NULL,
+    dataset_hash              TEXT NOT NULL,
+    manifest_hash             TEXT NOT NULL,
+    model_version             TEXT NOT NULL,
+    baseline_model_versions   TEXT NOT NULL,
+    baseline_registry_json    TEXT NOT NULL,
+    feature_schema_version    TEXT NOT NULL,
+    label_schema_version      TEXT NOT NULL,
+    config_version            TEXT NOT NULL,
+    config_hash               TEXT NOT NULL,
+    config_json               TEXT NOT NULL,
+    code_version              TEXT NOT NULL,
+    random_seed               INTEGER,
+    restore_guarantee_status  TEXT NOT NULL,
+    input_fingerprint         TEXT NOT NULL,
+    output_path               TEXT,
+    status                    TEXT NOT NULL,
+    notes                     TEXT,
+    started_at                DATETIME,
+    completed_at              DATETIME,
+    created_at                DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(dataset_key) REFERENCES phase7_research_datasets(dataset_key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_phase7_experiment_ledger_dataset_time
+    ON phase7_experiment_ledger(dataset_key, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_phase7_experiment_ledger_model_time
+    ON phase7_experiment_ledger(model_version, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_phase7_experiment_ledger_status
+    ON phase7_experiment_ledger(status, created_at DESC);
+
+-- -----------------------------------------------------------------
 -- 8. PHASE 3 ONLINE STATE / CANDIDATE DETECTION
 -- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS detector_versions (

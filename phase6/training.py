@@ -122,6 +122,8 @@ def _dataset_partition(frame: pd.DataFrame) -> pd.Series:
 
 
 def _dataset_hash(frame: pd.DataFrame) -> str:
+    if frame.empty or "decision_timestamp" not in frame.columns or "candidate_id" not in frame.columns:
+        return sha256(b"[]").hexdigest()
     records = frame.sort_values(["decision_timestamp", "candidate_id"]).to_dict(orient="records")
     payload = json.dumps(records, sort_keys=True, default=str)
     return sha256(payload.encode("utf-8")).hexdigest()
