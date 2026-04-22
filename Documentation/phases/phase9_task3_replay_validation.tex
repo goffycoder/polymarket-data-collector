@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 9 Task 3 - Replay, Validation, and Conservative Evaluation}
+
+\textbf{Phase 9 parent doc:} \texttt{Documentation/phases/phase9.tex}\\
+\textbf{Task goal:} Run the Phase 5 workflow on the canonical Phase 9 reference hour and produce replay artifacts, holdout validation outputs, conservative paper-trading outputs, and durable summary rows under the canonical \texttt{reports/phase5/} path.
+
+\section*{Why This Task Exists}
+Task 2 proved that the chosen reference hour can produce real candidates, evidence, alerts, delivery attempts, and analyst feedback. Task 3 extends that same story into the historical validation layer required by the SRS.
+\begin{itemize}
+\item The replay bundle must exist for the same exact hour.
+\item The validation report must be generated from replay-safe historical timestamps rather than from ``created today'' wall-clock timestamps.
+\item Conservative paper-trading outputs must be materialized under \texttt{reports/phase5/}.
+\item Matching summary rows must exist in \texttt{replay\_runs}, \texttt{validation\_runs}, and \texttt{backtest\_artifacts}.
+\end{itemize}
+
+\section*{Implementation Notes}
+\begin{itemize}
+\item This task reuses the exact Phase 9 Task 1 window: \texttt{2026-04-20T05:00:00+00:00} to \texttt{2026-04-20T06:00:00+00:00}.
+\item It reuses the exact Phase 9 Task 2 fixture candidate chain rather than inventing a second story.
+\item Because the native Phase 4 workflow stamps alerts and evidence with the current runtime clock, this task backdates the fixture evidence and alert timeline into the historical hour so Phase 5 can evaluate the window honestly.
+\item It also materializes raw-archive coverage, market resolutions, market end dates, and post-alert snapshots for the same fixture markets so the replay and simulator path is non-empty and reviewable.
+\end{itemize}
+
+\section*{Canonical Command}
+\begin{verbatim}
+python run_phase9_phase5_evaluation.py --json
+\end{verbatim}
+
+\section*{Outputs}
+\begin{itemize}
+\item \texttt{reports/phase5/replay\_runs/phase9\_task3/}
+\item \texttt{reports/phase5/validation/phase9\_task3\_holdout\_validation.json}
+\item \texttt{reports/phase5/validation/phase9\_task3\_holdout\_validation.md}
+\item \texttt{reports/phase5/backtests/phase9\_task3\_conservative\_backtest.json}
+\item \texttt{reports/phase5/backtests/phase9\_task3\_conservative\_backtest.md}
+\item \texttt{reports/phase5/backtests/phase9\_task3\_paper\_trades.json}
+\end{itemize}
+
+\section*{Done Condition}
+Task 3 is complete when:
+\begin{itemize}
+\item replay artifacts exist under \texttt{reports/phase5/replay\_runs/},
+\item the validation report and conservative backtest outputs exist under \texttt{reports/phase5/},
+\item the validation rows for the canonical hour have non-zero coverage and do not depend on future leakage,
+\item one new durable row exists in \texttt{validation\_runs},
+\item one new durable row exists in \texttt{backtest\_artifacts}, and
+\item the resulting report can be cited honestly as a conservative historical evaluation rather than as a planning-only placeholder.
+\end{itemize}
+
+\end{document}

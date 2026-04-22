@@ -150,6 +150,18 @@ def build_phase8_final_closeout_manifest() -> dict[str, Any]:
             path_value="Documentation/phases/phase8_final_closeout.tex",
             role="single-owner final answer for demo, thesis, and defense handoff",
         ),
+        _doc_step(
+            order=9,
+            label="Phase 9 remediation plan",
+            path_value="Documentation/phases/phase9.tex",
+            role="single-owner remediation plan that closes the exact Phase 8 evidence gaps.",
+        ),
+        _doc_step(
+            order=10,
+            label="Phase 9 final refresh task",
+            path_value="Documentation/phases/phase9_task5_closeout_refresh.tex",
+            role="documents the canonical closeout-refresh contract and regeneration commands.",
+        ),
     ]
 
     operator_runbooks = [
@@ -178,26 +190,39 @@ def build_phase8_final_closeout_manifest() -> dict[str, Any]:
         _runbook_step(
             order=4,
             label="Phase 5 replay and validation",
-            path_value="database/PHASE5_PERSON1_RUNBOOK.md",
-            classification="supporting_active",
+            path_value="database/PHASE5_SINGLE_OWNER_RUNBOOK.md",
+            classification="canonical",
             purpose="Replay historical windows, inspect health, and generate validation or backfill artifacts.",
-            note="The historical Person 1 filename remains supporting-active because no single-owner replacement exists yet.",
+            note="Single-owner Phase 5 runbook created in Phase 9 Task 5 and now replaces the historical person-labeled primary path.",
         ),
         _runbook_step(
             order=5,
             label="Phase 6 shadow-model operations",
-            path_value="database/PHASE6_PERSON1_RUNBOOK.md",
-            classification="supporting_active",
-            purpose="Materialize features, register or activate shadow models, and run shadow scoring.",
-            note="This remains an active runtime path, but the filename is historical.",
+            path_value="database/PHASE6_SINGLE_OWNER_RUNBOOK.md",
+            classification="canonical",
+            purpose="Materialize features, train and evaluate the LightGBM shadow model, register or activate models, and run shadow scoring.",
+            note="Single-owner Phase 6 runbook created in Phase 9 Task 5 and now replaces the historical person-labeled primary path.",
         ),
         _runbook_step(
             order=6,
-            label="Phase 6 model evaluation",
+            label="Historical Phase 5 support path",
+            path_value="database/PHASE5_PERSON1_RUNBOOK.md",
+            classification="supporting_historical",
+            purpose="Retained for historical traceability only; no longer the primary single-owner handoff path.",
+        ),
+        _runbook_step(
+            order=7,
+            label="Historical Phase 6 support path",
+            path_value="database/PHASE6_PERSON1_RUNBOOK.md",
+            classification="supporting_historical",
+            purpose="Retained for historical traceability only; no longer the primary single-owner handoff path.",
+        ),
+        _runbook_step(
+            order=8,
+            label="Historical Phase 6 evaluation support path",
             path_value="database/PHASE6_PERSON2_RUNBOOK.md",
-            classification="supporting_active",
-            purpose="Build replay-derived datasets, train the starter ranker, and generate evaluation artifacts.",
-            note="This remains an active runtime path, but the filename is historical.",
+            classification="supporting_historical",
+            purpose="Retained for historical traceability only; no longer the primary single-owner handoff path.",
         ),
     ]
 
@@ -247,7 +272,7 @@ def build_phase8_final_closeout_manifest() -> dict[str, Any]:
                 _path_artifact("phase5/replay.py", kind="runtime_module"),
                 _path_artifact("phase5/simulator.py", kind="runtime_module"),
                 _path_artifact("phase5/reporting.py", kind="runtime_module"),
-                _path_artifact("database/PHASE5_PERSON1_RUNBOOK.md", kind="runbook"),
+                _path_artifact("database/PHASE5_SINGLE_OWNER_RUNBOOK.md", kind="runbook"),
             ],
         },
         {
@@ -258,8 +283,8 @@ def build_phase8_final_closeout_manifest() -> dict[str, Any]:
             "artifacts": [
                 _path_artifact("phase6/training.py", kind="runtime_module"),
                 _path_artifact("phase6/reporting.py", kind="runtime_module"),
-                _path_artifact("database/PHASE6_PERSON1_RUNBOOK.md", kind="runbook"),
-                _path_artifact("database/PHASE6_PERSON2_RUNBOOK.md", kind="runbook"),
+                _path_artifact("database/PHASE6_SINGLE_OWNER_RUNBOOK.md", kind="runbook"),
+                _path_artifact("reports/phase9/phase6_model_completion/phase9_task4_summary.json", kind="phase9_artifact"),
             ],
         },
         {
@@ -297,6 +322,7 @@ def build_phase8_final_closeout_manifest() -> dict[str, Any]:
             _path_artifact("Documentation/phases/phase8_reference_path.tex", kind="phase_doc"),
             _path_artifact("Documentation/phases/phase8_v1_operating_mode.tex", kind="phase_doc"),
             _path_artifact("Documentation/phases/phase8_metrics_review.tex", kind="phase_doc"),
+            _path_artifact("Documentation/phases/phase9.tex", kind="phase_doc"),
         ],
     }
 
@@ -359,6 +385,21 @@ def build_phase8_final_closeout_manifest() -> dict[str, Any]:
             "supporting_reference": _path_artifact("README.md", kind="document"),
         },
         {
+            "key": "phase9_runtime_evidence_packet",
+            "title": "Phase 9 runtime evidence packet",
+            "type": "artifact_family",
+            "status": "materialized_in_workspace",
+            "intended_use": "Show the concrete Task 2 through Task 4 artifacts that now back the refreshed closeout package.",
+            "primary_reference": _path_artifact(
+                "reports/phase9/candidate_to_alert_materialization/phase9_task2_review_packet.json",
+                kind="phase9_artifact",
+            ),
+            "supporting_reference": _path_artifact(
+                "reports/phase9/phase6_model_completion/phase9_task4_summary.json",
+                kind="phase9_artifact",
+            ),
+        },
+        {
             "key": "phase7_thesis_figures",
             "title": "Phase 7 thesis-grade figures and ablation tables",
             "type": "figure_and_table_family",
@@ -407,17 +448,25 @@ def build_phase8_final_closeout_manifest() -> dict[str, Any]:
                     kind="phase8_artifact",
                 ),
             },
+            {
+                "label": "Refresh the full Phase 9 closeout packet",
+                "command": "python run_phase9_closeout_refresh.py",
+                "artifact": _path_artifact(
+                    "reports/phase9/closeout_refresh/phase9_task5_closeout_refresh_summary.json",
+                    kind="phase9_artifact",
+                ),
+            },
         ],
     }
 
     final_closeout_memo = {
         "srs_v1_complete": False,
-        "overall_status": "not_v1_complete_in_current_workspace",
+        "overall_status": "materially_populated_but_not_srs_complete_v1",
         "canonical_v1_mode": (operating_mode_manifest.get("decision") or {}).get("canonical_v1_operating_mode"),
         "direct_answer": (
-            "No. The project is not yet v1-complete according to the SRS in the current workspace snapshot. "
-            "It has a defendable architecture, a frozen provenance chain, and a canonical operating-mode decision, "
-            "but it still lacks the materialized runtime evidence needed to satisfy the full SRS completion contract."
+            "No. Phase 9 materially improved the repo and now provides a replay-linked local evidence packet through Phase 6, "
+            "but the project is still not SRS-complete v1 because the remaining blocker is evidence quality rather than missing artifacts: "
+            "the current Phase 4 path is still noop-provider-backed and the current Phase 6 LightGBM evidence is still too small and train-only to defend a held-out claim."
         ),
         "srs_checklist": [
             {
@@ -431,75 +480,84 @@ def build_phase8_final_closeout_manifest() -> dict[str, Any]:
             },
             {
                 "criterion": "the raw archive and replay path are working",
-                "status": "historically_proven_but_not_materialized_in_current_workspace",
-                "assessment": "Phase 2 documents the proof window, and Task 2 froze the path definition, but the local workspace does not contain the raw partitions or replay outputs now.",
+                "status": "materialized_for_canonical_local_packet",
+                "assessment": "The canonical local packet now has raw-archive and detector-input manifest rows plus replay artifacts for the frozen hour, though the path is still a seeded local proof rather than a broad operational packet.",
                 "evidence": [
                     _path_artifact("Documentation/phases/phase2.tex", kind="phase_doc"),
                     _path_artifact(
                         "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
                         kind="phase8_artifact",
                     ),
+                    _path_artifact(
+                        "reports/phase5/replay_runs/phase9_task3",
+                        kind="phase5_artifact",
+                    ),
                 ],
             },
             {
                 "criterion": "deterministic candidate episodes can be regenerated from replay",
-                "status": "not_demonstrated_in_current_workspace",
-                "assessment": "The code path exists, but the frozen reference packet does not include populated candidate rows or replay-to-candidate regeneration evidence.",
+                "status": "materialized_for_canonical_local_packet",
+                "assessment": "Phase 9 Task 2 regenerated deterministic candidate rows for the canonical window through the native detector path.",
                 "evidence": [
                     _path_artifact("Documentation/phases/phase3.tex", kind="phase_doc"),
                     _path_artifact(
-                        "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
-                        kind="phase8_artifact",
+                        "reports/phase9/candidate_to_alert_materialization/phase9_task2_review_packet.json",
+                        kind="phase9_artifact",
                     ),
                 ],
             },
             {
                 "criterion": "evidence-backed alerts are live with analyst feedback capture",
-                "status": "not_demonstrated_in_current_workspace",
-                "assessment": "Task 4 found zero persisted alerts, delivery attempts, and analyst-feedback rows, so this criterion is still unmet in the current workspace.",
+                "status": "materialized_but_not_real_provider_backed",
+                "assessment": "The canonical packet now includes persisted alerts, delivery attempts, and analyst feedback, but the evidence providers are noop adapters and outbound delivery was skipped locally, so this is not yet a strong real-world Phase 4 proof.",
                 "evidence": [
                     _path_artifact("Documentation/phases/phase4_gate4_signoff.tex", kind="signoff_doc"),
                     _path_artifact(
-                        "reports/phase8/metrics_review/phase8_metrics_review_manifest.json",
-                        kind="phase8_artifact",
+                        "reports/phase9/candidate_to_alert_materialization/phase9_task2_review_packet.json",
+                        kind="phase9_artifact",
                     ),
                 ],
             },
             {
                 "criterion": "one conservative backtest and one paper-trading evaluation exist",
-                "status": "not_materialized_in_current_workspace",
-                "assessment": "No validation runs, backtest artifacts, or Phase 5 report outputs are present locally, so this criterion remains unmet.",
+                "status": "satisfied_for_canonical_local_packet",
+                "assessment": "Phase 9 Task 3 now provides replay, holdout validation, and conservative paper-trading artifacts under reports/phase5/, with honest caveats that the sample is tiny.",
                 "evidence": [
                     _path_artifact("Documentation/phases/phase5.tex", kind="phase_doc"),
                     _path_artifact(
-                        "reports/phase8/metrics_review/phase8_metrics_review_manifest.json",
-                        kind="phase8_artifact",
+                        "reports/phase5/validation/phase9_task3_holdout_validation.json",
+                        kind="phase5_artifact",
+                    ),
+                    _path_artifact(
+                        "reports/phase5/backtests/phase9_task3_conservative_backtest.json",
+                        kind="phase5_artifact",
                     ),
                 ],
             },
             {
                 "criterion": "one LightGBM or CatBoost ranker is evaluated against the wallet-unaware baselines",
-                "status": "not_satisfied_in_committed_workspace",
-                "assessment": "The committed Phase 6 trainer is still a linear starter ranker and the workspace has no populated evaluation artifacts proving a LightGBM or CatBoost baseline comparison.",
+                "status": "artifact_contract_satisfied_but_not_strong_enough_for_v1_claim",
+                "assessment": "Phase 9 Task 4 now evaluates a LightGBM ranker against the required wallet-unaware baselines and persists calibration, threshold, registry, and shadow-score artifacts, but the evidence is still train-only on a tiny dataset.",
                 "evidence": [
-                    _path_artifact("phase6/training.py", kind="runtime_module"),
+                    _path_artifact("Documentation/phases/phase9_task4_phase6_model_completion.tex", kind="phase_doc"),
                     _path_artifact(
-                        "reports/phase8/operating_mode/phase8_v1_operating_mode_manifest.json",
-                        kind="phase8_artifact",
+                        "reports/phase9/phase6_model_completion/phase9_task4_summary.json",
+                        kind="phase9_artifact",
                     ),
                 ],
             },
         ],
         "primary_blockers": [
             metrics_manifest["readiness_summary"]["highest_priority_gap"],
-            "Task 2 freeze remains at frozen_definition_with_missing_runtime_outputs rather than a fully materialized evidence packet.",
-            "The current committed ML implementation and artifact state do not satisfy the SRS LightGBM/CatBoost evaluation requirement.",
+            "The canonical Phase 4 evidence path is still seeded local replay with noop providers rather than a real-provider-backed alert-evidence packet.",
+            "The canonical Phase 6 LightGBM evaluation is still train-only on a tiny dataset, so it does not yet justify a held-out-strength SRS completion claim.",
         ],
         "strongest_defensible_claims": [
             "The repo now has one explicit canonical documentation path for single-owner handoff.",
             "One exact reference window is frozen with paths, versions, hashes, and stage-by-stage evidence-gap status.",
             "Canonical v1 is formally defined as rule-based plus shadow ML, with clear rollback semantics.",
             "The final metrics order, limitations review, and stop-condition ledger are now explicit and machine-readable.",
+            "Phase 9 now provides a materially populated local evidence packet spanning candidate generation, alerting, validation, conservative paper trading, and LightGBM shadow evaluation.",
         ],
         "intentionally_out_of_scope": [
             "live capital deployment or autonomous execution",
@@ -508,10 +566,10 @@ def build_phase8_final_closeout_manifest() -> dict[str, Any]:
             "treating thesis-grade ablation figures as if they were required canonical v1 operating artifacts",
         ],
         "next_required_actions_before_v1_complete": [
-            "materialize one real end-to-end replay-to-alert evidence packet for the frozen or equivalent reference window",
-            "produce at least one conservative backtest and one paper-trading evaluation artifact",
-            "evaluate a real LightGBM or CatBoost ranker against wallet-unaware baselines and preserve the evidence",
-            "normalize historical runbook paths where needed so the live operator path can be rerun without branch-specific assumptions",
+            "materialize one real-provider-backed end-to-end replay-to-alert evidence packet for the frozen or equivalent reference window",
+            "expand Phase 5 evaluation beyond the tiny seeded packet so conservative edge and lead-time claims survive a less fragile sample",
+            "re-run the LightGBM or CatBoost path on a held-out-sized dataset and preserve evidence that comparisons remain strong off-train",
+            "treat the new single-owner runbooks as the default operator path and retire person-labeled instructions from primary use",
         ],
     }
 
@@ -527,11 +585,13 @@ def build_phase8_final_closeout_manifest() -> dict[str, Any]:
             _path_artifact("Documentation/phases/phase8_reference_path.tex", kind="phase_doc"),
             _path_artifact("Documentation/phases/phase8_v1_operating_mode.tex", kind="phase_doc"),
             _path_artifact("Documentation/phases/phase8_metrics_review.tex", kind="phase_doc"),
+            _path_artifact("Documentation/phases/phase9.tex", kind="phase_doc"),
+            _path_artifact("Documentation/phases/phase9_task5_closeout_refresh.tex", kind="phase_doc"),
         ],
         "consolidated_handoff_path": {
             "canonical_read_order": canonical_read_order,
             "operator_runbooks": operator_runbooks,
-            "note": "Phase 5 and Phase 6 runbooks remain supporting-active with historical filenames, so the closeout package preserves them in the canonical handoff path rather than pretending they do not exist.",
+            "note": "Phase 9 Task 5 creates canonical single-owner Phase 5 and Phase 6 runbooks; historical person-labeled runbooks remain only as supporting traceability artifacts.",
         },
         "architecture_summary": {
             "canonical_v1_mode": (operating_mode_manifest.get("decision") or {}).get("canonical_v1_operating_mode"),

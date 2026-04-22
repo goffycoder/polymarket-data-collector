@@ -1,0 +1,41 @@
+{
+  "artifacts": {
+    "paper_trades_path": "reports/phase5/backtests/phase9_task3_paper_trades.json",
+    "validation_report_path": "reports/phase5/validation/phase9_task3_holdout_validation.json"
+  },
+  "failure_metrics": {
+    "coverage_insufficient_rows": 0,
+    "metrics_version": "phase5_metrics_v1",
+    "near_resolution_skip_rate": 0.0,
+    "partial_coverage_rows": 0,
+    "skip_due_to_data_rate": 0.0,
+    "top_category_dependency_share": 1.0,
+    "top_event_family_dependency_share": 0.5
+  },
+  "paper_trade_count": 2,
+  "paper_trade_fills": 2,
+  "paper_trade_metrics": {
+    "fill_rate": 1.0,
+    "hit_rate": 0.5,
+    "loss_rate": 0.5,
+    "mean_bounded_pnl": 18.63986,
+    "median_bounded_pnl": 18.63986,
+    "metrics_version": "phase5_metrics_v1",
+    "paper_trade_count": 2,
+    "skip_reason_counts": [],
+    "status": "overall",
+    "trade_eligibility_rate_proxy": 1.0,
+    "worst_decile_pnl": -40.538462
+  },
+  "paper_trade_skips": 0,
+  "replay": {
+    "bundle_id": "10e25b787cfc47578ef54d1b808d9c3e",
+    "output_path": "reports\\phase5\\replay_runs\\phase9_task3\\bundles\\10e25b787cfc47578ef54d1b808d9c3e.json",
+    "overall_status": "ready"
+  },
+  "task_contract_version": "phase9_task3_phase5_validation_v1",
+  "window": {
+    "end": "2026-04-20T06:00:00+00:00",
+    "start": "2026-04-20T05:00:00+00:00"
+  }
+}

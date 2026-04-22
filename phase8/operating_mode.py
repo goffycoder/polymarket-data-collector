@@ -76,12 +76,22 @@ def build_v1_operating_mode_manifest() -> dict[str, Any]:
         _file_artifact(
             "phase6/training.py",
             kind="runtime_module",
-            note="Committed Phase 6 trainer currently fits a linear starter ranker, not the final boosted-tree model described by the full Phase 6 scope.",
+            note="The committed Phase 6 trainer now supports a LightGBM shadow ranker, but the current local evidence packet is still too small to justify authoritative promotion.",
         ),
         _file_artifact(
             "phase6/reporting.py",
             kind="runtime_module",
-            note="Model card text says thresholds are shadow-only recommendations and identifies the starter ranker as a linear baseline foundation.",
+            note="Model card text keeps thresholds shadow-only and now writes required-baseline comparisons for the boosted-tree path.",
+        ),
+        _file_artifact(
+            "database/PHASE6_SINGLE_OWNER_RUNBOOK.md",
+            kind="runbook",
+            note="Canonical single-owner operator path for Phase 6 feature, training, registry, and shadow scoring flows.",
+        ),
+        _file_artifact(
+            "reports/phase9/phase6_model_completion/phase9_task4_summary.json",
+            kind="phase9_artifact",
+            note="Phase 9 Task 4 proof that a LightGBM shadow artifact, registry entry, calibration rows, and shadow scores now exist locally.",
         ),
         _file_artifact(
             "Documentation/person2Phases/phase7_person2.tex",
@@ -113,7 +123,7 @@ def build_v1_operating_mode_manifest() -> dict[str, Any]:
                 },
                 {
                     "mode": "ml_backed_ranking_with_rollback",
-                    "reason": "The committed repo state does not justify promotion of ML to decision authority: Phase 6 is shadow-first by design, the current trainer is still a linear starter ranker, and no materialized local evidence packet proves safe promotion.",
+                    "reason": "The committed repo state still does not justify promotion of ML to decision authority: Phase 6 is shadow-first by design, the local LightGBM evidence packet is still descriptive rather than held-out-defensible, and the Phase 4 provider path is not yet real-provider-backed in this workspace.",
                 },
             ],
         },
@@ -141,9 +151,9 @@ def build_v1_operating_mode_manifest() -> dict[str, Any]:
             "phase7_model_promotion": "not_promoted_to_authoritative_v1",
             "promotion_preconditions_missing": [
                 "materialized end-to-end runtime evidence packet in this workspace",
-                "stronger proof that ML gains survive operationally relevant replay windows",
+                "real-provider-backed Phase 4 evidence behavior on the canonical path rather than seeded noop evidence only",
+                "stronger proof that ML gains survive operationally relevant held-out replay windows",
                 "clear evidence that promotion improves outcomes without degrading explainability or rollback safety",
-                "delivery-ready implementation of the full boosted-tree ranker promised by the SRS instead of only the committed linear starter baseline",
             ],
         },
         "phase7_classification": {
@@ -166,7 +176,7 @@ def build_v1_operating_mode_manifest() -> dict[str, Any]:
             "The SRS definition of v1 complete requires one ranker to be evaluated against baselines; it does not require ML to become the authoritative alert path.",
             "The SRS and Phase 6 planning explicitly require shadow mode first.",
             "Phase 4's canonical single-owner plan keeps the alert loop rule-based and operator-facing before ML promotion.",
-            "The committed Phase 6 implementation is still a linear starter ranker, and its own reporting code labels thresholds as shadow-only recommendations.",
+            "The committed Phase 6 implementation now supports a LightGBM shadow ranker, but its own reporting path still keeps thresholds advisory and the refreshed evidence remains too small for authoritative promotion.",
             "Phase 7 is explicitly framed as advanced research after v1 stability, so it should not silently redefine the canonical v1 operating mode.",
         ],
         "supporting_evidence": supporting_evidence,

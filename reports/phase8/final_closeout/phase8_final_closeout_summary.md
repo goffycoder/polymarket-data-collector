@@ -1,14 +1,14 @@
 # Phase 8 Final Closeout Package
 
 - Contract version: `phase8_final_closeout_v1`
-- Generated at: `2026-04-22T15:33:07.383135+00:00`
-- Git commit: `baf344b8e3bff24ffcc37040d6114d628a3f729d`
+- Generated at: `2026-04-22T21:06:59.783559+00:00`
+- Git commit: `96df0118cc4bf84262597dab67ee60d0c758d235`
 - Canonical v1 mode: `rule_based_plus_shadow_ml`
 - SRS v1 complete: `False`
-- Overall status: `not_v1_complete_in_current_workspace`
+- Overall status: `materially_populated_but_not_srs_complete_v1`
 
 ## Direct Answer
-- No. The project is not yet v1-complete according to the SRS in the current workspace snapshot. It has a defendable architecture, a frozen provenance chain, and a canonical operating-mode decision, but it still lacks the materialized runtime evidence needed to satisfy the full SRS completion contract.
+- No. Phase 9 materially improved the repo and now provides a replay-linked local evidence packet through Phase 6, but the project is still not SRS-complete v1 because the remaining blocker is evidence quality rather than missing artifacts: the current Phase 4 path is still noop-provider-backed and the current Phase 6 LightGBM evidence is still too small and train-only to defend a held-out claim.
 
 ## Handoff Read Order
 - [1] `README.md`: fastest repo entry point for a reviewer or handoff receiver
@@ -19,19 +19,23 @@
 - [6] `Documentation/phases/phase8_v1_operating_mode.tex`: formal operating-mode and promotion decision
 - [7] `Documentation/phases/phase8_metrics_review.tex`: final metrics bundle, limitations review, and stop-condition ledger
 - [8] `Documentation/phases/phase8_final_closeout.tex`: single-owner final answer for demo, thesis, and defense handoff
+- [9] `Documentation/phases/phase9.tex`: single-owner remediation plan that closes the exact Phase 8 evidence gaps.
+- [10] `Documentation/phases/phase9_task5_closeout_refresh.tex`: documents the canonical closeout-refresh contract and regeneration commands.
 
 ## Operator Runbook Path
 - [1] `database/POSTGRES_LOCAL_RUNBOOK.md` (canonical): Start the local PostgreSQL-backed collector and preserve the raw archive and replay foundation.
 - [2] `database/PHASE3_LOCAL_RUNBOOK.md` (canonical): Produce real candidate windows from the detector-input stream.
 - [3] `database/PHASE4_LOCAL_RUNBOOK.md` (supporting_active): Exercise evidence gathering, alert creation, delivery, and analyst feedback capture.
-- [4] `database/PHASE5_PERSON1_RUNBOOK.md` (supporting_active): Replay historical windows, inspect health, and generate validation or backfill artifacts.
-- [5] `database/PHASE6_PERSON1_RUNBOOK.md` (supporting_active): Materialize features, register or activate shadow models, and run shadow scoring.
-- [6] `database/PHASE6_PERSON2_RUNBOOK.md` (supporting_active): Build replay-derived datasets, train the starter ranker, and generate evaluation artifacts.
+- [4] `database/PHASE5_SINGLE_OWNER_RUNBOOK.md` (canonical): Replay historical windows, inspect health, and generate validation or backfill artifacts.
+- [5] `database/PHASE6_SINGLE_OWNER_RUNBOOK.md` (canonical): Materialize features, train and evaluate the LightGBM shadow model, register or activate models, and run shadow scoring.
+- [6] `database/PHASE5_PERSON1_RUNBOOK.md` (supporting_historical): Retained for historical traceability only; no longer the primary single-owner handoff path.
+- [7] `database/PHASE6_PERSON1_RUNBOOK.md` (supporting_historical): Retained for historical traceability only; no longer the primary single-owner handoff path.
+- [8] `database/PHASE6_PERSON2_RUNBOOK.md` (supporting_historical): Retained for historical traceability only; no longer the primary single-owner handoff path.
 
 ## Primary Blockers
-- No real alert/evaluation/backtest evidence exists locally, so none of the SRS priority metrics can be defended numerically in this workspace.
-- Task 2 freeze remains at frozen_definition_with_missing_runtime_outputs rather than a fully materialized evidence packet.
-- The current committed ML implementation and artifact state do not satisfy the SRS LightGBM/CatBoost evaluation requirement.
+- The project now has a materially populated end-to-end local packet, but the remaining blocker is stronger real-provider-backed and held-out-sized evidence rather than missing artifacts.
+- The canonical Phase 4 evidence path is still seeded local replay with noop providers rather than a real-provider-backed alert-evidence packet.
+- The canonical Phase 6 LightGBM evaluation is still train-only on a tiny dataset, so it does not yet justify a held-out-strength SRS completion claim.
 
 ## Intentionally Out of Scope
 - live capital deployment or autonomous execution

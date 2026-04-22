@@ -45,6 +45,13 @@ def _load_json(path_value: str) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _load_optional_json(path_value: str) -> dict[str, Any] | None:
+    path = (REPO_ROOT / path_value).resolve()
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def _file_artifact(path_value: str, *, kind: str, note: str | None = None) -> dict[str, Any]:
     path = (REPO_ROOT / path_value).resolve()
     exists = path.exists()
@@ -92,6 +99,10 @@ def _metric_entry(
 def build_phase8_metrics_review_manifest() -> dict[str, Any]:
     freeze_manifest = _load_json("reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json")
     operating_mode_manifest = _load_json("reports/phase8/operating_mode/phase8_v1_operating_mode_manifest.json")
+    task2_manifest = _load_optional_json("reports/phase9/candidate_to_alert_materialization/phase9_task2_review_packet.json")
+    task3_validation = _load_optional_json("reports/phase5/validation/phase9_task3_holdout_validation.json")
+    task3_backtest = _load_optional_json("reports/phase5/backtests/phase9_task3_conservative_backtest.json")
+    task4_summary = _load_optional_json("reports/phase9/phase6_model_completion/phase9_task4_summary.json")
 
     evidence_sources = {
         "srs": _file_artifact(
@@ -102,7 +113,7 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
         "phase4_signoff": _file_artifact(
             "Documentation/phases/phase4_gate4_signoff.tex",
             kind="signoff_doc",
-            note="Documents known Phase 4 limitations, especially placeholder providers and missing real traffic evidence.",
+            note="Documents known Phase 4 limitations, especially placeholder providers and the need for stronger real-provider-backed evidence.",
         ),
         "phase5_doc": _file_artifact(
             "Documentation/phases/phase5.tex",
@@ -112,7 +123,7 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
         "phase6_reporting": _file_artifact(
             "phase6/reporting.py",
             kind="runtime_module",
-            note="Contains calibration/reporting logic and explicit caveats about the starter ranker.",
+            note="Contains calibration/reporting logic and explicit caveats about shadow-only threshold use and descriptive-only evidence.",
         ),
         "phase6_eval_report": _file_artifact(
             "validation/phase6_person2_report.py",
@@ -139,6 +150,26 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
             kind="runtime_config",
             note="Defines default evidence providers and precision target thresholds.",
         ),
+        "task2_review_packet": _file_artifact(
+            "reports/phase9/candidate_to_alert_materialization/phase9_task2_review_packet.json",
+            kind="phase9_artifact",
+            note="Phase 9 Task 2 evidence that candidate, alert, delivery, and analyst-feedback rows now exist locally.",
+        ),
+        "task3_validation_report": _file_artifact(
+            "reports/phase5/validation/phase9_task3_holdout_validation.json",
+            kind="phase5_artifact",
+            note="Phase 9 Task 3 holdout-validation report for the canonical reference window.",
+        ),
+        "task3_backtest_report": _file_artifact(
+            "reports/phase5/backtests/phase9_task3_conservative_backtest.json",
+            kind="phase5_artifact",
+            note="Phase 9 Task 3 conservative paper-trading and backtest report for the canonical reference window.",
+        ),
+        "task4_summary": _file_artifact(
+            "reports/phase9/phase6_model_completion/phase9_task4_summary.json",
+            kind="phase9_artifact",
+            note="Phase 9 Task 4 summary of the LightGBM shadow artifact, required baselines, calibration, registry state, and shadow scores.",
+        ),
     }
 
     alert_rows = _table_count(freeze_manifest, "alerts") or 0
@@ -151,6 +182,25 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
     validation_rows = _table_count(freeze_manifest, "validation_runs") or 0
     raw_manifest_rows = _table_count(freeze_manifest, "raw_archive_manifests") or 0
     replay_rows = _table_count(freeze_manifest, "replay_runs") or 0
+    evidence_snapshot_rows = _table_count(freeze_manifest, "evidence_snapshots") or 0
+    evidence_query_rows = _table_count(freeze_manifest, "evidence_queries") or 0
+
+    alert_precision = (((task3_validation or {}).get("assessment") or {}).get("alert_usefulness_precision"))
+    median_pnl = (((task3_validation or {}).get("assessment") or {}).get("median_bounded_pnl"))
+    lead_time_seconds = ((((task3_validation or {}).get("metrics") or {}).get("lead_time_overall") or {}).get("median_lead_time_seconds"))
+    required_baseline_assessment = (((task4_summary or {}).get("required_baseline_report") or {}).get("assessment") or {})
+    active_shadow_model = (task4_summary or {}).get("active_shadow_model") or {}
+    phase4_providers = (((task2_manifest or {}).get("phase4") or {}).get("evidence_results") or [])
+    seeded_provider_only = bool(phase4_providers) and all(
+        all(str(provider).startswith("noop_") for provider in (result.get("providers") or []))
+        for result in phase4_providers
+    )
+    delivery_summary = ((((task2_manifest or {}).get("phase4") or {}).get("gate4_report") or {}).get("delivery_summary") or {})
+    delivery_status_summary = (
+        f"sent={delivery_summary.get('sent_attempts', 0)} skipped={delivery_summary.get('skipped_attempts', 0)}"
+        if delivery_summary
+        else "unavailable"
+    )
 
     metrics_bundle = [
         _metric_entry(
@@ -158,22 +208,31 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
             priority_rank=1,
             metric_name="Ranked alert precision and operational usefulness",
             target="Precision@10 > 0.60 (aspirational), plus meaningful analyst usefulness evidence",
-            status="not_materialized_in_workspace",
-            current_value=None,
+            status="materialized_seeded_local_only" if alert_rows and analyst_rows else "not_materialized_in_workspace",
+            current_value={
+                "alerts": alert_rows,
+                "analyst_feedback": analyst_rows,
+                "alert_usefulness_precision": alert_precision,
+                "delivery_attempts": delivery_rows,
+            }
+            if alert_rows
+            else None,
             evidence_summary=(
-                "No persisted alerts, delivery attempts, or analyst feedback rows are present in the current workspace snapshot, "
-                "so alert precision/usefulness cannot be computed honestly."
+                "The workspace now contains a replay-linked local alert packet with persisted alerts, delivery attempts, and one analyst-feedback row. "
+                f"Current alert usefulness precision is `{alert_precision}` on a two-alert seeded packet, with delivery summary `{delivery_status_summary}`. "
+                "This is enough to show the loop exists, but not enough to claim robust real-world precision."
             ),
             blockers=[
-                "alerts table row count is 0",
-                "alert_delivery_attempts table row count is 0",
-                "analyst_feedback table row count is 0",
-                "Phase 4 signoff itself says final evidence should come from a real live candidate-to-alert run",
+                "alert packet is only two alerts, so usefulness evidence is descriptive rather than statistically strong",
+                "Phase 4 evidence providers in the canonical local packet are noop adapters rather than real-provider-backed retrieval",
+                "delivery attempts were persisted, but outbound channels were skipped in the current local environment",
             ],
             evidence_sources=[
                 evidence_sources["srs"],
                 evidence_sources["phase4_signoff"],
                 evidence_sources["task2_manifest"],
+                evidence_sources["task2_review_packet"],
+                evidence_sources["task3_validation_report"],
             ],
         ),
         _metric_entry(
@@ -185,17 +244,24 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
                 f"WATCH {PHASE6_WATCH_PRECISION_TARGET:.2f}, ACTIONABLE {PHASE6_ACTIONABLE_PRECISION_TARGET:.2f}, "
                 f"CRITICAL {PHASE6_CRITICAL_PRECISION_TARGET:.2f} precision slices"
             ),
-            status="not_materialized_in_workspace",
-            current_value=None,
+            status="materialized_descriptive_only" if model_eval_rows and calibration_rows and shadow_score_rows else "not_materialized_in_workspace",
+            current_value={
+                "model_evaluation_runs": model_eval_rows,
+                "calibration_profiles": calibration_rows,
+                "shadow_model_scores": shadow_score_rows,
+                "active_shadow_model": active_shadow_model.get("model_version"),
+                "required_baseline_assessment": required_baseline_assessment,
+            }
+            if model_eval_rows
+            else None,
             evidence_summary=(
-                "No model evaluation runs, calibration profiles, or shadow-score rows are present locally. "
-                "The code supports calibration, but no committed local evidence proves current calibration quality."
+                "The workspace now contains model evaluation rows, calibration profiles, a registered LightGBM shadow model, and shadow scores for the canonical window. "
+                f"The current required-baseline assessment is `{required_baseline_assessment.get('status')}`, which means the artifact contract is satisfied but the local evidence is still descriptive and not held-out-defendable."
             ),
             blockers=[
-                "model_evaluation_runs table row count is 0",
-                "calibration_profiles table row count is 0",
-                "shadow_model_scores table row count is 0",
-                "Task 3 keeps ML in shadow mode only for canonical v1",
+                "the local dataset is only two labeled rows and uses train-only evidence",
+                "held-out baseline-beating evidence is not yet available",
+                "Phase 6 remains shadow-only in canonical v1 even after artifact completion",
             ],
             evidence_sources=[
                 evidence_sources["srs"],
@@ -204,6 +270,7 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
                 evidence_sources["task2_manifest"],
                 evidence_sources["task3_manifest"],
                 evidence_sources["settings"],
+                evidence_sources["task4_summary"],
             ],
         ),
         _metric_entry(
@@ -211,22 +278,29 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
             priority_rank=3,
             metric_name="Lead time over public corroboration",
             target="Median lead time > 30 minutes on the subset where corroboration exists",
-            status="not_materialized_in_workspace",
-            current_value=None,
+            status="materialized_seeded_local_only" if lead_time_seconds is not None else "not_materialized_in_workspace",
+            current_value={
+                "median_lead_time_seconds": lead_time_seconds,
+                "median_lead_time_minutes": round(float(lead_time_seconds) / 60.0, 3) if lead_time_seconds is not None else None,
+            }
+            if lead_time_seconds is not None
+            else None,
             evidence_summary=(
-                "Lead-time analysis requires real alerts, evidence states, and often shadow-score or review data. "
-                "Those artifacts are absent in the current workspace snapshot."
+                "Lead-time analysis is now materialized for the canonical local packet. "
+                f"The current median lead time is `{lead_time_seconds}` seconds, which exceeds the 30-minute aspirational target on the single successful alert in the seeded packet. "
+                "This demonstrates the reporting path, but the sample is too small and synthetic to treat as a strong production claim."
             ),
             blockers=[
-                "alerts table row count is 0",
-                "evidence_snapshots table row count is 0",
-                "evidence_queries table row count is 0",
-                "Phase 7 observability study cannot be meaningfully populated without alert/evidence history",
+                "lead-time evidence comes from a seeded local packet with only one successful alert",
+                "evidence providers remain noop-backed, so corroboration timing is not representative of real retrieval behavior",
+                "Phase 7 observability analysis still lacks broader alert history beyond the tiny canonical packet",
             ],
             evidence_sources=[
                 evidence_sources["srs"],
                 evidence_sources["phase7_observability"],
                 evidence_sources["task2_manifest"],
+                evidence_sources["task2_review_packet"],
+                evidence_sources["task3_validation_report"],
             ],
         ),
         _metric_entry(
@@ -234,20 +308,31 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
             priority_rank=4,
             metric_name="Economic edge under conservative execution",
             target="Positive paper-trade edge after fees and slippage",
-            status="not_materialized_in_workspace",
-            current_value=None,
+            status="materialized_small_sample" if backtest_rows and validation_rows else "not_materialized_in_workspace",
+            current_value={
+                "validation_runs": validation_rows,
+                "backtest_artifacts": backtest_rows,
+                "median_bounded_pnl": median_pnl,
+                "paper_trade_count": (task3_backtest or {}).get("paper_trade_count"),
+            }
+            if backtest_rows
+            else None,
             evidence_summary=(
-                "The conservative paper-trading framework exists by design, but this workspace contains no backtest artifacts or validation runs that would justify a PnL or edge claim."
+                "The conservative paper-trading framework is now materially populated for the canonical window. "
+                f"The current backtest packet shows median bounded PnL `{median_pnl}` across `{(task3_backtest or {}).get('paper_trade_count')}` paper trades after explicit conservative assumptions. "
+                "This is enough to prove the workflow and artifact contract, but not enough for a broad edge claim."
             ),
             blockers=[
-                "backtest_artifacts table row count is 0",
-                "validation_runs table row count is 0",
-                "reports/phase5 output root is not materialized",
+                "paper-trading evidence is based on only two trades",
+                "the current result is descriptive and vulnerable to sample-size noise",
+                "the strongest and weakest windows are the same single fixture packet",
             ],
             evidence_sources=[
                 evidence_sources["srs"],
                 evidence_sources["phase5_doc"],
                 evidence_sources["task2_manifest"],
+                evidence_sources["task3_validation_report"],
+                evidence_sources["task3_backtest_report"],
             ],
         ),
     ]
@@ -255,26 +340,26 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
     limitations_review = {
         "weak_regimes": [
             {
-                "title": "No materialized later-phase runtime evidence in the current workspace",
+                "title": "Materialized later-phase evidence is still tiny and seeded",
                 "severity": "high",
-                "detail": "Phase 2 through Phase 7 tables are present structurally but populated counts are zero in the committed local SQLite snapshot.",
+                "detail": "Phase 9 materially populated the end-to-end packet, but the canonical reference window still covers only two alerts and two paper trades in a seeded local scenario.",
             },
             {
-                "title": "Canonical v1 metrics are mostly unavailable rather than merely weak",
+                "title": "Canonical v1 metrics are now available, but mostly descriptive rather than defensible",
                 "severity": "high",
-                "detail": "Alert precision, calibration, lead time, and paper-trade edge cannot be computed honestly from the current workspace because the required runtime artifacts are absent.",
+                "detail": "Alert precision, calibration, lead time, and paper-trade edge can now be computed honestly from local artifacts, but they are still too small or too synthetic for strong deployment claims.",
             },
             {
-                "title": "Current ML implementation is still a starter baseline",
+                "title": "Boosted-tree ML exists, but held-out evidence is still missing",
                 "severity": "medium",
-                "detail": "The committed Phase 6 trainer fits a linear starter ranker, and the reporting layer explicitly says it is not yet the final boosted-tree model promised by the full Phase 6 scope.",
+                "detail": "The committed Phase 6 trainer now supports LightGBM and the Task 4 artifact contract is satisfied, but the local evidence remains train-only on a two-row dataset.",
             },
         ],
         "observability_caveats": [
             {
-                "title": "Goodhart and observability analysis exists as code and policy, not as current measured evidence",
+                "title": "Goodhart and observability analysis still outpaces the local evidence base",
                 "severity": "medium",
-                "detail": "Phase 7 observability logic is implemented, but no local alert/evidence history exists to populate those metrics in this workspace snapshot.",
+                "detail": "Phase 7 observability logic is implemented, but the current local alert/evidence history is too small to turn those metrics into strong measured conclusions.",
             },
             {
                 "title": "Visible operator metrics may not preserve true lead time or hidden candidate edge",
@@ -286,12 +371,12 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
             {
                 "title": "Evidence providers default to placeholder noop adapters",
                 "severity": "high",
-                "detail": f"Current default evidence providers are {list(PHASE4_EVIDENCE_PROVIDERS)}, which means the persistence path exists but richer real retrieval evidence is not the default runtime state.",
+                "detail": f"Current default evidence providers are {list(PHASE4_EVIDENCE_PROVIDERS)}, and the materialized Phase 9 packet used noop adapters only, so richer real retrieval evidence is still not demonstrated.",
             },
             {
                 "title": "Live delivery integrations are gated and may be disabled",
                 "severity": "medium",
-                "detail": "Telegram and Discord integrations exist, but the settings default to disabled unless credentials are configured.",
+                "detail": "Telegram and Discord integrations exist, but the canonical Task 2 packet recorded skipped rather than sent attempts because credentials were not enabled in the current environment.",
             },
         ],
         "failure_modes": [
@@ -306,9 +391,9 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
                 "detail": "Phase 6 reporting explicitly says threshold recommendations should stay shadow-only until they survive larger replay windows.",
             },
             {
-                "title": "Replay-to-alert reproducibility is not yet materially demonstrated in this workspace",
+                "title": "Replay-to-alert reproducibility is now demonstrated only on a seeded local packet",
                 "severity": "high",
-                "detail": "Task 2 froze the path definition but marked the overall reference chain as missing runtime outputs.",
+                "detail": "Phase 9 now demonstrates replay-to-alert reproducibility locally, but the packet still depends on seeded detector-input sources and noop evidence providers.",
             },
         ],
     }
@@ -316,9 +401,9 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
     stop_conditions = [
         {
             "condition": "raw archive gaps exceed 1 hour",
-            "status": "unresolved_in_current_workspace",
+            "status": "not_triggered_on_canonical_seeded_packet",
             "reason": (
-                "No raw archive partitions or manifest rows are present locally, so current archive-gap risk cannot be assessed from this workspace snapshot."
+                "The canonical local packet now includes raw-archive and detector-input manifest rows for the frozen hour, so the stop condition is not triggered on the seeded packet itself."
             ),
             "evidence": {
                 "raw_archive_manifest_rows": raw_manifest_rows,
@@ -327,9 +412,9 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
         },
         {
             "condition": "duplicate trade inflation cannot be controlled",
-            "status": "unresolved_in_current_workspace",
+            "status": "not_triggered_on_canonical_seeded_packet",
             "reason": (
-                "The repo contains the Phase 1 validation framework, but no current populated trade data or recent validation outputs are present locally to prove duplicate inflation is bounded."
+                "The canonical seeded packet replays deterministically and produces stable downstream counts, so this stop condition is not currently active on the local proof packet."
             ),
             "evidence": {
                 "raw_archive_manifest_rows": raw_manifest_rows,
@@ -338,9 +423,9 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
         },
         {
             "condition": "alert false-positive rate remains operationally unusable after suppression tuning",
-            "status": "unresolved_in_current_workspace",
+            "status": "not_yet_defendable_for_real_operations",
             "reason": (
-                "There are no persisted alerts, delivery attempts, or analyst feedback rows in the workspace, so operational false-positive behavior cannot be measured yet."
+                "Local alert, delivery, and analyst-feedback rows now exist, but the packet is too small and synthetic to defend operational false-positive behavior for real deployment."
             ),
             "evidence": {
                 "alerts": alert_rows,
@@ -360,9 +445,9 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
         },
         {
             "condition": "replay cannot reproduce a historical alert end to end",
-            "status": "active_concern",
+            "status": "resolved_for_seeded_local_packet_not_for_real_provider_packet",
             "reason": (
-                "Task 2's frozen reference path concluded with missing runtime outputs across replay, candidate, alert, validation, and ML/research stages, so a full historical-alert reproduction cannot currently be demonstrated from this workspace."
+                "Phase 9 now reproduces a full local replay-to-alert-to-validation-to-ML packet for the canonical hour, but the evidence path is still seeded and noop-provider-backed rather than fully real-provider-backed."
             ),
             "evidence": {
                 "task2_overall_status": freeze_manifest.get("overall_status"),
@@ -376,17 +461,20 @@ def build_phase8_metrics_review_manifest() -> dict[str, Any]:
     ]
 
     readiness_summary = {
-        "overall_status": "metrics_bundle_defined_but_not_materialized",
-        "highest_priority_gap": "No real alert/evaluation/backtest evidence exists locally, so none of the SRS priority metrics can be defended numerically in this workspace.",
+        "overall_status": "metrics_materialized_but_not_yet_defendable_for_srs_v1",
+        "highest_priority_gap": "The project now has a materially populated end-to-end local packet, but the remaining blocker is stronger real-provider-backed and held-out-sized evidence rather than missing artifacts.",
         "canonical_v1_mode": (operating_mode_manifest.get("decision") or {}).get("canonical_v1_operating_mode"),
         "workspace_snapshot_highlights": {
             "alerts": alert_rows,
             "analyst_feedback": analyst_rows,
+            "evidence_queries": evidence_query_rows,
+            "evidence_snapshots": evidence_snapshot_rows,
             "model_evaluation_runs": model_eval_rows,
             "calibration_profiles": calibration_rows,
             "shadow_model_scores": shadow_score_rows,
             "validation_runs": validation_rows,
             "backtest_artifacts": backtest_rows,
+            "seeded_provider_only": seeded_provider_only,
         },
     }
 

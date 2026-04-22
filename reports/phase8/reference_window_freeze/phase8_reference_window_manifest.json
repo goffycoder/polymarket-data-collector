@@ -1,45 +1,45 @@
 {
-  "closeout_note": "This manifest freezes the exact committed code and document provenance for the end-to-end chain, and records which runtime outputs are currently missing in the local workspace.",
+  "closeout_note": "This manifest freezes the exact committed code and document provenance for the end-to-end chain, and now records a materially populated local reference packet with explicit truthfulness caveats about seeded evidence and limited sample size.",
   "database_snapshot": {
     "database_file": {
       "exists": true,
       "kind": "sqlite_database",
       "note": null,
       "path": "database/polymarket_state.db",
-      "sha256": "454348c99f728805654936d88a46f6f0e1508ed2d5523d0b2e976a5795378b88",
-      "size_bytes": 552960
+      "sha256": "a0af42fff7e21864ce591e781c12c0688812f57b0d14ea950cfffc821e29a9c6",
+      "size_bytes": 598016
     },
     "table_counts": {
-      "alert_delivery_attempts": 0,
-      "alerts": 0,
-      "analyst_feedback": 0,
+      "alert_delivery_attempts": 4,
+      "alerts": 2,
+      "analyst_feedback": 1,
       "backfill_requests": 0,
-      "backtest_artifacts": 0,
-      "calibration_profiles": 0,
+      "backtest_artifacts": 1,
+      "calibration_profiles": 6,
       "detector_checkpoints": 0,
-      "detector_input_manifests": 0,
-      "evidence_queries": 0,
-      "evidence_snapshots": 0,
+      "detector_input_manifests": 2,
+      "evidence_queries": 4,
+      "evidence_snapshots": 2,
       "feature_materialization_runs": 0,
-      "model_evaluation_runs": 0,
-      "model_registry": 0,
+      "model_evaluation_runs": 2,
+      "model_registry": 1,
       "phase7_experiment_ledger": 0,
       "phase7_research_datasets": 0,
       "phase7_research_scopes": 0,
       "phase7_research_windows": 0,
-      "raw_archive_manifests": 0,
-      "replay_runs": 0,
-      "shadow_model_scores": 0,
-      "signal_candidates": 0,
-      "signal_episodes": 0,
-      "signal_features": 0,
-      "validation_runs": 0
+      "raw_archive_manifests": 2,
+      "replay_runs": 2,
+      "shadow_model_scores": 2,
+      "signal_candidates": 2,
+      "signal_episodes": 2,
+      "signal_features": 32,
+      "validation_runs": 1
     }
   },
   "freeze_contract_version": "phase8_reference_freeze_v1",
-  "generated_at": "2026-04-22T15:15:09.272796+00:00",
-  "git_commit": "baf344b8e3bff24ffcc37040d6114d628a3f729d",
-  "overall_status": "frozen_definition_with_missing_runtime_outputs",
+  "generated_at": "2026-04-22T21:06:59.470601+00:00",
+  "git_commit": "96df0118cc4bf84262597dab67ee60d0c758d235",
+  "overall_status": "materially_populated_seeded_reference_window",
   "reference_window": {
     "end": "2026-04-20T06:00:00+00:00",
     "selected_from": "Documentation/phases/phase2.tex",
@@ -100,9 +100,9 @@
         }
       ],
       "database_tables": {
-        "detector_input_manifests": 0,
-        "raw_archive_manifests": 0,
-        "replay_runs": 0
+        "detector_input_manifests": 2,
+        "raw_archive_manifests": 2,
+        "replay_runs": 2
       },
       "note": "This is the anchor stage because Phase 2 is the only committed canonical doc that names an exact one-hour raw and replay proof window.",
       "runtime_artifacts": [
@@ -134,7 +134,7 @@
         "source_system": "gamma_events",
         "start": "2026-04-20T05:00:00+00:00"
       },
-      "status": "frozen_code_and_docs_only"
+      "status": "partially_materialized"
     },
     {
       "committed_inputs": [
@@ -189,26 +189,26 @@
       ],
       "database_tables": {
         "detector_checkpoints": 0,
-        "signal_candidates": 0,
-        "signal_episodes": 0,
-        "signal_features": 0
+        "signal_candidates": 2,
+        "signal_episodes": 2,
+        "signal_features": 32
       },
       "note": "The frozen path expects Phase 3 to consume detector-input envelopes for the same reference window and emit candidates into persisted tables.",
       "runtime_artifacts": [
         {
-          "exists": false,
+          "exists": true,
           "kind": "sqlite_table",
           "note": "Phase 3 candidate outputs are persisted in SQLite/PostgreSQL tables rather than a committed file artifact.",
           "path": "database/polymarket_state.db::signal_candidates",
-          "row_count": 0,
+          "row_count": 2,
           "sha256": null
         },
         {
-          "exists": false,
+          "exists": true,
           "kind": "sqlite_table",
           "note": "Feature snapshots for emitted windows.",
           "path": "database/polymarket_state.db::signal_features",
-          "row_count": 0,
+          "row_count": 32,
           "sha256": null
         }
       ],
@@ -217,7 +217,7 @@
         "end": "2026-04-20T06:00:00+00:00",
         "start": "2026-04-20T05:00:00+00:00"
       },
-      "status": "frozen_code_and_docs_only"
+      "status": "partially_materialized"
     },
     {
       "committed_inputs": [
@@ -279,36 +279,36 @@
         }
       ],
       "database_tables": {
-        "alert_delivery_attempts": 0,
-        "alerts": 0,
-        "analyst_feedback": 0,
-        "evidence_queries": 0,
-        "evidence_snapshots": 0
+        "alert_delivery_attempts": 4,
+        "alerts": 2,
+        "analyst_feedback": 1,
+        "evidence_queries": 4,
+        "evidence_snapshots": 2
       },
-      "note": "The alert stage is frozen as persisted evidence and alert workflow outputs over the same historical slice, even though this workspace currently contains no materialized rows.",
+      "note": "The alert stage is now materially populated for the canonical reference window, but the current evidence path is still seeded local replay with noop providers rather than a real-provider-backed live evidence packet.",
       "runtime_artifacts": [
         {
-          "exists": false,
+          "exists": true,
           "kind": "sqlite_table",
           "note": "Point-in-time evidence snapshots for candidate-linked alerts.",
           "path": "database/polymarket_state.db::evidence_snapshots",
-          "row_count": 0,
+          "row_count": 2,
           "sha256": null
         },
         {
-          "exists": false,
+          "exists": true,
           "kind": "sqlite_table",
           "note": "Rendered alert records for the Phase 4 workflow.",
           "path": "database/polymarket_state.db::alerts",
-          "row_count": 0,
+          "row_count": 2,
           "sha256": null
         },
         {
-          "exists": false,
+          "exists": true,
           "kind": "sqlite_table",
           "note": "Delivery logging for Telegram/Discord or equivalent local channels.",
           "path": "database/polymarket_state.db::alert_delivery_attempts",
-          "row_count": 0,
+          "row_count": 4,
           "sha256": null
         }
       ],
@@ -317,7 +317,7 @@
         "end": "2026-04-20T06:00:00+00:00",
         "start": "2026-04-20T05:00:00+00:00"
       },
-      "status": "frozen_code_and_docs_only"
+      "status": "partially_materialized"
     },
     {
       "committed_inputs": [
@@ -333,9 +333,17 @@
           "exists": true,
           "kind": "runbook",
           "note": null,
-          "path": "database/PHASE5_PERSON1_RUNBOOK.md",
-          "sha256": "f5ee0a42d090e6a5e906ca4f6e6574ae0d50168d4051f12c4fe83bdfda6b1dca",
-          "size_bytes": 3711
+          "path": "database/PHASE5_SINGLE_OWNER_RUNBOOK.md",
+          "sha256": "df8523100c69e5416a04d3a3163c1e4f82f1f9aa45e9aaf9a8c2817e73051cd2",
+          "size_bytes": 3022
+        },
+        {
+          "exists": true,
+          "kind": "phase_doc",
+          "note": null,
+          "path": "Documentation/phases/phase9_task3_replay_validation.tex",
+          "sha256": "a58ec686f07d10e9606a344e173980c933c8f6002029343b65fe94df765e05ac",
+          "size_bytes": 3179
         },
         {
           "exists": true,
@@ -380,32 +388,33 @@
       ],
       "database_tables": {
         "backfill_requests": 0,
-        "backtest_artifacts": 0,
-        "validation_runs": 0
+        "backtest_artifacts": 1,
+        "validation_runs": 1
       },
-      "note": "This stage ties the frozen window to replay validation and conservative paper-trading outputs.",
+      "note": "This stage now ties the frozen window to materialized replay validation and conservative paper-trading outputs under reports/phase5/, with honest caveats that the packet is still very small and descriptive.",
       "runtime_artifacts": [
         {
-          "exists": false,
+          "child_count": 3,
+          "exists": true,
           "kind": "report_root",
           "note": "Expected Phase 5 replay, validation, and backtest artifact root.",
           "path": "reports/phase5",
           "sha256": null
         },
         {
-          "exists": false,
+          "exists": true,
           "kind": "sqlite_table",
           "note": "Stored validation-run summaries for replayed windows.",
           "path": "database/polymarket_state.db::validation_runs",
-          "row_count": 0,
+          "row_count": 1,
           "sha256": null
         },
         {
-          "exists": false,
+          "exists": true,
           "kind": "sqlite_table",
           "note": "Stored paper-trading and backtest artifacts.",
           "path": "database/polymarket_state.db::backtest_artifacts",
-          "row_count": 0,
+          "row_count": 1,
           "sha256": null
         }
       ],
@@ -414,10 +423,18 @@
         "end": "2026-04-20T06:00:00+00:00",
         "start": "2026-04-20T05:00:00+00:00"
       },
-      "status": "frozen_code_and_docs_only"
+      "status": "partially_materialized"
     },
     {
       "committed_inputs": [
+        {
+          "exists": true,
+          "kind": "phase_doc",
+          "note": null,
+          "path": "Documentation/phases/phase9_task4_phase6_model_completion.tex",
+          "sha256": "ce5ba1397afa6d9a1967c12fd52b31aa64b6c9cf0db95409695951e7ae8efdb8",
+          "size_bytes": 2445
+        },
         {
           "exists": true,
           "kind": "supporting_doc",
@@ -438,33 +455,25 @@
           "exists": true,
           "kind": "runbook",
           "note": null,
-          "path": "database/PHASE6_PERSON1_RUNBOOK.md",
-          "sha256": "2a0d55565211fa5fc275e58b298e15cafc19c28f58a3c3fcd44f5df61c7e5dc8",
-          "size_bytes": 4052
-        },
-        {
-          "exists": true,
-          "kind": "runbook",
-          "note": null,
-          "path": "database/PHASE6_PERSON2_RUNBOOK.md",
-          "sha256": "8609dac057499ebde5da5ea5012c6107c31ee8c89ef71df6828e92c1cd7e84e3",
-          "size_bytes": 2891
+          "path": "database/PHASE6_SINGLE_OWNER_RUNBOOK.md",
+          "sha256": "54e3a64aa192f7663bdcae054e79308b131348ba5e7af8ccaebb54f4c0a0c3df",
+          "size_bytes": 3736
         },
         {
           "exists": true,
           "kind": "runtime_module",
           "note": null,
           "path": "phase6/training.py",
-          "sha256": "0594d59d3069c56b64d497f8bcc8da635e3141df312088bee50e58b2cd748741",
-          "size_bytes": 11331
+          "sha256": "f5a06507209d1986bf4110a07b0f8385c0160cf2c0aaea9f1b1b2f03d5c092c2",
+          "size_bytes": 17492
         },
         {
           "exists": true,
           "kind": "runner",
           "note": null,
           "path": "run_phase6_train_ranker.py",
-          "sha256": "782ff7a0b42a9a413c1682a1daef536ad26d78912628c645de98db69315c6e9d",
-          "size_bytes": 5302
+          "sha256": "6927e65cb866c6301524267bd57602eccfa60d8260eabb0736942699090bed95",
+          "size_bytes": 6752
         },
         {
           "exists": true,
@@ -500,18 +509,26 @@
         }
       ],
       "database_tables": {
-        "calibration_profiles": 0,
+        "calibration_profiles": 6,
         "feature_materialization_runs": 0,
-        "model_evaluation_runs": 0,
-        "model_registry": 0,
+        "model_evaluation_runs": 2,
+        "model_registry": 1,
         "phase7_experiment_ledger": 0,
         "phase7_research_datasets": 0,
         "phase7_research_scopes": 0,
         "phase7_research_windows": 0,
-        "shadow_model_scores": 0
+        "shadow_model_scores": 2
       },
-      "note": "The terminal stage is frozen as either a Phase 6 ML artifact or a Phase 7 research package, with the research-package runner chosen as the preferred end-state for Phase 8 closeout.",
+      "note": "The terminal stage is now materially populated at the Phase 6 shadow-ML level with a LightGBM artifact, calibration rows, registry state, and shadow scores, while Phase 7 remains research-only for canonical v1.",
       "runtime_artifacts": [
+        {
+          "child_count": 5,
+          "exists": true,
+          "kind": "report_root",
+          "note": "Expected Phase 6 feature, model, calibration, and shadow-score artifact root.",
+          "path": "reports/phase6",
+          "sha256": null
+        },
         {
           "child_count": 0,
           "exists": true,
@@ -521,11 +538,11 @@
           "sha256": null
         },
         {
-          "exists": false,
+          "exists": true,
           "kind": "sqlite_table",
           "note": "Phase 6 model evaluation lineage tied to replay-derived datasets.",
           "path": "database/polymarket_state.db::model_evaluation_runs",
-          "row_count": 0,
+          "row_count": 2,
           "sha256": null
         },
         {
@@ -542,7 +559,7 @@
         "end": "2026-04-20T06:00:00+00:00",
         "start": "2026-04-20T05:00:00+00:00"
       },
-      "status": "frozen_code_and_docs_only"
+      "status": "partially_materialized"
     }
   ],
   "versions": {

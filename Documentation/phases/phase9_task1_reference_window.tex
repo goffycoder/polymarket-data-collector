@@ -1,0 +1,82 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 9 Task 1 - Reference Window Preparation}
+
+\textbf{Source of truth:} \texttt{Documentation/phases/phase9.tex}, \texttt{Documentation/phases/phase2.tex}, and the generated Task 1 manifest under \texttt{reports/phase9/reference\_window\_preparation/}.\\
+\textbf{Task goal:} Pick the canonical historical window, verify local raw-archive and detector-input availability, and freeze the exact command, path, and output contract that the rest of Phase 9 will use.\\
+\textbf{Current status in this workspace snapshot:} The canonical window is now selected and frozen again for Phase 9, but it is \textbf{not materially available locally yet}. The raw archive partition, detector-input partition, and replay-republish artifact for the selected hour are still absent from this workspace, and the later-phase database tables remain empty.
+
+\section*{Chosen Canonical Window}
+\textbf{Window:} \texttt{2026-04-20T05:00:00+00:00} to \texttt{2026-04-20T06:00:00+00:00}\\
+\textbf{Primary source system:} \texttt{gamma\_events}
+
+\textbf{Why this window remains canonical}
+\begin{itemize}
+\item It is the only exact one-hour window named directly in a committed canonical phase document: \texttt{Documentation/phases/phase2.tex}.
+\item Phase 8 already froze this same hour formally in \texttt{reports/phase8/reference\_window\_freeze/phase8\_reference\_window\_manifest.json}.
+\item Reusing the same exact hour keeps Phase 9 aligned with the strongest existing provenance chain instead of inventing a weaker undocumented reference window.
+\end{itemize}
+
+\section*{Availability Verification}
+\begin{longtable}{p{0.34\linewidth}p{0.18\linewidth}p{0.34\linewidth}}
+\textbf{Check} & \textbf{Status} & \textbf{Assessment} \\
+\texttt{data/} root exists & No & The local workspace currently has no materialized archive tree to inspect directly. \\
+\texttt{data/raw/year=2026/month=04/day=20/hour=05/source\_system=gamma\_events/events.ndjson} & Missing & The selected raw partition is frozen by contract, but not present locally. \\
+\texttt{data/detector\_input/year=2026/month=04/day=20/hour=05/source\_system=gamma\_events/events.ndjson} & Missing & The selected detector-input partition is also absent locally. \\
+\texttt{data/replay\_runs/12bc07e8ae50/source\_system=gamma\_events/detector\_input.ndjson} & Missing & The canonical replay-republish proof path cited in Phase 2 is not present locally. \\
+\texttt{database/polymarket\_state.db} & Present & The SQLite database exists and is hashable, but it is small and currently serves mainly as a schema-bearing snapshot. \\
+Later-phase runtime tables & Present but empty & Tables for candidates, alerts, evidence, validation, backtests, calibration, and shadow scores all exist structurally, but their row counts are zero. \\
+\texttt{reports/phase5/} & Missing & No local replay, validation, or backtest report root is materialized yet. \\
+\texttt{reports/phase6/} & Missing & No local Phase 6 artifact root is materialized yet. \\
+\texttt{reports/phase7/} & Present but empty & The directory exists, but it does not currently strengthen the Phase 9 materialization path. \\
+\end{longtable}
+
+\section*{Direct Conclusion}
+Task 1 can honestly freeze the canonical Phase 9 reference contract now, but it cannot honestly claim that the chosen hour is already runnable end to end in this workspace. The correct truth state is:
+\begin{itemize}
+\item the window choice is strong,
+\item the command path is now explicit,
+\item the expected outputs are frozen,
+\item but the local archive and later-phase runtime evidence still need to be materialized in later Phase 9 tasks.
+\end{itemize}
+
+\section*{Frozen Command Path}
+\begin{longtable}{p{0.24\linewidth}p{0.36\linewidth}p{0.26\linewidth}}
+\textbf{Command Step} & \textbf{Command} & \textbf{Expected Output} \\
+Phase 2 replay validation &
+\texttt{python validation/run\_phase2\_replay.py --start 2026-04-20T05:00:00+00:00 --end 2026-04-20T06:00:00+00:00 --source-system gamma\_events --json} &
+stdout JSON replay coverage report for the selected hour \\
+Phase 2 replay republish &
+\texttt{python validation/run\_phase2\_republish.py --start 2026-04-20T05:00:00+00:00 --end 2026-04-20T06:00:00+00:00 --source-system gamma\_events --json} &
+one replay run entry plus a republished detector-input artifact under \texttt{data/replay\_runs/<replay\_run\_id>/...} \\
+Phase 4 Gate 4 capture &
+\texttt{python run\_phase4\_gate4\_capture.py --limit 10 --latest-alert-limit 5 --output reports/phase9/reference\_window\_preparation/phase9\_task1\_gate4\_report.json} &
+\texttt{reports/phase9/reference\_window\_preparation/phase9\_task1\_gate4\_report.json} plus later alert/evidence rows once candidates exist \\
+Phase 5 replay bundle &
+\texttt{python run\_phase5\_replay.py --start 2026-04-20T05:00:00+00:00 --end 2026-04-20T06:00:00+00:00 --source-system gamma\_events --output-dir reports/phase9/reference\_window\_preparation/phase5\_replay\_bundle --json} &
+\texttt{reports/phase9/reference\_window\_preparation/phase5\_replay\_bundle/} \\
+Phase 6 training dataset &
+\texttt{python run\_phase6\_build\_training\_dataset.py --start 2026-04-20T05:00:00+00:00 --end 2026-04-20T06:00:00+00:00 --output-dir reports/phase9/reference\_window\_preparation/phase6\_training\_datasets --json} &
+replay-derived training dataset CSV and metadata JSON \\
+Phase 6 feature materialization &
+\texttt{python run\_phase6\_materialize\_features.py --start 2026-04-20T05:00:00+00:00 --end 2026-04-20T06:00:00+00:00 --mode inference --output-dir reports/phase9/reference\_window\_preparation/phase6\_features --json} &
+feature artifact under \texttt{reports/phase9/reference\_window\_preparation/phase6\_features/} \\
+\end{longtable}
+
+\section*{Frozen Output Roots}
+\begin{itemize}
+\item \texttt{reports/phase9/reference\_window\_preparation/phase9\_task1\_reference\_window\_manifest.json}
+\item \texttt{reports/phase9/reference\_window\_preparation/phase9\_task1\_reference\_window\_summary.md}
+\item \texttt{reports/phase9/reference\_window\_preparation/phase9\_task1\_gate4\_report.json}
+\item \texttt{reports/phase9/reference\_window\_preparation/phase5\_replay\_bundle/}
+\item \texttt{reports/phase9/reference\_window\_preparation/phase6\_training\_datasets/}
+\item \texttt{reports/phase9/reference\_window\_preparation/phase6\_features/}
+\end{itemize}
+
+\section*{Bottom-Line Assessment}
+Task 1 now gives Phase 9 one unambiguous historical anchor. The remaining work is not deciding what window to use. The remaining work is populating that frozen path with real local artifacts so the later Phase 9 tasks can turn the current empty-state contract into a materially defensible SRS-completion packet.
+
+\end{document}

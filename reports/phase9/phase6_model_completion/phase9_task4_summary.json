@@ -1,0 +1,212 @@
+{
+  "active_shadow_model": {
+    "artifact_path": "reports/phase6/model_artifacts/phase9_task4/phase9_task4_lightgbm_v1.json",
+    "calibration_metadata": {
+      "preferred_split": "train",
+      "required_baseline_assessment": {
+        "heldout_evidence_available": false,
+        "model_beats_all_required_baselines": null,
+        "status": "descriptive_only_train_split"
+      },
+      "thresholds": {
+        "actionable": 0.5,
+        "critical": 0.5,
+        "watch": 0.5
+      }
+    },
+    "created_at": "2026-04-22 21:06:59",
+    "deployed_at": "2026-04-22T21:06:59.324445+00:00",
+    "deployment_status": "shadow",
+    "feature_schema_version": "phase6_features_v1",
+    "model_name": "phase6_ranker_v1",
+    "model_version": "phase9_task4_lightgbm_v1",
+    "notes": "Activated by Phase 9 Task 4 canonical model-completion run.",
+    "registry_version": "phase6_registry_v1",
+    "shadow_enabled": true,
+    "training_dataset_hash": "cc06985f33016ced4570c465748866a33f67fed129db37d0f326acca5076cff7"
+  },
+  "artifacts": {
+    "baseline_json_path": "reports/phase6/baseline_comparisons/phase9_task4_lightgbm_v1_required_baselines.json",
+    "baseline_markdown_path": "reports/phase6/baseline_comparisons/phase9_task4_lightgbm_v1_required_baselines.md",
+    "calibration_json_path": "reports/phase6/calibration/phase9_task4_lightgbm_v1_calibration_report.json",
+    "calibration_markdown_path": "reports/phase6/calibration/phase9_task4_lightgbm_v1_calibration_report.md",
+    "dataset_csv_path": "reports/phase6/training_datasets/phase9_task4/cc06985f33016ced4570c465748866a33f67fed129db37d0f326acca5076cff7.csv",
+    "dataset_meta_path": "reports/phase6/training_datasets/phase9_task4/cc06985f33016ced4570c465748866a33f67fed129db37d0f326acca5076cff7.json",
+    "model_card_path": "reports/phase6/model_artifacts/phase9_task4/phase9_task4_lightgbm_v1_model_card.md",
+    "model_path": "reports/phase6/model_artifacts/phase9_task4/phase9_task4_lightgbm_v1.json",
+    "report_path": "reports/phase6/model_artifacts/phase9_task4/phase9_task4_lightgbm_v1_report.json",
+    "scored_csv_path": "reports/phase6/model_artifacts/phase9_task4/phase9_task4_lightgbm_v1_scored.csv",
+    "shadow_json_path": "reports/phase6/shadow_scores/phase9_task4_lightgbm_v1_reference_window.json"
+  },
+  "calibration_profiles_written": [
+    {
+      "calibration_profile_id": "238dca54b5c641b5a279071cabdbc44e",
+      "model_version": "phase9_task4_lightgbm_v1",
+      "positive_rate": 0.5,
+      "profile_key": "global",
+      "profile_scope": "global",
+      "sample_count": 2
+    },
+    {
+      "calibration_profile_id": "5e250b8328994516acde607b28204fd3",
+      "model_version": "phase9_task4_lightgbm_v1",
+      "positive_rate": 0.5,
+      "profile_key": "tight",
+      "profile_scope": "liquidity_bucket",
+      "sample_count": 2
+    },
+    {
+      "calibration_profile_id": "fa1b354809744351a7dfbeae2c2acde2",
+      "model_version": "phase9_task4_lightgbm_v1",
+      "positive_rate": 0.5,
+      "profile_key": "phase9_fixture",
+      "profile_scope": "category",
+      "sample_count": 2
+    }
+  ],
+  "cleanup_summary": {
+    "calibration_profiles": 3,
+    "model_evaluation_runs": 1,
+    "model_registry": 1,
+    "shadow_model_scores": 2
+  },
+  "dataset_summary": {
+    "dataset_hash": "cc06985f33016ced4570c465748866a33f67fed129db37d0f326acca5076cff7",
+    "feature_schema_version": "phase6_features_v1",
+    "labeled_row_count": 2,
+    "row_count": 2,
+    "test_row_count": 0,
+    "train_row_count": 2,
+    "validation_row_count": 0
+  },
+  "evaluation_summary": {
+    "dataset_hash": "cc06985f33016ced4570c465748866a33f67fed129db37d0f326acca5076cff7",
+    "evaluation_run_id": "7d25aa9134274b60bb0c04c42ae65d60",
+    "evaluation_version": "phase6_eval_v1",
+    "feature_schema_version": "phase6_features_v1",
+    "labeled_row_count": 2,
+    "model_version": "phase9_task4_lightgbm_v1",
+    "output_path": "reports/phase6/model_artifacts/phase9_task4/phase9_task4_lightgbm_v1_report.json",
+    "test_row_count": 0,
+    "train_row_count": 2,
+    "validation_row_count": 0
+  },
+  "fit_summary": {
+    "artifact_path": null,
+    "base_rate": 0.5,
+    "dataset_hash": "cc06985f33016ced4570c465748866a33f67fed129db37d0f326acca5076cff7",
+    "feature_count": 11,
+    "labeled_row_count": 2,
+    "model_version": "phase9_task4_lightgbm_v1",
+    "train_row_count": 2
+  },
+  "generated_at": "2026-04-22T21:06:59.361124+00:00",
+  "registry_summary": {
+    "artifact_path": "reports/phase6/model_artifacts/phase9_task4/phase9_task4_lightgbm_v1.json",
+    "deployment_status": "shadow",
+    "feature_schema_version": "phase6_features_v1",
+    "model_name": "phase6_ranker_v1",
+    "model_version": "phase9_task4_lightgbm_v1",
+    "shadow_enabled": true,
+    "training_dataset_hash": "cc06985f33016ced4570c465748866a33f67fed129db37d0f326acca5076cff7"
+  },
+  "required_baseline_report": {
+    "assessment": {
+      "heldout_evidence_available": false,
+      "model_beats_all_required_baselines": null,
+      "status": "descriptive_only_train_split"
+    },
+    "preferred_split": "train",
+    "required_baselines": [
+      {
+        "auc_margin_vs_model": 0.5,
+        "baseline_key": "baseline_probability_momentum",
+        "baseline_metrics": {
+          "auc": 0.0,
+          "mean_score": 0.032857,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "precision_at_10_margin_vs_model": 0.0,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.5,
+        "baseline_key": "baseline_order_imbalance",
+        "baseline_metrics": {
+          "auc": 0.0,
+          "mean_score": 0.741758,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "precision_at_10_margin_vs_model": 0.0,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.5,
+        "baseline_key": "baseline_microstructure",
+        "baseline_metrics": {
+          "auc": 0.0,
+          "mean_score": 0.466423,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "precision_at_10_margin_vs_model": 0.0,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.0,
+        "baseline_key": "baseline_external_evidence",
+        "baseline_metrics": {
+          "auc": 0.5,
+          "mean_score": 0.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "precision_at_10_margin_vs_model": 0.0,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.0,
+        "baseline_key": "baseline_fresh_wallet",
+        "baseline_metrics": {
+          "auc": 0.5,
+          "mean_score": 1.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "precision_at_10_margin_vs_model": 0.0,
+        "status": "model_stronger"
+      }
+    ]
+  },
+  "shadow_score_count": 2,
+  "table_counts_after": {
+    "calibration_profiles": 6,
+    "model_evaluation_runs": 2,
+    "model_registry": 1,
+    "shadow_model_scores": 2
+  },
+  "task_contract_version": "phase9_task4_phase6_model_completion_v1",
+  "task_name": "Phase 9 Task 4 - SRS-Compliant Phase 6 Model Completion",
+  "thresholds": {
+    "actionable": 0.5,
+    "critical": 0.5,
+    "watch": 0.5
+  },
+  "window": {
+    "alignment": "Uses the same canonical Phase 9 reference hour already materialized through Task 3.",
+    "end": "2026-04-20T06:00:00+00:00",
+    "start": "2026-04-20T05:00:00+00:00"
+  }
+}

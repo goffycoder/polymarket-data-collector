@@ -1,0 +1,44 @@
+[
+  {
+    "alert_id": "b64d7badf1004ac0b8cdad9bc02fb46f",
+    "candidate_id": "333f45767c93481e978a92721190d4f8",
+    "decision_timestamp": "2026-04-20T05:06:45+00:00",
+    "direction": "YES",
+    "entry_price": 0.55,
+    "entry_time": "2026-04-20T05:06:50+00:00",
+    "event_family_id": "phase9_task2_event_a",
+    "exit_price": 1.0,
+    "exit_time": "2026-04-20T07:45:00+00:00",
+    "fee_paid": 4.0,
+    "holding_seconds": 9490.0,
+    "market_id": "phase9_task2_market_a",
+    "notes": [
+      "resolution_exit"
+    ],
+    "paper_trade_id": "d9d63a154d368c98",
+    "pnl_bounded": 77.818182,
+    "skip_reason": null,
+    "status": "resolved"
+  },
+  {
+    "alert_id": "d1c2402ed3274b198cc74146a62690ea",
+    "candidate_id": "d839f0b577cc40d39fc6b827d52929ad",
+    "decision_timestamp": "2026-04-20T05:18:45+00:00",
+    "direction": "YES",
+    "entry_price": 0.52,
+    "entry_time": "2026-04-20T05:18:50+00:00",
+    "event_family_id": "phase9_task2_event_b",
+    "exit_price": 0.33,
+    "exit_time": "2026-04-20T06:45:00+00:00",
+    "fee_paid": 4.0,
+    "holding_seconds": 5170.0,
+    "market_id": "phase9_task2_market_b",
+    "notes": [
+      "risk_stop"
+    ],
+    "paper_trade_id": "da4edfdd2a9a6ad1",
+    "pnl_bounded": -40.538462,
+    "skip_reason": null,
+    "status": "filled"
+  }
+]

@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 9 Task 4 - SRS-Compliant Phase 6 Model Completion}
+
+\textbf{Phase 9 parent doc:} \texttt{Documentation/phases/phase9.tex}\\
+\textbf{Task goal:} Replace the current linear starter-ranker path with at least one SRS-compliant LightGBM or CatBoost model, compare it against the required baselines, save calibration and threshold artifacts, register the promoted shadow candidate, and materialize shadow-score evidence.
+
+\section*{Interpretation}
+This task does not silently claim that the local workspace already has enough labeled data to prove broad generalization. It does require that the runtime path is no longer blocked on missing boosted-tree support.
+\begin{itemize}
+\item One real LightGBM or CatBoost artifact must exist.
+\item The required baseline comparison must be written explicitly.
+\item Calibration profiles and threshold recommendations must be persisted.
+\item The model must be present in the local registry and activated in shadow mode only.
+\item Shadow-score evidence must exist for the canonical reference window.
+\end{itemize}
+
+\section*{Canonical Command}
+\begin{verbatim}
+python run_phase9_phase6_model_completion.py --json
+\end{verbatim}
+
+\section*{Expected Outputs}
+\begin{itemize}
+\item training dataset artifact under \texttt{reports/phase6/training\_datasets/phase9\_task4/}
+\item model artifact, score report, scored rows, and model card under \texttt{reports/phase6/model\_artifacts/phase9\_task4/}
+\item required-baseline comparison under \texttt{reports/phase6/baseline\_comparisons/}
+\item calibration and threshold outputs under \texttt{reports/phase6/calibration/}
+\item shadow-score artifact under \texttt{reports/phase6/shadow\_scores/}
+\item durable rows in \texttt{model\_evaluation\_runs}, \texttt{calibration\_profiles}, \texttt{model\_registry}, and \texttt{shadow\_model\_scores}
+\end{itemize}
+
+\section*{Done Condition}
+Task 4 is complete when the repo can point to one traceable boosted-tree model artifact and say, with evidence rather than plans:
+\begin{itemize}
+\item this is the LightGBM or CatBoost ranker,
+\item these are the required baseline comparisons,
+\item these are the saved calibration profiles and alert thresholds,
+\item this is the registry entry and active shadow designation, and
+\item these are the shadow scores for the canonical Phase 9 reference path.
+\end{itemize}
+
+\end{document}

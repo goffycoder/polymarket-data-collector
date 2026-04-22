@@ -151,9 +151,9 @@
             "exists": true,
             "kind": "runbook",
             "note": null,
-            "path": "database/PHASE5_PERSON1_RUNBOOK.md",
-            "sha256": "f5ee0a42d090e6a5e906ca4f6e6574ae0d50168d4051f12c4fe83bdfda6b1dca",
-            "size_bytes": 3711
+            "path": "database/PHASE5_SINGLE_OWNER_RUNBOOK.md",
+            "sha256": "df8523100c69e5416a04d3a3163c1e4f82f1f9aa45e9aaf9a8c2817e73051cd2",
+            "size_bytes": 3022
           }
         ],
         "canonical_for_v1": true,
@@ -168,32 +168,32 @@
             "kind": "runtime_module",
             "note": null,
             "path": "phase6/training.py",
-            "sha256": "0594d59d3069c56b64d497f8bcc8da635e3141df312088bee50e58b2cd748741",
-            "size_bytes": 11331
+            "sha256": "f5a06507209d1986bf4110a07b0f8385c0160cf2c0aaea9f1b1b2f03d5c092c2",
+            "size_bytes": 17492
           },
           {
             "exists": true,
             "kind": "runtime_module",
             "note": null,
             "path": "phase6/reporting.py",
-            "sha256": "a0bd7158a3bbb5bdbb4bb41efcb99c7e849a87e1dbfce0dcee86c3505bb7c4fa",
-            "size_bytes": 9121
+            "sha256": "3d16df0d2874b501268103d8563757e0c755bc9415b4b2b199f44e860e4d5a6b",
+            "size_bytes": 13808
           },
           {
             "exists": true,
             "kind": "runbook",
             "note": null,
-            "path": "database/PHASE6_PERSON1_RUNBOOK.md",
-            "sha256": "2a0d55565211fa5fc275e58b298e15cafc19c28f58a3c3fcd44f5df61c7e5dc8",
-            "size_bytes": 4052
+            "path": "database/PHASE6_SINGLE_OWNER_RUNBOOK.md",
+            "sha256": "54e3a64aa192f7663bdcae054e79308b131348ba5e7af8ccaebb54f4c0a0c3df",
+            "size_bytes": 3736
           },
           {
             "exists": true,
-            "kind": "runbook",
+            "kind": "phase9_artifact",
             "note": null,
-            "path": "database/PHASE6_PERSON2_RUNBOOK.md",
-            "sha256": "8609dac057499ebde5da5ea5012c6107c31ee8c89ef71df6828e92c1cd7e84e3",
-            "size_bytes": 2891
+            "path": "reports/phase9/phase6_model_completion/phase9_task4_summary.json",
+            "sha256": "7f8e350f5a8166d7d5fdd96965a0e7a1e4a351858e1effdd600200470172d95f",
+            "size_bytes": 7969
           }
         ],
         "canonical_for_v1": true,
@@ -251,16 +251,16 @@
       "kind": "document",
       "note": null,
       "path": "README.md",
-      "sha256": "1675dd21288d984a49c8d43aec2c4ad5990280d60049220ebd652e6e6a695bc1",
-      "size_bytes": 17137
+      "sha256": "42be0f1f2596919f9a681ed17850939c06ef3af7373a0cef1c0896320d24b8e9",
+      "size_bytes": 19361
     },
     {
       "exists": true,
       "kind": "document",
       "note": null,
       "path": "Documentation/INDEX.tex",
-      "sha256": "6b9876c89a9cba014873397392c2aa735ee0211fc50ede7ad736d6301d45a91c",
-      "size_bytes": 3349
+      "sha256": "b7446c732d07ac5d55a75ae10a808a362f585778242eac7e6a661b42391bc104",
+      "size_bytes": 4550
     },
     {
       "exists": true,
@@ -301,6 +301,22 @@
       "path": "Documentation/phases/phase8_metrics_review.tex",
       "sha256": "761bb2418c21bc6bf030efc2ce3a4876b176410affa8442b6e0a8eedf1d5b202",
       "size_bytes": 6597
+    },
+    {
+      "exists": true,
+      "kind": "phase_doc",
+      "note": null,
+      "path": "Documentation/phases/phase9.tex",
+      "sha256": "223103f19f5b43795d3aea8f81e58c5ac9ae1813b4dabdee1f721db2b75c9ca1",
+      "size_bytes": 12311
+    },
+    {
+      "exists": true,
+      "kind": "phase_doc",
+      "note": null,
+      "path": "Documentation/phases/phase9_task5_closeout_refresh.tex",
+      "sha256": "4af8d339f3a06f4fac2fcd9772bcd0ddde0dadf691789628c418c4c57b3cdf6c",
+      "size_bytes": 1791
     }
   ],
   "consolidated_handoff_path": {
@@ -311,8 +327,8 @@
           "kind": "document",
           "note": null,
           "path": "README.md",
-          "sha256": "1675dd21288d984a49c8d43aec2c4ad5990280d60049220ebd652e6e6a695bc1",
-          "size_bytes": 17137
+          "sha256": "42be0f1f2596919f9a681ed17850939c06ef3af7373a0cef1c0896320d24b8e9",
+          "size_bytes": 19361
         },
         "label": "Top-level orientation",
         "order": 1,
@@ -324,8 +340,8 @@
           "kind": "document",
           "note": null,
           "path": "Documentation/INDEX.tex",
-          "sha256": "6b9876c89a9cba014873397392c2aa735ee0211fc50ede7ad736d6301d45a91c",
-          "size_bytes": 3349
+          "sha256": "b7446c732d07ac5d55a75ae10a808a362f585778242eac7e6a661b42391bc104",
+          "size_bytes": 4550
         },
         "label": "Documentation index",
         "order": 2,
@@ -408,9 +424,35 @@
         "label": "Final closeout memo",
         "order": 8,
         "role": "single-owner final answer for demo, thesis, and defense handoff"
+      },
+      {
+        "artifact": {
+          "exists": true,
+          "kind": "document",
+          "note": null,
+          "path": "Documentation/phases/phase9.tex",
+          "sha256": "223103f19f5b43795d3aea8f81e58c5ac9ae1813b4dabdee1f721db2b75c9ca1",
+          "size_bytes": 12311
+        },
+        "label": "Phase 9 remediation plan",
+        "order": 9,
+        "role": "single-owner remediation plan that closes the exact Phase 8 evidence gaps."
+      },
+      {
+        "artifact": {
+          "exists": true,
+          "kind": "document",
+          "note": null,
+          "path": "Documentation/phases/phase9_task5_closeout_refresh.tex",
+          "sha256": "4af8d339f3a06f4fac2fcd9772bcd0ddde0dadf691789628c418c4c57b3cdf6c",
+          "size_bytes": 1791
+        },
+        "label": "Phase 9 final refresh task",
+        "order": 10,
+        "role": "documents the canonical closeout-refresh contract and regeneration commands."
       }
     ],
-    "note": "Phase 5 and Phase 6 runbooks remain supporting-active with historical filenames, so the closeout package preserves them in the canonical handoff path rather than pretending they do not exist.",
+    "note": "Phase 9 Task 5 creates canonical single-owner Phase 5 and Phase 6 runbooks; historical person-labeled runbooks remain only as supporting traceability artifacts.",
     "operator_runbooks": [
       {
         "artifact": {
@@ -458,12 +500,12 @@
         "artifact": {
           "exists": true,
           "kind": "runbook",
-          "note": "The historical Person 1 filename remains supporting-active because no single-owner replacement exists yet.",
-          "path": "database/PHASE5_PERSON1_RUNBOOK.md",
-          "sha256": "f5ee0a42d090e6a5e906ca4f6e6574ae0d50168d4051f12c4fe83bdfda6b1dca",
-          "size_bytes": 3711
+          "note": "Single-owner Phase 5 runbook created in Phase 9 Task 5 and now replaces the historical person-labeled primary path.",
+          "path": "database/PHASE5_SINGLE_OWNER_RUNBOOK.md",
+          "sha256": "df8523100c69e5416a04d3a3163c1e4f82f1f9aa45e9aaf9a8c2817e73051cd2",
+          "size_bytes": 3022
         },
-        "classification": "supporting_active",
+        "classification": "canonical",
         "label": "Phase 5 replay and validation",
         "order": 4,
         "purpose": "Replay historical windows, inspect health, and generate validation or backfill artifacts."
@@ -472,36 +514,64 @@
         "artifact": {
           "exists": true,
           "kind": "runbook",
-          "note": "This remains an active runtime path, but the filename is historical.",
-          "path": "database/PHASE6_PERSON1_RUNBOOK.md",
-          "sha256": "2a0d55565211fa5fc275e58b298e15cafc19c28f58a3c3fcd44f5df61c7e5dc8",
-          "size_bytes": 4052
+          "note": "Single-owner Phase 6 runbook created in Phase 9 Task 5 and now replaces the historical person-labeled primary path.",
+          "path": "database/PHASE6_SINGLE_OWNER_RUNBOOK.md",
+          "sha256": "54e3a64aa192f7663bdcae054e79308b131348ba5e7af8ccaebb54f4c0a0c3df",
+          "size_bytes": 3736
         },
-        "classification": "supporting_active",
+        "classification": "canonical",
         "label": "Phase 6 shadow-model operations",
         "order": 5,
-        "purpose": "Materialize features, register or activate shadow models, and run shadow scoring."
+        "purpose": "Materialize features, train and evaluate the LightGBM shadow model, register or activate models, and run shadow scoring."
       },
       {
         "artifact": {
           "exists": true,
           "kind": "runbook",
-          "note": "This remains an active runtime path, but the filename is historical.",
+          "note": null,
+          "path": "database/PHASE5_PERSON1_RUNBOOK.md",
+          "sha256": "f5ee0a42d090e6a5e906ca4f6e6574ae0d50168d4051f12c4fe83bdfda6b1dca",
+          "size_bytes": 3711
+        },
+        "classification": "supporting_historical",
+        "label": "Historical Phase 5 support path",
+        "order": 6,
+        "purpose": "Retained for historical traceability only; no longer the primary single-owner handoff path."
+      },
+      {
+        "artifact": {
+          "exists": true,
+          "kind": "runbook",
+          "note": null,
+          "path": "database/PHASE6_PERSON1_RUNBOOK.md",
+          "sha256": "2a0d55565211fa5fc275e58b298e15cafc19c28f58a3c3fcd44f5df61c7e5dc8",
+          "size_bytes": 4052
+        },
+        "classification": "supporting_historical",
+        "label": "Historical Phase 6 support path",
+        "order": 7,
+        "purpose": "Retained for historical traceability only; no longer the primary single-owner handoff path."
+      },
+      {
+        "artifact": {
+          "exists": true,
+          "kind": "runbook",
+          "note": null,
           "path": "database/PHASE6_PERSON2_RUNBOOK.md",
           "sha256": "8609dac057499ebde5da5ea5012c6107c31ee8c89ef71df6828e92c1cd7e84e3",
           "size_bytes": 2891
         },
-        "classification": "supporting_active",
-        "label": "Phase 6 model evaluation",
-        "order": 6,
-        "purpose": "Build replay-derived datasets, train the starter ranker, and generate evaluation artifacts."
+        "classification": "supporting_historical",
+        "label": "Historical Phase 6 evaluation support path",
+        "order": 8,
+        "purpose": "Retained for historical traceability only; no longer the primary single-owner handoff path."
       }
     ]
   },
   "contract_version": "phase8_final_closeout_v1",
   "final_closeout_memo": {
     "canonical_v1_mode": "rule_based_plus_shadow_ml",
-    "direct_answer": "No. The project is not yet v1-complete according to the SRS in the current workspace snapshot. It has a defendable architecture, a frozen provenance chain, and a canonical operating-mode decision, but it still lacks the materialized runtime evidence needed to satisfy the full SRS completion contract.",
+    "direct_answer": "No. Phase 9 materially improved the repo and now provides a replay-linked local evidence packet through Phase 6, but the project is still not SRS-complete v1 because the remaining blocker is evidence quality rather than missing artifacts: the current Phase 4 path is still noop-provider-backed and the current Phase 6 LightGBM evidence is still too small and train-only to defend a held-out claim.",
     "intentionally_out_of_scope": [
       "live capital deployment or autonomous execution",
       "cloud-first migration, HA redesign, or redundancy before the single-instance path is fully proven",
@@ -509,16 +579,16 @@
       "treating thesis-grade ablation figures as if they were required canonical v1 operating artifacts"
     ],
     "next_required_actions_before_v1_complete": [
-      "materialize one real end-to-end replay-to-alert evidence packet for the frozen or equivalent reference window",
-      "produce at least one conservative backtest and one paper-trading evaluation artifact",
-      "evaluate a real LightGBM or CatBoost ranker against wallet-unaware baselines and preserve the evidence",
-      "normalize historical runbook paths where needed so the live operator path can be rerun without branch-specific assumptions"
+      "materialize one real-provider-backed end-to-end replay-to-alert evidence packet for the frozen or equivalent reference window",
+      "expand Phase 5 evaluation beyond the tiny seeded packet so conservative edge and lead-time claims survive a less fragile sample",
+      "re-run the LightGBM or CatBoost path on a held-out-sized dataset and preserve evidence that comparisons remain strong off-train",
+      "treat the new single-owner runbooks as the default operator path and retire person-labeled instructions from primary use"
     ],
-    "overall_status": "not_v1_complete_in_current_workspace",
+    "overall_status": "materially_populated_but_not_srs_complete_v1",
     "primary_blockers": [
-      "No real alert/evaluation/backtest evidence exists locally, so none of the SRS priority metrics can be defended numerically in this workspace.",
-      "Task 2 freeze remains at frozen_definition_with_missing_runtime_outputs rather than a fully materialized evidence packet.",
-      "The current committed ML implementation and artifact state do not satisfy the SRS LightGBM/CatBoost evaluation requirement."
+      "The project now has a materially populated end-to-end local packet, but the remaining blocker is stronger real-provider-backed and held-out-sized evidence rather than missing artifacts.",
+      "The canonical Phase 4 evidence path is still seeded local replay with noop providers rather than a real-provider-backed alert-evidence packet.",
+      "The canonical Phase 6 LightGBM evaluation is still train-only on a tiny dataset, so it does not yet justify a held-out-strength SRS completion claim."
     ],
     "srs_checklist": [
       {
@@ -530,8 +600,8 @@
             "kind": "document",
             "note": null,
             "path": "README.md",
-            "sha256": "1675dd21288d984a49c8d43aec2c4ad5990280d60049220ebd652e6e6a695bc1",
-            "size_bytes": 17137
+            "sha256": "42be0f1f2596919f9a681ed17850939c06ef3af7373a0cef1c0896320d24b8e9",
+            "size_bytes": 19361
           },
           {
             "exists": true,
@@ -545,7 +615,7 @@
         "status": "historically_supported_not_reverified_in_phase8"
       },
       {
-        "assessment": "Phase 2 documents the proof window, and Task 2 froze the path definition, but the local workspace does not contain the raw partitions or replay outputs now.",
+        "assessment": "The canonical local packet now has raw-archive and detector-input manifest rows plus replay artifacts for the frozen hour, though the path is still a seeded local proof rather than a broad operational packet.",
         "criterion": "the raw archive and replay path are working",
         "evidence": [
           {
@@ -561,14 +631,22 @@
             "kind": "phase8_artifact",
             "note": null,
             "path": "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
-            "sha256": "1dbf6d7012931f1e9d9d377e0535860b0a0ec1d811bd617e662c9c38537bcb32",
-            "size_bytes": 20806
+            "sha256": "272fe1f5261dee50b10b7f02b45b609851bc98f3ef1a87c36d1187856f955861",
+            "size_bytes": 21678
+          },
+          {
+            "child_count": 3,
+            "exists": true,
+            "kind": "phase5_artifact",
+            "note": null,
+            "path": "reports/phase5/replay_runs/phase9_task3",
+            "sha256": null
           }
         ],
-        "status": "historically_proven_but_not_materialized_in_current_workspace"
+        "status": "materialized_for_canonical_local_packet"
       },
       {
-        "assessment": "The code path exists, but the frozen reference packet does not include populated candidate rows or replay-to-candidate regeneration evidence.",
+        "assessment": "Phase 9 Task 2 regenerated deterministic candidate rows for the canonical window through the native detector path.",
         "criterion": "deterministic candidate episodes can be regenerated from replay",
         "evidence": [
           {
@@ -581,17 +659,17 @@
           },
           {
             "exists": true,
-            "kind": "phase8_artifact",
+            "kind": "phase9_artifact",
             "note": null,
-            "path": "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
-            "sha256": "1dbf6d7012931f1e9d9d377e0535860b0a0ec1d811bd617e662c9c38537bcb32",
-            "size_bytes": 20806
+            "path": "reports/phase9/candidate_to_alert_materialization/phase9_task2_review_packet.json",
+            "sha256": "0c1b44c65543a78cae251a198bf65e33086d30f0bd3629501a67f36c56b83551",
+            "size_bytes": 16570
           }
         ],
-        "status": "not_demonstrated_in_current_workspace"
+        "status": "materialized_for_canonical_local_packet"
       },
       {
-        "assessment": "Task 4 found zero persisted alerts, delivery attempts, and analyst-feedback rows, so this criterion is still unmet in the current workspace.",
+        "assessment": "The canonical packet now includes persisted alerts, delivery attempts, and analyst feedback, but the evidence providers are noop adapters and outbound delivery was skipped locally, so this is not yet a strong real-world Phase 4 proof.",
         "criterion": "evidence-backed alerts are live with analyst feedback capture",
         "evidence": [
           {
@@ -604,17 +682,17 @@
           },
           {
             "exists": true,
-            "kind": "phase8_artifact",
+            "kind": "phase9_artifact",
             "note": null,
-            "path": "reports/phase8/metrics_review/phase8_metrics_review_manifest.json",
-            "sha256": "28fb8a6ccbc53fc8ba2a40a165761bb96d5d6822f898784c98b025b5807f1382",
-            "size_bytes": 18763
+            "path": "reports/phase9/candidate_to_alert_materialization/phase9_task2_review_packet.json",
+            "sha256": "0c1b44c65543a78cae251a198bf65e33086d30f0bd3629501a67f36c56b83551",
+            "size_bytes": 16570
           }
         ],
-        "status": "not_demonstrated_in_current_workspace"
+        "status": "materialized_but_not_real_provider_backed"
       },
       {
-        "assessment": "No validation runs, backtest artifacts, or Phase 5 report outputs are present locally, so this criterion remains unmet.",
+        "assessment": "Phase 9 Task 3 now provides replay, holdout validation, and conservative paper-trading artifacts under reports/phase5/, with honest caveats that the sample is tiny.",
         "criterion": "one conservative backtest and one paper-trading evaluation exist",
         "evidence": [
           {
@@ -627,37 +705,45 @@
           },
           {
             "exists": true,
-            "kind": "phase8_artifact",
+            "kind": "phase5_artifact",
             "note": null,
-            "path": "reports/phase8/metrics_review/phase8_metrics_review_manifest.json",
-            "sha256": "28fb8a6ccbc53fc8ba2a40a165761bb96d5d6822f898784c98b025b5807f1382",
-            "size_bytes": 18763
+            "path": "reports/phase5/validation/phase9_task3_holdout_validation.json",
+            "sha256": "ae2909fd1af5d1993dce5fe5ac71746166915a3e381ea0987a51da6759c8054c",
+            "size_bytes": 19371
+          },
+          {
+            "exists": true,
+            "kind": "phase5_artifact",
+            "note": null,
+            "path": "reports/phase5/backtests/phase9_task3_conservative_backtest.json",
+            "sha256": "f745f55575a1e0d6bc4bf7ca281dade077e30647970adb07509bdaec7defd28e",
+            "size_bytes": 1372
           }
         ],
-        "status": "not_materialized_in_current_workspace"
+        "status": "satisfied_for_canonical_local_packet"
       },
       {
-        "assessment": "The committed Phase 6 trainer is still a linear starter ranker and the workspace has no populated evaluation artifacts proving a LightGBM or CatBoost baseline comparison.",
+        "assessment": "Phase 9 Task 4 now evaluates a LightGBM ranker against the required wallet-unaware baselines and persists calibration, threshold, registry, and shadow-score artifacts, but the evidence is still train-only on a tiny dataset.",
         "criterion": "one LightGBM or CatBoost ranker is evaluated against the wallet-unaware baselines",
         "evidence": [
           {
             "exists": true,
-            "kind": "runtime_module",
+            "kind": "phase_doc",
             "note": null,
-            "path": "phase6/training.py",
-            "sha256": "0594d59d3069c56b64d497f8bcc8da635e3141df312088bee50e58b2cd748741",
-            "size_bytes": 11331
+            "path": "Documentation/phases/phase9_task4_phase6_model_completion.tex",
+            "sha256": "ce5ba1397afa6d9a1967c12fd52b31aa64b6c9cf0db95409695951e7ae8efdb8",
+            "size_bytes": 2445
           },
           {
             "exists": true,
-            "kind": "phase8_artifact",
+            "kind": "phase9_artifact",
             "note": null,
-            "path": "reports/phase8/operating_mode/phase8_v1_operating_mode_manifest.json",
-            "sha256": "e7cc2a49623e36bbc52fae5e30cb432d27e76984736e539a65e1b2c1428c88c8",
-            "size_bytes": 7796
+            "path": "reports/phase9/phase6_model_completion/phase9_task4_summary.json",
+            "sha256": "7f8e350f5a8166d7d5fdd96965a0e7a1e4a351858e1effdd600200470172d95f",
+            "size_bytes": 7969
           }
         ],
-        "status": "not_satisfied_in_committed_workspace"
+        "status": "artifact_contract_satisfied_but_not_strong_enough_for_v1_claim"
       }
     ],
     "srs_v1_complete": false,
@@ -665,11 +751,12 @@
       "The repo now has one explicit canonical documentation path for single-owner handoff.",
       "One exact reference window is frozen with paths, versions, hashes, and stage-by-stage evidence-gap status.",
       "Canonical v1 is formally defined as rule-based plus shadow ML, with clear rollback semantics.",
-      "The final metrics order, limitations review, and stop-condition ledger are now explicit and machine-readable."
+      "The final metrics order, limitations review, and stop-condition ledger are now explicit and machine-readable.",
+      "Phase 9 now provides a materially populated local evidence packet spanning candidate generation, alerting, validation, conservative paper trading, and LightGBM shadow evaluation."
     ]
   },
-  "generated_at": "2026-04-22T15:33:07.383135+00:00",
-  "git_commit": "baf344b8e3bff24ffcc37040d6114d628a3f729d",
+  "generated_at": "2026-04-22T21:06:59.783559+00:00",
+  "git_commit": "96df0118cc4bf84262597dab67ee60d0c758d235",
   "key_figures_and_tables": [
     {
       "intended_use": "Show the exact raw archive to research-package path used for reproducibility defense.",
@@ -688,8 +775,8 @@
         "kind": "phase8_artifact",
         "note": null,
         "path": "reports/phase8/reference_window_freeze/phase8_reference_window_summary.md",
-        "sha256": "addc86e9e484f8b471f078a1076e58190233ac44657711017c3b6733a3598275",
-        "size_bytes": 1037
+        "sha256": "13e2bc9ae666405ce18e2e4aecafa743d2114259291a32e2f31168931c7a5fea",
+        "size_bytes": 1020
       },
       "title": "Frozen end-to-end reference chain",
       "type": "table"
@@ -711,8 +798,8 @@
         "kind": "phase8_artifact",
         "note": null,
         "path": "reports/phase8/operating_mode/phase8_v1_operating_mode_summary.md",
-        "sha256": "2d714d34290ba48e05716a91fb2af1874ba5c90148852875b9f15991db8f8ffc",
-        "size_bytes": 2497
+        "sha256": "ce59e0267275f34f413ece67ff119ce8e686f5ab5d96cca572656db60f429d67",
+        "size_bytes": 2615
       },
       "title": "Canonical v1 operating-mode decision",
       "type": "table"
@@ -734,8 +821,8 @@
         "kind": "phase8_artifact",
         "note": null,
         "path": "reports/phase8/metrics_review/phase8_metrics_review_summary.md",
-        "sha256": "297b1d18f38cc4755d90b48544fed374932a9f0bcfb1c78f6ed8c91b17b8989b",
-        "size_bytes": 2459
+        "sha256": "2025b6ef6109282f7f9ae25761ef1a2dbe239f07b4c71365466c3cb0f03375e8",
+        "size_bytes": 3252
       },
       "title": "Final metrics bundle in SRS priority order",
       "type": "table"
@@ -757,8 +844,8 @@
         "kind": "phase8_artifact",
         "note": null,
         "path": "reports/phase8/metrics_review/phase8_metrics_review_manifest.json",
-        "sha256": "28fb8a6ccbc53fc8ba2a40a165761bb96d5d6822f898784c98b025b5807f1382",
-        "size_bytes": 18763
+        "sha256": "2d27396f71e723471abe1005f4e93d04fa9bba7f68321be12dea6a6d3166caa8",
+        "size_bytes": 25451
       },
       "title": "Stop-condition ledger",
       "type": "table"
@@ -780,11 +867,34 @@
         "kind": "document",
         "note": null,
         "path": "README.md",
-        "sha256": "1675dd21288d984a49c8d43aec2c4ad5990280d60049220ebd652e6e6a695bc1",
-        "size_bytes": 17137
+        "sha256": "42be0f1f2596919f9a681ed17850939c06ef3af7373a0cef1c0896320d24b8e9",
+        "size_bytes": 19361
       },
       "title": "Architecture and methodology summary",
       "type": "memo"
+    },
+    {
+      "intended_use": "Show the concrete Task 2 through Task 4 artifacts that now back the refreshed closeout package.",
+      "key": "phase9_runtime_evidence_packet",
+      "primary_reference": {
+        "exists": true,
+        "kind": "phase9_artifact",
+        "note": null,
+        "path": "reports/phase9/candidate_to_alert_materialization/phase9_task2_review_packet.json",
+        "sha256": "0c1b44c65543a78cae251a198bf65e33086d30f0bd3629501a67f36c56b83551",
+        "size_bytes": 16570
+      },
+      "status": "materialized_in_workspace",
+      "supporting_reference": {
+        "exists": true,
+        "kind": "phase9_artifact",
+        "note": null,
+        "path": "reports/phase9/phase6_model_completion/phase9_task4_summary.json",
+        "sha256": "7f8e350f5a8166d7d5fdd96965a0e7a1e4a351858e1effdd600200470172d95f",
+        "size_bytes": 7969
+      },
+      "title": "Phase 9 runtime evidence packet",
+      "type": "artifact_family"
     },
     {
       "intended_use": "Optional thesis-depth appendix if research artifacts are generated later.",
@@ -852,6 +962,14 @@
         "path": "Documentation/phases/phase8_metrics_review.tex",
         "sha256": "761bb2418c21bc6bf030efc2ce3a4876b176410affa8442b6e0a8eedf1d5b202",
         "size_bytes": 6597
+      },
+      {
+        "exists": true,
+        "kind": "phase_doc",
+        "note": null,
+        "path": "Documentation/phases/phase9.tex",
+        "sha256": "223103f19f5b43795d3aea8f81e58c5ac9ae1813b4dabdee1f721db2b75c9ca1",
+        "size_bytes": 12311
       }
     ],
     "operating_principles": [
@@ -868,37 +986,37 @@
         "kind": "sqlite_database",
         "note": null,
         "path": "database/polymarket_state.db",
-        "sha256": "454348c99f728805654936d88a46f6f0e1508ed2d5523d0b2e976a5795378b88",
-        "size_bytes": 552960
+        "sha256": "a0af42fff7e21864ce591e781c12c0688812f57b0d14ea950cfffc821e29a9c6",
+        "size_bytes": 598016
       },
       "table_counts": {
-        "alert_delivery_attempts": 0,
-        "alerts": 0,
-        "analyst_feedback": 0,
+        "alert_delivery_attempts": 4,
+        "alerts": 2,
+        "analyst_feedback": 1,
         "backfill_requests": 0,
-        "backtest_artifacts": 0,
-        "calibration_profiles": 0,
+        "backtest_artifacts": 1,
+        "calibration_profiles": 6,
         "detector_checkpoints": 0,
-        "detector_input_manifests": 0,
-        "evidence_queries": 0,
-        "evidence_snapshots": 0,
+        "detector_input_manifests": 2,
+        "evidence_queries": 4,
+        "evidence_snapshots": 2,
         "feature_materialization_runs": 0,
-        "model_evaluation_runs": 0,
-        "model_registry": 0,
+        "model_evaluation_runs": 2,
+        "model_registry": 1,
         "phase7_experiment_ledger": 0,
         "phase7_research_datasets": 0,
         "phase7_research_scopes": 0,
         "phase7_research_windows": 0,
-        "raw_archive_manifests": 0,
-        "replay_runs": 0,
-        "shadow_model_scores": 0,
-        "signal_candidates": 0,
-        "signal_episodes": 0,
-        "signal_features": 0,
-        "validation_runs": 0
+        "raw_archive_manifests": 2,
+        "replay_runs": 2,
+        "shadow_model_scores": 2,
+        "signal_candidates": 2,
+        "signal_episodes": 2,
+        "signal_features": 32,
+        "validation_runs": 1
       }
     },
-    "freeze_status": "frozen_definition_with_missing_runtime_outputs",
+    "freeze_status": "materially_populated_seeded_reference_window",
     "phase_versions": {
       "phase3_detector_version": "phase3_detector_v1",
       "phase3_feature_schema_version": "phase3_v1",
@@ -928,8 +1046,8 @@
           "kind": "phase8_artifact",
           "note": null,
           "path": "reports/phase8/reference_window_freeze/phase8_reference_window_manifest.json",
-          "sha256": "1dbf6d7012931f1e9d9d377e0535860b0a0ec1d811bd617e662c9c38537bcb32",
-          "size_bytes": 20806
+          "sha256": "272fe1f5261dee50b10b7f02b45b609851bc98f3ef1a87c36d1187856f955861",
+          "size_bytes": 21678
         },
         "command": "python run_phase8_freeze_reference_path.py",
         "label": "Freeze the reference path"
@@ -940,8 +1058,8 @@
           "kind": "phase8_artifact",
           "note": null,
           "path": "reports/phase8/operating_mode/phase8_v1_operating_mode_manifest.json",
-          "sha256": "e7cc2a49623e36bbc52fae5e30cb432d27e76984736e539a65e1b2c1428c88c8",
-          "size_bytes": 7796
+          "sha256": "de96e9ea54c41113d9a324a243e0b18dd456bc4e33f196b065be3dd5cee9d9b9",
+          "size_bytes": 8671
         },
         "command": "python run_phase8_decide_operating_mode.py",
         "label": "Rebuild the operating-mode decision"
@@ -952,22 +1070,34 @@
           "kind": "phase8_artifact",
           "note": null,
           "path": "reports/phase8/metrics_review/phase8_metrics_review_manifest.json",
-          "sha256": "28fb8a6ccbc53fc8ba2a40a165761bb96d5d6822f898784c98b025b5807f1382",
-          "size_bytes": 18763
+          "sha256": "2d27396f71e723471abe1005f4e93d04fa9bba7f68321be12dea6a6d3166caa8",
+          "size_bytes": 25451
         },
         "command": "python run_phase8_metrics_review.py",
         "label": "Rebuild the metrics review"
       },
       {
         "artifact": {
-          "exists": false,
+          "exists": true,
           "kind": "phase8_artifact",
           "note": null,
           "path": "reports/phase8/final_closeout/phase8_final_closeout_manifest.json",
-          "sha256": null
+          "sha256": "5b1fa0584801af548b7a2c976fe1e0e6c7935536bb91efcf9cbdb2d8aa9a79f0",
+          "size_bytes": 39394
         },
         "command": "python run_phase8_build_closeout_package.py",
         "label": "Rebuild the final closeout package"
+      },
+      {
+        "artifact": {
+          "exists": false,
+          "kind": "phase9_artifact",
+          "note": null,
+          "path": "reports/phase9/closeout_refresh/phase9_task5_closeout_refresh_summary.json",
+          "sha256": null
+        },
+        "command": "python run_phase9_closeout_refresh.py",
+        "label": "Refresh the full Phase 9 closeout packet"
       }
     ],
     "reference_window": {

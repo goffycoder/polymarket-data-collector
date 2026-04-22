@@ -1,0 +1,168 @@
+{
+  "alert_summary": {
+    "delivered_or_reviewed_alerts": 1,
+    "severity_counts": [
+      {
+        "count": 2,
+        "severity": "ACTIONABLE"
+      }
+    ],
+    "suppressed_alerts": 0,
+    "total_alerts": 2
+  },
+  "analyst_summary": {
+    "action_counts": [
+      {
+        "action_type": "mark_useful",
+        "count": 1
+      }
+    ],
+    "total_feedback_rows": 1
+  },
+  "assessment": {
+    "analyst_feedback_rows": 1,
+    "status": "end_to_end_live",
+    "suppressed_alerts": 0,
+    "total_alerts": 2,
+    "total_delivery_attempts": 4
+  },
+  "delivery_summary": {
+    "channel_counts": [
+      {
+        "count": 2,
+        "delivery_channel": "discord"
+      },
+      {
+        "count": 2,
+        "delivery_channel": "telegram"
+      }
+    ],
+    "configured_channels": [
+      "telegram",
+      "discord"
+    ],
+    "error_attempts": 0,
+    "sent_attempts": 0,
+    "skipped_attempts": 4,
+    "total_attempts": 4
+  },
+  "latest_alert_example": {
+    "alert_id": "b64d7badf1004ac0b8cdad9bc02fb46f",
+    "alert_status": "useful",
+    "analyst_feedback": [
+      {
+        "action_type": "mark_useful",
+        "actor": "phase9_task2",
+        "created_at": "2026-04-22T20:18:52.808196+00:00",
+        "created_at_display": "Apr 22, 2026 4:18 PM ET",
+        "notes": "Seeded Phase 9 Task 2 candidate-to-alert materialization reviewed successfully."
+      }
+    ],
+    "candidate_id": "333f45767c93481e978a92721190d4f8",
+    "created_at": "2026-04-22T20:18:52.772922+00:00",
+    "created_at_display": "Apr 22, 2026 4:18 PM ET",
+    "delivery_attempts": [
+      {
+        "attempted_at": "2026-04-22T20:18:52.786290+00:00",
+        "attempted_at_display": "Apr 22, 2026 4:18 PM ET",
+        "delivery_channel": "telegram",
+        "delivery_status": "skipped",
+        "error_message": null
+      },
+      {
+        "attempted_at": "2026-04-22T20:18:52.792319+00:00",
+        "attempted_at_display": "Apr 22, 2026 4:18 PM ET",
+        "delivery_channel": "discord",
+        "delivery_status": "skipped",
+        "error_message": null
+      }
+    ],
+    "evidence_state": "not_publicly_explained",
+    "payload": {
+      "detector_version": "phase3_detector_v1",
+      "feature_schema_version": "phase3_v1",
+      "invalidates_it": "Material contrary public evidence or a weaker replay-reconciled interpretation.",
+      "market_evidence": {
+        "event_id": "phase9_task2_event_a",
+        "feature_snapshot": {
+          "buy_notional": 240.0,
+          "concentration_ratio": 0.642857,
+          "current_window_notional": 280.0,
+          "directional_imbalance": 0.714286,
+          "episode_end_event_time": "2026-04-20T05:06:00+00:00",
+          "episode_start_event_time": "2026-04-20T05:02:00+00:00",
+          "fresh_wallet_count": 3,
+          "fresh_wallet_notional_share": 1.0,
+          "market_id": "phase9_task2_market_a",
+          "previous_window_notional": 0,
+          "price_point_count": 3,
+          "probability_acceleration": 0.028571,
+          "probability_velocity": 0.028571,
+          "sell_notional": 40.0,
+          "severity_score": 15.127473,
+          "trade_count": 3,
+          "volume_acceleration": 2.0,
+          "wallet_count": 3,
+          "window_seconds": 300
+        },
+        "market_id": "phase9_task2_market_a"
+      },
+      "provider_summary": {
+        "providers": [
+          {
+            "provider_name": "noop_news",
+            "query_status": "no_results",
+            "query_type": "web_news",
+            "result_count": 0
+          },
+          {
+            "provider_name": "noop_social",
+            "query_status": "no_results",
+            "query_type": "social",
+            "result_count": 0
+          }
+        ]
+      },
+      "public_evidence_state": "not_publicly_explained",
+      "severity": "ACTIONABLE",
+      "title": "Phase 9 Task 2 Reference Event A",
+      "trigger_time_display": "Apr 20, 2026 1:06 AM ET",
+      "what_changed": "Candidate 333f45767c93481e978a92721190d4f8 triggered at Apr 20, 2026 1:06 AM ET",
+      "why_it_looks_informed": "Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=15.127473"
+    },
+    "provider_summary": {
+      "providers": [
+        {
+          "provider_name": "noop_news",
+          "query_status": "no_results",
+          "query_type": "web_news",
+          "result_count": 0
+        },
+        {
+          "provider_name": "noop_social",
+          "query_status": "no_results",
+          "query_type": "social",
+          "result_count": 0
+        }
+      ]
+    },
+    "severity": "ACTIONABLE",
+    "suppression_state": "mark_useful",
+    "title": "Phase 9 Task 2 Reference Event A"
+  },
+  "workflow_registration": {
+    "alert_schema_version": "phase4_alert_payload_v1",
+    "created_at": "2026-04-22T20:18:25.587549+00:00",
+    "created_at_display": "Apr 22, 2026 4:18 PM ET",
+    "delivery_channels": [
+      "telegram",
+      "discord"
+    ],
+    "evidence_schema_version": "phase4_evidence_v1",
+    "last_used_at": "2026-04-22T20:18:52.699181+00:00",
+    "last_used_at_display": "Apr 22, 2026 4:18 PM ET",
+    "notes": "Phase 9 Task 2 candidate-to-alert materialization over seeded detector-input envelopes.",
+    "workflow_version": "phase4_alerts_v1"
+  },
+  "workflow_version": "phase4_alerts_v1"
+}

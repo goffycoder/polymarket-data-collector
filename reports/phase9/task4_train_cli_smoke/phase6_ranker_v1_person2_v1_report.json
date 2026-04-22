@@ -1,0 +1,372 @@
+{
+  "artifacts": {
+    "model_path": "reports\\phase9\\task4_train_cli_smoke\\phase6_ranker_v1_person2_v1.json",
+    "scored_csv_path": "reports\\phase9\\task4_train_cli_smoke\\phase6_ranker_v1_person2_v1_scored.csv"
+  },
+  "calibration_profiles": [
+    {
+      "actionable_threshold": 0.5,
+      "critical_threshold": 0.5,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.5
+      },
+      "positive_rate": 0.5,
+      "profile_key": "global",
+      "profile_scope": "global",
+      "sample_count": 2,
+      "watch_threshold": 0.5
+    },
+    {
+      "actionable_threshold": 0.5,
+      "critical_threshold": 0.5,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.5
+      },
+      "positive_rate": 0.5,
+      "profile_key": "tight",
+      "profile_scope": "liquidity_bucket",
+      "sample_count": 2,
+      "watch_threshold": 0.5
+    },
+    {
+      "actionable_threshold": 0.5,
+      "critical_threshold": 0.5,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.5
+      },
+      "positive_rate": 0.5,
+      "profile_key": "phase9_fixture",
+      "profile_scope": "category",
+      "sample_count": 2,
+      "watch_threshold": 0.5
+    }
+  ],
+  "dataset_summary": {
+    "dataset_hash": "cc06985f33016ced4570c465748866a33f67fed129db37d0f326acca5076cff7",
+    "feature_schema_version": "phase6_features_v1",
+    "labeled_row_count": 2,
+    "row_count": 2,
+    "test_row_count": 0,
+    "train_row_count": 2,
+    "validation_row_count": 0
+  },
+  "fit_summary": {
+    "artifact_path": null,
+    "base_rate": 0.5,
+    "dataset_hash": "cc06985f33016ced4570c465748866a33f67fed129db37d0f326acca5076cff7",
+    "feature_count": 11,
+    "labeled_row_count": 2,
+    "model_version": "phase6_ranker_v1_person2_v1",
+    "train_row_count": 2
+  },
+  "required_baseline_report": {
+    "assessment": {
+      "heldout_evidence_available": false,
+      "model_beats_all_required_baselines": null,
+      "status": "descriptive_only_train_split"
+    },
+    "preferred_split": "train",
+    "required_baselines": [
+      {
+        "auc_margin_vs_model": 0.5,
+        "baseline_key": "baseline_probability_momentum",
+        "baseline_metrics": {
+          "auc": 0.0,
+          "mean_score": 0.032857,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "precision_at_10_margin_vs_model": 0.0,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.5,
+        "baseline_key": "baseline_order_imbalance",
+        "baseline_metrics": {
+          "auc": 0.0,
+          "mean_score": 0.741758,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "precision_at_10_margin_vs_model": 0.0,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.5,
+        "baseline_key": "baseline_microstructure",
+        "baseline_metrics": {
+          "auc": 0.0,
+          "mean_score": 0.466423,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "precision_at_10_margin_vs_model": 0.0,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.0,
+        "baseline_key": "baseline_external_evidence",
+        "baseline_metrics": {
+          "auc": 0.5,
+          "mean_score": 0.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "precision_at_10_margin_vs_model": 0.0,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.0,
+        "baseline_key": "baseline_fresh_wallet",
+        "baseline_metrics": {
+          "auc": 0.5,
+          "mean_score": 1.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "precision_at_10_margin_vs_model": 0.0,
+        "status": "model_stronger"
+      }
+    ]
+  },
+  "score_report": {
+    "evaluation_version": "phase6_eval_v1",
+    "splits": {
+      "test": {
+        "baseline_external_evidence": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_fresh_wallet": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_microstructure": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_order_imbalance": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_probability_momentum": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_severity": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_velocity": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_wallet": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "model": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        }
+      },
+      "train": {
+        "baseline_external_evidence": {
+          "auc": 0.5,
+          "mean_score": 0.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "baseline_fresh_wallet": {
+          "auc": 0.5,
+          "mean_score": 1.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "baseline_microstructure": {
+          "auc": 0.0,
+          "mean_score": 0.466423,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "baseline_order_imbalance": {
+          "auc": 0.0,
+          "mean_score": 0.741758,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "baseline_probability_momentum": {
+          "auc": 0.0,
+          "mean_score": 0.032857,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "baseline_severity": {
+          "auc": 0.0,
+          "mean_score": 16.210642,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "baseline_velocity": {
+          "auc": 0.0,
+          "mean_score": 0.032857,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "baseline_wallet": {
+          "auc": 0.5,
+          "mean_score": 1.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        },
+        "model": {
+          "auc": 0.5,
+          "mean_score": 0.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.5,
+          "row_count": 2
+        }
+      },
+      "validation": {
+        "baseline_external_evidence": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_fresh_wallet": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_microstructure": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_order_imbalance": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_probability_momentum": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_severity": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_velocity": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "baseline_wallet": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        },
+        "model": {
+          "auc": null,
+          "mean_score": null,
+          "positive_rate": null,
+          "precision_at_10": null,
+          "precision_at_25": null,
+          "row_count": 0
+        }
+      }
+    }
+  }
+}
