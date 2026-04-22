@@ -283,3 +283,63 @@ PHASE7_PROFILE_TOP_N = _env_int(
     "POLYMARKET_PHASE7_PROFILE_TOP_N",
     10,
 )
+PHASE7_DATASET_INDEX_VERSION = os.getenv(
+    "POLYMARKET_PHASE7_DATASET_INDEX_VERSION",
+    "phase7_dataset_index_v1",
+).strip()
+PHASE7_SCOPE_INDEX_VERSION = os.getenv(
+    "POLYMARKET_PHASE7_SCOPE_INDEX_VERSION",
+    "phase7_scope_index_v1",
+).strip()
+PHASE7_EXPERIMENT_LEDGER_VERSION = os.getenv(
+    "POLYMARKET_PHASE7_EXPERIMENT_LEDGER_VERSION",
+    "phase7_experiment_ledger_v1",
+).strip()
+PHASE7_LABEL_SCHEMA_VERSION = os.getenv(
+    "POLYMARKET_PHASE7_LABEL_SCHEMA_VERSION",
+    "phase7_labels_v1",
+).strip()
+PHASE7_DEFAULT_DATASET_ROLE = os.getenv(
+    "POLYMARKET_PHASE7_DEFAULT_DATASET_ROLE",
+    "advanced_research",
+).strip()
+PHASE7_DEFAULT_EXPERIMENT_FAMILY = os.getenv(
+    "POLYMARKET_PHASE7_DEFAULT_EXPERIMENT_FAMILY",
+    "advanced_research",
+).strip()
+PHASE7_CONFIG_VERSION = os.getenv(
+    "POLYMARKET_PHASE7_CONFIG_VERSION",
+    "phase7_experiment_config_v1",
+).strip()
+PHASE7_DEFAULT_RANDOM_SEED = _env_int(
+    "POLYMARKET_PHASE7_DEFAULT_RANDOM_SEED",
+    17,
+)
+PHASE7_GRAPH_FEATURE_SCHEMA_VERSION = os.getenv(
+    "POLYMARKET_PHASE7_GRAPH_FEATURE_SCHEMA_VERSION",
+    "phase7_graph_features_v1",
+).strip()
+PHASE7_GRAPH_LOOKBACK_DAYS = _env_int(
+    "POLYMARKET_PHASE7_GRAPH_LOOKBACK_DAYS",
+    90,
+)
+PHASE7_GRAPH_PERSISTENCE_MIN_DAYS = _env_int(
+    "POLYMARKET_PHASE7_GRAPH_PERSISTENCE_MIN_DAYS",
+    2,
+)
+PHASE7_ADVANCED_MODEL_NAME = os.getenv(
+    "POLYMARKET_PHASE7_ADVANCED_MODEL_NAME",
+    "phase7_graph_ranker",
+).strip()
+PHASE7_ADVANCED_EXPERIMENT_VERSION = os.getenv(
+    "POLYMARKET_PHASE7_ADVANCED_EXPERIMENT_VERSION",
+    "phase7_graph_experiment_v1",
+).strip()
+PHASE7_RESEARCH_PACKAGE_VERSION = os.getenv(
+    "POLYMARKET_PHASE7_RESEARCH_PACKAGE_VERSION",
+    "phase7_research_package_v1",
+).strip()
+PHASE7_THESIS_FIGURE_STYLE_VERSION = os.getenv(
+    "POLYMARKET_PHASE7_THESIS_FIGURE_STYLE_VERSION",
+    "phase7_thesis_figures_v1",
+).strip()
