@@ -8,16 +8,16 @@
       "phase9_seed_trades",
       "phase9_seed_prices"
     ],
-    "deleted_alert_count": 2,
-    "deleted_candidate_count": 2
+    "deleted_alert_count": 3,
+    "deleted_candidate_count": 3
   },
   "evidence_query_rows": [
     {
-      "candidate_id": "7dba23e2146e4be3aa499cdf7b7f37a0",
-      "created_at": "2026-04-22 22:31:10",
+      "candidate_id": "dadeebae65a54b86943194aea179914a",
+      "created_at": "2026-04-23 00:58:19",
       "error_message": null,
-      "evidence_query_id": "08fa7f06501c4699a0cc399a0e6a840f",
-      "latency_ms": 1083.116899993911,
+      "evidence_query_id": "90be32a9c2b349c2bc4331ba1d864060",
+      "latency_ms": 115.25891699420754,
       "provider_name": "google_news_rss",
       "provider_query_text": "Federal Reserve interest rates and inflation outlook",
       "provider_query_type": "web_news",
@@ -138,17 +138,17 @@
         "provider_url": "https://news.google.com/rss/search",
         "result_preview_count": 10
       },
-      "request_started_at": "2026-04-22T22:31:08.927047+00:00",
-      "response_completed_at": "2026-04-22T22:31:10.010166+00:00",
+      "request_started_at": "2026-04-23T00:58:18.906945+00:00",
+      "response_completed_at": "2026-04-23T00:58:19.022201+00:00",
       "result_count": 10,
       "timeout_seconds": 10
     },
     {
-      "candidate_id": "0671bcfcdc5e4d3c99121977025e3417",
-      "created_at": "2026-04-22 22:31:10",
+      "candidate_id": "4fee19ef5e5c4786a5475de33cfacedd",
+      "created_at": "2026-04-23 00:58:19",
       "error_message": null,
-      "evidence_query_id": "cbbec79f16864968b92673e87b900edc",
-      "latency_ms": 751.5811999983271,
+      "evidence_query_id": "3b0ba06cc69946a5b85fd17b9068ef57",
+      "latency_ms": 70.78145800915081,
       "provider_name": "google_news_rss",
       "provider_query_text": "Bitcoin price and crypto market momentum",
       "provider_query_type": "web_news",
@@ -175,7 +175,7 @@
         "freshness_seconds": null,
         "normalized_results": [
           {
-            "published_at": "Wed, 22 Apr 2026 11:20:56 GMT",
+            "published_at": "Wed, 22 Apr 2026 11:51:53 GMT",
             "result_id": "CBMisgFBVV95cUxOVHRiZlVWVWFNOFBfYkpuRmthREVQdVNISnljOE8zLURDTnUyUml6c2VpUFI5R0NvRld6bG9MU1o0clZuYXN0YndwYXlFV1BGdFBUSnpJbHpmYnIyNkpiYmh0T1dyOTdvTXk1Z2RRNmVfakdhRkRsWmRmX3hOT3V5RTVxaGxreXVSVVhqNHhDakJMa21VNXRJMVJySlZMal95RE1pNmRhbFoxQ0dvZzczaDN3",
             "source": "CoinDesk",
             "title": "The signal bitcoin momentum traders have been waiting for is here - CoinDesk",
@@ -192,15 +192,8 @@
             "published_at": "Mon, 20 Apr 2026 21:05:00 GMT",
             "result_id": "CBMiZEFVX3lxTE9PU3pBdGY0NWJMSWFUTFRDUGx3RklNQlNENWdlQjBiNG9meUo5andqSHFER0lkNlhEaFVwOXpLYWZseVJ1YVZsU2Q4RzBWT1RoeUhTM19YaFljM2ZHcm5yMHYxTlc",
             "source": "Investing News Network",
-            "title": "Crypto Market Update: WLFI Token Plummets Amid Feud With Largest Investor - Investing News Network",
+            "title": "WLFI Token Dives as Investor Feud Escalates - Investing News Network",
             "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9PU3pBdGY0NWJMSWFUTFRDUGx3RklNQlNENWdlQjBiNG9meUo5andqSHFER0lkNlhEaFVwOXpLYWZseVJ1YVZsU2Q4RzBWT1RoeUhTM19YaFljM2ZHcm5yMHYxTlc?oc=5"
-          },
-          {
-            "published_at": "Wed, 22 Apr 2026 00:01:00 GMT",
-            "result_id": "CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox",
-            "source": "TradingView",
-            "title": "Does XRP Have a Chance? Unhealthy Bitcoin (BTC) Price Pattern Arises, Hyperliquid's (HYPE) $40 Will not Stay for Long: Crypto Market Review - TradingView",
-            "url": "https://news.google.com/rss/articles/CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox?oc=5"
           },
           {
             "published_at": "Sun, 19 Apr 2026 15:38:36 GMT",
@@ -210,25 +203,18 @@
             "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOa1hWaUdWeDlqOVRhSTdfSExfNmlKdjFydzMwZVpRZWdPSXJmSE5pVTczczkyckd4Nmd6a1RrT05Wa3F2ZXJxbEttSlp1VnI5X05hQ1BHZFV4b0JkZS1SVEtpSGxrNHd5TmlTNk5fMlhWTVNnXzBYUUdsNlJ0ai1rZUY1OWxRZw?oc=5"
           },
           {
-            "published_at": "Mon, 20 Apr 2026 11:20:00 GMT",
-            "result_id": "CBMihwFBVV95cUxQWGFScjhUNC1Pb1JEYVBjLWI1Z2VzNVQyZWlySjlmUUNtRURuc1h2dWJucmJ5dWlfZWk1ZDBhcm1pb2ZIOEN3SUhuVloyZ3lFVVpfaUs0WUxWNEl0UHp2NkQ3RExjY0xmZlFQbldJc0JTLWlmRGlfdzlmenp1YU9jZzNTaVh6X00",
-            "source": "CoinDCX",
-            "title": "Top 10 Cheapest Crypto Tokens to Invest in 2026 - CoinDCX",
-            "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQWGFScjhUNC1Pb1JEYVBjLWI1Z2VzNVQyZWlySjlmUUNtRURuc1h2dWJucmJ5dWlfZWk1ZDBhcm1pb2ZIOEN3SUhuVloyZ3lFVVpfaUs0WUxWNEl0UHp2NkQ3RExjY0xmZlFQbldJc0JTLWlmRGlfdzlmenp1YU9jZzNTaVh6X00?oc=5"
+            "published_at": "Wed, 22 Apr 2026 00:01:00 GMT",
+            "result_id": "CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox",
+            "source": "TradingView",
+            "title": "Does XRP Have a Chance? Unhealthy Bitcoin (BTC) Price Pattern Arises, Hyperliquid's (HYPE) $40 Will not Stay for Long: Crypto Market Review - TradingView",
+            "url": "https://news.google.com/rss/articles/CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox?oc=5"
           },
           {
-            "published_at": "Fri, 17 Apr 2026 18:59:37 GMT",
-            "result_id": "CBMiSEFVX3lxTE1PbTVESFJBZ1IxbHpzVmF0Zmwtc1UxeGRlUkdIc2R1dFMtcURkeUVhTWlBYlp2Mkl4aTc1cXpkN0RYY2JYSjJ3Nw",
-            "source": "MEXC",
-            "title": "Bitcoin Price Surges as Crypto Market Turns Bullish on Macro Relief - MEXC",
-            "url": "https://news.google.com/rss/articles/CBMiSEFVX3lxTE1PbTVESFJBZ1IxbHpzVmF0Zmwtc1UxeGRlUkdIc2R1dFMtcURkeUVhTWlBYlp2Mkl4aTc1cXpkN0RYY2JYSjJ3Nw?oc=5"
-          },
-          {
-            "published_at": "Tue, 13 Jan 2026 08:00:00 GMT",
-            "result_id": "CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw",
-            "source": "marketpulse.com",
-            "title": "Bitcoin and Altcoins Breakout as Stock Market Momentum Fades \u2013 BTC, ETH and SOL Outlook - marketpulse.com",
-            "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw?oc=5"
+            "published_at": "Fri, 17 Apr 2026 19:33:45 GMT",
+            "result_id": "CBMiT0FVX3lxTE9ZbmtadVpJc0dqOFE2VW5rd3p6bzBucXZSaVQtanZqc2loN0kwbFZMbExyZWQ4UUNJNFpULWZkMHhDajFnZnFjRGYwVnFnc1U",
+            "source": "MEXC Exchange",
+            "title": "Bitcoin Price Surges as Crypto Market Turns Bullish on Macro Relief - MEXC Exchange",
+            "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9ZbmtadVpJc0dqOFE2VW5rd3p6bzBucXZSaVQtanZqc2loN0kwbFZMbExyZWQ4UUNJNFpULWZkMHhDajFnZnFjRGYwVnFnc1U?oc=5"
           },
           {
             "published_at": "Fri, 13 Mar 2026 07:00:00 GMT",
@@ -238,11 +224,25 @@
             "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPOVlDSC14c0RPa0ozX1ZlRlJzalFOcGxaRWNMMTFaQ2w2SnV1RjhKcW5ERmMtUUN1SjQtX1dYanFpdFVBU1Z0eEZsZWpqWkxIZEdXN2RHNHVsT0RiSkpVY1JCMktMZ0s3RGszVjlMMkVfbFNuenZRN0w2RjVkbGstb1dFNGhlaGlqaFowc0lQb9IBlAFBVV95cUxNRXF4WldNbllRZkRZRFhSOW1Wd1RzckpwSGR2dlNBWWZaeC1NQ01PbjIyTVJyQURhY05DR2kzZ2R1cU1vemJyRHdhSDVSQ3BUVFNrdkk3N0dxcVBmQWJpWU52bnNCVUJjbVRRdEFrU3BUWUNHU0hRRTgzdmZzOXNFbzM5ZlRqUVpVdjA1T2Y4SFc5Yzdq?oc=5"
           },
           {
-            "published_at": "Mon, 20 Apr 2026 19:53:04 GMT",
-            "result_id": "CBMihgFBVV95cUxPM2FJZFdFLVhBRXdBbm96OWhGTU5DRkxwQnd5Ujl0QU9PamUwTnV3U0VWUHoyelU4Vjk0UjliTEQ1UEF0Snc2Z2VvMV82OFlESVJ1NnVad0VIR0RFdzRuRjJyQ0gtUUM1Nldpa0hnb1ctZnUxNnBJQzBaSWFoRVBLLXc0X0NGQQ",
+            "published_at": "Tue, 13 Jan 2026 08:00:00 GMT",
+            "result_id": "CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw",
+            "source": "marketpulse.com",
+            "title": "Bitcoin and Altcoins Breakout as Stock Market Momentum Fades \u2013 BTC, ETH and SOL Outlook - marketpulse.com",
+            "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw?oc=5"
+          },
+          {
+            "published_at": "Tue, 14 Apr 2026 07:00:00 GMT",
+            "result_id": "CBMia0FVX3lxTFBPdGQ2OWRDTHE1SWNzMFQ5bmJWRlZMNm8teDNwU0hLdW5ZcXFQM0huZUlhcGNKYUhaMnBOSjhYMVM2cjFjUVdLUzVCd1RmdDRzRXU4OFdxOUQ2YUp3bFpQWUZ1WEU5dlUya004",
+            "source": "CoinDCX",
+            "title": "Crypto Bull Run Outlook 2026: Key Signals from the 2025 Cycle - CoinDCX",
+            "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBPdGQ2OWRDTHE1SWNzMFQ5bmJWRlZMNm8teDNwU0hLdW5ZcXFQM0huZUlhcGNKYUhaMnBOSjhYMVM2cjFjUVdLUzVCd1RmdDRzRXU4OFdxOUQ2YUp3bFpQWUZ1WEU5dlUya004?oc=5"
+          },
+          {
+            "published_at": "Wed, 22 Apr 2026 01:09:24 GMT",
+            "result_id": "CBMiggFBVV95cUxQSTFhMjBydnEtY1lzLWZhaFdUbS1GOHUxWnp4d2xLcS1FblJ1d3FobmRCeUJqc3JvWXQ5RGJBWTltdjRHald6ZWZwX19QeEVUMjlnQnotcTFZcExkZExIWHhwS0JEeWx4RzEzbWhTN1k3THBKc1QwSC00STJzSS04b01B",
             "source": "CryptoRank",
-            "title": "Bitcoin Soars: BTC Price Surges Past $76,000 Milestone in Major Rally - CryptoRank",
-            "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPM2FJZFdFLVhBRXdBbm96OWhGTU5DRkxwQnd5Ujl0QU9PamUwTnV3U0VWUHoyelU4Vjk0UjliTEQ1UEF0Snc2Z2VvMV82OFlESVJ1NnVad0VIR0RFdzRuRjJyQ0gtUUM1Nldpa0hnb1ctZnUxNnBJQzBaSWFoRVBLLXc0X0NGQQ?oc=5"
+            "title": "NZD/USD Momentum Stalls: Critical Analysis of Fed Pressure and Currency Dynamics in 2025 - CryptoRank",
+            "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQSTFhMjBydnEtY1lzLWZhaFdUbS1GOHUxWnp4d2xLcS1FblJ1d3FobmRCeUJqc3JvWXQ5RGJBWTltdjRHald6ZWZwX19QeEVUMjlnQnotcTFZcExkZExIWHhwS0JEeWx4RzEzbWhTN1k3THBKc1QwSC00STJzSS04b01B?oc=5"
           }
         ],
         "provider_http_status": 200,
@@ -258,28 +258,28 @@
           "CBMisgFBVV95cUxOVHRiZlVWVWFNOFBfYkpuRmthREVQdVNISnljOE8zLURDTnUyUml6c2VpUFI5R0NvRld6bG9MU1o0clZuYXN0YndwYXlFV1BGdFBUSnpJbHpmYnIyNkpiYmh0T1dyOTdvTXk1Z2RRNmVfakdhRkRsWmRmX3hOT3V5RTVxaGxreXVSVVhqNHhDakJMa21VNXRJMVJySlZMal95RE1pNmRhbFoxQ0dvZzczaDN3",
           "CBMilgFBVV95cUxQX29lZ3E2WHVDTmt5dGotNkVCdzNBUWN3S0xHZnJPLWJuTDRiSmNPM19RMXdjQnZLcDlXOENXaWg1bGJ4b2doN2tNdHhjLURVeWU1T2RlQlozcUNfRWh3SVF0b0lpZnJXVUxEYXd6M1lMaGdwb2ZtQnJLV3BwWGJwam16cmhvVHA3OG1ieU5EdjhCX0pVdWc",
           "CBMiZEFVX3lxTE9PU3pBdGY0NWJMSWFUTFRDUGx3RklNQlNENWdlQjBiNG9meUo5andqSHFER0lkNlhEaFVwOXpLYWZseVJ1YVZsU2Q4RzBWT1RoeUhTM19YaFljM2ZHcm5yMHYxTlc",
-          "CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox",
           "CBMihgFBVV95cUxOa1hWaUdWeDlqOVRhSTdfSExfNmlKdjFydzMwZVpRZWdPSXJmSE5pVTczczkyckd4Nmd6a1RrT05Wa3F2ZXJxbEttSlp1VnI5X05hQ1BHZFV4b0JkZS1SVEtpSGxrNHd5TmlTNk5fMlhWTVNnXzBYUUdsNlJ0ai1rZUY1OWxRZw",
-          "CBMihwFBVV95cUxQWGFScjhUNC1Pb1JEYVBjLWI1Z2VzNVQyZWlySjlmUUNtRURuc1h2dWJucmJ5dWlfZWk1ZDBhcm1pb2ZIOEN3SUhuVloyZ3lFVVpfaUs0WUxWNEl0UHp2NkQ3RExjY0xmZlFQbldJc0JTLWlmRGlfdzlmenp1YU9jZzNTaVh6X00",
-          "CBMiSEFVX3lxTE1PbTVESFJBZ1IxbHpzVmF0Zmwtc1UxeGRlUkdIc2R1dFMtcURkeUVhTWlBYlp2Mkl4aTc1cXpkN0RYY2JYSjJ3Nw",
-          "CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw",
+          "CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox",
+          "CBMiT0FVX3lxTE9ZbmtadVpJc0dqOFE2VW5rd3p6bzBucXZSaVQtanZqc2loN0kwbFZMbExyZWQ4UUNJNFpULWZkMHhDajFnZnFjRGYwVnFnc1U",
           "CBMijwFBVV95cUxPOVlDSC14c0RPa0ozX1ZlRlJzalFOcGxaRWNMMTFaQ2w2SnV1RjhKcW5ERmMtUUN1SjQtX1dYanFpdFVBU1Z0eEZsZWpqWkxIZEdXN2RHNHVsT0RiSkpVY1JCMktMZ0s3RGszVjlMMkVfbFNuenZRN0w2RjVkbGstb1dFNGhlaGlqaFowc0lQb9IBlAFBVV95cUxNRXF4WldNbllRZkRZRFhSOW1Wd1RzckpwSGR2dlNBWWZaeC1NQ01PbjIyTVJyQURhY05DR2kzZ2R1cU1vemJyRHdhSDVSQ3BUVFNrdkk3N0dxcVBmQWJpWU52bnNCVUJjbVRRdEFrU3BUWUNHU0hRRTgzdmZzOXNFbzM5ZlRqUVpVdjA1T2Y4SFc5Yzdq",
-          "CBMihgFBVV95cUxPM2FJZFdFLVhBRXdBbm96OWhGTU5DRkxwQnd5Ujl0QU9PamUwTnV3U0VWUHoyelU4Vjk0UjliTEQ1UEF0Snc2Z2VvMV82OFlESVJ1NnVad0VIR0RFdzRuRjJyQ0gtUUM1Nldpa0hnb1ctZnUxNnBJQzBaSWFoRVBLLXc0X0NGQQ"
+          "CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw",
+          "CBMia0FVX3lxTFBPdGQ2OWRDTHE1SWNzMFQ5bmJWRlZMNm8teDNwU0hLdW5ZcXFQM0huZUlhcGNKYUhaMnBOSjhYMVM2cjFjUVdLUzVCd1RmdDRzRXU4OFdxOUQ2YUp3bFpQWUZ1WEU5dlUya004",
+          "CBMiggFBVV95cUxQSTFhMjBydnEtY1lzLWZhaFdUbS1GOHUxWnp4d2xLcS1FblJ1d3FobmRCeUJqc3JvWXQ5RGJBWTltdjRHald6ZWZwX19QeEVUMjlnQnotcTFZcExkZExIWHhwS0JEeWx4RzEzbWhTN1k3THBKc1QwSC00STJzSS04b01B"
         ],
         "provider_url": "https://news.google.com/rss/search",
         "result_preview_count": 10
       },
-      "request_started_at": "2026-04-22T22:31:10.019879+00:00",
-      "response_completed_at": "2026-04-22T22:31:10.771460+00:00",
+      "request_started_at": "2026-04-23T00:58:19.025635+00:00",
+      "response_completed_at": "2026-04-23T00:58:19.096413+00:00",
       "result_count": 10,
       "timeout_seconds": 10
     },
     {
-      "candidate_id": "7dba23e2146e4be3aa499cdf7b7f37a0",
-      "created_at": "2026-04-22 22:31:10",
+      "candidate_id": "dadeebae65a54b86943194aea179914a",
+      "created_at": "2026-04-23 00:58:19",
       "error_message": null,
-      "evidence_query_id": "a29c2c58c57241d3ac521c6bfc4a5e51",
-      "latency_ms": 6.896799997775815,
+      "evidence_query_id": "586bf50c4e864045a39c2800df4fea7f",
+      "latency_ms": 2.1416249946923926,
       "provider_name": "google_news_rss",
       "provider_query_text": "Federal Reserve interest rates and inflation outlook",
       "provider_query_type": "web_news",
@@ -287,23 +287,23 @@
       "raw_response_metadata": {
         "budget": {
           "blocked_by_budget": false,
-          "day_queries_after": 2,
-          "day_queries_before": 2,
+          "day_queries_after": 10,
+          "day_queries_before": 10,
           "day_query_cap": 250,
           "day_spend_after_usd": 0.0,
           "day_spend_before_usd": 0.0,
           "estimated_cost_usd": 0.0,
           "external_call_made": false,
-          "month_queries_after": 2,
-          "month_queries_before": 2,
+          "month_queries_after": 10,
+          "month_queries_before": 10,
           "month_query_cap": 5000,
           "month_spend_after_usd": 0.0,
           "month_spend_before_usd": 0.0
         },
         "cache_hit": true,
-        "cache_hit_query_id": "08fa7f06501c4699a0cc399a0e6a840f",
+        "cache_hit_query_id": "90be32a9c2b349c2bc4331ba1d864060",
         "cache_key": "google_news_rss:federal reserve interest rates and inflation outlook",
-        "cache_source_created_at": "2026-04-22 22:31:10",
+        "cache_source_created_at": "2026-04-23 00:58:19",
         "cache_ttl_seconds": 900,
         "freshness_seconds": 0,
         "normalized_results": [
@@ -396,17 +396,17 @@
         "provider_url": "https://news.google.com/rss/search",
         "result_preview_count": 10
       },
-      "request_started_at": "2026-04-22T22:31:10.809140+00:00",
-      "response_completed_at": "2026-04-22T22:31:10.816038+00:00",
+      "request_started_at": "2026-04-23T00:58:19.668185+00:00",
+      "response_completed_at": "2026-04-23T00:58:19.670329+00:00",
       "result_count": 10,
       "timeout_seconds": 10
     },
     {
-      "candidate_id": "0671bcfcdc5e4d3c99121977025e3417",
-      "created_at": "2026-04-22 22:31:10",
+      "candidate_id": "4fee19ef5e5c4786a5475de33cfacedd",
+      "created_at": "2026-04-23 00:58:19",
       "error_message": null,
-      "evidence_query_id": "09b6a7c57d924517aadd923a25f62eaf",
-      "latency_ms": 9.616399998776615,
+      "evidence_query_id": "146c972c2aba4819a9219f7b17ff4d87",
+      "latency_ms": 1.8794579955283552,
       "provider_name": "google_news_rss",
       "provider_query_text": "Bitcoin price and crypto market momentum",
       "provider_query_type": "web_news",
@@ -414,28 +414,28 @@
       "raw_response_metadata": {
         "budget": {
           "blocked_by_budget": false,
-          "day_queries_after": 2,
-          "day_queries_before": 2,
+          "day_queries_after": 10,
+          "day_queries_before": 10,
           "day_query_cap": 250,
           "day_spend_after_usd": 0.0,
           "day_spend_before_usd": 0.0,
           "estimated_cost_usd": 0.0,
           "external_call_made": false,
-          "month_queries_after": 2,
-          "month_queries_before": 2,
+          "month_queries_after": 10,
+          "month_queries_before": 10,
           "month_query_cap": 5000,
           "month_spend_after_usd": 0.0,
           "month_spend_before_usd": 0.0
         },
         "cache_hit": true,
-        "cache_hit_query_id": "cbbec79f16864968b92673e87b900edc",
+        "cache_hit_query_id": "3b0ba06cc69946a5b85fd17b9068ef57",
         "cache_key": "google_news_rss:bitcoin price and crypto market momentum",
-        "cache_source_created_at": "2026-04-22 22:31:10",
+        "cache_source_created_at": "2026-04-23 00:58:19",
         "cache_ttl_seconds": 900,
         "freshness_seconds": 0,
         "normalized_results": [
           {
-            "published_at": "Wed, 22 Apr 2026 11:20:56 GMT",
+            "published_at": "Wed, 22 Apr 2026 11:51:53 GMT",
             "result_id": "CBMisgFBVV95cUxOVHRiZlVWVWFNOFBfYkpuRmthREVQdVNISnljOE8zLURDTnUyUml6c2VpUFI5R0NvRld6bG9MU1o0clZuYXN0YndwYXlFV1BGdFBUSnpJbHpmYnIyNkpiYmh0T1dyOTdvTXk1Z2RRNmVfakdhRkRsWmRmX3hOT3V5RTVxaGxreXVSVVhqNHhDakJMa21VNXRJMVJySlZMal95RE1pNmRhbFoxQ0dvZzczaDN3",
             "source": "CoinDesk",
             "title": "The signal bitcoin momentum traders have been waiting for is here - CoinDesk",
@@ -452,15 +452,8 @@
             "published_at": "Mon, 20 Apr 2026 21:05:00 GMT",
             "result_id": "CBMiZEFVX3lxTE9PU3pBdGY0NWJMSWFUTFRDUGx3RklNQlNENWdlQjBiNG9meUo5andqSHFER0lkNlhEaFVwOXpLYWZseVJ1YVZsU2Q4RzBWT1RoeUhTM19YaFljM2ZHcm5yMHYxTlc",
             "source": "Investing News Network",
-            "title": "Crypto Market Update: WLFI Token Plummets Amid Feud With Largest Investor - Investing News Network",
+            "title": "WLFI Token Dives as Investor Feud Escalates - Investing News Network",
             "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9PU3pBdGY0NWJMSWFUTFRDUGx3RklNQlNENWdlQjBiNG9meUo5andqSHFER0lkNlhEaFVwOXpLYWZseVJ1YVZsU2Q4RzBWT1RoeUhTM19YaFljM2ZHcm5yMHYxTlc?oc=5"
-          },
-          {
-            "published_at": "Wed, 22 Apr 2026 00:01:00 GMT",
-            "result_id": "CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox",
-            "source": "TradingView",
-            "title": "Does XRP Have a Chance? Unhealthy Bitcoin (BTC) Price Pattern Arises, Hyperliquid's (HYPE) $40 Will not Stay for Long: Crypto Market Review - TradingView",
-            "url": "https://news.google.com/rss/articles/CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox?oc=5"
           },
           {
             "published_at": "Sun, 19 Apr 2026 15:38:36 GMT",
@@ -470,25 +463,18 @@
             "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOa1hWaUdWeDlqOVRhSTdfSExfNmlKdjFydzMwZVpRZWdPSXJmSE5pVTczczkyckd4Nmd6a1RrT05Wa3F2ZXJxbEttSlp1VnI5X05hQ1BHZFV4b0JkZS1SVEtpSGxrNHd5TmlTNk5fMlhWTVNnXzBYUUdsNlJ0ai1rZUY1OWxRZw?oc=5"
           },
           {
-            "published_at": "Mon, 20 Apr 2026 11:20:00 GMT",
-            "result_id": "CBMihwFBVV95cUxQWGFScjhUNC1Pb1JEYVBjLWI1Z2VzNVQyZWlySjlmUUNtRURuc1h2dWJucmJ5dWlfZWk1ZDBhcm1pb2ZIOEN3SUhuVloyZ3lFVVpfaUs0WUxWNEl0UHp2NkQ3RExjY0xmZlFQbldJc0JTLWlmRGlfdzlmenp1YU9jZzNTaVh6X00",
-            "source": "CoinDCX",
-            "title": "Top 10 Cheapest Crypto Tokens to Invest in 2026 - CoinDCX",
-            "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQWGFScjhUNC1Pb1JEYVBjLWI1Z2VzNVQyZWlySjlmUUNtRURuc1h2dWJucmJ5dWlfZWk1ZDBhcm1pb2ZIOEN3SUhuVloyZ3lFVVpfaUs0WUxWNEl0UHp2NkQ3RExjY0xmZlFQbldJc0JTLWlmRGlfdzlmenp1YU9jZzNTaVh6X00?oc=5"
+            "published_at": "Wed, 22 Apr 2026 00:01:00 GMT",
+            "result_id": "CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox",
+            "source": "TradingView",
+            "title": "Does XRP Have a Chance? Unhealthy Bitcoin (BTC) Price Pattern Arises, Hyperliquid's (HYPE) $40 Will not Stay for Long: Crypto Market Review - TradingView",
+            "url": "https://news.google.com/rss/articles/CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox?oc=5"
           },
           {
-            "published_at": "Fri, 17 Apr 2026 18:59:37 GMT",
-            "result_id": "CBMiSEFVX3lxTE1PbTVESFJBZ1IxbHpzVmF0Zmwtc1UxeGRlUkdIc2R1dFMtcURkeUVhTWlBYlp2Mkl4aTc1cXpkN0RYY2JYSjJ3Nw",
-            "source": "MEXC",
-            "title": "Bitcoin Price Surges as Crypto Market Turns Bullish on Macro Relief - MEXC",
-            "url": "https://news.google.com/rss/articles/CBMiSEFVX3lxTE1PbTVESFJBZ1IxbHpzVmF0Zmwtc1UxeGRlUkdIc2R1dFMtcURkeUVhTWlBYlp2Mkl4aTc1cXpkN0RYY2JYSjJ3Nw?oc=5"
-          },
-          {
-            "published_at": "Tue, 13 Jan 2026 08:00:00 GMT",
-            "result_id": "CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw",
-            "source": "marketpulse.com",
-            "title": "Bitcoin and Altcoins Breakout as Stock Market Momentum Fades \u2013 BTC, ETH and SOL Outlook - marketpulse.com",
-            "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw?oc=5"
+            "published_at": "Fri, 17 Apr 2026 19:33:45 GMT",
+            "result_id": "CBMiT0FVX3lxTE9ZbmtadVpJc0dqOFE2VW5rd3p6bzBucXZSaVQtanZqc2loN0kwbFZMbExyZWQ4UUNJNFpULWZkMHhDajFnZnFjRGYwVnFnc1U",
+            "source": "MEXC Exchange",
+            "title": "Bitcoin Price Surges as Crypto Market Turns Bullish on Macro Relief - MEXC Exchange",
+            "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9ZbmtadVpJc0dqOFE2VW5rd3p6bzBucXZSaVQtanZqc2loN0kwbFZMbExyZWQ4UUNJNFpULWZkMHhDajFnZnFjRGYwVnFnc1U?oc=5"
           },
           {
             "published_at": "Fri, 13 Mar 2026 07:00:00 GMT",
@@ -498,11 +484,25 @@
             "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPOVlDSC14c0RPa0ozX1ZlRlJzalFOcGxaRWNMMTFaQ2w2SnV1RjhKcW5ERmMtUUN1SjQtX1dYanFpdFVBU1Z0eEZsZWpqWkxIZEdXN2RHNHVsT0RiSkpVY1JCMktMZ0s3RGszVjlMMkVfbFNuenZRN0w2RjVkbGstb1dFNGhlaGlqaFowc0lQb9IBlAFBVV95cUxNRXF4WldNbllRZkRZRFhSOW1Wd1RzckpwSGR2dlNBWWZaeC1NQ01PbjIyTVJyQURhY05DR2kzZ2R1cU1vemJyRHdhSDVSQ3BUVFNrdkk3N0dxcVBmQWJpWU52bnNCVUJjbVRRdEFrU3BUWUNHU0hRRTgzdmZzOXNFbzM5ZlRqUVpVdjA1T2Y4SFc5Yzdq?oc=5"
           },
           {
-            "published_at": "Mon, 20 Apr 2026 19:53:04 GMT",
-            "result_id": "CBMihgFBVV95cUxPM2FJZFdFLVhBRXdBbm96OWhGTU5DRkxwQnd5Ujl0QU9PamUwTnV3U0VWUHoyelU4Vjk0UjliTEQ1UEF0Snc2Z2VvMV82OFlESVJ1NnVad0VIR0RFdzRuRjJyQ0gtUUM1Nldpa0hnb1ctZnUxNnBJQzBaSWFoRVBLLXc0X0NGQQ",
+            "published_at": "Tue, 13 Jan 2026 08:00:00 GMT",
+            "result_id": "CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw",
+            "source": "marketpulse.com",
+            "title": "Bitcoin and Altcoins Breakout as Stock Market Momentum Fades \u2013 BTC, ETH and SOL Outlook - marketpulse.com",
+            "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw?oc=5"
+          },
+          {
+            "published_at": "Tue, 14 Apr 2026 07:00:00 GMT",
+            "result_id": "CBMia0FVX3lxTFBPdGQ2OWRDTHE1SWNzMFQ5bmJWRlZMNm8teDNwU0hLdW5ZcXFQM0huZUlhcGNKYUhaMnBOSjhYMVM2cjFjUVdLUzVCd1RmdDRzRXU4OFdxOUQ2YUp3bFpQWUZ1WEU5dlUya004",
+            "source": "CoinDCX",
+            "title": "Crypto Bull Run Outlook 2026: Key Signals from the 2025 Cycle - CoinDCX",
+            "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBPdGQ2OWRDTHE1SWNzMFQ5bmJWRlZMNm8teDNwU0hLdW5ZcXFQM0huZUlhcGNKYUhaMnBOSjhYMVM2cjFjUVdLUzVCd1RmdDRzRXU4OFdxOUQ2YUp3bFpQWUZ1WEU5dlUya004?oc=5"
+          },
+          {
+            "published_at": "Wed, 22 Apr 2026 01:09:24 GMT",
+            "result_id": "CBMiggFBVV95cUxQSTFhMjBydnEtY1lzLWZhaFdUbS1GOHUxWnp4d2xLcS1FblJ1d3FobmRCeUJqc3JvWXQ5RGJBWTltdjRHald6ZWZwX19QeEVUMjlnQnotcTFZcExkZExIWHhwS0JEeWx4RzEzbWhTN1k3THBKc1QwSC00STJzSS04b01B",
             "source": "CryptoRank",
-            "title": "Bitcoin Soars: BTC Price Surges Past $76,000 Milestone in Major Rally - CryptoRank",
-            "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPM2FJZFdFLVhBRXdBbm96OWhGTU5DRkxwQnd5Ujl0QU9PamUwTnV3U0VWUHoyelU4Vjk0UjliTEQ1UEF0Snc2Z2VvMV82OFlESVJ1NnVad0VIR0RFdzRuRjJyQ0gtUUM1Nldpa0hnb1ctZnUxNnBJQzBaSWFoRVBLLXc0X0NGQQ?oc=5"
+            "title": "NZD/USD Momentum Stalls: Critical Analysis of Fed Pressure and Currency Dynamics in 2025 - CryptoRank",
+            "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQSTFhMjBydnEtY1lzLWZhaFdUbS1GOHUxWnp4d2xLcS1FblJ1d3FobmRCeUJqc3JvWXQ5RGJBWTltdjRHald6ZWZwX19QeEVUMjlnQnotcTFZcExkZExIWHhwS0JEeWx4RzEzbWhTN1k3THBKc1QwSC00STJzSS04b01B?oc=5"
           }
         ],
         "provider_http_status": 200,
@@ -512,24 +512,24 @@
           "CBMisgFBVV95cUxOVHRiZlVWVWFNOFBfYkpuRmthREVQdVNISnljOE8zLURDTnUyUml6c2VpUFI5R0NvRld6bG9MU1o0clZuYXN0YndwYXlFV1BGdFBUSnpJbHpmYnIyNkpiYmh0T1dyOTdvTXk1Z2RRNmVfakdhRkRsWmRmX3hOT3V5RTVxaGxreXVSVVhqNHhDakJMa21VNXRJMVJySlZMal95RE1pNmRhbFoxQ0dvZzczaDN3",
           "CBMilgFBVV95cUxQX29lZ3E2WHVDTmt5dGotNkVCdzNBUWN3S0xHZnJPLWJuTDRiSmNPM19RMXdjQnZLcDlXOENXaWg1bGJ4b2doN2tNdHhjLURVeWU1T2RlQlozcUNfRWh3SVF0b0lpZnJXVUxEYXd6M1lMaGdwb2ZtQnJLV3BwWGJwam16cmhvVHA3OG1ieU5EdjhCX0pVdWc",
           "CBMiZEFVX3lxTE9PU3pBdGY0NWJMSWFUTFRDUGx3RklNQlNENWdlQjBiNG9meUo5andqSHFER0lkNlhEaFVwOXpLYWZseVJ1YVZsU2Q4RzBWT1RoeUhTM19YaFljM2ZHcm5yMHYxTlc",
-          "CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox",
           "CBMihgFBVV95cUxOa1hWaUdWeDlqOVRhSTdfSExfNmlKdjFydzMwZVpRZWdPSXJmSE5pVTczczkyckd4Nmd6a1RrT05Wa3F2ZXJxbEttSlp1VnI5X05hQ1BHZFV4b0JkZS1SVEtpSGxrNHd5TmlTNk5fMlhWTVNnXzBYUUdsNlJ0ai1rZUY1OWxRZw",
-          "CBMihwFBVV95cUxQWGFScjhUNC1Pb1JEYVBjLWI1Z2VzNVQyZWlySjlmUUNtRURuc1h2dWJucmJ5dWlfZWk1ZDBhcm1pb2ZIOEN3SUhuVloyZ3lFVVpfaUs0WUxWNEl0UHp2NkQ3RExjY0xmZlFQbldJc0JTLWlmRGlfdzlmenp1YU9jZzNTaVh6X00",
-          "CBMiSEFVX3lxTE1PbTVESFJBZ1IxbHpzVmF0Zmwtc1UxeGRlUkdIc2R1dFMtcURkeUVhTWlBYlp2Mkl4aTc1cXpkN0RYY2JYSjJ3Nw",
-          "CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw",
+          "CBMimAJBVV95cUxQdVJxejh4SWhYOTBVR09hY0VOemxpaGNSck5JZXprN0ZvdmVCZDU5ZzB6TF9FUDhXVldadWxiNmNTaDRqTzFCRU11dUNTTVA1MXZxZVU2UjVPTzhudm94MTBHS0dXZElweDBrTTlScVhzN2dLNGxyMkxHUUhibC1DU3JFbjVsLU42YnE2T09uUzFXTldzU21PRUJFWXBfbXhVQnpDTHpoMkdicWpLcy1wMVhJdEt2VGNWX2hKU2VwS1dXT0dJTEJjaDN5Yll5VkdVdGdUSTRhSDBlbXVUTlhtZXVSVkZfdUxLcjNkU0x0c2x4Yll6Nlo0djJUQTdySkdzRlQxR2tzWnNYdkhFbHY3OUNPOG1XbUox",
+          "CBMiT0FVX3lxTE9ZbmtadVpJc0dqOFE2VW5rd3p6bzBucXZSaVQtanZqc2loN0kwbFZMbExyZWQ4UUNJNFpULWZkMHhDajFnZnFjRGYwVnFnc1U",
           "CBMijwFBVV95cUxPOVlDSC14c0RPa0ozX1ZlRlJzalFOcGxaRWNMMTFaQ2w2SnV1RjhKcW5ERmMtUUN1SjQtX1dYanFpdFVBU1Z0eEZsZWpqWkxIZEdXN2RHNHVsT0RiSkpVY1JCMktMZ0s3RGszVjlMMkVfbFNuenZRN0w2RjVkbGstb1dFNGhlaGlqaFowc0lQb9IBlAFBVV95cUxNRXF4WldNbllRZkRZRFhSOW1Wd1RzckpwSGR2dlNBWWZaeC1NQ01PbjIyTVJyQURhY05DR2kzZ2R1cU1vemJyRHdhSDVSQ3BUVFNrdkk3N0dxcVBmQWJpWU52bnNCVUJjbVRRdEFrU3BUWUNHU0hRRTgzdmZzOXNFbzM5ZlRqUVpVdjA1T2Y4SFc5Yzdq",
-          "CBMihgFBVV95cUxPM2FJZFdFLVhBRXdBbm96OWhGTU5DRkxwQnd5Ujl0QU9PamUwTnV3U0VWUHoyelU4Vjk0UjliTEQ1UEF0Snc2Z2VvMV82OFlESVJ1NnVad0VIR0RFdzRuRjJyQ0gtUUM1Nldpa0hnb1ctZnUxNnBJQzBaSWFoRVBLLXc0X0NGQQ"
+          "CBMi1wFBVV95cUxQT1Z4cTgtUlE2SjROSkc3ZG1ndnpEZEVLUjVHbVRsWGdlcWhIeGdtWWxkME83WnlSN1BHVGcwaks4RjROY0gyRzl1Z3dpUHBSM0xBX21xLVgzM0FOTUdQQTlBUzc2dlM0aDUxRlU4S0hTZDVSeDJNVDFNbzhzdDZkRDZiQ0xETTlXeXZReHMxMVdFcENjTThKUUoteU55TUg3dVdCSTBjVEl1bUJCZl9qQlJ1QjkwVkNZYmw3N0o5UGNzYXRJNDl5Q1JrUUR6WkJ0S3FjZEdNZw",
+          "CBMia0FVX3lxTFBPdGQ2OWRDTHE1SWNzMFQ5bmJWRlZMNm8teDNwU0hLdW5ZcXFQM0huZUlhcGNKYUhaMnBOSjhYMVM2cjFjUVdLUzVCd1RmdDRzRXU4OFdxOUQ2YUp3bFpQWUZ1WEU5dlUya004",
+          "CBMiggFBVV95cUxQSTFhMjBydnEtY1lzLWZhaFdUbS1GOHUxWnp4d2xLcS1FblJ1d3FobmRCeUJqc3JvWXQ5RGJBWTltdjRHald6ZWZwX19QeEVUMjlnQnotcTFZcExkZExIWHhwS0JEeWx4RzEzbWhTN1k3THBKc1QwSC00STJzSS04b01B"
         ],
         "provider_url": "https://news.google.com/rss/search",
         "result_preview_count": 10
       },
-      "request_started_at": "2026-04-22T22:31:10.829945+00:00",
-      "response_completed_at": "2026-04-22T22:31:10.839563+00:00",
+      "request_started_at": "2026-04-23T00:58:19.672816+00:00",
+      "response_completed_at": "2026-04-23T00:58:19.674695+00:00",
       "result_count": 10,
       "timeout_seconds": 10
     }
   ],
-  "generated_at": "2026-04-22T22:31:10.981290+00:00",
+  "generated_at": "2026-04-23T00:58:19.796473+00:00",
   "phase3": {
     "candidate_report": {
       "detector_version": "phase3_detector_v1",
@@ -572,13 +572,13 @@
     },
     "candidate_rows": [
       {
-        "candidate_id": "7dba23e2146e4be3aa499cdf7b7f37a0",
+        "candidate_id": "dadeebae65a54b86943194aea179914a",
         "event_id": "phase9_task2_event_b",
         "market_id": "phase9_task2_market_b",
         "trigger_time": "2026-04-20T05:18:00+00:00"
       },
       {
-        "candidate_id": "0671bcfcdc5e4d3c99121977025e3417",
+        "candidate_id": "4fee19ef5e5c4786a5475de33cfacedd",
         "event_id": "phase9_task2_event_a",
         "market_id": "phase9_task2_market_a",
         "trigger_time": "2026-04-20T05:06:00+00:00"
@@ -598,8 +598,8 @@
   "phase4": {
     "alert_results": [
       {
-        "alert_id": "448aa3912ce44959a559599df475996e",
-        "candidate_id": "7dba23e2146e4be3aa499cdf7b7f37a0",
+        "alert_id": "a309ef1998e14f09aa5ad059bd8bf8ee",
+        "candidate_id": "dadeebae65a54b86943194aea179914a",
         "delivery_channels": [
           "telegram",
           "discord"
@@ -607,67 +607,199 @@
         "severity": "ACTIONABLE"
       },
       {
-        "alert_id": "a0722c9eb4374cf280f9394b30fb3437",
-        "candidate_id": "0671bcfcdc5e4d3c99121977025e3417",
+        "alert_id": "48d22e82025a4b9996c8a45ec82e892e",
+        "candidate_id": "4fee19ef5e5c4786a5475de33cfacedd",
         "delivery_channels": [
           "telegram",
           "discord"
         ],
         "severity": "ACTIONABLE"
+      },
+      {
+        "alert_id": "61577283676943c2b900d81ad519a607",
+        "candidate_id": "35d6c178281a4e30b39db10f37247d22",
+        "resent": true,
+        "severity": "WATCH",
+        "status": "updated_resend"
+      },
+      {
+        "alert_id": "5a819105b113436a80ed8092fa3c996e",
+        "candidate_id": "b6d57122981241658165077d5cba4e49",
+        "resent": true,
+        "severity": "WATCH",
+        "status": "updated_resend"
+      },
+      {
+        "alert_id": "4661d9a6f49c4108ae9e7e3189023f09",
+        "candidate_id": "afc36eee450245e195bd423c444aff1a",
+        "resent": true,
+        "severity": "ACTIONABLE",
+        "status": "updated_resend"
+      },
+      {
+        "alert_id": "1e23148212d7438cbb3f4205a6ee9f15",
+        "candidate_id": "361970bcc709400ab823dbf8755f0ce1",
+        "resent": true,
+        "severity": "ACTIONABLE",
+        "status": "updated_resend"
+      },
+      {
+        "alert_id": "36bfbbad304d44748535837db5c7f7c6",
+        "candidate_id": "49ba076aa8f64ff1b1d81465a83f5cca",
+        "resent": false,
+        "severity": "WATCH",
+        "status": "updated"
+      },
+      {
+        "alert_id": "36a8b008474348e48e69c18ed84a7be0",
+        "candidate_id": "673a6fe2ca9e4470b7bc06716526eaf4",
+        "resent": true,
+        "severity": "WATCH",
+        "status": "updated_resend"
+      },
+      {
+        "alert_id": "ab79897cf29d428faa4202566536a5d8",
+        "candidate_id": "e5e8bed85e384d80b1dd5c47da885ada",
+        "resent": true,
+        "severity": "WATCH",
+        "status": "updated_resend"
+      },
+      {
+        "alert_id": "9b154d9f43874f7caa1aee2dbbba800a",
+        "candidate_id": "05f43a4472454279bfdab9e95da28750",
+        "resent": true,
+        "severity": "ACTIONABLE",
+        "status": "updated_resend"
       }
     ],
     "alert_summary": {
       "alerts_created": 2,
       "alerts_suppressed": 0,
-      "alerts_updated": 0,
-      "candidates_seen": 2,
-      "delivery_attempts_written": 4
+      "alerts_updated": 8,
+      "candidates_seen": 10,
+      "delivery_attempts_written": 18
     },
     "analyst_result": {
       "action_type": "mark_useful",
       "actor": "phase10_task1",
-      "alert_id": "a0722c9eb4374cf280f9394b30fb3437",
-      "feedback_id": "99b51ac180b6438fbc1d56b4e3f93338",
+      "alert_id": "48d22e82025a4b9996c8a45ec82e892e",
+      "feedback_id": "affb877353bc4002a42af1b726d1dfdf",
       "follow_up_at": "2026-04-20T06:15:00+00:00",
       "follow_up_at_display": "Apr 20, 2026 2:15 AM ET"
     },
     "cached_evidence_results": [
       {
-        "candidate_id": "7dba23e2146e4be3aa499cdf7b7f37a0",
+        "candidate_id": "dadeebae65a54b86943194aea179914a",
         "confidence_modifier": -0.25,
-        "evidence_snapshot_id": "9487c33bfef7499181c2b6199e26dd02",
+        "evidence_snapshot_id": "baac61de39974ed983d27c42e94bf195",
         "evidence_state": "already_public",
         "providers": [
           "google_news_rss"
         ]
       },
       {
-        "candidate_id": "0671bcfcdc5e4d3c99121977025e3417",
+        "candidate_id": "4fee19ef5e5c4786a5475de33cfacedd",
         "confidence_modifier": -0.25,
-        "evidence_snapshot_id": "278f33700c2945028d6e1c7929438613",
+        "evidence_snapshot_id": "4c7a7f89477e475fb53290d7cb66cd01",
         "evidence_state": "already_public",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "35d6c178281a4e30b39db10f37247d22",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "e33b09bb43354fd788ab881abef61134",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "b6d57122981241658165077d5cba4e49",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "a3c32200cb744a799c273b3d2fb8add0",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "afc36eee450245e195bd423c444aff1a",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "720465e28ca347e2a14db07c3f3bdb3f",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "361970bcc709400ab823dbf8755f0ce1",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "18aaffd2a411421c8fbe9895fac9e05f",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "49ba076aa8f64ff1b1d81465a83f5cca",
+        "confidence_modifier": -0.1,
+        "evidence_snapshot_id": "081ce91d562c4962977ce3678afd4e8c",
+        "evidence_state": "weakly_public",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "673a6fe2ca9e4470b7bc06716526eaf4",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "99464de1b678415ca1b6f34596295204",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "e5e8bed85e384d80b1dd5c47da885ada",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "1a17e488b51444b89befdd77530dca77",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "05f43a4472454279bfdab9e95da28750",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "d76d2336bcad40128bd2518ec8f82649",
+        "evidence_state": "not_publicly_explained",
         "providers": [
           "google_news_rss"
         ]
       }
     ],
     "evidence_summary": {
-      "candidates_processed": 4,
-      "candidates_seen": 4,
-      "evidence_queries_written": 4,
-      "evidence_snapshots_written": 4
+      "candidates_processed": 20,
+      "candidates_seen": 20,
+      "evidence_queries_written": 20,
+      "evidence_snapshots_written": 20
     },
     "gate4_report": {
       "alert_summary": {
         "delivered_or_reviewed_alerts": 1,
         "severity_counts": [
           {
-            "count": 2,
+            "count": 93,
             "severity": "ACTIONABLE"
+          },
+          {
+            "count": 5,
+            "severity": "WATCH"
           }
         ],
         "suppressed_alerts": 0,
-        "total_alerts": 2
+        "total_alerts": 98
       },
       "analyst_summary": {
         "action_counts": [
@@ -682,17 +814,17 @@
         "analyst_feedback_rows": 1,
         "status": "end_to_end_live",
         "suppressed_alerts": 0,
-        "total_alerts": 2,
-        "total_delivery_attempts": 4
+        "total_alerts": 98,
+        "total_delivery_attempts": 210
       },
       "delivery_summary": {
         "channel_counts": [
           {
-            "count": 2,
+            "count": 105,
             "delivery_channel": "discord"
           },
           {
-            "count": 2,
+            "count": 105,
             "delivery_channel": "telegram"
           }
         ],
@@ -702,35 +834,35 @@
         ],
         "error_attempts": 0,
         "sent_attempts": 0,
-        "skipped_attempts": 4,
-        "total_attempts": 4
+        "skipped_attempts": 210,
+        "total_attempts": 210
       },
       "latest_alert_example": {
-        "alert_id": "a0722c9eb4374cf280f9394b30fb3437",
+        "alert_id": "48d22e82025a4b9996c8a45ec82e892e",
         "alert_status": "useful",
         "analyst_feedback": [
           {
             "action_type": "mark_useful",
             "actor": "phase10_task1",
-            "created_at": "2026-04-22T22:31:10.935564+00:00",
-            "created_at_display": "Apr 22, 2026 6:31 PM ET",
+            "created_at": "2026-04-23T00:58:19.786983+00:00",
+            "created_at_display": "Apr 22, 2026 8:58 PM ET",
             "notes": "Phase 10 Task 1 real-provider-backed evidence packet reviewed successfully."
           }
         ],
-        "candidate_id": "0671bcfcdc5e4d3c99121977025e3417",
-        "created_at": "2026-04-22T22:31:10.904831+00:00",
-        "created_at_display": "Apr 22, 2026 6:31 PM ET",
+        "candidate_id": "4fee19ef5e5c4786a5475de33cfacedd",
+        "created_at": "2026-04-23T00:58:19.726854+00:00",
+        "created_at_display": "Apr 22, 2026 8:58 PM ET",
         "delivery_attempts": [
           {
-            "attempted_at": "2026-04-22T22:31:10.911779+00:00",
-            "attempted_at_display": "Apr 22, 2026 6:31 PM ET",
+            "attempted_at": "2026-04-23T00:58:19.728213+00:00",
+            "attempted_at_display": "Apr 22, 2026 8:58 PM ET",
             "delivery_channel": "telegram",
             "delivery_status": "skipped",
             "error_message": null
           },
           {
-            "attempted_at": "2026-04-22T22:31:10.919959+00:00",
-            "attempted_at_display": "Apr 22, 2026 6:31 PM ET",
+            "attempted_at": "2026-04-23T00:58:19.729562+00:00",
+            "attempted_at_display": "Apr 22, 2026 8:58 PM ET",
             "delivery_channel": "discord",
             "delivery_status": "skipped",
             "error_message": null
@@ -772,15 +904,15 @@
               {
                 "budget": {
                   "blocked_by_budget": false,
-                  "day_queries_after": 2,
-                  "day_queries_before": 2,
+                  "day_queries_after": 10,
+                  "day_queries_before": 10,
                   "day_query_cap": 250,
                   "day_spend_after_usd": 0.0,
                   "day_spend_before_usd": 0.0,
                   "estimated_cost_usd": 0.0,
                   "external_call_made": false,
-                  "month_queries_after": 2,
-                  "month_queries_before": 2,
+                  "month_queries_after": 10,
+                  "month_queries_before": 10,
                   "month_query_cap": 5000,
                   "month_spend_after_usd": 0.0,
                   "month_spend_before_usd": 0.0
@@ -801,7 +933,7 @@
           "severity": "ACTIONABLE",
           "title": "Bitcoin price and crypto market momentum",
           "trigger_time_display": "Apr 20, 2026 1:06 AM ET",
-          "what_changed": "Candidate 0671bcfcdc5e4d3c99121977025e3417 triggered at Apr 20, 2026 1:06 AM ET",
+          "what_changed": "Candidate 4fee19ef5e5c4786a5475de33cfacedd triggered at Apr 20, 2026 1:06 AM ET",
           "why_it_looks_informed": "Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=15.127473"
         },
         "provider_summary": {
@@ -810,15 +942,15 @@
             {
               "budget": {
                 "blocked_by_budget": false,
-                "day_queries_after": 2,
-                "day_queries_before": 2,
+                "day_queries_after": 10,
+                "day_queries_before": 10,
                 "day_query_cap": 250,
                 "day_spend_after_usd": 0.0,
                 "day_spend_before_usd": 0.0,
                 "estimated_cost_usd": 0.0,
                 "external_call_made": false,
-                "month_queries_after": 2,
-                "month_queries_before": 2,
+                "month_queries_after": 10,
+                "month_queries_before": 10,
                 "month_query_cap": 5000,
                 "month_spend_after_usd": 0.0,
                 "month_spend_before_usd": 0.0
@@ -841,15 +973,15 @@
       },
       "workflow_registration": {
         "alert_schema_version": "phase4_alert_payload_v1",
-        "created_at": "2026-04-22T20:18:25.587549+00:00",
-        "created_at_display": "Apr 22, 2026 4:18 PM ET",
+        "created_at": "2026-04-23T00:54:59.483744+00:00",
+        "created_at_display": "Apr 22, 2026 8:54 PM ET",
         "delivery_channels": [
           "telegram",
           "discord"
         ],
         "evidence_schema_version": "phase4_evidence_v1",
-        "last_used_at": "2026-04-22T22:31:08.921545+00:00",
-        "last_used_at_display": "Apr 22, 2026 6:31 PM ET",
+        "last_used_at": "2026-04-23T00:58:18.905325+00:00",
+        "last_used_at_display": "Apr 22, 2026 8:58 PM ET",
         "notes": "Phase 10 Task 1 real-provider evidence hardening over the canonical replay-linked fixture hour.",
         "workflow_version": "phase4_alerts_v1"
       },
@@ -857,19 +989,91 @@
     },
     "live_evidence_results": [
       {
-        "candidate_id": "7dba23e2146e4be3aa499cdf7b7f37a0",
+        "candidate_id": "dadeebae65a54b86943194aea179914a",
         "confidence_modifier": -0.25,
-        "evidence_snapshot_id": "d21d6b8fbcc34c3c9ad718c3e2d0676d",
+        "evidence_snapshot_id": "b0c5ebf779d6433a806749332b3e75ea",
         "evidence_state": "already_public",
         "providers": [
           "google_news_rss"
         ]
       },
       {
-        "candidate_id": "0671bcfcdc5e4d3c99121977025e3417",
+        "candidate_id": "4fee19ef5e5c4786a5475de33cfacedd",
         "confidence_modifier": -0.25,
-        "evidence_snapshot_id": "4f094b08eecf4f7680efcaab59120c30",
+        "evidence_snapshot_id": "9571dbc2d0dc44f3a1c1367baac76c12",
         "evidence_state": "already_public",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "35d6c178281a4e30b39db10f37247d22",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "f3c250ee8abd4ea4b240538fc0e806fa",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "b6d57122981241658165077d5cba4e49",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "eb2f8fa2f78f400fa473af1fa4ed2125",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "afc36eee450245e195bd423c444aff1a",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "26f0c7d998614269a036cb6e9f62b006",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "361970bcc709400ab823dbf8755f0ce1",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "f29edbf608054285b40d53d162ec150d",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "49ba076aa8f64ff1b1d81465a83f5cca",
+        "confidence_modifier": -0.1,
+        "evidence_snapshot_id": "bfdc2775a5284ac19eabf06c2e3e470d",
+        "evidence_state": "weakly_public",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "673a6fe2ca9e4470b7bc06716526eaf4",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "014d7aa25b3e4876b36f63c9948f205a",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "e5e8bed85e384d80b1dd5c47da885ada",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "31fbbba805344d8cb501b24c313ee4a5",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "google_news_rss"
+        ]
+      },
+      {
+        "candidate_id": "05f43a4472454279bfdab9e95da28750",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "fa7cf7914bc64996b9163b1dbbe92c54",
+        "evidence_state": "not_publicly_explained",
         "providers": [
           "google_news_rss"
         ]
@@ -879,10 +1083,10 @@
   "real_provider_summary": {
     "budget_usage": [
       {
-        "day_queries_after": 2,
+        "day_queries_after": 10,
         "day_query_cap": 250,
         "day_spend_after_usd": 0.0,
-        "month_queries_after": 2,
+        "month_queries_after": 10,
         "month_query_cap": 5000,
         "month_spend_after_usd": 0.0,
         "provider_name": "google_news_rss"
@@ -928,7 +1132,7 @@
     "prices": [
       {
         "captured_at": "2026-04-20T05:00:00+00:00",
-        "envelope_id": "4b7ac1dabd9d407bac2f71099bb258ca",
+        "envelope_id": "6485faa793c24c0cbecad7066f1ca448",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -937,7 +1141,7 @@
       },
       {
         "captured_at": "2026-04-20T05:02:00+00:00",
-        "envelope_id": "84879afd931e48eeb75c13837b310837",
+        "envelope_id": "c8e837773a8b4ddc81b33950e1b03682",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -946,7 +1150,7 @@
       },
       {
         "captured_at": "2026-04-20T05:04:00+00:00",
-        "envelope_id": "d905ef97c4904cd48c893ccf9c2b1a19",
+        "envelope_id": "c29cd8e6781b4f4aa590577531bde201",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -955,7 +1159,7 @@
       },
       {
         "captured_at": "2026-04-20T05:05:30+00:00",
-        "envelope_id": "af3164933bbe4159a1c15df3c25a7562",
+        "envelope_id": "3b6b5ec6372c4176b64b2bc7c81980ff",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -964,7 +1168,7 @@
       },
       {
         "captured_at": "2026-04-20T05:12:00+00:00",
-        "envelope_id": "b54c8570e7584430a59ab32655c90dfc",
+        "envelope_id": "e9f55ed41ec440a18a2e6f3cc856c154",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -973,7 +1177,7 @@
       },
       {
         "captured_at": "2026-04-20T05:14:00+00:00",
-        "envelope_id": "e4891b391f2b4f17b6eb2487dd5b1d40",
+        "envelope_id": "e2f089ff4e834c09810018f5f0773891",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -982,7 +1186,7 @@
       },
       {
         "captured_at": "2026-04-20T05:16:00+00:00",
-        "envelope_id": "0224a9acd74b4621a077062cc32ff711",
+        "envelope_id": "ec472ae239b345ab88d27fd52f06fb5f",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -991,7 +1195,7 @@
       },
       {
         "captured_at": "2026-04-20T05:17:30+00:00",
-        "envelope_id": "89ec53fe4de84adda84db3339c972138",
+        "envelope_id": "b673361031034cc8b345eb2fcf22bb4b",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -1002,7 +1206,7 @@
     "trades": [
       {
         "captured_at": "2026-04-20T05:02:00+00:00",
-        "envelope_id": "46164a4cb5064dc1ab65f8bb0b5cac24",
+        "envelope_id": "67739df6b8ff4ca188d72fe470a8f88d",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -1015,7 +1219,7 @@
       },
       {
         "captured_at": "2026-04-20T05:06:00+00:00",
-        "envelope_id": "46cfd96786c44ea5a973a4ecfafb38ba",
+        "envelope_id": "ac8386689256450093585b9a843e528c",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -1029,7 +1233,7 @@
       },
       {
         "captured_at": "2026-04-20T05:14:00+00:00",
-        "envelope_id": "7196838287a944fcaa679c0a74a4a552",
+        "envelope_id": "332e409023eb4ffe8c3c3d2713147d36",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -1042,7 +1246,7 @@
       },
       {
         "captured_at": "2026-04-20T05:18:00+00:00",
-        "envelope_id": "f272efb233a0497d99bdb62dab258bf1",
+        "envelope_id": "b906d72ad91040189537f62f0dfb91d8",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -1057,12 +1261,12 @@
     ]
   },
   "table_counts_after": {
-    "alert_delivery_attempts": 4,
-    "alerts": 2,
+    "alert_delivery_attempts": 210,
+    "alerts": 98,
     "analyst_feedback": 1,
-    "evidence_queries": 4,
-    "evidence_snapshots": 4,
-    "signal_candidates": 2
+    "evidence_queries": 22,
+    "evidence_snapshots": 118,
+    "signal_candidates": 98
   },
   "task_contract_version": "phase10_task1_real_provider_evidence_v1",
   "task_name": "Phase 10 Task 1 - Real-Provider Evidence Hardening",

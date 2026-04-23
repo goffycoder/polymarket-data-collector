@@ -14,9 +14,9 @@
 - `live`: `2`
 
 ## Budget Usage
-- `google_news_rss` day `2` / `250`, month `2` / `5000`, month spend `$0.000000`
+- `google_news_rss` day `10` / `250`, month `10` / `5000`, month spend `$0.000000`
 
 ## Latest Alert
-- Alert id: `a0722c9eb4374cf280f9394b30fb3437`
+- Alert id: `48d22e82025a4b9996c8a45ec82e892e`
 - Evidence state: `already_public`
 - Provider summary present: `True`

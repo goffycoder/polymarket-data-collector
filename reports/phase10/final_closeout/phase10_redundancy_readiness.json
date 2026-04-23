@@ -1,21 +1,21 @@
 {
   "blockers": [],
-  "generated_at": "2026-04-22T23:01:11.819030+00:00",
+  "generated_at": "2026-04-23T00:58:22.507142+00:00",
   "latest_storage_audit": {
     "audit_scope": "phase10_closeout",
     "cold_candidate_count": 0,
     "compact_candidate_count": 0,
-    "created_at": "2026-04-22 23:01:11",
+    "created_at": "2026-04-23 00:58:22",
     "missing_file_count": 0,
-    "output_path": "C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\reports\\phase10\\final_closeout\\phase10_storage_audit.json",
-    "storage_audit_run_id": "0874c969ae7c446cb4a284b1f0b0f9e4",
+    "output_path": "/private/tmp/polymarket_arbitrage_phase10/reports/phase10/final_closeout/phase10_storage_audit.json",
+    "storage_audit_run_id": "92e84a85281b4f828b6335d5c6241694",
     "summary_json": {
       "audit_scope": "phase10_closeout",
-      "generated_at": "2026-04-22T23:01:11.705647+00:00",
+      "generated_at": "2026-04-23T00:58:22.492153+00:00",
       "largest_partitions": [
         {
           "actual_bytes": 27652,
-          "age_days": 66.751,
+          "age_days": 66.832,
           "byte_count": 27652,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -31,7 +31,7 @@
         },
         {
           "actual_bytes": 27579,
-          "age_days": 66.751,
+          "age_days": 66.832,
           "byte_count": 27579,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -47,7 +47,7 @@
         },
         {
           "actual_bytes": 26687,
-          "age_days": 97.751,
+          "age_days": 97.832,
           "byte_count": 26687,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -63,7 +63,7 @@
         },
         {
           "actual_bytes": 26609,
-          "age_days": 97.751,
+          "age_days": 97.832,
           "byte_count": 26609,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -79,7 +79,7 @@
         },
         {
           "actual_bytes": 26494,
-          "age_days": 38.751,
+          "age_days": 38.832,
           "byte_count": 26494,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -95,7 +95,7 @@
         },
         {
           "actual_bytes": 26415,
-          "age_days": 38.751,
+          "age_days": 38.832,
           "byte_count": 26415,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -111,7 +111,7 @@
         },
         {
           "actual_bytes": 5422,
-          "age_days": 2.735,
+          "age_days": 2.817,
           "byte_count": 5422,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -127,7 +127,7 @@
         },
         {
           "actual_bytes": 5357,
-          "age_days": 2.736,
+          "age_days": 2.817,
           "byte_count": 5357,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -143,7 +143,7 @@
         },
         {
           "actual_bytes": 4226,
-          "age_days": 66.751,
+          "age_days": 66.832,
           "byte_count": 4226,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -159,7 +159,7 @@
         },
         {
           "actual_bytes": 4159,
-          "age_days": 66.751,
+          "age_days": 66.832,
           "byte_count": 4159,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -175,7 +175,7 @@
         },
         {
           "actual_bytes": 4061,
-          "age_days": 97.751,
+          "age_days": 97.832,
           "byte_count": 4061,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -191,7 +191,7 @@
         },
         {
           "actual_bytes": 4028,
-          "age_days": 38.751,
+          "age_days": 38.832,
           "byte_count": 4028,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -207,7 +207,7 @@
         },
         {
           "actual_bytes": 3989,
-          "age_days": 97.751,
+          "age_days": 97.832,
           "byte_count": 3989,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -223,7 +223,7 @@
         },
         {
           "actual_bytes": 3955,
-          "age_days": 38.751,
+          "age_days": 38.832,
           "byte_count": 3955,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -235,38 +235,6 @@
           "row_count": 1,
           "schema_version": "raw_event_envelope.v1",
           "source_system": "phase10_holdout_prices",
-          "storage_class": "raw"
-        },
-        {
-          "actual_bytes": 3358,
-          "age_days": 2.739,
-          "byte_count": 3358,
-          "entity_kind": "prices_batch",
-          "file_exists": true,
-          "first_captured_at": "2026-04-20T05:00:00+00:00",
-          "last_captured_at": "2026-04-20T05:17:30+00:00",
-          "partition_path": "data/raw/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson",
-          "recommended_action": "retain_hot",
-          "recommended_tier": "hot",
-          "row_count": 8,
-          "schema_version": "raw_event_envelope.v1",
-          "source_system": "phase9_seed_prices",
-          "storage_class": "raw"
-        },
-        {
-          "actual_bytes": 3350,
-          "age_days": 2.738,
-          "byte_count": 3350,
-          "entity_kind": "recent_trades_page",
-          "file_exists": true,
-          "first_captured_at": "2026-04-20T05:02:00+00:00",
-          "last_captured_at": "2026-04-20T05:18:00+00:00",
-          "partition_path": "data/raw/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_trades/events.ndjson",
-          "recommended_action": "retain_hot",
-          "recommended_tier": "hot",
-          "row_count": 4,
-          "schema_version": "raw_event_envelope.v1",
-          "source_system": "phase9_seed_trades",
           "storage_class": "raw"
         }
       ],
@@ -320,36 +288,12 @@
             "detector_input"
           ],
           "total_bytes": 5357
-        },
-        {
-          "missing_file_count": 0,
-          "partition_count": 1,
-          "recommended_tiers": {
-            "hot": 1
-          },
-          "source_system": "phase9_seed_prices",
-          "storage_classes": [
-            "raw"
-          ],
-          "total_bytes": 3358
-        },
-        {
-          "missing_file_count": 0,
-          "partition_count": 1,
-          "recommended_tiers": {
-            "hot": 1
-          },
-          "source_system": "phase9_seed_trades",
-          "storage_classes": [
-            "raw"
-          ],
-          "total_bytes": 3350
         }
       ],
       "tiering_decisions": [
         {
           "actual_bytes": 5422,
-          "age_days": 2.735,
+          "age_days": 2.817,
           "byte_count": 5422,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -365,7 +309,7 @@
         },
         {
           "actual_bytes": 5357,
-          "age_days": 2.736,
+          "age_days": 2.817,
           "byte_count": 5357,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -380,40 +324,8 @@
           "storage_class": "detector_input"
         },
         {
-          "actual_bytes": 3358,
-          "age_days": 2.739,
-          "byte_count": 3358,
-          "entity_kind": "prices_batch",
-          "file_exists": true,
-          "first_captured_at": "2026-04-20T05:00:00+00:00",
-          "last_captured_at": "2026-04-20T05:17:30+00:00",
-          "partition_path": "data/raw/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson",
-          "recommended_action": "retain_hot",
-          "recommended_tier": "hot",
-          "row_count": 8,
-          "schema_version": "raw_event_envelope.v1",
-          "source_system": "phase9_seed_prices",
-          "storage_class": "raw"
-        },
-        {
-          "actual_bytes": 3350,
-          "age_days": 2.738,
-          "byte_count": 3350,
-          "entity_kind": "recent_trades_page",
-          "file_exists": true,
-          "first_captured_at": "2026-04-20T05:02:00+00:00",
-          "last_captured_at": "2026-04-20T05:18:00+00:00",
-          "partition_path": "data/raw/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_trades/events.ndjson",
-          "recommended_action": "retain_hot",
-          "recommended_tier": "hot",
-          "row_count": 4,
-          "schema_version": "raw_event_envelope.v1",
-          "source_system": "phase9_seed_trades",
-          "storage_class": "raw"
-        },
-        {
           "actual_bytes": 27652,
-          "age_days": 66.751,
+          "age_days": 66.832,
           "byte_count": 27652,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -429,7 +341,7 @@
         },
         {
           "actual_bytes": 27579,
-          "age_days": 66.751,
+          "age_days": 66.832,
           "byte_count": 27579,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -445,7 +357,7 @@
         },
         {
           "actual_bytes": 26687,
-          "age_days": 97.751,
+          "age_days": 97.832,
           "byte_count": 26687,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -461,7 +373,7 @@
         },
         {
           "actual_bytes": 26609,
-          "age_days": 97.751,
+          "age_days": 97.832,
           "byte_count": 26609,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -477,7 +389,7 @@
         },
         {
           "actual_bytes": 26494,
-          "age_days": 38.751,
+          "age_days": 38.832,
           "byte_count": 26494,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -493,7 +405,7 @@
         },
         {
           "actual_bytes": 26415,
-          "age_days": 38.751,
+          "age_days": 38.832,
           "byte_count": 26415,
           "entity_kind": "recent_trades_page",
           "file_exists": true,
@@ -509,7 +421,7 @@
         },
         {
           "actual_bytes": 4226,
-          "age_days": 66.751,
+          "age_days": 66.832,
           "byte_count": 4226,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -525,7 +437,7 @@
         },
         {
           "actual_bytes": 4159,
-          "age_days": 66.751,
+          "age_days": 66.832,
           "byte_count": 4159,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -541,7 +453,7 @@
         },
         {
           "actual_bytes": 4061,
-          "age_days": 97.751,
+          "age_days": 97.832,
           "byte_count": 4061,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -557,7 +469,7 @@
         },
         {
           "actual_bytes": 4028,
-          "age_days": 38.751,
+          "age_days": 38.832,
           "byte_count": 4028,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -573,7 +485,7 @@
         },
         {
           "actual_bytes": 3989,
-          "age_days": 97.751,
+          "age_days": 97.832,
           "byte_count": 3989,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -589,7 +501,7 @@
         },
         {
           "actual_bytes": 3955,
-          "age_days": 38.751,
+          "age_days": 38.832,
           "byte_count": 3955,
           "entity_kind": "prices_batch",
           "file_exists": true,
@@ -606,17 +518,17 @@
       ],
       "totals": {
         "missing_file_count": 0,
-        "partition_count": 16,
-        "total_bytes": 203341
+        "partition_count": 14,
+        "total_bytes": 196633
       }
     },
-    "total_bytes": 203341,
-    "total_partitions": 16
+    "total_bytes": 196633,
+    "total_partitions": 14
   },
-  "output_path": "C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\reports\\phase10\\final_closeout\\phase10_redundancy_readiness.json",
+  "output_path": "/private/tmp/polymarket_arbitrage_phase10/reports/phase10/final_closeout/phase10_redundancy_readiness.json",
   "readiness_checks": {
     "active_shadow_model": {
-      "deployed_at": "2026-04-22T23:01:10.500814+00:00",
+      "deployed_at": "2026-04-23T00:58:22.360105+00:00",
       "deployment_status": "shadow",
       "model_name": "phase6_ranker_v1",
       "model_version": "phase10_task4_lightgbm_v1",
@@ -624,7 +536,7 @@
     },
     "has_storage_audit": true,
     "last_24h_alert_count": 3,
-    "last_24h_shadow_score_count": 98,
+    "last_24h_shadow_score_count": 96,
     "missing_archive_files": 0,
     "storage_audit_age_hours": 0.0
   },

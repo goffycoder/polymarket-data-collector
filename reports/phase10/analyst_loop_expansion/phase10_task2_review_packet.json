@@ -2,10 +2,10 @@
   "alert_review": {
     "alerts": [
       {
-        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
+        "alert_id": "96400ba43299411c854dad2c7589e36f",
         "alert_status": "useful",
-        "candidate_id": "a4fb12d41cb14602a87e2ac19fce7fe2",
-        "created_at": "2026-04-22T22:41:58.701745+00:00",
+        "candidate_id": "18f57f5643764f0499dcb0f0c2823fb1",
+        "created_at": "2026-04-23T00:58:20.129700+00:00",
         "event_family_id": "phase9_task2_event_a",
         "event_id": "phase9_task2_event_a",
         "evidence_state": "already_public",
@@ -45,15 +45,15 @@
               {
                 "budget": {
                   "blocked_by_budget": false,
-                  "day_queries_after": 1,
-                  "day_queries_before": 0,
+                  "day_queries_after": 9,
+                  "day_queries_before": 8,
                   "day_query_cap": 250,
                   "day_spend_after_usd": 0.0,
                   "day_spend_before_usd": 0.0,
                   "estimated_cost_usd": 0.0,
                   "external_call_made": true,
-                  "month_queries_after": 1,
-                  "month_queries_before": 0,
+                  "month_queries_after": 9,
+                  "month_queries_before": 8,
                   "month_query_cap": 5000,
                   "month_spend_after_usd": 0.0,
                   "month_spend_before_usd": 0.0
@@ -74,7 +74,7 @@
           "severity": "ACTIONABLE",
           "title": "Bitcoin price and crypto market momentum",
           "trigger_time_display": "Apr 20, 2026 1:06 AM ET",
-          "what_changed": "Candidate a4fb12d41cb14602a87e2ac19fce7fe2 triggered at Apr 20, 2026 1:06 AM ET",
+          "what_changed": "Candidate 18f57f5643764f0499dcb0f0c2823fb1 triggered at Apr 20, 2026 1:06 AM ET",
           "why_it_looks_informed": "Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=15.127473"
         },
         "severity": "ACTIONABLE",
@@ -82,13 +82,13 @@
         "suppression_state": "mark_useful",
         "title": "Bitcoin price and crypto market momentum",
         "trigger_time": "2026-04-20T05:06:00+00:00",
-        "updated_at": "2026-04-22T22:41:58.775374+00:00"
+        "updated_at": "2026-04-23T00:58:20.146678+00:00"
       },
       {
-        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
+        "alert_id": "511b28ece13e496395ff9aaa1890d776",
         "alert_status": "false_positive",
-        "candidate_id": "923c5d0367af4eaab5f334d590d1fda8",
-        "created_at": "2026-04-22T22:41:58.731817+00:00",
+        "candidate_id": "155f52b39ed64cb2b7f4e2268eecad3c",
+        "created_at": "2026-04-23T00:58:20.137790+00:00",
         "event_family_id": "phase9_task2_event_b",
         "event_id": "phase9_task2_event_b",
         "evidence_state": "already_public",
@@ -128,15 +128,15 @@
               {
                 "budget": {
                   "blocked_by_budget": false,
-                  "day_queries_after": 2,
-                  "day_queries_before": 1,
+                  "day_queries_after": 10,
+                  "day_queries_before": 9,
                   "day_query_cap": 250,
                   "day_spend_after_usd": 0.0,
                   "day_spend_before_usd": 0.0,
                   "estimated_cost_usd": 0.0,
                   "external_call_made": true,
-                  "month_queries_after": 2,
-                  "month_queries_before": 1,
+                  "month_queries_after": 10,
+                  "month_queries_before": 9,
                   "month_query_cap": 5000,
                   "month_spend_after_usd": 0.0,
                   "month_spend_before_usd": 0.0
@@ -157,7 +157,7 @@
           "severity": "ACTIONABLE",
           "title": "Federal Reserve interest rates and inflation outlook",
           "trigger_time_display": "Apr 20, 2026 1:18 AM ET",
-          "what_changed": "Candidate 923c5d0367af4eaab5f334d590d1fda8 triggered at Apr 20, 2026 1:18 AM ET",
+          "what_changed": "Candidate 155f52b39ed64cb2b7f4e2268eecad3c triggered at Apr 20, 2026 1:18 AM ET",
           "why_it_looks_informed": "Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=16.579525"
         },
         "severity": "ACTIONABLE",
@@ -165,13 +165,13 @@
         "suppression_state": "mark_false_positive",
         "title": "Federal Reserve interest rates and inflation outlook",
         "trigger_time": "2026-04-20T05:18:00+00:00",
-        "updated_at": "2026-04-22T22:41:58.788347+00:00"
+        "updated_at": "2026-04-23T00:58:20.149460+00:00"
       },
       {
-        "alert_id": "1672c39d26dc46e488857d2f478a7515",
+        "alert_id": "f5627e0061f244d982907fe28b90ed3d",
         "alert_status": "suppressed",
-        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
-        "created_at": "2026-04-22T22:41:58.761332+00:00",
+        "candidate_id": "780cf2cff9d448af912c520fafa62c48",
+        "created_at": "2026-04-23T00:58:20.144280+00:00",
         "event_family_id": "phase9_task2_event_a",
         "event_id": "phase9_task2_event_a",
         "evidence_state": "already_public",
@@ -211,15 +211,15 @@
               {
                 "budget": {
                   "blocked_by_budget": false,
-                  "day_queries_after": 2,
-                  "day_queries_before": 2,
+                  "day_queries_after": 10,
+                  "day_queries_before": 10,
                   "day_query_cap": 250,
                   "day_spend_after_usd": 0.0,
                   "day_spend_before_usd": 0.0,
                   "estimated_cost_usd": 0.0,
                   "external_call_made": false,
-                  "month_queries_after": 2,
-                  "month_queries_before": 2,
+                  "month_queries_after": 10,
+                  "month_queries_before": 10,
                   "month_query_cap": 5000,
                   "month_spend_after_usd": 0.0,
                   "month_spend_before_usd": 0.0
@@ -240,15 +240,15 @@
           "severity": "ACTIONABLE",
           "title": "Bitcoin price and crypto market momentum",
           "trigger_time_display": "Apr 20, 2026 1:22 AM ET",
-          "what_changed": "Candidate 9a6d96963f7d479ba9b118c0d144140c triggered at Apr 20, 2026 1:22 AM ET",
+          "what_changed": "Candidate 780cf2cff9d448af912c520fafa62c48 triggered at Apr 20, 2026 1:22 AM ET",
           "why_it_looks_informed": "Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=13.886234"
         },
         "severity": "ACTIONABLE",
         "suppression_key": "phase9_task2_event_a",
-        "suppression_state": "suppressed_by:2ae1de64f5564db2a67ed80c7f32460a",
+        "suppression_state": "suppressed_by:96400ba43299411c854dad2c7589e36f",
         "title": "Bitcoin price and crypto market momentum",
         "trigger_time": "2026-04-20T05:22:00+00:00",
-        "updated_at": "2026-04-22T22:41:58.761332+00:00"
+        "updated_at": "2026-04-23T00:58:20.144280+00:00"
       }
     ],
     "created_alert_count": 2,
@@ -265,18 +265,18 @@
       {
         "action_type": "mark_useful",
         "actor": "phase10_task2",
-        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
-        "created_at": "2026-04-22T22:41:58.768196+00:00",
-        "feedback_id": "b16c186309764f1e845ff23f713d44db",
+        "alert_id": "96400ba43299411c854dad2c7589e36f",
+        "created_at": "2026-04-23T00:58:20.145560+00:00",
+        "feedback_id": "a0bbc515bd26407e9679caa12f21a79e",
         "follow_up_at": "2026-04-20T06:12:00+00:00",
         "notes": "Real-provider-backed alert A looked materially useful after replay-linked review."
       },
       {
         "action_type": "mark_false_positive",
         "actor": "phase10_task2",
-        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
-        "created_at": "2026-04-22T22:41:58.782730+00:00",
-        "feedback_id": "102a5a3556624fa894d6712c4aa50fed",
+        "alert_id": "511b28ece13e496395ff9aaa1890d776",
+        "created_at": "2026-04-23T00:58:20.147885+00:00",
+        "feedback_id": "dd3c2f905a8946e2ac819dfc730f58dc",
         "follow_up_at": "2026-04-20T06:18:00+00:00",
         "notes": "Second alert episode was reviewable but not strong enough after analyst inspection."
       }
@@ -291,39 +291,39 @@
       "phase9_seed_trades",
       "phase9_seed_prices"
     ],
-    "deleted_alert_count": 3,
-    "deleted_candidate_count": 3
+    "deleted_alert_count": 2,
+    "deleted_candidate_count": 2
   },
   "delivery_review": {
     "delivery_attempt_rows": [
       {
-        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
+        "alert_id": "96400ba43299411c854dad2c7589e36f",
         "attempt_number": 1,
-        "attempted_at": "2026-04-22T22:41:58.707624+00:00",
+        "attempted_at": "2026-04-23T00:58:20.130972+00:00",
         "delivery_channel": "telegram",
         "delivery_status": "skipped",
         "error_message": null
       },
       {
-        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
+        "alert_id": "96400ba43299411c854dad2c7589e36f",
         "attempt_number": 2,
-        "attempted_at": "2026-04-22T22:41:58.714548+00:00",
+        "attempted_at": "2026-04-23T00:58:20.132641+00:00",
         "delivery_channel": "discord",
         "delivery_status": "skipped",
         "error_message": null
       },
       {
-        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
+        "alert_id": "511b28ece13e496395ff9aaa1890d776",
         "attempt_number": 1,
-        "attempted_at": "2026-04-22T22:41:58.737808+00:00",
+        "attempted_at": "2026-04-23T00:58:20.139126+00:00",
         "delivery_channel": "telegram",
         "delivery_status": "skipped",
         "error_message": null
       },
       {
-        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
+        "alert_id": "511b28ece13e496395ff9aaa1890d776",
         "attempt_number": 2,
-        "attempted_at": "2026-04-22T22:41:58.744742+00:00",
+        "attempted_at": "2026-04-23T00:58:20.140375+00:00",
         "delivery_channel": "discord",
         "delivery_status": "skipped",
         "error_message": null
@@ -370,7 +370,7 @@
     "evidence_snapshots": 3,
     "signal_candidates": 3
   },
-  "generated_at": "2026-04-22T22:41:58.824103+00:00",
+  "generated_at": "2026-04-23T00:58:20.160057+00:00",
   "phase3": {
     "candidate_report": {
       "detector_version": "phase3_detector_v1",
@@ -413,7 +413,7 @@
     },
     "candidates": [
       {
-        "candidate_id": "a4fb12d41cb14602a87e2ac19fce7fe2",
+        "candidate_id": "18f57f5643764f0499dcb0f0c2823fb1",
         "detector_version": "phase3_detector_v1",
         "event_family_id": "phase9_task2_event_a",
         "event_id": "phase9_task2_event_a",
@@ -452,7 +452,7 @@
         ]
       },
       {
-        "candidate_id": "923c5d0367af4eaab5f334d590d1fda8",
+        "candidate_id": "155f52b39ed64cb2b7f4e2268eecad3c",
         "detector_version": "phase3_detector_v1",
         "event_family_id": "phase9_task2_event_b",
         "event_id": "phase9_task2_event_b",
@@ -491,7 +491,7 @@
         ]
       },
       {
-        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "candidate_id": "780cf2cff9d448af912c520fafa62c48",
         "detector_version": "phase3_detector_v1",
         "event_family_id": "phase9_task2_event_a",
         "event_id": "phase9_task2_event_a",
@@ -544,8 +544,8 @@
   "phase4": {
     "alert_results": [
       {
-        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
-        "candidate_id": "a4fb12d41cb14602a87e2ac19fce7fe2",
+        "alert_id": "96400ba43299411c854dad2c7589e36f",
+        "candidate_id": "18f57f5643764f0499dcb0f0c2823fb1",
         "delivery_channels": [
           "telegram",
           "discord"
@@ -553,8 +553,8 @@
         "severity": "ACTIONABLE"
       },
       {
-        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
-        "candidate_id": "923c5d0367af4eaab5f334d590d1fda8",
+        "alert_id": "511b28ece13e496395ff9aaa1890d776",
+        "candidate_id": "155f52b39ed64cb2b7f4e2268eecad3c",
         "delivery_channels": [
           "telegram",
           "discord"
@@ -562,11 +562,11 @@
         "severity": "ACTIONABLE"
       },
       {
-        "alert_id": "1672c39d26dc46e488857d2f478a7515",
-        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "alert_id": "f5627e0061f244d982907fe28b90ed3d",
+        "candidate_id": "780cf2cff9d448af912c520fafa62c48",
         "severity": "ACTIONABLE",
         "status": "suppressed",
-        "suppressed_by": "2ae1de64f5564db2a67ed80c7f32460a"
+        "suppressed_by": "96400ba43299411c854dad2c7589e36f"
       }
     ],
     "alert_summary": {
@@ -580,16 +580,16 @@
       {
         "action_type": "mark_useful",
         "actor": "phase10_task2",
-        "alert_id": "2ae1de64f5564db2a67ed80c7f32460a",
-        "feedback_id": "b16c186309764f1e845ff23f713d44db",
+        "alert_id": "96400ba43299411c854dad2c7589e36f",
+        "feedback_id": "a0bbc515bd26407e9679caa12f21a79e",
         "follow_up_at": "2026-04-20T06:12:00+00:00",
         "follow_up_at_display": "Apr 20, 2026 2:12 AM ET"
       },
       {
         "action_type": "mark_false_positive",
         "actor": "phase10_task2",
-        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
-        "feedback_id": "102a5a3556624fa894d6712c4aa50fed",
+        "alert_id": "511b28ece13e496395ff9aaa1890d776",
+        "feedback_id": "dd3c2f905a8946e2ac819dfc730f58dc",
         "follow_up_at": "2026-04-20T06:18:00+00:00",
         "follow_up_at_display": "Apr 20, 2026 2:18 AM ET"
       }
@@ -599,27 +599,27 @@
     },
     "evidence_results": [
       {
-        "candidate_id": "a4fb12d41cb14602a87e2ac19fce7fe2",
+        "candidate_id": "18f57f5643764f0499dcb0f0c2823fb1",
         "confidence_modifier": -0.25,
-        "evidence_snapshot_id": "6c017d495a864d6b9178888a4b1c343c",
+        "evidence_snapshot_id": "ae814c333bc444d6ace309e117726fcf",
         "evidence_state": "already_public",
         "providers": [
           "google_news_rss"
         ]
       },
       {
-        "candidate_id": "923c5d0367af4eaab5f334d590d1fda8",
+        "candidate_id": "155f52b39ed64cb2b7f4e2268eecad3c",
         "confidence_modifier": -0.25,
-        "evidence_snapshot_id": "14ae51113ebe44e49b926774e158867b",
+        "evidence_snapshot_id": "4a06526dfb0c4fa88c5ba357b09a6780",
         "evidence_state": "already_public",
         "providers": [
           "google_news_rss"
         ]
       },
       {
-        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "candidate_id": "780cf2cff9d448af912c520fafa62c48",
         "confidence_modifier": -0.25,
-        "evidence_snapshot_id": "2829cf61272448319cfed2fa7de6bab2",
+        "evidence_snapshot_id": "933e20444b62458a9843e0620aa88da9",
         "evidence_state": "already_public",
         "providers": [
           "google_news_rss"
@@ -637,12 +637,16 @@
         "delivered_or_reviewed_alerts": 2,
         "severity_counts": [
           {
-            "count": 3,
+            "count": 94,
             "severity": "ACTIONABLE"
+          },
+          {
+            "count": 5,
+            "severity": "WATCH"
           }
         ],
         "suppressed_alerts": 1,
-        "total_alerts": 3
+        "total_alerts": 99
       },
       "analyst_summary": {
         "action_counts": [
@@ -661,17 +665,17 @@
         "analyst_feedback_rows": 2,
         "status": "end_to_end_live",
         "suppressed_alerts": 1,
-        "total_alerts": 3,
-        "total_delivery_attempts": 4
+        "total_alerts": 99,
+        "total_delivery_attempts": 210
       },
       "delivery_summary": {
         "channel_counts": [
           {
-            "count": 2,
+            "count": 105,
             "delivery_channel": "discord"
           },
           {
-            "count": 2,
+            "count": 105,
             "delivery_channel": "telegram"
           }
         ],
@@ -681,16 +685,16 @@
         ],
         "error_attempts": 0,
         "sent_attempts": 0,
-        "skipped_attempts": 4,
-        "total_attempts": 4
+        "skipped_attempts": 210,
+        "total_attempts": 210
       },
       "latest_alert_example": {
-        "alert_id": "1672c39d26dc46e488857d2f478a7515",
+        "alert_id": "f5627e0061f244d982907fe28b90ed3d",
         "alert_status": "suppressed",
         "analyst_feedback": [],
-        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
-        "created_at": "2026-04-22T22:41:58.761332+00:00",
-        "created_at_display": "Apr 22, 2026 6:41 PM ET",
+        "candidate_id": "780cf2cff9d448af912c520fafa62c48",
+        "created_at": "2026-04-23T00:58:20.144280+00:00",
+        "created_at_display": "Apr 22, 2026 8:58 PM ET",
         "delivery_attempts": [],
         "evidence_state": "already_public",
         "payload": {
@@ -728,15 +732,15 @@
               {
                 "budget": {
                   "blocked_by_budget": false,
-                  "day_queries_after": 2,
-                  "day_queries_before": 2,
+                  "day_queries_after": 10,
+                  "day_queries_before": 10,
                   "day_query_cap": 250,
                   "day_spend_after_usd": 0.0,
                   "day_spend_before_usd": 0.0,
                   "estimated_cost_usd": 0.0,
                   "external_call_made": false,
-                  "month_queries_after": 2,
-                  "month_queries_before": 2,
+                  "month_queries_after": 10,
+                  "month_queries_before": 10,
                   "month_query_cap": 5000,
                   "month_spend_after_usd": 0.0,
                   "month_spend_before_usd": 0.0
@@ -757,7 +761,7 @@
           "severity": "ACTIONABLE",
           "title": "Bitcoin price and crypto market momentum",
           "trigger_time_display": "Apr 20, 2026 1:22 AM ET",
-          "what_changed": "Candidate 9a6d96963f7d479ba9b118c0d144140c triggered at Apr 20, 2026 1:22 AM ET",
+          "what_changed": "Candidate 780cf2cff9d448af912c520fafa62c48 triggered at Apr 20, 2026 1:22 AM ET",
           "why_it_looks_informed": "Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=13.886234"
         },
         "provider_summary": {
@@ -766,15 +770,15 @@
             {
               "budget": {
                 "blocked_by_budget": false,
-                "day_queries_after": 2,
-                "day_queries_before": 2,
+                "day_queries_after": 10,
+                "day_queries_before": 10,
                 "day_query_cap": 250,
                 "day_spend_after_usd": 0.0,
                 "day_spend_before_usd": 0.0,
                 "estimated_cost_usd": 0.0,
                 "external_call_made": false,
-                "month_queries_after": 2,
-                "month_queries_before": 2,
+                "month_queries_after": 10,
+                "month_queries_before": 10,
                 "month_query_cap": 5000,
                 "month_spend_after_usd": 0.0,
                 "month_spend_before_usd": 0.0
@@ -792,20 +796,20 @@
           "total_estimated_cost_usd": 0.0
         },
         "severity": "ACTIONABLE",
-        "suppression_state": "suppressed_by:2ae1de64f5564db2a67ed80c7f32460a",
+        "suppression_state": "suppressed_by:96400ba43299411c854dad2c7589e36f",
         "title": "Bitcoin price and crypto market momentum"
       },
       "workflow_registration": {
         "alert_schema_version": "phase4_alert_payload_v1",
-        "created_at": "2026-04-22T20:18:25.587549+00:00",
-        "created_at_display": "Apr 22, 2026 4:18 PM ET",
+        "created_at": "2026-04-23T00:54:59.483744+00:00",
+        "created_at_display": "Apr 22, 2026 8:54 PM ET",
         "delivery_channels": [
           "telegram",
           "discord"
         ],
         "evidence_schema_version": "phase4_evidence_v1",
-        "last_used_at": "2026-04-22T22:41:56.457839+00:00",
-        "last_used_at_display": "Apr 22, 2026 6:41 PM ET",
+        "last_used_at": "2026-04-23T00:58:19.871034+00:00",
+        "last_used_at_display": "Apr 22, 2026 8:58 PM ET",
         "notes": "Phase 10 Task 2 analyst-loop expansion and suppression review over repeated real-provider alert episodes.",
         "workflow_version": "phase4_alerts_v1"
       },
@@ -826,7 +830,7 @@
     "prices": [
       {
         "captured_at": "2026-04-20T05:00:00+00:00",
-        "envelope_id": "fb5f2140682e46a499c862c8a5d40dc0",
+        "envelope_id": "8326acc9a8a2487f89d3cc0ae84a24d3",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -835,7 +839,7 @@
       },
       {
         "captured_at": "2026-04-20T05:02:00+00:00",
-        "envelope_id": "7b64291e5c42474db1775b5d9d62bc90",
+        "envelope_id": "a237563754624fb0aad87da830685b51",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -844,7 +848,7 @@
       },
       {
         "captured_at": "2026-04-20T05:04:00+00:00",
-        "envelope_id": "4437fa60845c41419890897996c8c2f1",
+        "envelope_id": "5eb73db9ce744b9192287a71dcd33c76",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -853,7 +857,7 @@
       },
       {
         "captured_at": "2026-04-20T05:05:30+00:00",
-        "envelope_id": "655781791f6e4c0fad5970f6b04dea92",
+        "envelope_id": "443c557f77c647738d3db2ec28107e5f",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -862,7 +866,7 @@
       },
       {
         "captured_at": "2026-04-20T05:12:00+00:00",
-        "envelope_id": "13f7d32734a7432fa748ac0c0780e022",
+        "envelope_id": "7fc47c228ae947ee83e9f4f7310716ae",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -871,7 +875,7 @@
       },
       {
         "captured_at": "2026-04-20T05:14:00+00:00",
-        "envelope_id": "a8ceb58e7a7e4121a62242140b2ce6a4",
+        "envelope_id": "ef862581efa4408a8cdcbe45841fd871",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -880,7 +884,7 @@
       },
       {
         "captured_at": "2026-04-20T05:16:00+00:00",
-        "envelope_id": "3ff523b7f26e4fa79f54ac64129a9ca6",
+        "envelope_id": "1a7f590b69e14c438ac96a7873d1a441",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -889,7 +893,7 @@
       },
       {
         "captured_at": "2026-04-20T05:17:30+00:00",
-        "envelope_id": "2e9a7387357f47b98542e1dc074a74b9",
+        "envelope_id": "409bfe23d57e44b5a7886a992bdeafbf",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -898,7 +902,7 @@
       },
       {
         "captured_at": "2026-04-20T05:18:00+00:00",
-        "envelope_id": "5a3b5447a76e4c59acda49ce5fe9443f",
+        "envelope_id": "62b25820aee146e4aaefcb71732fcab1",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -907,7 +911,7 @@
       },
       {
         "captured_at": "2026-04-20T05:20:00+00:00",
-        "envelope_id": "7ce53f6a87d54b4d937d8c096fc50176",
+        "envelope_id": "18577e0cb1e74b3b9e889e250caa9fca",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -916,7 +920,7 @@
       },
       {
         "captured_at": "2026-04-20T05:21:00+00:00",
-        "envelope_id": "fa2a558d07e24981bbd0a8b9f5716f23",
+        "envelope_id": "fecbd1a6e149479ba6352214e31a073a",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -925,7 +929,7 @@
       },
       {
         "captured_at": "2026-04-20T05:22:30+00:00",
-        "envelope_id": "f99cc496ffcb450f9c11b53b249709f7",
+        "envelope_id": "1f12fdb05f8c4b2683cd8223217fba3c",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -936,7 +940,7 @@
     "trades": [
       {
         "captured_at": "2026-04-20T05:02:00+00:00",
-        "envelope_id": "e70ef73f0af448529e7bc8b56374b836",
+        "envelope_id": "1cd1355b8c464df1bb945a579651e359",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -949,7 +953,7 @@
       },
       {
         "captured_at": "2026-04-20T05:06:00+00:00",
-        "envelope_id": "215f1be3d70b4420a768f6e1917db346",
+        "envelope_id": "b56c996dadf84da3a43e35e599f4190d",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -963,7 +967,7 @@
       },
       {
         "captured_at": "2026-04-20T05:14:00+00:00",
-        "envelope_id": "549e0ff4e24a4a1bbb69be6d92a0fb7c",
+        "envelope_id": "bb61473a179145458141d511f4646efe",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -976,7 +980,7 @@
       },
       {
         "captured_at": "2026-04-20T05:18:00+00:00",
-        "envelope_id": "7c90bfcf8374499db8ca3b3fd85adebf",
+        "envelope_id": "7219fc805c284fed809ea0f4758e4f6e",
         "market_ids": [
           "phase9_task2_market_b"
         ],
@@ -990,7 +994,7 @@
       },
       {
         "captured_at": "2026-04-20T05:18:10+00:00",
-        "envelope_id": "c7ff462d42b3445b949d1213d47e4353",
+        "envelope_id": "9c402662edc148afa47bb1f338c40d8f",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -1003,7 +1007,7 @@
       },
       {
         "captured_at": "2026-04-20T05:22:00+00:00",
-        "envelope_id": "e3b71a101fdd4de8b3529804f3f28da4",
+        "envelope_id": "a3a4568f3e024b06b054ddc19077950c",
         "market_ids": [
           "phase9_task2_market_a"
         ],
@@ -1021,8 +1025,8 @@
     "suppressed_alert_count": 1,
     "suppressed_examples": [
       {
-        "alert_id": "1672c39d26dc46e488857d2f478a7515",
-        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "alert_id": "f5627e0061f244d982907fe28b90ed3d",
+        "candidate_id": "780cf2cff9d448af912c520fafa62c48",
         "event_family_id": "phase9_task2_event_a",
         "evidence_state": "already_public",
         "parent_evidence_state": "already_public",
@@ -1030,7 +1034,7 @@
         "same_event_family_as_parent": true,
         "same_evidence_state_as_parent": true,
         "severity": "ACTIONABLE",
-        "suppressed_by": "2ae1de64f5564db2a67ed80c7f32460a",
+        "suppressed_by": "96400ba43299411c854dad2c7589e36f",
         "title": "Bitcoin price and crypto market momentum"
       }
     ]

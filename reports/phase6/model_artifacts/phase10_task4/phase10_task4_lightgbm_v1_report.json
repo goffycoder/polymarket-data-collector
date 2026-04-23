@@ -81,7 +81,7 @@
   ],
   "contract_version": "phase10_task4_heldout_model_completion_v1",
   "dataset_summary": {
-    "dataset_hash": "0c6df612d6820f1c58b692c542e9eb714d01dc4b1e0363dcc36bc8c35480de64",
+    "dataset_hash": "cf5719086a1947c17813880dd3ec76b5ccd5569231ee9251a20daff28dd75067",
     "feature_schema_version": "phase6_features_v1",
     "labeled_row_count": 96,
     "row_count": 96,
@@ -92,7 +92,7 @@
   "fit_summary": {
     "artifact_path": null,
     "base_rate": 0.5,
-    "dataset_hash": "0c6df612d6820f1c58b692c542e9eb714d01dc4b1e0363dcc36bc8c35480de64",
+    "dataset_hash": "cf5719086a1947c17813880dd3ec76b5ccd5569231ee9251a20daff28dd75067",
     "feature_count": 11,
     "labeled_row_count": 96,
     "model_version": "phase10_task4_lightgbm_v1",

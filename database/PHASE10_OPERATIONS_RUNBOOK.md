@@ -2,10 +2,16 @@
 
 This is the single-owner hardening runbook for the final Phase 10 operating path.
 
+## Prerequisites
+- Task 1 and Task 2 require network access for real-provider evidence retrieval.
+- Task 4 and Task 5 require a working LightGBM runtime. On macOS, install `libomp` before rerunning them.
+
 ## Monitoring Coverage
 - Collector health: run `python run_phase7_health_summary.py --json`.
 - Storage and archive coverage: run `python run_phase7_storage_audit.py --json`.
 - Integrity summary: run `python run_phase7_integrity_summary.py --json`.
+- Real-provider evidence hardening: run `python run_phase10_real_provider_evidence.py --json`.
+- Analyst-loop expansion: run `python run_phase10_analyst_loop_expansion.py --json`.
 - Replay validation family: run `python run_phase10_heldout_validation_pack.py --json`.
 - Held-out model status: run `python run_phase10_heldout_model_completion.py --json`.
 

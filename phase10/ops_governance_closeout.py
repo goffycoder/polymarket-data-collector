@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 from datetime import datetime, timezone
@@ -22,8 +23,10 @@ from phase7 import (
     build_redundancy_readiness_report,
     build_storage_audit,
 )
+from phase10.analyst_loop_expansion import run_phase10_task2_analyst_loop_expansion
 from phase10.heldout_model_completion import PHASE10_TASK4_MODEL_VERSION, run_phase10_task4_heldout_model_completion
 from phase10.heldout_validation_pack import run_phase10_task3_heldout_validation_pack
+from phase10.real_provider_evidence import run_phase10_task1_real_provider_evidence
 
 
 PHASE10_TASK5_CONTRACT_VERSION = "phase10_task5_ops_governance_closeout_v1"
@@ -115,10 +118,16 @@ def _render_operations_runbook() -> str:
             "",
             "This is the single-owner hardening runbook for the final Phase 10 operating path.",
             "",
+            "## Prerequisites",
+            "- Task 1 and Task 2 require network access for real-provider evidence retrieval.",
+            "- Task 4 and Task 5 require a working LightGBM runtime. On macOS, install `libomp` before rerunning them.",
+            "",
             "## Monitoring Coverage",
             "- Collector health: run `python run_phase7_health_summary.py --json`.",
             "- Storage and archive coverage: run `python run_phase7_storage_audit.py --json`.",
             "- Integrity summary: run `python run_phase7_integrity_summary.py --json`.",
+            "- Real-provider evidence hardening: run `python run_phase10_real_provider_evidence.py --json`.",
+            "- Analyst-loop expansion: run `python run_phase10_analyst_loop_expansion.py --json`.",
             "- Replay validation family: run `python run_phase10_heldout_validation_pack.py --json`.",
             "- Held-out model status: run `python run_phase10_heldout_model_completion.py --json`.",
             "",
@@ -159,6 +168,8 @@ def _render_security_policy() -> str:
 
 def run_phase10_task5_ops_governance_closeout() -> dict[str, Any]:
     apply_schema()
+    task1_summary = asyncio.run(run_phase10_task1_real_provider_evidence())
+    task2_summary = asyncio.run(run_phase10_task2_analyst_loop_expansion())
     task3_summary = run_phase10_task3_heldout_validation_pack()
     task4_summary = run_phase10_task4_heldout_model_completion()
 
@@ -237,12 +248,52 @@ def run_phase10_task5_ops_governance_closeout() -> dict[str, Any]:
         encoding="utf-8",
     )
 
-    srs_complete = (
-        task3_summary["validation_report"]["assessment"]["status"] in {"promising", "mixed"}
-        and (task4_summary["required_baseline_report"]["assessment"] or {}).get("status") == "model_beats_required_baselines"
-        and int(storage_summary.missing_file_count) == 0
-        and int(integrity_summary.missing_file_count) == 0
+    task1_complete = (
+        int(task1_summary["real_provider_summary"]["live_call_count"]) > 0
+        and int(task1_summary["real_provider_summary"]["cache_hit_count"]) > 0
+        and int(task1_summary["table_counts_after"]["alerts"]) > 0
+        and int(task1_summary["table_counts_after"]["analyst_feedback"]) > 0
     )
+    task2_complete = (
+        int(task2_summary["alert_review"]["created_alert_count"]) >= 2
+        and int(task2_summary["suppression_review"]["suppressed_alert_count"]) >= 1
+        and int(task2_summary["analyst_review"]["feedback_row_count"]) >= 2
+        and int(task2_summary["evidence_mode_summary"]["live_provider_rows"]) > 0
+    )
+    task3_complete = (
+        task3_summary["validation_report"]["assessment"]["status"] in {"promising", "mixed"}
+        and bool(task3_summary["backtest_summary"]["replay_family_ready"])
+        and int(task3_summary["validation_report"]["evaluation_row_count"]) > 0
+        and int(task3_summary["validation_report"]["paper_trade_count"]) > 0
+    )
+    task4_complete = (
+        (task4_summary["required_baseline_report"]["assessment"] or {}).get("status") == "model_beats_required_baselines"
+        and int(task4_summary["dataset_summary"]["test_row_count"]) > 0
+        and int(task4_summary["shadow_score_count"]) > 0
+    )
+    ops_complete = (
+        int(storage_summary.missing_file_count) == 0
+        and int(integrity_summary.missing_file_count) == 0
+        and str(health_summary.status) != "degraded"
+    )
+    srs_complete = (
+        task1_complete
+        and task2_complete
+        and task3_complete
+        and task4_complete
+        and ops_complete
+    )
+    blockers: list[str] = []
+    if not task1_complete:
+        blockers.append("Task 1 real-provider evidence hardening is incomplete.")
+    if not task2_complete:
+        blockers.append("Task 2 analyst-loop expansion and suppression review is incomplete.")
+    if not task3_complete:
+        blockers.append("Task 3 held-out replay and conservative validation is incomplete.")
+    if not task4_complete:
+        blockers.append("Task 4 held-out LightGBM evaluation is incomplete.")
+    if not ops_complete:
+        blockers.append("Task 5 operations, storage, or integrity closeout is incomplete.")
     completion_payload = {
         "canonical_v1_mode": "rule_based_plus_shadow_ml",
         "srs_v1_complete": srs_complete,
@@ -252,7 +303,14 @@ def run_phase10_task5_ops_governance_closeout() -> dict[str, Any]:
             if srs_complete
             else "No. Phase 10 improved the repo materially, but at least one required hardening or held-out proof remains incomplete."
         ),
-        "primary_blockers": [] if srs_complete else ["Phase 10 closeout conditions were not all met."],
+        "primary_blockers": blockers,
+        "checklist": {
+            "task1_real_provider_evidence": task1_complete,
+            "task2_analyst_loop": task2_complete,
+            "task3_heldout_validation": task3_complete,
+            "task4_heldout_model": task4_complete,
+            "task5_ops_and_governance": ops_complete,
+        },
     }
     completion_memo_path.write_text(
         "\n".join(
@@ -276,6 +334,8 @@ def run_phase10_task5_ops_governance_closeout() -> dict[str, Any]:
         "task_contract_version": PHASE10_TASK5_CONTRACT_VERSION,
         "task_name": "Phase 10 Task 5 - Ops, Security, Governance, and Final Promotion Memo",
         "generated_at": _iso_now(),
+        "task1_summary": task1_summary,
+        "task2_summary": task2_summary,
         "task3_summary": task3_summary["validation_report"],
         "task4_summary": {
             "dataset_summary": task4_summary["dataset_summary"],

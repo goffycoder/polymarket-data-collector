@@ -4,8 +4,8 @@
   "model_version": "phase10_task4_lightgbm_v1",
   "score_rows": [
     {
-      "alert_id": "2676523c6836465eaa4196b20e87ab90",
-      "candidate_id": "cabb941c58a14c7991bb402714930635",
+      "alert_id": "c2b46fb5e6ba4a8990f8ce14a238e1d5",
+      "candidate_id": "316fb2c7fce24fc8aa6f03e548ca2595",
       "decision_timestamp": "2026-01-15T05:02:45+00:00",
       "event_family_id": "phase10_holdout_event_train_001",
       "event_id": "phase10_holdout_event_train_001",
@@ -35,8 +35,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "ca794122330848bd936b1033e7a5a2b2",
-      "candidate_id": "a57c68a0aae74b3fa6f79c27424fb38d",
+      "alert_id": "78a1196534c343fda72ac34176e8a3f2",
+      "candidate_id": "5c0c41f2182047bb97c79eaa00cd1d56",
       "decision_timestamp": "2026-01-15T05:04:15+00:00",
       "event_family_id": "phase10_holdout_event_train_002",
       "event_id": "phase10_holdout_event_train_002",
@@ -66,8 +66,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "470703595f49413f9c88693fe7c6a626",
-      "candidate_id": "813a3a9ab2064f808d3e1a02cf577c14",
+      "alert_id": "b0451716fbdc4fce8fda69c81bb919da",
+      "candidate_id": "5d9ad46913c243bf9a89b9a598f0b841",
       "decision_timestamp": "2026-01-15T05:05:45+00:00",
       "event_family_id": "phase10_holdout_event_train_003",
       "event_id": "phase10_holdout_event_train_003",
@@ -97,8 +97,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "c5f623c21649494f85cb3d19ab65c620",
-      "candidate_id": "abc256d680634c51bbfbca85f17b70ba",
+      "alert_id": "fff09988fcbf4d82b6d90f8732507a1d",
+      "candidate_id": "5adaab25e0ec40e78c52c009442834d8",
       "decision_timestamp": "2026-01-15T05:07:15+00:00",
       "event_family_id": "phase10_holdout_event_train_004",
       "event_id": "phase10_holdout_event_train_004",
@@ -128,8 +128,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "ba51cb6554434742a106523943b344c9",
-      "candidate_id": "0b64f463edeb46819cfc910be378ba52",
+      "alert_id": "6f5815f356504da4a0d4663fc745dd4e",
+      "candidate_id": "54a4ca8748704b40ad3eefdc2b375f12",
       "decision_timestamp": "2026-01-15T05:08:45+00:00",
       "event_family_id": "phase10_holdout_event_train_005",
       "event_id": "phase10_holdout_event_train_005",
@@ -159,8 +159,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "c9bb0022a61f479da95d6eba1198cf01",
-      "candidate_id": "e05c2a7fe1a642dbb2b9d12d687ad6af",
+      "alert_id": "a3ddf7cb86c146c5a4c42de280a54bee",
+      "candidate_id": "a18c304ee1fb4922bba1d68285e55edd",
       "decision_timestamp": "2026-01-15T05:10:15+00:00",
       "event_family_id": "phase10_holdout_event_train_006",
       "event_id": "phase10_holdout_event_train_006",
@@ -190,8 +190,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "f44c500cff0e46488592bba5ebedc960",
-      "candidate_id": "579001701dc94fbd9b13d06cd2f62f60",
+      "alert_id": "1f49e30b40074b8b90b2aff23ba402f2",
+      "candidate_id": "b9fe0eb87d664affbc1a5d199b9041fd",
       "decision_timestamp": "2026-01-15T05:11:45+00:00",
       "event_family_id": "phase10_holdout_event_train_007",
       "event_id": "phase10_holdout_event_train_007",
@@ -221,8 +221,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "4b51c1b22fe8486387d5e8011d22b6c0",
-      "candidate_id": "5e83cb67a80f4faa8d87ad955c6caab7",
+      "alert_id": "fd31a3f114f34ebc85313657c9527b88",
+      "candidate_id": "f058d2560817415fa2b661c941b22a71",
       "decision_timestamp": "2026-01-15T05:13:15+00:00",
       "event_family_id": "phase10_holdout_event_train_008",
       "event_id": "phase10_holdout_event_train_008",
@@ -252,8 +252,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "009f94e9559844c7b151a185ca04f9aa",
-      "candidate_id": "d08028cb3ce34479a2940d442cbcbd41",
+      "alert_id": "df63099b2f164d18a6413309c0c60ac4",
+      "candidate_id": "5aa8714b51fb436487e19aeb1e9f89d6",
       "decision_timestamp": "2026-01-15T05:14:45+00:00",
       "event_family_id": "phase10_holdout_event_train_009",
       "event_id": "phase10_holdout_event_train_009",
@@ -283,8 +283,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "401a3227965e4b848f1fc77118b168bf",
-      "candidate_id": "be60c051c0c444bfa7d60014e3d05652",
+      "alert_id": "6873ed49aadb4cdc8280b3317f10b34e",
+      "candidate_id": "9f43fae59b4d45518afeffad12e4d5f5",
       "decision_timestamp": "2026-01-15T05:16:15+00:00",
       "event_family_id": "phase10_holdout_event_train_010",
       "event_id": "phase10_holdout_event_train_010",
@@ -314,8 +314,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "2a9753b91f4640b79e879f997cead132",
-      "candidate_id": "b08ae5e4342a4b0c98aee78c9d132605",
+      "alert_id": "eba1add4903c45b8bbb27291b8c43f59",
+      "candidate_id": "17128ebab5244127a870db29572b2f56",
       "decision_timestamp": "2026-01-15T05:17:45+00:00",
       "event_family_id": "phase10_holdout_event_train_011",
       "event_id": "phase10_holdout_event_train_011",
@@ -345,8 +345,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "76c0e0baeb9449318aa5ac6a5aeab16e",
-      "candidate_id": "1a1adc862b6842aeb32c1f4a25b5624a",
+      "alert_id": "a04a2123048543dd9ffc4d7ef36ec167",
+      "candidate_id": "ea660802adaa4db6b8dd06e141c5eea1",
       "decision_timestamp": "2026-01-15T05:19:15+00:00",
       "event_family_id": "phase10_holdout_event_train_012",
       "event_id": "phase10_holdout_event_train_012",
@@ -376,8 +376,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "f36c04069d344f41824c5d295b2f40a3",
-      "candidate_id": "70a1784db8cb4ed4976faaa0fd45d795",
+      "alert_id": "8da11a3da74c47918ea2c7412762345c",
+      "candidate_id": "e0fd0ef9370c4e64899bfb7cb93d81f1",
       "decision_timestamp": "2026-01-15T05:20:45+00:00",
       "event_family_id": "phase10_holdout_event_train_013",
       "event_id": "phase10_holdout_event_train_013",
@@ -407,8 +407,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "4412ae51856d437886d856fcc722308d",
-      "candidate_id": "b61a5787b0564b2e941bcdf5cbeb6c46",
+      "alert_id": "280f63a8dded4ad8a2b58826705ec19d",
+      "candidate_id": "1039876afa2f4cce87aa0dbe57841e44",
       "decision_timestamp": "2026-01-15T05:22:15+00:00",
       "event_family_id": "phase10_holdout_event_train_014",
       "event_id": "phase10_holdout_event_train_014",
@@ -438,8 +438,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "263458c9ae964f4c82ff1fd7fbb5f271",
-      "candidate_id": "5df0b27776ba4843bb998eafc58e78cb",
+      "alert_id": "9eeb2ae19a6a4d8781a262ef31967473",
+      "candidate_id": "bd91b448ec4d4846a8807c499c5585df",
       "decision_timestamp": "2026-01-15T05:23:45+00:00",
       "event_family_id": "phase10_holdout_event_train_015",
       "event_id": "phase10_holdout_event_train_015",
@@ -469,8 +469,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "947c773f08f142c19b58affe829ad376",
-      "candidate_id": "bc6af07c018448fabd7982e2b503e1b4",
+      "alert_id": "4457301ee9464a4eaa8a9ea6076f6546",
+      "candidate_id": "326942512d374609b4b587a4f96ef8e6",
       "decision_timestamp": "2026-01-15T05:25:15+00:00",
       "event_family_id": "phase10_holdout_event_train_016",
       "event_id": "phase10_holdout_event_train_016",
@@ -500,8 +500,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "a18d8e0120a34660b7c951b02476721a",
-      "candidate_id": "334faa4646f54edaaaaea7cdedba3bc5",
+      "alert_id": "f4bde10288f746a980ac9a7c26eeee02",
+      "candidate_id": "6438cd1c2228492492e8b720cdab0cb0",
       "decision_timestamp": "2026-01-15T05:26:45+00:00",
       "event_family_id": "phase10_holdout_event_train_017",
       "event_id": "phase10_holdout_event_train_017",
@@ -531,8 +531,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "262d466b93474e01af5a28f3717c7cf3",
-      "candidate_id": "67c9cbabc9574855a881ac73545dd25b",
+      "alert_id": "621b04ab4bb443c69ea2d52ec857ce67",
+      "candidate_id": "0e2cc84bf4ca4102bc68c95fe6a9c97c",
       "decision_timestamp": "2026-01-15T05:28:15+00:00",
       "event_family_id": "phase10_holdout_event_train_018",
       "event_id": "phase10_holdout_event_train_018",
@@ -562,8 +562,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "eb99d58b98cd48cf87213434b269e0de",
-      "candidate_id": "e45e4b9dc7874a49a7f52493c1a0bd99",
+      "alert_id": "c52c81c1ec144a9b8c6756540837c8ef",
+      "candidate_id": "883753b219614327a4757a58f1632ce5",
       "decision_timestamp": "2026-01-15T05:29:45+00:00",
       "event_family_id": "phase10_holdout_event_train_019",
       "event_id": "phase10_holdout_event_train_019",
@@ -593,8 +593,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "ffdc7c1ad9014a92845ccb8ab7249231",
-      "candidate_id": "581ca881ea504d81af5ee648d54d78cd",
+      "alert_id": "de93c2ea44e047af83e786ebe797e7c2",
+      "candidate_id": "8ddd5afb49224485902e6b8f46364287",
       "decision_timestamp": "2026-01-15T05:31:15+00:00",
       "event_family_id": "phase10_holdout_event_train_020",
       "event_id": "phase10_holdout_event_train_020",
@@ -624,8 +624,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "4264f711cc84449fa9007713f86bdb42",
-      "candidate_id": "917709b6719440b9bd40d314e96859f9",
+      "alert_id": "1650141d6aca4963851409b6a8314ad9",
+      "candidate_id": "2b0db6f145d54bba87e7625d5c365c1d",
       "decision_timestamp": "2026-01-15T05:32:45+00:00",
       "event_family_id": "phase10_holdout_event_train_021",
       "event_id": "phase10_holdout_event_train_021",
@@ -655,8 +655,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "9effd4678e934bf3b5efffe547b2d752",
-      "candidate_id": "7ea4776e3d054ce082102ebd2af8186d",
+      "alert_id": "5b88e74085374f90bc816ed2f9129f6e",
+      "candidate_id": "dc06381c8a744381821df2fff884c6e2",
       "decision_timestamp": "2026-01-15T05:34:15+00:00",
       "event_family_id": "phase10_holdout_event_train_022",
       "event_id": "phase10_holdout_event_train_022",
@@ -686,8 +686,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "1a95b6b5e0c34c249b4eb3ae3dd856c6",
-      "candidate_id": "e434fe212bd44d90a402c7484731153f",
+      "alert_id": "d670337a94da42e4a28305232d93301c",
+      "candidate_id": "583e8992f06b414da8fc1b02fe64582c",
       "decision_timestamp": "2026-01-15T05:35:45+00:00",
       "event_family_id": "phase10_holdout_event_train_023",
       "event_id": "phase10_holdout_event_train_023",
@@ -717,8 +717,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "5739b1e0e06f46b5b7f4d87eb79873ea",
-      "candidate_id": "92a6374800494546af6d1aae297192fb",
+      "alert_id": "f136d09d8c2d460f821303b6f632f36c",
+      "candidate_id": "64f2e87b6e9a4020a5305e4521fecead",
       "decision_timestamp": "2026-01-15T05:37:15+00:00",
       "event_family_id": "phase10_holdout_event_train_024",
       "event_id": "phase10_holdout_event_train_024",
@@ -748,8 +748,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "4362f8fdbe9d45dea1aecd8a8e4af175",
-      "candidate_id": "5fbcdea48fb84dd3ad29ebd56e7e7421",
+      "alert_id": "cd57a60a8d6c4e1cae0647f6d3ff6db8",
+      "candidate_id": "3083b6350d3a4ac28ae64afc981d279c",
       "decision_timestamp": "2026-01-15T05:38:45+00:00",
       "event_family_id": "phase10_holdout_event_train_025",
       "event_id": "phase10_holdout_event_train_025",
@@ -779,8 +779,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "84603b35b74e4553838282f848f99e73",
-      "candidate_id": "eec7034d7a2f463daf340e093e31ce69",
+      "alert_id": "6fbb3a0ec7ef4e26a681ec1b93969acf",
+      "candidate_id": "b1f3973eb43a4e5f86ce051938ef5c98",
       "decision_timestamp": "2026-01-15T05:40:15+00:00",
       "event_family_id": "phase10_holdout_event_train_026",
       "event_id": "phase10_holdout_event_train_026",
@@ -810,8 +810,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "efaddb6302b74d49a46e78b1ba009b21",
-      "candidate_id": "cf3bfe89f5624f32bf35c67868429fe5",
+      "alert_id": "9783d9c06b014c4988e6ade1e9cbfa86",
+      "candidate_id": "f8f54ac3652842348aca5f43913dbb6b",
       "decision_timestamp": "2026-01-15T05:41:45+00:00",
       "event_family_id": "phase10_holdout_event_train_027",
       "event_id": "phase10_holdout_event_train_027",
@@ -841,8 +841,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "7f851fe53d6f4c5a924e6ff235f33190",
-      "candidate_id": "17e5b167109f4f52b6b3a075d90088bc",
+      "alert_id": "2342b0f07f884fc5b941ea1bfd90960b",
+      "candidate_id": "678230c55cc94e0b9d2c8295c0c83ff7",
       "decision_timestamp": "2026-01-15T05:43:15+00:00",
       "event_family_id": "phase10_holdout_event_train_028",
       "event_id": "phase10_holdout_event_train_028",
@@ -872,8 +872,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "ae772a09673b4e589d3062eb3530e1cf",
-      "candidate_id": "1535ecf6c3f349ff9ae6000a888593a2",
+      "alert_id": "d9014da3673041a7bc401949ccd0430d",
+      "candidate_id": "e2d05b8a98d04070a753973c510b9ff9",
       "decision_timestamp": "2026-01-15T05:44:45+00:00",
       "event_family_id": "phase10_holdout_event_train_029",
       "event_id": "phase10_holdout_event_train_029",
@@ -903,8 +903,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "03384ed17c92407cbd68c0d2d4130490",
-      "candidate_id": "e230fa4af9744506ba3c40b514f5bda0",
+      "alert_id": "ad927801549941809f5dd52f340570cb",
+      "candidate_id": "1b199c02b6d44d5a9c42cf608c25c705",
       "decision_timestamp": "2026-01-15T05:46:15+00:00",
       "event_family_id": "phase10_holdout_event_train_030",
       "event_id": "phase10_holdout_event_train_030",
@@ -934,8 +934,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "4989fcf34c584f908bed14de70b768ac",
-      "candidate_id": "33afc16e0c394f149a080b12b41bce7c",
+      "alert_id": "3abfaf086a5f44299b122b1d556118f1",
+      "candidate_id": "c8cc45c339a24fada98abf6e9bccd71c",
       "decision_timestamp": "2026-01-15T05:47:45+00:00",
       "event_family_id": "phase10_holdout_event_train_031",
       "event_id": "phase10_holdout_event_train_031",
@@ -965,8 +965,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "5eb4ef7cb8bb4b84b5a6cb9ea5847166",
-      "candidate_id": "ba863846baea4225abefe68a40189878",
+      "alert_id": "1dcbe3ef9d6a46cc94ad47dc0573dbcc",
+      "candidate_id": "37ae51f340b14dc8ae2a6a6c53740f17",
       "decision_timestamp": "2026-01-15T05:49:15+00:00",
       "event_family_id": "phase10_holdout_event_train_032",
       "event_id": "phase10_holdout_event_train_032",
@@ -996,8 +996,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "00858b8bad0f4cdea0eb5366da36b2b9",
-      "candidate_id": "4b89ea19ea14493d9ef8bedde3fc6ada",
+      "alert_id": "7369321dd871437e93dbe76d8c166730",
+      "candidate_id": "dd90e31c15104f7896720fa879649864",
       "decision_timestamp": "2026-02-15T05:02:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_033",
       "event_id": "phase10_holdout_event_validation_033",
@@ -1027,8 +1027,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "944fa3b110714aca8981f26daf54bc16",
-      "candidate_id": "2f7dacf50c364683a3e1b5732e65b37f",
+      "alert_id": "ba428381e39149a1b2db4d1ff2c68ea4",
+      "candidate_id": "9ae25e84d5c049a99d885a087c5c09d5",
       "decision_timestamp": "2026-02-15T05:04:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_034",
       "event_id": "phase10_holdout_event_validation_034",
@@ -1058,8 +1058,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "7ed21e030b7845e4a6359984a2301e2a",
-      "candidate_id": "a1d86d4d373c409385d7d68108c0ac7a",
+      "alert_id": "71522883c46b45dda8122f584c5ead3e",
+      "candidate_id": "4d506386db0848d4a90266a1a094f519",
       "decision_timestamp": "2026-02-15T05:05:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_035",
       "event_id": "phase10_holdout_event_validation_035",
@@ -1089,8 +1089,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "8bb05b17cb2145449d778cd1e67d09e1",
-      "candidate_id": "e18714e1a6d7413299f789ca6b80bad8",
+      "alert_id": "6e73a343d3614f41b5789dc8ec6ffc1b",
+      "candidate_id": "188a7062f3af49669dbe1e162e3f1fe8",
       "decision_timestamp": "2026-02-15T05:07:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_036",
       "event_id": "phase10_holdout_event_validation_036",
@@ -1120,8 +1120,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "ca0c8839b3cc49dfa02810c24d2b1f6e",
-      "candidate_id": "f8cf30476a3941c4a0d2bcfa3de5fa4e",
+      "alert_id": "c40a6ad1bc864be2b8a36d314ebbfb77",
+      "candidate_id": "e9648f7fa22d4d7b92fd074e66cc7448",
       "decision_timestamp": "2026-02-15T05:08:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_037",
       "event_id": "phase10_holdout_event_validation_037",
@@ -1151,8 +1151,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "4bb4af1b031d4fa2883959580ceb97da",
-      "candidate_id": "77dded9363a9468abb24a0becf5193ac",
+      "alert_id": "4692bd00544c474dbc482a99621dce9e",
+      "candidate_id": "38a646a3d5e84e168954d88d76e61be5",
       "decision_timestamp": "2026-02-15T05:10:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_038",
       "event_id": "phase10_holdout_event_validation_038",
@@ -1182,8 +1182,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "f0bfcd5591f442e3bdadc9880da2535e",
-      "candidate_id": "1ed3a5466e8c45d7a569d034c2c6f6a8",
+      "alert_id": "f16c63ff79844ab0b63d9d8c5996a511",
+      "candidate_id": "affb17366e1744c7b51fb5239cb187d4",
       "decision_timestamp": "2026-02-15T05:11:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_039",
       "event_id": "phase10_holdout_event_validation_039",
@@ -1213,8 +1213,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "ff680280d57c4b75835690964e515e10",
-      "candidate_id": "42567e6e00cc470eb209f6c699ce867a",
+      "alert_id": "632f3dd3379140f396f17c122391ffb3",
+      "candidate_id": "3c39bea88d764ec3bea4de518202976d",
       "decision_timestamp": "2026-02-15T05:13:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_040",
       "event_id": "phase10_holdout_event_validation_040",
@@ -1244,8 +1244,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "f35402f137864e01b3086bfb646e74c1",
-      "candidate_id": "ab6d630e4c9a4fb09b7f9b1373693689",
+      "alert_id": "e4b2bf1e3783484ea987b915b7dc355c",
+      "candidate_id": "88cf44a65e7a4dfbbef9ae8e89bfe159",
       "decision_timestamp": "2026-02-15T05:14:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_041",
       "event_id": "phase10_holdout_event_validation_041",
@@ -1275,8 +1275,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "8b7f57a665804830b5744ca02b6b026d",
-      "candidate_id": "dbaa5834433d495ca3406cd95287e058",
+      "alert_id": "2ba8ca64847d45d2b86ac90ae79b59ad",
+      "candidate_id": "84867e2243404328b5a81c12cfc0c538",
       "decision_timestamp": "2026-02-15T05:16:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_042",
       "event_id": "phase10_holdout_event_validation_042",
@@ -1306,8 +1306,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "00267410de214ce79677b90569d3004f",
-      "candidate_id": "c526e703ce104bcda5907fb68bc9b737",
+      "alert_id": "14549885d13142679618d73461da386e",
+      "candidate_id": "9523d15ab88648c78f51c29cc911e680",
       "decision_timestamp": "2026-02-15T05:17:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_043",
       "event_id": "phase10_holdout_event_validation_043",
@@ -1337,8 +1337,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "129ba3ffb5e34a3180ccadf0b97ff92a",
-      "candidate_id": "76a13c5a2b2345519c5a66281a2d0bf9",
+      "alert_id": "a881fa0e57544c8fa3386f5cf5ad4f45",
+      "candidate_id": "31cc57f244ed4437bad3f72c9c005e26",
       "decision_timestamp": "2026-02-15T05:19:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_044",
       "event_id": "phase10_holdout_event_validation_044",
@@ -1368,8 +1368,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "73793298b9dd47a9b06c73903b4916b6",
-      "candidate_id": "47ca14c87875442a8c5aba561be9e03c",
+      "alert_id": "448d9a99996248899e0736af67a04146",
+      "candidate_id": "21d2e9d7e8014cd6b882b1054a4ecd1f",
       "decision_timestamp": "2026-02-15T05:20:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_045",
       "event_id": "phase10_holdout_event_validation_045",
@@ -1399,8 +1399,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "bff6fcb3bceb4e78ab70083b3db1e383",
-      "candidate_id": "ab531a295ac14ea9945649d6b5299388",
+      "alert_id": "c45f8bf9cd3e45188a7561cbb078cec7",
+      "candidate_id": "f210582931104dc8960dead8faa94207",
       "decision_timestamp": "2026-02-15T05:22:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_046",
       "event_id": "phase10_holdout_event_validation_046",
@@ -1430,8 +1430,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "1c38a839f39b489aa93a2b75d3150dc5",
-      "candidate_id": "9a24ad5e84644be990d8e1e2de0c224c",
+      "alert_id": "b1ed3a8fb7fb436687e10b23efd5090d",
+      "candidate_id": "ac03de368e1d4f738c2612b9a4e811db",
       "decision_timestamp": "2026-02-15T05:23:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_047",
       "event_id": "phase10_holdout_event_validation_047",
@@ -1461,8 +1461,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "1609efd3bfb24676900a1dc7ce48c915",
-      "candidate_id": "5b10445ee72e46f6930a473caa5ae558",
+      "alert_id": "f8161fef46dd45d59605e0646b0f4112",
+      "candidate_id": "26b8d09942c6442dac0e1e09a2640d67",
       "decision_timestamp": "2026-02-15T05:25:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_048",
       "event_id": "phase10_holdout_event_validation_048",
@@ -1492,8 +1492,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "0037c57807344053b7dfe5837d62ea1c",
-      "candidate_id": "7f67e27c18f2497093ae0655adb0fe00",
+      "alert_id": "eb014419468643a9a3faf96ef82adf7e",
+      "candidate_id": "18d72c4f21bf4e7b9cf6d3da1a2b766c",
       "decision_timestamp": "2026-02-15T05:26:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_049",
       "event_id": "phase10_holdout_event_validation_049",
@@ -1523,8 +1523,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "1d467efb5f734fbdb082bf398698688a",
-      "candidate_id": "da1dc986753643928d3ed5d41cf2ad5f",
+      "alert_id": "b86ba74a30ed4b3bb3b5e5f7a9e7ffff",
+      "candidate_id": "6666120cf3da4036ad0dd172a9500569",
       "decision_timestamp": "2026-02-15T05:28:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_050",
       "event_id": "phase10_holdout_event_validation_050",
@@ -1554,8 +1554,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "ac83640324d34879a2146c76f4a1781c",
-      "candidate_id": "864032e30e2348bdb394dcba36a62879",
+      "alert_id": "39e7909a11ee4c6d9606e6b6d59cb3e5",
+      "candidate_id": "1853b69b14b64d2bb302999482451c5d",
       "decision_timestamp": "2026-02-15T05:29:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_051",
       "event_id": "phase10_holdout_event_validation_051",
@@ -1585,8 +1585,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "2773acfdeb0d49308253cf136abe4794",
-      "candidate_id": "d68b2fb2aa4b4331b5079bdcae8e3363",
+      "alert_id": "2b4f9bcec2ca4fbcbf262712670bc89e",
+      "candidate_id": "ef9e54b80ce2499db956f1bbf7c0963d",
       "decision_timestamp": "2026-02-15T05:31:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_052",
       "event_id": "phase10_holdout_event_validation_052",
@@ -1616,8 +1616,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "4d82ecdc1dc741449d997ed41b50f55b",
-      "candidate_id": "e95f1721ea4b4a7db58f6b264ea26faf",
+      "alert_id": "c83ed597f1994feba99669554984ee66",
+      "candidate_id": "8c1f47fb3bee47e1b1bf2588fe8e01cd",
       "decision_timestamp": "2026-02-15T05:32:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_053",
       "event_id": "phase10_holdout_event_validation_053",
@@ -1647,8 +1647,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "4993e63e38004aba9902955d1f5270fd",
-      "candidate_id": "e6f692557ebe45f2964916c31d739f60",
+      "alert_id": "0bf5c280f51d4e57b177fb21f6b82f71",
+      "candidate_id": "e5ccc0c7f7bf4ef197ddad5cbc7697dd",
       "decision_timestamp": "2026-02-15T05:34:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_054",
       "event_id": "phase10_holdout_event_validation_054",
@@ -1678,8 +1678,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "a11706b5e82f46988d7aeda8ef91b062",
-      "candidate_id": "5a7e27352b024f638727b3dd747f74b8",
+      "alert_id": "bcff535b93734882b8269cb4fd28e4ac",
+      "candidate_id": "0246f07aa625405d8d8ff24a63e036df",
       "decision_timestamp": "2026-02-15T05:35:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_055",
       "event_id": "phase10_holdout_event_validation_055",
@@ -1709,8 +1709,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "3d688dd2b7f346248402fda2057833e3",
-      "candidate_id": "7f41ea5e027543c6b4abb0554cd8d2c5",
+      "alert_id": "d5601b7f2a884e27b66ca4cdae10e2a8",
+      "candidate_id": "97038b7bea8340ab9e4b822e34f19844",
       "decision_timestamp": "2026-02-15T05:37:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_056",
       "event_id": "phase10_holdout_event_validation_056",
@@ -1740,8 +1740,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "464a714e4eb542288a5183aa4860dc8e",
-      "candidate_id": "d6f8170985054a7e844fcd07839f8402",
+      "alert_id": "022bde72caee4c2b92436a13851afe4e",
+      "candidate_id": "4746d2c34329483cbe8c98aeb56ad839",
       "decision_timestamp": "2026-02-15T05:38:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_057",
       "event_id": "phase10_holdout_event_validation_057",
@@ -1771,8 +1771,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "b088d80fcf2c43f88e3414283cd262d6",
-      "candidate_id": "4645bb26f99942d79f5145775eab35e7",
+      "alert_id": "5960c1a2b94c4e10ad25bc49b77ae7ea",
+      "candidate_id": "c88e4c2e698f48168bf39e081424fab6",
       "decision_timestamp": "2026-02-15T05:40:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_058",
       "event_id": "phase10_holdout_event_validation_058",
@@ -1802,8 +1802,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "e92ddcae524c40ba89a51642273d264c",
-      "candidate_id": "786ac90790f74345b794c0cecbd4d62b",
+      "alert_id": "9d9cbb0ab5d944ce9dca81a53a20b760",
+      "candidate_id": "3284fcaf2f6d4b12b8eaac139c9e70a8",
       "decision_timestamp": "2026-02-15T05:41:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_059",
       "event_id": "phase10_holdout_event_validation_059",
@@ -1833,8 +1833,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "4f2f5298bd5743b89c2b9a60eefd520b",
-      "candidate_id": "1f72c6feeddc4703803e87c3d5527fcb",
+      "alert_id": "dd0999fe9d0049449366daab94efa1bb",
+      "candidate_id": "f562b03bf6b9463c88e3622b515c10d4",
       "decision_timestamp": "2026-02-15T05:43:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_060",
       "event_id": "phase10_holdout_event_validation_060",
@@ -1864,8 +1864,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "7d007f0d35464a7d963a9ff30a2fe589",
-      "candidate_id": "c9db426c9a164a75b8e1006307ef2c9a",
+      "alert_id": "7f81a6e8094845e9bb3567471760146a",
+      "candidate_id": "0d931327faee416aa5b8e316bea8b90c",
       "decision_timestamp": "2026-02-15T05:44:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_061",
       "event_id": "phase10_holdout_event_validation_061",
@@ -1895,8 +1895,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "ab6549d0c6944c489dcd7efccf570fa3",
-      "candidate_id": "747806e528564104b1820c9d4e05d68c",
+      "alert_id": "173e255edbb24060b1547a7a6932134e",
+      "candidate_id": "1a8ddbb74a9349b789cdf0467f0883a4",
       "decision_timestamp": "2026-02-15T05:46:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_062",
       "event_id": "phase10_holdout_event_validation_062",
@@ -1926,8 +1926,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "c8c44ece011c448596d41c652a22c2fe",
-      "candidate_id": "be4593013beb4c849964caee61439f4f",
+      "alert_id": "9965c6a91b884f98a1bca7f7f619ae86",
+      "candidate_id": "5ecf2593051b4bceaf0d3c7b1c8803c5",
       "decision_timestamp": "2026-02-15T05:47:45+00:00",
       "event_family_id": "phase10_holdout_event_validation_063",
       "event_id": "phase10_holdout_event_validation_063",
@@ -1957,8 +1957,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "e9409833b4514af1ad8639167f350d6a",
-      "candidate_id": "cdd0cb9ecab54051ba545adf17d9a333",
+      "alert_id": "50799fd5cc524b3ba368118227351138",
+      "candidate_id": "fc91a86470c944d4956f4ae8e001a187",
       "decision_timestamp": "2026-02-15T05:49:15+00:00",
       "event_family_id": "phase10_holdout_event_validation_064",
       "event_id": "phase10_holdout_event_validation_064",
@@ -1988,8 +1988,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "5943c77525484fbcad645ef2716821b3",
-      "candidate_id": "4925808d1b6d4bf5a3c423830fc4c642",
+      "alert_id": "0e1b1f2e80b74d2e8cd1c026499ec592",
+      "candidate_id": "4af14d77d71449e5b828fb30d3858b54",
       "decision_timestamp": "2026-03-15T05:02:45+00:00",
       "event_family_id": "phase10_holdout_event_test_065",
       "event_id": "phase10_holdout_event_test_065",
@@ -2019,8 +2019,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "a7766102a7934cae9778c59033845963",
-      "candidate_id": "e0a27ecb309749829188b80a58959479",
+      "alert_id": "c7c9df2dd6ee407bb7948b67b0650201",
+      "candidate_id": "359fda6c1b96480abc31822cf79e39de",
       "decision_timestamp": "2026-03-15T05:04:15+00:00",
       "event_family_id": "phase10_holdout_event_test_066",
       "event_id": "phase10_holdout_event_test_066",
@@ -2050,8 +2050,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "85c5cc8a0a6647cf9cb0ba0d319f772a",
-      "candidate_id": "a802970d201049eeb4820290ff40efce",
+      "alert_id": "2fe1af89cb7d412aa999a502fe250b9d",
+      "candidate_id": "39ddd9f5d0894404ac30a0ca94c5c748",
       "decision_timestamp": "2026-03-15T05:05:45+00:00",
       "event_family_id": "phase10_holdout_event_test_067",
       "event_id": "phase10_holdout_event_test_067",
@@ -2081,8 +2081,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "3339cbfd3b6a4cb1bf07709f7d57b5c4",
-      "candidate_id": "34113cc1ba624baaaf2ae8339c5e11a3",
+      "alert_id": "83542090e71248469b340bdf177d669b",
+      "candidate_id": "212628449a1d4eba8b742a471c4f42c7",
       "decision_timestamp": "2026-03-15T05:07:15+00:00",
       "event_family_id": "phase10_holdout_event_test_068",
       "event_id": "phase10_holdout_event_test_068",
@@ -2112,8 +2112,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "d5bdf986bff74ea1928b694e2d060e82",
-      "candidate_id": "24de2e2c17a04972a581453688562daa",
+      "alert_id": "8107467803f04df982b50a32c2624e77",
+      "candidate_id": "211d9460d5cb4ef5a7e20475e3ee28d3",
       "decision_timestamp": "2026-03-15T05:08:45+00:00",
       "event_family_id": "phase10_holdout_event_test_069",
       "event_id": "phase10_holdout_event_test_069",
@@ -2143,8 +2143,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "b96786f0847f40ff8a7060d4b33528b9",
-      "candidate_id": "0c446f08c7ad46b2b9c91c42a52c9074",
+      "alert_id": "0672dc36f462443f901178cff87ed61c",
+      "candidate_id": "859cfe28aef74b219dcea0f986548096",
       "decision_timestamp": "2026-03-15T05:10:15+00:00",
       "event_family_id": "phase10_holdout_event_test_070",
       "event_id": "phase10_holdout_event_test_070",
@@ -2174,8 +2174,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "eeef52c11e4c448e9737837df3d825d1",
-      "candidate_id": "d7631d8c3ace4ebaae0097ab689892a7",
+      "alert_id": "04c3dd93b5d7429799d5e71b48601f4a",
+      "candidate_id": "c2e1645bc9694c8d92fb34d98fc89fb9",
       "decision_timestamp": "2026-03-15T05:11:45+00:00",
       "event_family_id": "phase10_holdout_event_test_071",
       "event_id": "phase10_holdout_event_test_071",
@@ -2205,8 +2205,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "4dba31ed3dc341a7bc2509edce4f2fb8",
-      "candidate_id": "0af3b4c6128948289b6a8187f6d92f5f",
+      "alert_id": "4e7e57f162db45dd97a6320fd59f1110",
+      "candidate_id": "ab966abfeac3495395abee2dc14917f5",
       "decision_timestamp": "2026-03-15T05:13:15+00:00",
       "event_family_id": "phase10_holdout_event_test_072",
       "event_id": "phase10_holdout_event_test_072",
@@ -2236,8 +2236,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "c49de71e587f45929ea4a61019917211",
-      "candidate_id": "a095194ddf494d1c84fae1000c18c36b",
+      "alert_id": "23981781978e4323bfd037199107adb6",
+      "candidate_id": "f99215b71249465c99a619b911bd4ac0",
       "decision_timestamp": "2026-03-15T05:14:45+00:00",
       "event_family_id": "phase10_holdout_event_test_073",
       "event_id": "phase10_holdout_event_test_073",
@@ -2267,8 +2267,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "8a646c92c8ba4b52bcd444ce62d1e94d",
-      "candidate_id": "663c67a7bcdd44dd9ffc717febbcbb27",
+      "alert_id": "4e98fa5ebb754a839c310c9f4bb8c771",
+      "candidate_id": "f49e641e01eb44a092e9965c420fd720",
       "decision_timestamp": "2026-03-15T05:16:15+00:00",
       "event_family_id": "phase10_holdout_event_test_074",
       "event_id": "phase10_holdout_event_test_074",
@@ -2298,8 +2298,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "9479203e65554776ab678b4b421f359d",
-      "candidate_id": "6fc3bcbf434e4042861d00eaca05b8a4",
+      "alert_id": "0e3e1a2c22aa4ea39045dd72c0bd7466",
+      "candidate_id": "898de6d72ffc4a99a6d155f029a775b3",
       "decision_timestamp": "2026-03-15T05:17:45+00:00",
       "event_family_id": "phase10_holdout_event_test_075",
       "event_id": "phase10_holdout_event_test_075",
@@ -2329,8 +2329,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "57c272ee88794306ac2ccbfc87276a88",
-      "candidate_id": "5a9fe2cadc664302b75ae8acbc69e95d",
+      "alert_id": "42177d318bc04fc79a4cc57ac68f980e",
+      "candidate_id": "b5ab5666dcca49f68ea246553d2e40c5",
       "decision_timestamp": "2026-03-15T05:19:15+00:00",
       "event_family_id": "phase10_holdout_event_test_076",
       "event_id": "phase10_holdout_event_test_076",
@@ -2360,8 +2360,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "5d4eea1fb74543a3a6b1302f75802125",
-      "candidate_id": "9f0e9b5e4f184135aecd5e809784b2e1",
+      "alert_id": "26fdc66a719c4ca2b400adf78ed983da",
+      "candidate_id": "e7476167d6494bdab9d7f46b5bf49461",
       "decision_timestamp": "2026-03-15T05:20:45+00:00",
       "event_family_id": "phase10_holdout_event_test_077",
       "event_id": "phase10_holdout_event_test_077",
@@ -2391,8 +2391,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "0cbd5b755b5345ffb6c537ffd531687a",
-      "candidate_id": "94150c670f0c4886b246f4c411951e9a",
+      "alert_id": "045d0af7a531472c940b46dc224d76d0",
+      "candidate_id": "3f8483ad888543b9877abee61d030236",
       "decision_timestamp": "2026-03-15T05:22:15+00:00",
       "event_family_id": "phase10_holdout_event_test_078",
       "event_id": "phase10_holdout_event_test_078",
@@ -2422,8 +2422,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "8484622fb07f4380bac1c4d7b5425092",
-      "candidate_id": "e78787d8c4944827a1bbcae6e99a454a",
+      "alert_id": "cc001c33e7ba49e9b4ec7de466c796f5",
+      "candidate_id": "78ca2a19abc940d8b96d3e202461da8b",
       "decision_timestamp": "2026-03-15T05:23:45+00:00",
       "event_family_id": "phase10_holdout_event_test_079",
       "event_id": "phase10_holdout_event_test_079",
@@ -2453,8 +2453,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "af84fe26aa7b4234995308dc89de2401",
-      "candidate_id": "ef9c461b7dec42aeb373301e056db93f",
+      "alert_id": "bf96a6239005440bbff8209910a8cfff",
+      "candidate_id": "0dae0753356243b3bf14e68b28bf7e5b",
       "decision_timestamp": "2026-03-15T05:25:15+00:00",
       "event_family_id": "phase10_holdout_event_test_080",
       "event_id": "phase10_holdout_event_test_080",
@@ -2484,8 +2484,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "6c921ccd7c364ea2ac16b06e94eae9d8",
-      "candidate_id": "b9dddc422b5348f88fae4a8ae95e6ea6",
+      "alert_id": "366147715a8f425e98a8b6a411552ed2",
+      "candidate_id": "00baa1cb1e4449dcb27734cc6b056314",
       "decision_timestamp": "2026-03-15T05:26:45+00:00",
       "event_family_id": "phase10_holdout_event_test_081",
       "event_id": "phase10_holdout_event_test_081",
@@ -2515,8 +2515,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "dba0c46c13b4407a8f51e2253c4dfe39",
-      "candidate_id": "8be9d485eb66404ba4fccd9ca743233f",
+      "alert_id": "ef2028e200594ead8d83f803ed70dc5b",
+      "candidate_id": "672991f28ae14cd7aedf22b8f8ba9113",
       "decision_timestamp": "2026-03-15T05:28:15+00:00",
       "event_family_id": "phase10_holdout_event_test_082",
       "event_id": "phase10_holdout_event_test_082",
@@ -2546,8 +2546,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "dfaf3ec6ac3440a996ef847a7505bc77",
-      "candidate_id": "6e089a057c464e33a35a392a8a267010",
+      "alert_id": "56bc956feb57406480024fedf1612e71",
+      "candidate_id": "c7d9e99187f340bf933eb5738ee69f69",
       "decision_timestamp": "2026-03-15T05:29:45+00:00",
       "event_family_id": "phase10_holdout_event_test_083",
       "event_id": "phase10_holdout_event_test_083",
@@ -2577,8 +2577,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "e295cd937b1f4b26881b2302129a94cc",
-      "candidate_id": "01e08bd6a2b0401a9a50f86e5789ec06",
+      "alert_id": "db5d7e9079dc4a47a49797a3d0efca05",
+      "candidate_id": "d7af97a7a6834ff9ae84a6568f5cd003",
       "decision_timestamp": "2026-03-15T05:31:15+00:00",
       "event_family_id": "phase10_holdout_event_test_084",
       "event_id": "phase10_holdout_event_test_084",
@@ -2608,8 +2608,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "8463cbb01c8f4fce85d179d84ffb218b",
-      "candidate_id": "1bbda7faca584a0eba4063633a90e2a3",
+      "alert_id": "5bbc224cb0dd4b64ae2735c2539acf70",
+      "candidate_id": "30b2511755d3460583829191220fb21d",
       "decision_timestamp": "2026-03-15T05:32:45+00:00",
       "event_family_id": "phase10_holdout_event_test_085",
       "event_id": "phase10_holdout_event_test_085",
@@ -2639,8 +2639,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "518e2286636f4204877aa3c8b5501eda",
-      "candidate_id": "3b96bec4af8643138fb1302530aa0e2a",
+      "alert_id": "7e4c148a71594cd18f14f9ae4a8c200a",
+      "candidate_id": "b01680bfb43346dcae197b2e5ffd40b8",
       "decision_timestamp": "2026-03-15T05:34:15+00:00",
       "event_family_id": "phase10_holdout_event_test_086",
       "event_id": "phase10_holdout_event_test_086",
@@ -2670,8 +2670,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "5bd6d5d216f84ae9a1ea0fea80cd02e5",
-      "candidate_id": "fbef90dda49945848356c3967903f61e",
+      "alert_id": "eb7f43d21a4e4ba592a49c5feb110aa8",
+      "candidate_id": "e4b1e5539b284760aeef5918bdf81949",
       "decision_timestamp": "2026-03-15T05:35:45+00:00",
       "event_family_id": "phase10_holdout_event_test_087",
       "event_id": "phase10_holdout_event_test_087",
@@ -2701,8 +2701,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "82ced44478624b63ba1e7a13c1b09d5a",
-      "candidate_id": "b9b59baaafae4a2dabf340e38ec3a681",
+      "alert_id": "1930b43ecfa04783b5ba14c4ed2aaed3",
+      "candidate_id": "7e4cf067807547cbbf649ef4392d8a9e",
       "decision_timestamp": "2026-03-15T05:37:15+00:00",
       "event_family_id": "phase10_holdout_event_test_088",
       "event_id": "phase10_holdout_event_test_088",
@@ -2732,8 +2732,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "9af3f35740c8403d86f28a734cda46a5",
-      "candidate_id": "302e443a051a4674a27eb7032176b35c",
+      "alert_id": "8f6a7044d9294165ab2e828edb4fa588",
+      "candidate_id": "6c288ec10b9b42968e3301dc61681c9a",
       "decision_timestamp": "2026-03-15T05:38:45+00:00",
       "event_family_id": "phase10_holdout_event_test_089",
       "event_id": "phase10_holdout_event_test_089",
@@ -2763,8 +2763,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "52d8ecdfad5b4d8b947a46761cf4626a",
-      "candidate_id": "013275a440304da7b9718022e4423b40",
+      "alert_id": "bfbed16b7c0542b7a5dde127911a47fd",
+      "candidate_id": "7bea889e1674478bb4f40a633f2ff054",
       "decision_timestamp": "2026-03-15T05:40:15+00:00",
       "event_family_id": "phase10_holdout_event_test_090",
       "event_id": "phase10_holdout_event_test_090",
@@ -2794,8 +2794,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "5866ca18eb1c43d7b57cfb4b52eb78d7",
-      "candidate_id": "1cf970e5b2fa4e7b9d6543d7281430ad",
+      "alert_id": "e7b5e8bc1c0d4342980b573869ca6a54",
+      "candidate_id": "6bc5de482ef747c6b630a65ca2c3a7fe",
       "decision_timestamp": "2026-03-15T05:41:45+00:00",
       "event_family_id": "phase10_holdout_event_test_091",
       "event_id": "phase10_holdout_event_test_091",
@@ -2825,8 +2825,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "ca065692c67f456a8bb1e7a2a81e6ca5",
-      "candidate_id": "9d594707194c433aa04c2e6d4b8d2df2",
+      "alert_id": "02747f54872e4560a16f116b9738fbd3",
+      "candidate_id": "182065d0265047f6872f0d69dc667f78",
       "decision_timestamp": "2026-03-15T05:43:15+00:00",
       "event_family_id": "phase10_holdout_event_test_092",
       "event_id": "phase10_holdout_event_test_092",
@@ -2856,8 +2856,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "44089d91da604b698a42844128d33ffb",
-      "candidate_id": "55cc3e0e93e04544a229c63d2395ff10",
+      "alert_id": "86a68099112143aea8768a85b684c814",
+      "candidate_id": "cf1e4edb3fd24e7a99588f1f16b325cd",
       "decision_timestamp": "2026-03-15T05:44:45+00:00",
       "event_family_id": "phase10_holdout_event_test_093",
       "event_id": "phase10_holdout_event_test_093",
@@ -2887,8 +2887,8 @@
       "score_value": 0.665739
     },
     {
-      "alert_id": "eab6a1336e284016ab627157fc498c64",
-      "candidate_id": "07c652deb8f5455dbd4b9b77b5f567b7",
+      "alert_id": "137d4c0c4a3e45539a6de2c57f010613",
+      "candidate_id": "e03305486500441892e094f95414ecc2",
       "decision_timestamp": "2026-03-15T05:46:15+00:00",
       "event_family_id": "phase10_holdout_event_test_094",
       "event_id": "phase10_holdout_event_test_094",
@@ -2918,8 +2918,8 @@
       "score_value": 0.5
     },
     {
-      "alert_id": "0162da2e2e744c4f9113d97599cb6058",
-      "candidate_id": "1807c60649f746eebaab4af6ee1d5667",
+      "alert_id": "6de4cbb36d1240d2a792008e8bb9de2e",
+      "candidate_id": "c1c5275f06b3436f8c1bb7a9428063b2",
       "decision_timestamp": "2026-03-15T05:47:45+00:00",
       "event_family_id": "phase10_holdout_event_test_095",
       "event_id": "phase10_holdout_event_test_095",
@@ -2949,8 +2949,8 @@
       "score_value": 0.428966
     },
     {
-      "alert_id": "a8a0c4eab80a4c0c8c6bd0c96f541bfd",
-      "candidate_id": "3e025a19140b4bb6bc568e71a3c97148",
+      "alert_id": "af0b465c89bc4989a54496ff1cdc507e",
+      "candidate_id": "d857880f2f6e4e999b89c9e1cbefafe3",
       "decision_timestamp": "2026-03-15T05:49:15+00:00",
       "event_family_id": "phase10_holdout_event_test_096",
       "event_id": "phase10_holdout_event_test_096",
