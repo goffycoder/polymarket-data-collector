@@ -1,0 +1,2987 @@
+{
+  "contract_version": "phase10_task4_heldout_model_completion_v1",
+  "feature_schema_version": "phase6_features_v1",
+  "model_version": "phase10_task4_lightgbm_v1",
+  "score_rows": [
+    {
+      "alert_id": "c2b46fb5e6ba4a8990f8ce14a238e1d5",
+      "candidate_id": "316fb2c7fce24fc8aa6f03e548ca2595",
+      "decision_timestamp": "2026-01-15T05:02:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_001",
+      "event_id": "phase10_holdout_event_train_001",
+      "market_id": "phase10_holdout_market_train_001",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "78a1196534c343fda72ac34176e8a3f2",
+      "candidate_id": "5c0c41f2182047bb97c79eaa00cd1d56",
+      "decision_timestamp": "2026-01-15T05:04:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_002",
+      "event_id": "phase10_holdout_event_train_002",
+      "market_id": "phase10_holdout_market_train_002",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "b0451716fbdc4fce8fda69c81bb919da",
+      "candidate_id": "5d9ad46913c243bf9a89b9a598f0b841",
+      "decision_timestamp": "2026-01-15T05:05:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_003",
+      "event_id": "phase10_holdout_event_train_003",
+      "market_id": "phase10_holdout_market_train_003",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "fff09988fcbf4d82b6d90f8732507a1d",
+      "candidate_id": "5adaab25e0ec40e78c52c009442834d8",
+      "decision_timestamp": "2026-01-15T05:07:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_004",
+      "event_id": "phase10_holdout_event_train_004",
+      "market_id": "phase10_holdout_market_train_004",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "6f5815f356504da4a0d4663fc745dd4e",
+      "candidate_id": "54a4ca8748704b40ad3eefdc2b375f12",
+      "decision_timestamp": "2026-01-15T05:08:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_005",
+      "event_id": "phase10_holdout_event_train_005",
+      "market_id": "phase10_holdout_market_train_005",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "a3ddf7cb86c146c5a4c42de280a54bee",
+      "candidate_id": "a18c304ee1fb4922bba1d68285e55edd",
+      "decision_timestamp": "2026-01-15T05:10:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_006",
+      "event_id": "phase10_holdout_event_train_006",
+      "market_id": "phase10_holdout_market_train_006",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "1f49e30b40074b8b90b2aff23ba402f2",
+      "candidate_id": "b9fe0eb87d664affbc1a5d199b9041fd",
+      "decision_timestamp": "2026-01-15T05:11:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_007",
+      "event_id": "phase10_holdout_event_train_007",
+      "market_id": "phase10_holdout_market_train_007",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "fd31a3f114f34ebc85313657c9527b88",
+      "candidate_id": "f058d2560817415fa2b661c941b22a71",
+      "decision_timestamp": "2026-01-15T05:13:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_008",
+      "event_id": "phase10_holdout_event_train_008",
+      "market_id": "phase10_holdout_market_train_008",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "df63099b2f164d18a6413309c0c60ac4",
+      "candidate_id": "5aa8714b51fb436487e19aeb1e9f89d6",
+      "decision_timestamp": "2026-01-15T05:14:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_009",
+      "event_id": "phase10_holdout_event_train_009",
+      "market_id": "phase10_holdout_market_train_009",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "6873ed49aadb4cdc8280b3317f10b34e",
+      "candidate_id": "9f43fae59b4d45518afeffad12e4d5f5",
+      "decision_timestamp": "2026-01-15T05:16:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_010",
+      "event_id": "phase10_holdout_event_train_010",
+      "market_id": "phase10_holdout_market_train_010",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "eba1add4903c45b8bbb27291b8c43f59",
+      "candidate_id": "17128ebab5244127a870db29572b2f56",
+      "decision_timestamp": "2026-01-15T05:17:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_011",
+      "event_id": "phase10_holdout_event_train_011",
+      "market_id": "phase10_holdout_market_train_011",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "a04a2123048543dd9ffc4d7ef36ec167",
+      "candidate_id": "ea660802adaa4db6b8dd06e141c5eea1",
+      "decision_timestamp": "2026-01-15T05:19:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_012",
+      "event_id": "phase10_holdout_event_train_012",
+      "market_id": "phase10_holdout_market_train_012",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "8da11a3da74c47918ea2c7412762345c",
+      "candidate_id": "e0fd0ef9370c4e64899bfb7cb93d81f1",
+      "decision_timestamp": "2026-01-15T05:20:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_013",
+      "event_id": "phase10_holdout_event_train_013",
+      "market_id": "phase10_holdout_market_train_013",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "280f63a8dded4ad8a2b58826705ec19d",
+      "candidate_id": "1039876afa2f4cce87aa0dbe57841e44",
+      "decision_timestamp": "2026-01-15T05:22:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_014",
+      "event_id": "phase10_holdout_event_train_014",
+      "market_id": "phase10_holdout_market_train_014",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "9eeb2ae19a6a4d8781a262ef31967473",
+      "candidate_id": "bd91b448ec4d4846a8807c499c5585df",
+      "decision_timestamp": "2026-01-15T05:23:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_015",
+      "event_id": "phase10_holdout_event_train_015",
+      "market_id": "phase10_holdout_market_train_015",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "4457301ee9464a4eaa8a9ea6076f6546",
+      "candidate_id": "326942512d374609b4b587a4f96ef8e6",
+      "decision_timestamp": "2026-01-15T05:25:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_016",
+      "event_id": "phase10_holdout_event_train_016",
+      "market_id": "phase10_holdout_market_train_016",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "f4bde10288f746a980ac9a7c26eeee02",
+      "candidate_id": "6438cd1c2228492492e8b720cdab0cb0",
+      "decision_timestamp": "2026-01-15T05:26:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_017",
+      "event_id": "phase10_holdout_event_train_017",
+      "market_id": "phase10_holdout_market_train_017",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "621b04ab4bb443c69ea2d52ec857ce67",
+      "candidate_id": "0e2cc84bf4ca4102bc68c95fe6a9c97c",
+      "decision_timestamp": "2026-01-15T05:28:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_018",
+      "event_id": "phase10_holdout_event_train_018",
+      "market_id": "phase10_holdout_market_train_018",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "c52c81c1ec144a9b8c6756540837c8ef",
+      "candidate_id": "883753b219614327a4757a58f1632ce5",
+      "decision_timestamp": "2026-01-15T05:29:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_019",
+      "event_id": "phase10_holdout_event_train_019",
+      "market_id": "phase10_holdout_market_train_019",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "de93c2ea44e047af83e786ebe797e7c2",
+      "candidate_id": "8ddd5afb49224485902e6b8f46364287",
+      "decision_timestamp": "2026-01-15T05:31:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_020",
+      "event_id": "phase10_holdout_event_train_020",
+      "market_id": "phase10_holdout_market_train_020",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "1650141d6aca4963851409b6a8314ad9",
+      "candidate_id": "2b0db6f145d54bba87e7625d5c365c1d",
+      "decision_timestamp": "2026-01-15T05:32:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_021",
+      "event_id": "phase10_holdout_event_train_021",
+      "market_id": "phase10_holdout_market_train_021",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "5b88e74085374f90bc816ed2f9129f6e",
+      "candidate_id": "dc06381c8a744381821df2fff884c6e2",
+      "decision_timestamp": "2026-01-15T05:34:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_022",
+      "event_id": "phase10_holdout_event_train_022",
+      "market_id": "phase10_holdout_market_train_022",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "d670337a94da42e4a28305232d93301c",
+      "candidate_id": "583e8992f06b414da8fc1b02fe64582c",
+      "decision_timestamp": "2026-01-15T05:35:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_023",
+      "event_id": "phase10_holdout_event_train_023",
+      "market_id": "phase10_holdout_market_train_023",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "f136d09d8c2d460f821303b6f632f36c",
+      "candidate_id": "64f2e87b6e9a4020a5305e4521fecead",
+      "decision_timestamp": "2026-01-15T05:37:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_024",
+      "event_id": "phase10_holdout_event_train_024",
+      "market_id": "phase10_holdout_market_train_024",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "cd57a60a8d6c4e1cae0647f6d3ff6db8",
+      "candidate_id": "3083b6350d3a4ac28ae64afc981d279c",
+      "decision_timestamp": "2026-01-15T05:38:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_025",
+      "event_id": "phase10_holdout_event_train_025",
+      "market_id": "phase10_holdout_market_train_025",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "6fbb3a0ec7ef4e26a681ec1b93969acf",
+      "candidate_id": "b1f3973eb43a4e5f86ce051938ef5c98",
+      "decision_timestamp": "2026-01-15T05:40:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_026",
+      "event_id": "phase10_holdout_event_train_026",
+      "market_id": "phase10_holdout_market_train_026",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "9783d9c06b014c4988e6ade1e9cbfa86",
+      "candidate_id": "f8f54ac3652842348aca5f43913dbb6b",
+      "decision_timestamp": "2026-01-15T05:41:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_027",
+      "event_id": "phase10_holdout_event_train_027",
+      "market_id": "phase10_holdout_market_train_027",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "2342b0f07f884fc5b941ea1bfd90960b",
+      "candidate_id": "678230c55cc94e0b9d2c8295c0c83ff7",
+      "decision_timestamp": "2026-01-15T05:43:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_028",
+      "event_id": "phase10_holdout_event_train_028",
+      "market_id": "phase10_holdout_market_train_028",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "d9014da3673041a7bc401949ccd0430d",
+      "candidate_id": "e2d05b8a98d04070a753973c510b9ff9",
+      "decision_timestamp": "2026-01-15T05:44:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_029",
+      "event_id": "phase10_holdout_event_train_029",
+      "market_id": "phase10_holdout_market_train_029",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "ad927801549941809f5dd52f340570cb",
+      "candidate_id": "1b199c02b6d44d5a9c42cf608c25c705",
+      "decision_timestamp": "2026-01-15T05:46:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_030",
+      "event_id": "phase10_holdout_event_train_030",
+      "market_id": "phase10_holdout_market_train_030",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "3abfaf086a5f44299b122b1d556118f1",
+      "candidate_id": "c8cc45c339a24fada98abf6e9bccd71c",
+      "decision_timestamp": "2026-01-15T05:47:45+00:00",
+      "event_family_id": "phase10_holdout_event_train_031",
+      "event_id": "phase10_holdout_event_train_031",
+      "market_id": "phase10_holdout_market_train_031",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "1dcbe3ef9d6a46cc94ad47dc0573dbcc",
+      "candidate_id": "37ae51f340b14dc8ae2a6a6c53740f17",
+      "decision_timestamp": "2026-01-15T05:49:15+00:00",
+      "event_family_id": "phase10_holdout_event_train_032",
+      "event_id": "phase10_holdout_event_train_032",
+      "market_id": "phase10_holdout_market_train_032",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "7369321dd871437e93dbe76d8c166730",
+      "candidate_id": "dd90e31c15104f7896720fa879649864",
+      "decision_timestamp": "2026-02-15T05:02:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_033",
+      "event_id": "phase10_holdout_event_validation_033",
+      "market_id": "phase10_holdout_market_validation_033",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "ba428381e39149a1b2db4d1ff2c68ea4",
+      "candidate_id": "9ae25e84d5c049a99d885a087c5c09d5",
+      "decision_timestamp": "2026-02-15T05:04:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_034",
+      "event_id": "phase10_holdout_event_validation_034",
+      "market_id": "phase10_holdout_market_validation_034",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "71522883c46b45dda8122f584c5ead3e",
+      "candidate_id": "4d506386db0848d4a90266a1a094f519",
+      "decision_timestamp": "2026-02-15T05:05:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_035",
+      "event_id": "phase10_holdout_event_validation_035",
+      "market_id": "phase10_holdout_market_validation_035",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "6e73a343d3614f41b5789dc8ec6ffc1b",
+      "candidate_id": "188a7062f3af49669dbe1e162e3f1fe8",
+      "decision_timestamp": "2026-02-15T05:07:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_036",
+      "event_id": "phase10_holdout_event_validation_036",
+      "market_id": "phase10_holdout_market_validation_036",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "c40a6ad1bc864be2b8a36d314ebbfb77",
+      "candidate_id": "e9648f7fa22d4d7b92fd074e66cc7448",
+      "decision_timestamp": "2026-02-15T05:08:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_037",
+      "event_id": "phase10_holdout_event_validation_037",
+      "market_id": "phase10_holdout_market_validation_037",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "4692bd00544c474dbc482a99621dce9e",
+      "candidate_id": "38a646a3d5e84e168954d88d76e61be5",
+      "decision_timestamp": "2026-02-15T05:10:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_038",
+      "event_id": "phase10_holdout_event_validation_038",
+      "market_id": "phase10_holdout_market_validation_038",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "f16c63ff79844ab0b63d9d8c5996a511",
+      "candidate_id": "affb17366e1744c7b51fb5239cb187d4",
+      "decision_timestamp": "2026-02-15T05:11:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_039",
+      "event_id": "phase10_holdout_event_validation_039",
+      "market_id": "phase10_holdout_market_validation_039",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "632f3dd3379140f396f17c122391ffb3",
+      "candidate_id": "3c39bea88d764ec3bea4de518202976d",
+      "decision_timestamp": "2026-02-15T05:13:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_040",
+      "event_id": "phase10_holdout_event_validation_040",
+      "market_id": "phase10_holdout_market_validation_040",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "e4b2bf1e3783484ea987b915b7dc355c",
+      "candidate_id": "88cf44a65e7a4dfbbef9ae8e89bfe159",
+      "decision_timestamp": "2026-02-15T05:14:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_041",
+      "event_id": "phase10_holdout_event_validation_041",
+      "market_id": "phase10_holdout_market_validation_041",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "2ba8ca64847d45d2b86ac90ae79b59ad",
+      "candidate_id": "84867e2243404328b5a81c12cfc0c538",
+      "decision_timestamp": "2026-02-15T05:16:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_042",
+      "event_id": "phase10_holdout_event_validation_042",
+      "market_id": "phase10_holdout_market_validation_042",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "14549885d13142679618d73461da386e",
+      "candidate_id": "9523d15ab88648c78f51c29cc911e680",
+      "decision_timestamp": "2026-02-15T05:17:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_043",
+      "event_id": "phase10_holdout_event_validation_043",
+      "market_id": "phase10_holdout_market_validation_043",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "a881fa0e57544c8fa3386f5cf5ad4f45",
+      "candidate_id": "31cc57f244ed4437bad3f72c9c005e26",
+      "decision_timestamp": "2026-02-15T05:19:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_044",
+      "event_id": "phase10_holdout_event_validation_044",
+      "market_id": "phase10_holdout_market_validation_044",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "448d9a99996248899e0736af67a04146",
+      "candidate_id": "21d2e9d7e8014cd6b882b1054a4ecd1f",
+      "decision_timestamp": "2026-02-15T05:20:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_045",
+      "event_id": "phase10_holdout_event_validation_045",
+      "market_id": "phase10_holdout_market_validation_045",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "c45f8bf9cd3e45188a7561cbb078cec7",
+      "candidate_id": "f210582931104dc8960dead8faa94207",
+      "decision_timestamp": "2026-02-15T05:22:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_046",
+      "event_id": "phase10_holdout_event_validation_046",
+      "market_id": "phase10_holdout_market_validation_046",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "b1ed3a8fb7fb436687e10b23efd5090d",
+      "candidate_id": "ac03de368e1d4f738c2612b9a4e811db",
+      "decision_timestamp": "2026-02-15T05:23:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_047",
+      "event_id": "phase10_holdout_event_validation_047",
+      "market_id": "phase10_holdout_market_validation_047",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "f8161fef46dd45d59605e0646b0f4112",
+      "candidate_id": "26b8d09942c6442dac0e1e09a2640d67",
+      "decision_timestamp": "2026-02-15T05:25:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_048",
+      "event_id": "phase10_holdout_event_validation_048",
+      "market_id": "phase10_holdout_market_validation_048",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "eb014419468643a9a3faf96ef82adf7e",
+      "candidate_id": "18d72c4f21bf4e7b9cf6d3da1a2b766c",
+      "decision_timestamp": "2026-02-15T05:26:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_049",
+      "event_id": "phase10_holdout_event_validation_049",
+      "market_id": "phase10_holdout_market_validation_049",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "b86ba74a30ed4b3bb3b5e5f7a9e7ffff",
+      "candidate_id": "6666120cf3da4036ad0dd172a9500569",
+      "decision_timestamp": "2026-02-15T05:28:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_050",
+      "event_id": "phase10_holdout_event_validation_050",
+      "market_id": "phase10_holdout_market_validation_050",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "39e7909a11ee4c6d9606e6b6d59cb3e5",
+      "candidate_id": "1853b69b14b64d2bb302999482451c5d",
+      "decision_timestamp": "2026-02-15T05:29:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_051",
+      "event_id": "phase10_holdout_event_validation_051",
+      "market_id": "phase10_holdout_market_validation_051",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "2b4f9bcec2ca4fbcbf262712670bc89e",
+      "candidate_id": "ef9e54b80ce2499db956f1bbf7c0963d",
+      "decision_timestamp": "2026-02-15T05:31:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_052",
+      "event_id": "phase10_holdout_event_validation_052",
+      "market_id": "phase10_holdout_market_validation_052",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "c83ed597f1994feba99669554984ee66",
+      "candidate_id": "8c1f47fb3bee47e1b1bf2588fe8e01cd",
+      "decision_timestamp": "2026-02-15T05:32:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_053",
+      "event_id": "phase10_holdout_event_validation_053",
+      "market_id": "phase10_holdout_market_validation_053",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "0bf5c280f51d4e57b177fb21f6b82f71",
+      "candidate_id": "e5ccc0c7f7bf4ef197ddad5cbc7697dd",
+      "decision_timestamp": "2026-02-15T05:34:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_054",
+      "event_id": "phase10_holdout_event_validation_054",
+      "market_id": "phase10_holdout_market_validation_054",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "bcff535b93734882b8269cb4fd28e4ac",
+      "candidate_id": "0246f07aa625405d8d8ff24a63e036df",
+      "decision_timestamp": "2026-02-15T05:35:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_055",
+      "event_id": "phase10_holdout_event_validation_055",
+      "market_id": "phase10_holdout_market_validation_055",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "d5601b7f2a884e27b66ca4cdae10e2a8",
+      "candidate_id": "97038b7bea8340ab9e4b822e34f19844",
+      "decision_timestamp": "2026-02-15T05:37:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_056",
+      "event_id": "phase10_holdout_event_validation_056",
+      "market_id": "phase10_holdout_market_validation_056",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "022bde72caee4c2b92436a13851afe4e",
+      "candidate_id": "4746d2c34329483cbe8c98aeb56ad839",
+      "decision_timestamp": "2026-02-15T05:38:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_057",
+      "event_id": "phase10_holdout_event_validation_057",
+      "market_id": "phase10_holdout_market_validation_057",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "5960c1a2b94c4e10ad25bc49b77ae7ea",
+      "candidate_id": "c88e4c2e698f48168bf39e081424fab6",
+      "decision_timestamp": "2026-02-15T05:40:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_058",
+      "event_id": "phase10_holdout_event_validation_058",
+      "market_id": "phase10_holdout_market_validation_058",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "9d9cbb0ab5d944ce9dca81a53a20b760",
+      "candidate_id": "3284fcaf2f6d4b12b8eaac139c9e70a8",
+      "decision_timestamp": "2026-02-15T05:41:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_059",
+      "event_id": "phase10_holdout_event_validation_059",
+      "market_id": "phase10_holdout_market_validation_059",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "dd0999fe9d0049449366daab94efa1bb",
+      "candidate_id": "f562b03bf6b9463c88e3622b515c10d4",
+      "decision_timestamp": "2026-02-15T05:43:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_060",
+      "event_id": "phase10_holdout_event_validation_060",
+      "market_id": "phase10_holdout_market_validation_060",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "7f81a6e8094845e9bb3567471760146a",
+      "candidate_id": "0d931327faee416aa5b8e316bea8b90c",
+      "decision_timestamp": "2026-02-15T05:44:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_061",
+      "event_id": "phase10_holdout_event_validation_061",
+      "market_id": "phase10_holdout_market_validation_061",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "173e255edbb24060b1547a7a6932134e",
+      "candidate_id": "1a8ddbb74a9349b789cdf0467f0883a4",
+      "decision_timestamp": "2026-02-15T05:46:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_062",
+      "event_id": "phase10_holdout_event_validation_062",
+      "market_id": "phase10_holdout_market_validation_062",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "9965c6a91b884f98a1bca7f7f619ae86",
+      "candidate_id": "5ecf2593051b4bceaf0d3c7b1c8803c5",
+      "decision_timestamp": "2026-02-15T05:47:45+00:00",
+      "event_family_id": "phase10_holdout_event_validation_063",
+      "event_id": "phase10_holdout_event_validation_063",
+      "market_id": "phase10_holdout_market_validation_063",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "50799fd5cc524b3ba368118227351138",
+      "candidate_id": "fc91a86470c944d4956f4ae8e001a187",
+      "decision_timestamp": "2026-02-15T05:49:15+00:00",
+      "event_family_id": "phase10_holdout_event_validation_064",
+      "event_id": "phase10_holdout_event_validation_064",
+      "market_id": "phase10_holdout_market_validation_064",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "0e1b1f2e80b74d2e8cd1c026499ec592",
+      "candidate_id": "4af14d77d71449e5b828fb30d3858b54",
+      "decision_timestamp": "2026-03-15T05:02:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_065",
+      "event_id": "phase10_holdout_event_test_065",
+      "market_id": "phase10_holdout_market_test_065",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "c7c9df2dd6ee407bb7948b67b0650201",
+      "candidate_id": "359fda6c1b96480abc31822cf79e39de",
+      "decision_timestamp": "2026-03-15T05:04:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_066",
+      "event_id": "phase10_holdout_event_test_066",
+      "market_id": "phase10_holdout_market_test_066",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "2fe1af89cb7d412aa999a502fe250b9d",
+      "candidate_id": "39ddd9f5d0894404ac30a0ca94c5c748",
+      "decision_timestamp": "2026-03-15T05:05:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_067",
+      "event_id": "phase10_holdout_event_test_067",
+      "market_id": "phase10_holdout_market_test_067",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "83542090e71248469b340bdf177d669b",
+      "candidate_id": "212628449a1d4eba8b742a471c4f42c7",
+      "decision_timestamp": "2026-03-15T05:07:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_068",
+      "event_id": "phase10_holdout_event_test_068",
+      "market_id": "phase10_holdout_market_test_068",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "8107467803f04df982b50a32c2624e77",
+      "candidate_id": "211d9460d5cb4ef5a7e20475e3ee28d3",
+      "decision_timestamp": "2026-03-15T05:08:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_069",
+      "event_id": "phase10_holdout_event_test_069",
+      "market_id": "phase10_holdout_market_test_069",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "0672dc36f462443f901178cff87ed61c",
+      "candidate_id": "859cfe28aef74b219dcea0f986548096",
+      "decision_timestamp": "2026-03-15T05:10:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_070",
+      "event_id": "phase10_holdout_event_test_070",
+      "market_id": "phase10_holdout_market_test_070",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "04c3dd93b5d7429799d5e71b48601f4a",
+      "candidate_id": "c2e1645bc9694c8d92fb34d98fc89fb9",
+      "decision_timestamp": "2026-03-15T05:11:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_071",
+      "event_id": "phase10_holdout_event_test_071",
+      "market_id": "phase10_holdout_market_test_071",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "4e7e57f162db45dd97a6320fd59f1110",
+      "candidate_id": "ab966abfeac3495395abee2dc14917f5",
+      "decision_timestamp": "2026-03-15T05:13:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_072",
+      "event_id": "phase10_holdout_event_test_072",
+      "market_id": "phase10_holdout_market_test_072",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "23981781978e4323bfd037199107adb6",
+      "candidate_id": "f99215b71249465c99a619b911bd4ac0",
+      "decision_timestamp": "2026-03-15T05:14:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_073",
+      "event_id": "phase10_holdout_event_test_073",
+      "market_id": "phase10_holdout_market_test_073",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "4e98fa5ebb754a839c310c9f4bb8c771",
+      "candidate_id": "f49e641e01eb44a092e9965c420fd720",
+      "decision_timestamp": "2026-03-15T05:16:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_074",
+      "event_id": "phase10_holdout_event_test_074",
+      "market_id": "phase10_holdout_market_test_074",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "0e3e1a2c22aa4ea39045dd72c0bd7466",
+      "candidate_id": "898de6d72ffc4a99a6d155f029a775b3",
+      "decision_timestamp": "2026-03-15T05:17:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_075",
+      "event_id": "phase10_holdout_event_test_075",
+      "market_id": "phase10_holdout_market_test_075",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "42177d318bc04fc79a4cc57ac68f980e",
+      "candidate_id": "b5ab5666dcca49f68ea246553d2e40c5",
+      "decision_timestamp": "2026-03-15T05:19:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_076",
+      "event_id": "phase10_holdout_event_test_076",
+      "market_id": "phase10_holdout_market_test_076",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "26fdc66a719c4ca2b400adf78ed983da",
+      "candidate_id": "e7476167d6494bdab9d7f46b5bf49461",
+      "decision_timestamp": "2026-03-15T05:20:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_077",
+      "event_id": "phase10_holdout_event_test_077",
+      "market_id": "phase10_holdout_market_test_077",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "045d0af7a531472c940b46dc224d76d0",
+      "candidate_id": "3f8483ad888543b9877abee61d030236",
+      "decision_timestamp": "2026-03-15T05:22:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_078",
+      "event_id": "phase10_holdout_event_test_078",
+      "market_id": "phase10_holdout_market_test_078",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "cc001c33e7ba49e9b4ec7de466c796f5",
+      "candidate_id": "78ca2a19abc940d8b96d3e202461da8b",
+      "decision_timestamp": "2026-03-15T05:23:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_079",
+      "event_id": "phase10_holdout_event_test_079",
+      "market_id": "phase10_holdout_market_test_079",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "bf96a6239005440bbff8209910a8cfff",
+      "candidate_id": "0dae0753356243b3bf14e68b28bf7e5b",
+      "decision_timestamp": "2026-03-15T05:25:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_080",
+      "event_id": "phase10_holdout_event_test_080",
+      "market_id": "phase10_holdout_market_test_080",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "366147715a8f425e98a8b6a411552ed2",
+      "candidate_id": "00baa1cb1e4449dcb27734cc6b056314",
+      "decision_timestamp": "2026-03-15T05:26:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_081",
+      "event_id": "phase10_holdout_event_test_081",
+      "market_id": "phase10_holdout_market_test_081",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "ef2028e200594ead8d83f803ed70dc5b",
+      "candidate_id": "672991f28ae14cd7aedf22b8f8ba9113",
+      "decision_timestamp": "2026-03-15T05:28:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_082",
+      "event_id": "phase10_holdout_event_test_082",
+      "market_id": "phase10_holdout_market_test_082",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "56bc956feb57406480024fedf1612e71",
+      "candidate_id": "c7d9e99187f340bf933eb5738ee69f69",
+      "decision_timestamp": "2026-03-15T05:29:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_083",
+      "event_id": "phase10_holdout_event_test_083",
+      "market_id": "phase10_holdout_market_test_083",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "db5d7e9079dc4a47a49797a3d0efca05",
+      "candidate_id": "d7af97a7a6834ff9ae84a6568f5cd003",
+      "decision_timestamp": "2026-03-15T05:31:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_084",
+      "event_id": "phase10_holdout_event_test_084",
+      "market_id": "phase10_holdout_market_test_084",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "5bbc224cb0dd4b64ae2735c2539acf70",
+      "candidate_id": "30b2511755d3460583829191220fb21d",
+      "decision_timestamp": "2026-03-15T05:32:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_085",
+      "event_id": "phase10_holdout_event_test_085",
+      "market_id": "phase10_holdout_market_test_085",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "7e4c148a71594cd18f14f9ae4a8c200a",
+      "candidate_id": "b01680bfb43346dcae197b2e5ffd40b8",
+      "decision_timestamp": "2026-03-15T05:34:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_086",
+      "event_id": "phase10_holdout_event_test_086",
+      "market_id": "phase10_holdout_market_test_086",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "eb7f43d21a4e4ba592a49c5feb110aa8",
+      "candidate_id": "e4b1e5539b284760aeef5918bdf81949",
+      "decision_timestamp": "2026-03-15T05:35:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_087",
+      "event_id": "phase10_holdout_event_test_087",
+      "market_id": "phase10_holdout_market_test_087",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "1930b43ecfa04783b5ba14c4ed2aaed3",
+      "candidate_id": "7e4cf067807547cbbf649ef4392d8a9e",
+      "decision_timestamp": "2026-03-15T05:37:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_088",
+      "event_id": "phase10_holdout_event_test_088",
+      "market_id": "phase10_holdout_market_test_088",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "8f6a7044d9294165ab2e828edb4fa588",
+      "candidate_id": "6c288ec10b9b42968e3301dc61681c9a",
+      "decision_timestamp": "2026-03-15T05:38:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_089",
+      "event_id": "phase10_holdout_event_test_089",
+      "market_id": "phase10_holdout_market_test_089",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "bfbed16b7c0542b7a5dde127911a47fd",
+      "candidate_id": "7bea889e1674478bb4f40a633f2ff054",
+      "decision_timestamp": "2026-03-15T05:40:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_090",
+      "event_id": "phase10_holdout_event_test_090",
+      "market_id": "phase10_holdout_market_test_090",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "e7b5e8bc1c0d4342980b573869ca6a54",
+      "candidate_id": "6bc5de482ef747c6b630a65ca2c3a7fe",
+      "decision_timestamp": "2026-03-15T05:41:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_091",
+      "event_id": "phase10_holdout_event_test_091",
+      "market_id": "phase10_holdout_market_test_091",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "02747f54872e4560a16f116b9738fbd3",
+      "candidate_id": "182065d0265047f6872f0d69dc667f78",
+      "decision_timestamp": "2026-03-15T05:43:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_092",
+      "event_id": "phase10_holdout_event_test_092",
+      "market_id": "phase10_holdout_market_test_092",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "86a68099112143aea8768a85b684c814",
+      "candidate_id": "cf1e4edb3fd24e7a99588f1f16b325cd",
+      "decision_timestamp": "2026-03-15T05:44:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_093",
+      "event_id": "phase10_holdout_event_test_093",
+      "market_id": "phase10_holdout_market_test_093",
+      "score_label": "CRITICAL",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.665739
+    },
+    {
+      "alert_id": "137d4c0c4a3e45539a6de2c57f010613",
+      "candidate_id": "e03305486500441892e094f95414ecc2",
+      "decision_timestamp": "2026-03-15T05:46:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_094",
+      "event_id": "phase10_holdout_event_test_094",
+      "market_id": "phase10_holdout_market_test_094",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    },
+    {
+      "alert_id": "6de4cbb36d1240d2a792008e8bb9de2e",
+      "candidate_id": "c1c5275f06b3436f8c1bb7a9428063b2",
+      "decision_timestamp": "2026-03-15T05:47:45+00:00",
+      "event_family_id": "phase10_holdout_event_test_095",
+      "event_id": "phase10_holdout_event_test_095",
+      "market_id": "phase10_holdout_market_test_095",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    },
+    {
+      "alert_id": "af0b465c89bc4989a54496ff1cdc507e",
+      "candidate_id": "d857880f2f6e4e999b89c9e1cbefafe3",
+      "decision_timestamp": "2026-03-15T05:49:15+00:00",
+      "event_family_id": "phase10_holdout_event_test_096",
+      "event_id": "phase10_holdout_event_test_096",
+      "market_id": "phase10_holdout_market_test_096",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.428966
+    }
+  ],
+  "window": {
+    "end": "2026-03-15T06:00:00+00:00",
+    "start": "2026-01-15T05:00:00+00:00"
+  }
+}

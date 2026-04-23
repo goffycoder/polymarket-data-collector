@@ -1,0 +1,44 @@
+{
+  "audit_logging": {
+    "latest_alert_workflow_version": {
+      "alert_schema_version": "phase4_alert_payload_v1",
+      "created_at": "2026-04-23T00:54:59.483744+00:00",
+      "evidence_schema_version": "phase4_evidence_v1",
+      "last_used_at": "2026-04-23T00:58:19.871034+00:00",
+      "workflow_version": "phase4_alerts_v1"
+    },
+    "latest_model_registry_entry": {
+      "created_at": "2026-04-23 00:58:22",
+      "deployed_at": "2026-04-23T00:58:22.360105+00:00",
+      "deployment_status": "shadow",
+      "model_name": "phase6_ranker_v1",
+      "model_version": "phase10_task4_lightgbm_v1",
+      "shadow_enabled": true
+    }
+  },
+  "budget_summary": {
+    "daily_query_cap": 250,
+    "enforced_in_runtime": true,
+    "monthly_query_cap": 5000,
+    "provider": "google_news_rss"
+  },
+  "secret_posture": {
+    "configured_keys": [
+      {
+        "configured": false,
+        "name": "POLYMARKET_DATABASE_URL"
+      },
+      {
+        "configured": false,
+        "name": "POLYMARKET_PHASE4_TELEGRAM_BOT_TOKEN"
+      },
+      {
+        "configured": false,
+        "name": "POLYMARKET_PHASE4_DISCORD_WEBHOOK_URL"
+      }
+    ],
+    "policy": "Secrets must come from environment variables, a local secret manager, or the OS keychain. Reports never print raw secret values."
+  },
+  "task_contract_version": "phase10_task5_ops_governance_closeout_v1",
+  "wallet_redaction_enforced": true
+}

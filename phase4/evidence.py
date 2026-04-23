@@ -5,9 +5,25 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from time import perf_counter
 from typing import Any, Protocol
+from xml.etree import ElementTree
 
-from config.settings import PHASE4_EVIDENCE_PROVIDERS, PHASE4_EVIDENCE_TIMEOUT_SECONDS
+import httpx
+
+from config.settings import (
+    PHASE4_EVIDENCE_CACHE_TTL_SECONDS,
+    PHASE4_EVIDENCE_PROVIDERS,
+    PHASE4_EVIDENCE_TIMEOUT_SECONDS,
+    PHASE4_GOOGLE_NEWS_RSS_CEID,
+    PHASE4_GOOGLE_NEWS_RSS_COST_USD,
+    PHASE4_GOOGLE_NEWS_RSS_DAILY_QUERY_CAP,
+    PHASE4_GOOGLE_NEWS_RSS_GL,
+    PHASE4_GOOGLE_NEWS_RSS_HL,
+    PHASE4_GOOGLE_NEWS_RSS_MAX_RESULTS,
+    PHASE4_GOOGLE_NEWS_RSS_MONTHLY_QUERY_CAP,
+    PHASE4_GOOGLE_NEWS_RSS_URL,
+)
 from phase4.repository import Phase4Repository
+from utils.http_client import make_client
 from utils.logger import get_logger
 
 log = get_logger("phase4_evidence")
@@ -29,6 +45,9 @@ class EvidenceProviderResult:
     results: list[dict[str, Any]]
     raw_response_metadata: dict[str, Any]
     error_message: str | None = None
+    cache_key: str | None = None
+    cache_hit: bool = False
+    freshness_seconds: int | None = None
 
 
 class EvidenceProvider(Protocol):
@@ -57,20 +76,229 @@ class NoopEvidenceProvider:
         )
 
     def _build_query(self, candidate: dict[str, Any]) -> str:
-        return (
-            candidate.get("event_title")
-            or candidate.get("question")
-            or candidate.get("event_slug")
-            or candidate.get("market_id")
-            or candidate.get("candidate_id")
-            or ""
+        return build_provider_query_text(candidate)
+
+
+class GoogleNewsRssEvidenceProvider:
+    name = "google_news_rss"
+    query_type = "web_news"
+
+    def __init__(
+        self,
+        *,
+        repository: Phase4Repository,
+        cache_ttl_seconds: int = PHASE4_EVIDENCE_CACHE_TTL_SECONDS,
+        daily_query_cap: int = PHASE4_GOOGLE_NEWS_RSS_DAILY_QUERY_CAP,
+        monthly_query_cap: int = PHASE4_GOOGLE_NEWS_RSS_MONTHLY_QUERY_CAP,
+        estimated_cost_usd: float = PHASE4_GOOGLE_NEWS_RSS_COST_USD,
+        max_results: int = PHASE4_GOOGLE_NEWS_RSS_MAX_RESULTS,
+        url: str = PHASE4_GOOGLE_NEWS_RSS_URL,
+        hl: str = PHASE4_GOOGLE_NEWS_RSS_HL,
+        gl: str = PHASE4_GOOGLE_NEWS_RSS_GL,
+        ceid: str = PHASE4_GOOGLE_NEWS_RSS_CEID,
+    ):
+        self.repository = repository
+        self.cache_ttl_seconds = max(1, cache_ttl_seconds)
+        self.daily_query_cap = max(1, daily_query_cap)
+        self.monthly_query_cap = max(self.daily_query_cap, monthly_query_cap)
+        self.estimated_cost_usd = max(0.0, float(estimated_cost_usd))
+        self.max_results = max(1, max_results)
+        self.url = url
+        self.hl = hl
+        self.gl = gl
+        self.ceid = ceid
+
+    async def fetch(self, candidate: dict[str, Any]) -> EvidenceProviderResult:
+        query_text = build_provider_query_text(candidate)
+        cache_key = f"{self.name}:{query_text.lower()}"
+        cached = self.repository.latest_evidence_query_for_cache(
+            provider_name=self.name,
+            provider_query_type=self.query_type,
+            provider_query_text=query_text,
+            max_age_seconds=self.cache_ttl_seconds,
+        )
+        budget_before = self._budget_snapshot()
+        if cached is not None:
+            cached_metadata = cached.get("raw_response_metadata") or {}
+            budget_metadata = self._budget_metadata(
+                external_call_made=False,
+                estimated_cost_usd=0.0,
+                before=budget_before,
+            )
+            return EvidenceProviderResult(
+                provider_name=self.name,
+                provider_query_type=self.query_type,
+                provider_query_text=query_text,
+                result_count=int(cached.get("result_count") or 0),
+                query_status=str(cached.get("query_status") or "no_results"),
+                results=list(cached_metadata.get("normalized_results") or []),
+                raw_response_metadata={
+                    "provider_mode": "cache",
+                    "cache_hit_query_id": cached.get("evidence_query_id"),
+                    "cache_source_created_at": cached.get("created_at"),
+                    "cache_ttl_seconds": self.cache_ttl_seconds,
+                    "provider_url": self.url,
+                    "budget": budget_metadata,
+                    "normalized_results": list(cached_metadata.get("normalized_results") or []),
+                    "provider_http_status": cached_metadata.get("provider_http_status"),
+                    "provider_response_url": cached_metadata.get("provider_response_url"),
+                    "provider_result_ids": list(cached_metadata.get("provider_result_ids") or []),
+                },
+                error_message=str(cached.get("error_message")) if cached.get("error_message") else None,
+                cache_key=cache_key,
+                cache_hit=True,
+                freshness_seconds=int(cached.get("freshness_seconds") or 0),
+            )
+
+        if (
+            budget_before["day_queries_used"] >= self.daily_query_cap
+            or budget_before["month_queries_used"] >= self.monthly_query_cap
+        ):
+            budget_metadata = self._budget_metadata(
+                external_call_made=False,
+                estimated_cost_usd=0.0,
+                before=budget_before,
+                blocked=True,
+            )
+            return EvidenceProviderResult(
+                provider_name=self.name,
+                provider_query_type=self.query_type,
+                provider_query_text=query_text,
+                result_count=0,
+                query_status="budget_blocked",
+                results=[],
+                raw_response_metadata={
+                    "provider_mode": "budget_blocked",
+                    "provider_url": self.url,
+                    "cache_ttl_seconds": self.cache_ttl_seconds,
+                    "budget": budget_metadata,
+                    "normalized_results": [],
+                },
+                error_message="provider budget cap reached",
+                cache_key=cache_key,
+            )
+
+        params = {
+            "q": query_text,
+            "hl": self.hl,
+            "gl": self.gl,
+            "ceid": self.ceid,
+        }
+        async with make_client(timeout=float(PHASE4_EVIDENCE_TIMEOUT_SECONDS)) as client:
+            response = await client.get(self.url, params=params)
+        parsed_results = self._parse_results(response.text)
+        budget_after = self._budget_metadata(
+            external_call_made=True,
+            estimated_cost_usd=self.estimated_cost_usd,
+            before=budget_before,
+        )
+        normalized_results = parsed_results[: self.max_results]
+        query_status = "ok" if normalized_results else "no_results"
+        return EvidenceProviderResult(
+            provider_name=self.name,
+            provider_query_type=self.query_type,
+            provider_query_text=query_text,
+            result_count=len(normalized_results),
+            query_status=query_status,
+            results=normalized_results,
+            raw_response_metadata={
+                "provider_mode": "live",
+                "provider_http_status": response.status_code,
+                "provider_response_url": str(response.url),
+                "provider_url": self.url,
+                "provider_params": params,
+                "provider_result_ids": [row.get("result_id") for row in normalized_results if row.get("result_id")],
+                "cache_ttl_seconds": self.cache_ttl_seconds,
+                "budget": budget_after,
+                "normalized_results": normalized_results,
+            },
+            cache_key=cache_key,
         )
 
+    def _budget_snapshot(self) -> dict[str, float | int]:
+        now = datetime.now(timezone.utc)
+        day_start = now.replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
+        month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
+        usage = self.repository.provider_budget_usage(
+            provider_name=self.name,
+            day_start=day_start,
+            month_start=month_start,
+        )
+        return {
+            **usage,
+            "day_query_cap": self.daily_query_cap,
+            "month_query_cap": self.monthly_query_cap,
+        }
 
-def build_default_providers() -> list[EvidenceProvider]:
+    def _budget_metadata(
+        self,
+        *,
+        external_call_made: bool,
+        estimated_cost_usd: float,
+        before: dict[str, float | int],
+        blocked: bool = False,
+    ) -> dict[str, Any]:
+        day_queries_after = int(before["day_queries_used"]) + (1 if external_call_made else 0)
+        month_queries_after = int(before["month_queries_used"]) + (1 if external_call_made else 0)
+        day_spend_after = float(before["day_spend_usd"]) + estimated_cost_usd
+        month_spend_after = float(before["month_spend_usd"]) + estimated_cost_usd
+        return {
+            "external_call_made": external_call_made,
+            "estimated_cost_usd": round(float(estimated_cost_usd), 6),
+            "day_queries_before": int(before["day_queries_used"]),
+            "day_queries_after": day_queries_after,
+            "month_queries_before": int(before["month_queries_used"]),
+            "month_queries_after": month_queries_after,
+            "day_query_cap": int(before["day_query_cap"]),
+            "month_query_cap": int(before["month_query_cap"]),
+            "day_spend_before_usd": round(float(before["day_spend_usd"]), 6),
+            "day_spend_after_usd": round(day_spend_after, 6),
+            "month_spend_before_usd": round(float(before["month_spend_usd"]), 6),
+            "month_spend_after_usd": round(month_spend_after, 6),
+            "blocked_by_budget": blocked,
+        }
+
+    def _parse_results(self, xml_text: str) -> list[dict[str, Any]]:
+        root = ElementTree.fromstring(xml_text)
+        results: list[dict[str, Any]] = []
+        for item in root.findall("./channel/item"):
+            title = (item.findtext("title") or "").strip()
+            link = (item.findtext("link") or "").strip()
+            published_at = (item.findtext("pubDate") or "").strip()
+            guid = (item.findtext("guid") or link or title).strip()
+            source = ""
+            source_node = item.find("source")
+            if source_node is not None and source_node.text:
+                source = source_node.text.strip()
+            results.append(
+                {
+                    "result_id": guid,
+                    "title": title,
+                    "url": link,
+                    "published_at": published_at,
+                    "source": source,
+                }
+            )
+        return results[: self.max_results]
+
+
+def build_provider_query_text(candidate: dict[str, Any]) -> str:
+    return (
+        candidate.get("event_title")
+        or candidate.get("question")
+        or candidate.get("event_slug")
+        or candidate.get("market_id")
+        or candidate.get("candidate_id")
+        or ""
+    )
+
+
+def build_default_providers(*, repository: Phase4Repository) -> list[EvidenceProvider]:
     providers: list[EvidenceProvider] = []
     for provider_name in PHASE4_EVIDENCE_PROVIDERS:
-        if provider_name == "noop_news":
+        if provider_name == "google_news_rss":
+            providers.append(GoogleNewsRssEvidenceProvider(repository=repository))
+        elif provider_name == "noop_news":
             providers.append(NoopEvidenceProvider(name="noop_news", query_type="web_news"))
         elif provider_name == "noop_social":
             providers.append(NoopEvidenceProvider(name="noop_social", query_type="social"))
@@ -115,7 +343,7 @@ class Phase4EvidenceWorker:
         timeout_seconds: int = PHASE4_EVIDENCE_TIMEOUT_SECONDS,
     ):
         self.repository = repository
-        self.providers = providers or build_default_providers()
+        self.providers = providers or build_default_providers(repository=repository)
         self.timeout_seconds = timeout_seconds
         self.summary = EvidenceWorkerSummary()
 
@@ -191,6 +419,9 @@ class Phase4EvidenceWorker:
                 raw_response_metadata={
                     **result.raw_response_metadata,
                     "result_preview_count": len(result.results),
+                    "cache_hit": result.cache_hit,
+                    "cache_key": result.cache_key,
+                    "freshness_seconds": result.freshness_seconds,
                 },
                 error_message=result.error_message,
             )
@@ -209,9 +440,24 @@ class Phase4EvidenceWorker:
                         "query_type": result.provider_query_type,
                         "query_status": result.query_status,
                         "result_count": result.result_count,
+                        "cache_hit": result.cache_hit,
+                        "freshness_seconds": result.freshness_seconds,
+                        "budget": (result.raw_response_metadata or {}).get("budget"),
+                        "provider_mode": (result.raw_response_metadata or {}).get("provider_mode"),
                     }
                     for result in provider_results
-                ]
+                ],
+                "real_provider_count": sum(
+                    1 for result in provider_results if not result.provider_name.startswith("noop_")
+                ),
+                "cache_hit_count": sum(1 for result in provider_results if result.cache_hit),
+                "total_estimated_cost_usd": round(
+                    sum(
+                        float(((result.raw_response_metadata or {}).get("budget") or {}).get("estimated_cost_usd") or 0.0)
+                        for result in provider_results
+                    ),
+                    6,
+                ),
             },
             confidence_modifier=confidence_modifier,
             metadata_json={
@@ -219,8 +465,15 @@ class Phase4EvidenceWorker:
                 "question": candidate.get("question"),
                 "trigger_time": candidate.get("trigger_time"),
             },
-            cache_key=str(candidate["candidate_id"]),
-            freshness_seconds=0,
+            cache_key="|".join(sorted(filter(None, (result.cache_key for result in provider_results)))) or str(candidate["candidate_id"]),
+            freshness_seconds=min(
+                (
+                    int(result.freshness_seconds)
+                    for result in provider_results
+                    if result.freshness_seconds is not None
+                ),
+                default=0,
+            ),
         )
         self.summary.candidates_processed += 1
         self.summary.evidence_snapshots_written += 1

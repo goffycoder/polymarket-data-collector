@@ -30,6 +30,13 @@ def _parse_iso(value: str | None) -> datetime | None:
     return parsed.astimezone(timezone.utc)
 
 
+def _safe_float(value: Any, default: float = 0.0) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
 @dataclass(slots=True)
 class Phase4BootstrapSummary:
     workflow_version: str
@@ -282,6 +289,127 @@ class Phase4Repository:
         finally:
             conn.close()
         return evidence_snapshot_id
+
+    def latest_evidence_query_for_cache(
+        self,
+        *,
+        provider_name: str,
+        provider_query_type: str,
+        provider_query_text: str,
+        max_age_seconds: int,
+    ) -> dict[str, Any] | None:
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                """
+                SELECT
+                    evidence_query_id,
+                    candidate_id,
+                    provider_name,
+                    provider_query_type,
+                    provider_query_text,
+                    request_started_at,
+                    response_completed_at,
+                    latency_ms,
+                    result_count,
+                    query_status,
+                    timeout_seconds,
+                    raw_response_metadata,
+                    error_message,
+                    created_at
+                FROM evidence_queries
+                WHERE provider_name = ?
+                  AND provider_query_type = ?
+                  AND provider_query_text = ?
+                  AND query_status IN ('ok', 'no_results')
+                ORDER BY request_started_at DESC, created_at DESC
+                LIMIT 1
+                """,
+                (provider_name, provider_query_type, provider_query_text),
+            ).fetchone()
+        finally:
+            conn.close()
+
+        if row is None:
+            return None
+
+        response_time = _parse_iso(row["response_completed_at"]) or _parse_iso(row["request_started_at"])
+        if response_time is None:
+            return None
+        freshness_seconds = max(
+            0,
+            int((datetime.now(timezone.utc) - response_time).total_seconds()),
+        )
+        if freshness_seconds > max_age_seconds:
+            return None
+
+        raw_response_metadata = json.loads(row["raw_response_metadata"] or "{}")
+        return {
+            "evidence_query_id": row["evidence_query_id"],
+            "candidate_id": row["candidate_id"],
+            "provider_name": row["provider_name"],
+            "provider_query_type": row["provider_query_type"],
+            "provider_query_text": row["provider_query_text"],
+            "request_started_at": row["request_started_at"],
+            "response_completed_at": row["response_completed_at"],
+            "latency_ms": row["latency_ms"],
+            "result_count": int(row["result_count"] or 0),
+            "query_status": row["query_status"],
+            "timeout_seconds": row["timeout_seconds"],
+            "raw_response_metadata": raw_response_metadata,
+            "error_message": row["error_message"],
+            "created_at": row["created_at"],
+            "freshness_seconds": freshness_seconds,
+        }
+
+    def provider_budget_usage(
+        self,
+        *,
+        provider_name: str,
+        day_start: str,
+        month_start: str,
+    ) -> dict[str, float | int]:
+        conn = get_conn()
+        try:
+            rows = conn.execute(
+                """
+                SELECT request_started_at, raw_response_metadata
+                FROM evidence_queries
+                WHERE provider_name = ?
+                  AND request_started_at >= ?
+                ORDER BY request_started_at ASC
+                """,
+                (provider_name, month_start),
+            ).fetchall()
+        finally:
+            conn.close()
+
+        day_start_dt = _parse_iso(day_start)
+        month_queries_used = 0
+        day_queries_used = 0
+        month_spend_usd = 0.0
+        day_spend_usd = 0.0
+
+        for row in rows:
+            metadata = json.loads(row["raw_response_metadata"] or "{}")
+            budget = metadata.get("budget") or {}
+            external_call_made = bool(budget.get("external_call_made"))
+            if not external_call_made:
+                continue
+            request_started_at = _parse_iso(row["request_started_at"])
+            month_queries_used += 1
+            spend = _safe_float(budget.get("estimated_cost_usd"))
+            month_spend_usd += spend
+            if day_start_dt is not None and request_started_at is not None and request_started_at >= day_start_dt:
+                day_queries_used += 1
+                day_spend_usd += spend
+
+        return {
+            "day_queries_used": day_queries_used,
+            "month_queries_used": month_queries_used,
+            "day_spend_usd": round(day_spend_usd, 6),
+            "month_spend_usd": round(month_spend_usd, 6),
+        }
 
     def latest_evidence_snapshot_for_candidate(self, candidate_id: str) -> dict[str, Any] | None:
         conn = get_conn()

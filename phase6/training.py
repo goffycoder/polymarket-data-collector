@@ -10,7 +10,7 @@ from typing import Any
 import pandas as pd
 try:
     import lightgbm as lgb
-except ImportError:  # pragma: no cover - optional dependency is validated at runtime.
+except (ImportError, OSError):  # pragma: no cover - optional dependency is validated at runtime.
     lgb = None
 
 from config.settings import (
@@ -332,7 +332,11 @@ def fit_lightgbm_ranker(
     feature_order: list[str] | None = None,
 ) -> tuple[dict[str, Any], Phase6ModelFitSummary]:
     if lgb is None:
-        raise ImportError("lightgbm is required for the boosted Phase 6 ranker.")
+        raise ImportError(
+            "lightgbm with its native runtime is required for the boosted Phase 6 ranker. "
+            "On macOS, install the OpenMP runtime first (for example `brew install libomp`) "
+            "before rerunning Phase 6 or Phase 10 model tasks."
+        )
 
     feature_order = list(feature_order or NUMERIC_MODEL_FEATURES)
     prepared = prepare_model_input_frame(frame, feature_order=feature_order)
@@ -406,7 +410,10 @@ def score_training_frame(frame: pd.DataFrame, *, model_spec: dict[str, Any]) -> 
 
     if kind == "phase6_lightgbm_ranker_v1":
         if lgb is None:
-            raise ImportError("lightgbm is required for scoring the boosted Phase 6 ranker.")
+            raise ImportError(
+                "lightgbm with its native runtime is required for scoring the boosted Phase 6 ranker. "
+                "On macOS, install the OpenMP runtime first (for example `brew install libomp`)."
+            )
         booster = lgb.Booster(model_str=str(model_spec.get("booster_model_str") or ""))
         feature_matrix = scored[feature_order].fillna(0.0).astype(float)
         scored["model_linear_score"] = pd.Series([None] * len(scored.index), index=scored.index, dtype="object")

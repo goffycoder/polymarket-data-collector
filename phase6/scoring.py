@@ -9,7 +9,7 @@ from typing import Any
 import pandas as pd
 try:
     import lightgbm as lgb
-except ImportError:  # pragma: no cover - dependency is checked by callers.
+except (ImportError, OSError):  # pragma: no cover - dependency is checked by callers.
     lgb = None
 
 from phase6.training import prepare_model_input_frame
@@ -82,7 +82,10 @@ def build_shadow_scores(
     score_values: list[float] = []
     if kind == "phase6_lightgbm_ranker_v1":
         if lgb is None:
-            raise ImportError("lightgbm is required for scoring the boosted Phase 6 model.")
+            raise ImportError(
+                "lightgbm with its native runtime is required for scoring the boosted Phase 6 model. "
+                "On macOS, install the OpenMP runtime first (for example `brew install libomp`)."
+            )
         booster = lgb.Booster(model_str=str(model_spec.get("booster_model_str") or ""))
         feature_matrix = prepared[feature_order].fillna(0.0).astype(float)
         score_values = [round(float(value), 6) for value in booster.predict(feature_matrix)]

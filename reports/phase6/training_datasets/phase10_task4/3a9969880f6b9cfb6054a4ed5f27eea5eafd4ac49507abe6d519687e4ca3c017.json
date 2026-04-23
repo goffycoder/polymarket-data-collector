@@ -1,0 +1,52 @@
+{
+  "columns": [
+    "evaluation_row_id",
+    "candidate_id",
+    "alert_id",
+    "market_id",
+    "event_id",
+    "event_family_id",
+    "category_key",
+    "decision_timestamp",
+    "feature_schema_version",
+    "candidate_severity_score",
+    "alert_severity_rank",
+    "has_alert",
+    "has_resolution",
+    "rule_count",
+    "fresh_wallet_count",
+    "fresh_wallet_notional_share",
+    "directional_imbalance",
+    "concentration_ratio",
+    "probability_velocity",
+    "probability_acceleration",
+    "volume_acceleration",
+    "market_status_closed",
+    "evidence_state",
+    "coverage_status",
+    "direction",
+    "label_success",
+    "label_available",
+    "liquidity_bucket",
+    "event_family_holdout",
+    "category_holdout",
+    "time_holdout",
+    "probability_velocity_abs",
+    "probability_acceleration_abs",
+    "dataset_partition"
+  ],
+  "contract_version": "phase10_task4_heldout_model_completion_v1",
+  "summary": {
+    "dataset_hash": "3a9969880f6b9cfb6054a4ed5f27eea5eafd4ac49507abe6d519687e4ca3c017",
+    "feature_schema_version": "phase6_features_v1",
+    "labeled_row_count": 96,
+    "row_count": 96,
+    "test_row_count": 32,
+    "train_row_count": 32,
+    "validation_row_count": 32
+  },
+  "window": {
+    "end": "2026-03-15T06:00:00+00:00",
+    "start": "2026-01-15T05:00:00+00:00"
+  }
+}

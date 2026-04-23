@@ -1,0 +1,25 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 10 Task 4 - Held-Out Phase 6 Boosted-Tree Completion}
+
+\textbf{Phase 10 parent doc:} \texttt{Documentation/phases/phase10.tex}\\
+\textbf{Task goal:} Rebuild the Phase 6 dataset at meaningful size, evaluate \texttt{LightGBM} against the required wallet-unaware baselines on non-trivial held-out data, and refresh calibration, thresholds, registry, and model-card artifacts from held-out evidence.
+
+\section*{Canonical Command}
+\begin{verbatim}
+python run_phase10_heldout_model_completion.py --json
+\end{verbatim}
+
+\section*{Done Condition}
+Task 4 is complete when:
+\begin{itemize}
+\item the held-out dataset is materially larger than the Phase 9 sample,
+\item train, validation, and test partitions are all populated,
+\item the boosted-tree model is compared against the required baselines on held-out data,
+\item calibration, threshold, registry, model-card, and shadow-score artifacts are written, and
+\item the held-out baseline assessment is explicit rather than train-only.
+\end{itemize}
+
+\end{document}

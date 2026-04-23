@@ -1,0 +1,413 @@
+{
+  "calibration_profiles": [
+    {
+      "actionable_threshold": 0.665739,
+      "critical_threshold": 0.665739,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.499999
+      },
+      "positive_rate": 0.5,
+      "profile_key": "global",
+      "profile_scope": "global",
+      "sample_count": 32,
+      "watch_threshold": 0.665739
+    },
+    {
+      "actionable_threshold": 0.665739,
+      "critical_threshold": 0.665739,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.499999
+      },
+      "positive_rate": 0.5,
+      "profile_key": "tight",
+      "profile_scope": "liquidity_bucket",
+      "sample_count": 32,
+      "watch_threshold": 0.665739
+    },
+    {
+      "actionable_threshold": 0.665739,
+      "critical_threshold": 0.665739,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.514797
+      },
+      "positive_rate": 1.0,
+      "profile_key": "crypto",
+      "profile_scope": "category",
+      "sample_count": 8,
+      "watch_threshold": 0.665739
+    },
+    {
+      "actionable_threshold": 0.428966,
+      "critical_threshold": 0.428966,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.4852
+      },
+      "positive_rate": 0.0,
+      "profile_key": "macro",
+      "profile_scope": "category",
+      "sample_count": 8,
+      "watch_threshold": 0.439621
+    },
+    {
+      "actionable_threshold": 0.428966,
+      "critical_threshold": 0.428966,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.4852
+      },
+      "positive_rate": 0.0,
+      "profile_key": "politics",
+      "profile_scope": "category",
+      "sample_count": 8,
+      "watch_threshold": 0.439621
+    },
+    {
+      "actionable_threshold": 0.665739,
+      "critical_threshold": 0.665739,
+      "metadata": {
+        "calibration_version": "phase6_calibration_v1",
+        "mean_model_score": 0.514797
+      },
+      "positive_rate": 1.0,
+      "profile_key": "sports",
+      "profile_scope": "category",
+      "sample_count": 8,
+      "watch_threshold": 0.665739
+    }
+  ],
+  "contract_version": "phase10_task4_heldout_model_completion_v1",
+  "dataset_summary": {
+    "dataset_hash": "cf5719086a1947c17813880dd3ec76b5ccd5569231ee9251a20daff28dd75067",
+    "feature_schema_version": "phase6_features_v1",
+    "labeled_row_count": 96,
+    "row_count": 96,
+    "test_row_count": 32,
+    "train_row_count": 32,
+    "validation_row_count": 32
+  },
+  "fit_summary": {
+    "artifact_path": null,
+    "base_rate": 0.5,
+    "dataset_hash": "cf5719086a1947c17813880dd3ec76b5ccd5569231ee9251a20daff28dd75067",
+    "feature_count": 11,
+    "labeled_row_count": 96,
+    "model_version": "phase10_task4_lightgbm_v1",
+    "train_row_count": 32
+  },
+  "required_baseline_report": {
+    "assessment": {
+      "heldout_evidence_available": true,
+      "model_beats_all_required_baselines": true,
+      "status": "model_beats_required_baselines"
+    },
+    "preferred_split": "test",
+    "required_baselines": [
+      {
+        "auc_margin_vs_model": 0.085938,
+        "baseline_key": "baseline_probability_momentum",
+        "baseline_metrics": {
+          "auc": 0.5,
+          "mean_score": 0.032,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "precision_at_10_margin_vs_model": 0.1,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.085938,
+        "baseline_key": "baseline_order_imbalance",
+        "baseline_metrics": {
+          "auc": 0.5,
+          "mean_score": 0.74,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "precision_at_10_margin_vs_model": 0.1,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.085938,
+        "baseline_key": "baseline_microstructure",
+        "baseline_metrics": {
+          "auc": 0.5,
+          "mean_score": 0.4236,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "precision_at_10_margin_vs_model": 0.1,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.085938,
+        "baseline_key": "baseline_external_evidence",
+        "baseline_metrics": {
+          "auc": 0.5,
+          "mean_score": 0.25,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "precision_at_10_margin_vs_model": 0.1,
+        "status": "model_stronger"
+      },
+      {
+        "auc_margin_vs_model": 0.085938,
+        "baseline_key": "baseline_fresh_wallet",
+        "baseline_metrics": {
+          "auc": 0.5,
+          "mean_score": 1.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "precision_at_10_margin_vs_model": 0.1,
+        "status": "model_stronger"
+      }
+    ]
+  },
+  "score_report": {
+    "evaluation_version": "phase6_eval_v1",
+    "splits": {
+      "test": {
+        "baseline_external_evidence": {
+          "auc": 0.5,
+          "mean_score": 0.25,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_fresh_wallet": {
+          "auc": 0.5,
+          "mean_score": 1.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_microstructure": {
+          "auc": 0.5,
+          "mean_score": 0.4236,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_order_imbalance": {
+          "auc": 0.5,
+          "mean_score": 0.74,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_probability_momentum": {
+          "auc": 0.5,
+          "mean_score": 0.032,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_severity": {
+          "auc": 0.5625,
+          "mean_score": 0.649062,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_velocity": {
+          "auc": 0.5,
+          "mean_score": 0.032,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_wallet": {
+          "auc": 0.5,
+          "mean_score": 1.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "model": {
+          "auc": 0.585938,
+          "mean_score": 0.499999,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.6,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        }
+      },
+      "train": {
+        "baseline_external_evidence": {
+          "auc": 0.5,
+          "mean_score": 0.25,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_fresh_wallet": {
+          "auc": 0.5,
+          "mean_score": 1.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_microstructure": {
+          "auc": 0.5,
+          "mean_score": 0.4236,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_order_imbalance": {
+          "auc": 0.5,
+          "mean_score": 0.74,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_probability_momentum": {
+          "auc": 0.5,
+          "mean_score": 0.032,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_severity": {
+          "auc": 0.5625,
+          "mean_score": 0.649062,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_velocity": {
+          "auc": 0.5,
+          "mean_score": 0.032,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_wallet": {
+          "auc": 0.5,
+          "mean_score": 1.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "model": {
+          "auc": 0.585938,
+          "mean_score": 0.499999,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.6,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        }
+      },
+      "validation": {
+        "baseline_external_evidence": {
+          "auc": 0.5,
+          "mean_score": 0.25,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_fresh_wallet": {
+          "auc": 0.5,
+          "mean_score": 1.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_microstructure": {
+          "auc": 0.5,
+          "mean_score": 0.4236,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_order_imbalance": {
+          "auc": 0.5,
+          "mean_score": 0.74,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_probability_momentum": {
+          "auc": 0.5,
+          "mean_score": 0.032,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_severity": {
+          "auc": 0.5625,
+          "mean_score": 0.649062,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_velocity": {
+          "auc": 0.5,
+          "mean_score": 0.032,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "baseline_wallet": {
+          "auc": 0.5,
+          "mean_score": 1.5,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.5,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        },
+        "model": {
+          "auc": 0.585938,
+          "mean_score": 0.499999,
+          "positive_rate": 0.5,
+          "precision_at_10": 0.6,
+          "precision_at_25": 0.52,
+          "row_count": 32
+        }
+      }
+    }
+  },
+  "thresholds": {
+    "actionable": 0.665739,
+    "critical": 0.665739,
+    "watch": 0.665739
+  }
+}

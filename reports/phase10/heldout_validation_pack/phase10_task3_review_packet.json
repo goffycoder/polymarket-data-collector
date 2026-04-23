@@ -1,0 +1,3048 @@
+{
+  "artifacts": {
+    "backtest_json": "reports/phase5/backtests/phase10_task3_conservative_backtest.json",
+    "backtest_markdown": "reports/phase5/backtests/phase10_task3_conservative_backtest.md",
+    "paper_trades_json": "reports/phase5/backtests/phase10_task3_paper_trades.json",
+    "validation_json": "reports/phase5/validation/phase10_task3_heldout_validation.json",
+    "validation_markdown": "reports/phase5/validation/phase10_task3_heldout_validation.md"
+  },
+  "backtest_summary": {
+    "failure_metrics": {
+      "coverage_insufficient_rows": 0,
+      "metrics_version": "phase5_metrics_v1",
+      "near_resolution_skip_rate": 0.0,
+      "partial_coverage_rows": 0,
+      "skip_due_to_data_rate": 0.0,
+      "top_category_dependency_share": 0.25,
+      "top_event_family_dependency_share": 0.010417
+    },
+    "paper_trade_count": 96,
+    "paper_trade_fills": 96,
+    "paper_trade_metrics": {
+      "fill_rate": 1.0,
+      "hit_rate": 0.5,
+      "loss_rate": 0.5,
+      "mean_bounded_pnl": 14.593359,
+      "median_bounded_pnl": 14.076441,
+      "metrics_version": "phase5_metrics_v1",
+      "paper_trade_count": 96,
+      "skip_reason_counts": [],
+      "status": "overall",
+      "trade_eligibility_rate_proxy": 1.0,
+      "worst_decile_pnl": -44.350877
+    },
+    "paper_trade_skips": 0,
+    "replay_bundles": [
+      {
+        "artifact_version": "phase5_replay_v1",
+        "bundle_id": "4922863e8a25425e97fe351c253a8586",
+        "end": "2026-01-15T06:00:00+00:00",
+        "git_commit": "ac64177",
+        "output_path": "reports/phase5/replay_runs/phase10_task3/train_window/bundles/4922863e8a25425e97fe351c253a8586.json",
+        "overall_status": "ready",
+        "replay_runs": [
+          {
+            "artifact_version": "phase5_replay_v1",
+            "detector_manifest_mismatches": 0,
+            "detector_missing_partitions": 0,
+            "detector_rows_observed": 1,
+            "end": "2026-01-15T06:00:00+00:00",
+            "git_commit": "ac64177",
+            "integrity_status": "ready",
+            "notes": "phase10_task3 replay bundle for train_window",
+            "output_path": "reports/phase5/replay_runs/phase10_task3/train_window/62cadbad504f4513a873d67a5a2e73a4.json",
+            "raw_manifest_mismatches": 0,
+            "raw_missing_partitions": 0,
+            "raw_partitions_touched": 1,
+            "raw_rows_scanned": 1,
+            "replay_run_id": "62cadbad504f4513a873d67a5a2e73a4",
+            "source_system": "phase10_holdout_prices",
+            "start": "2026-01-15T05:00:00+00:00",
+            "status": "completed"
+          },
+          {
+            "artifact_version": "phase5_replay_v1",
+            "detector_manifest_mismatches": 0,
+            "detector_missing_partitions": 0,
+            "detector_rows_observed": 1,
+            "end": "2026-01-15T06:00:00+00:00",
+            "git_commit": "ac64177",
+            "integrity_status": "ready",
+            "notes": "phase10_task3 replay bundle for train_window",
+            "output_path": "reports/phase5/replay_runs/phase10_task3/train_window/b268ab7d86d44b0fb9b9aacb1efb978e.json",
+            "raw_manifest_mismatches": 0,
+            "raw_missing_partitions": 0,
+            "raw_partitions_touched": 1,
+            "raw_rows_scanned": 1,
+            "replay_run_id": "b268ab7d86d44b0fb9b9aacb1efb978e",
+            "source_system": "phase10_holdout_trades",
+            "start": "2026-01-15T05:00:00+00:00",
+            "status": "completed"
+          }
+        ],
+        "source_systems": [
+          "phase10_holdout_prices",
+          "phase10_holdout_trades"
+        ],
+        "start": "2026-01-15T05:00:00+00:00",
+        "total_detector_rows_observed": 2,
+        "total_raw_rows_scanned": 2
+      },
+      {
+        "artifact_version": "phase5_replay_v1",
+        "bundle_id": "b5fa294f29414bc88d00961505a9a4b8",
+        "end": "2026-02-15T06:00:00+00:00",
+        "git_commit": "ac64177",
+        "output_path": "reports/phase5/replay_runs/phase10_task3/validation_window/bundles/b5fa294f29414bc88d00961505a9a4b8.json",
+        "overall_status": "ready",
+        "replay_runs": [
+          {
+            "artifact_version": "phase5_replay_v1",
+            "detector_manifest_mismatches": 0,
+            "detector_missing_partitions": 0,
+            "detector_rows_observed": 1,
+            "end": "2026-02-15T06:00:00+00:00",
+            "git_commit": "ac64177",
+            "integrity_status": "ready",
+            "notes": "phase10_task3 replay bundle for validation_window",
+            "output_path": "reports/phase5/replay_runs/phase10_task3/validation_window/14d8867261b546e3a1c7c6c88ae7bc82.json",
+            "raw_manifest_mismatches": 0,
+            "raw_missing_partitions": 0,
+            "raw_partitions_touched": 1,
+            "raw_rows_scanned": 1,
+            "replay_run_id": "14d8867261b546e3a1c7c6c88ae7bc82",
+            "source_system": "phase10_holdout_prices",
+            "start": "2026-02-15T05:00:00+00:00",
+            "status": "completed"
+          },
+          {
+            "artifact_version": "phase5_replay_v1",
+            "detector_manifest_mismatches": 0,
+            "detector_missing_partitions": 0,
+            "detector_rows_observed": 1,
+            "end": "2026-02-15T06:00:00+00:00",
+            "git_commit": "ac64177",
+            "integrity_status": "ready",
+            "notes": "phase10_task3 replay bundle for validation_window",
+            "output_path": "reports/phase5/replay_runs/phase10_task3/validation_window/51eae570ec0849c38ba1712219dbaeed.json",
+            "raw_manifest_mismatches": 0,
+            "raw_missing_partitions": 0,
+            "raw_partitions_touched": 1,
+            "raw_rows_scanned": 1,
+            "replay_run_id": "51eae570ec0849c38ba1712219dbaeed",
+            "source_system": "phase10_holdout_trades",
+            "start": "2026-02-15T05:00:00+00:00",
+            "status": "completed"
+          }
+        ],
+        "source_systems": [
+          "phase10_holdout_prices",
+          "phase10_holdout_trades"
+        ],
+        "start": "2026-02-15T05:00:00+00:00",
+        "total_detector_rows_observed": 2,
+        "total_raw_rows_scanned": 2
+      },
+      {
+        "artifact_version": "phase5_replay_v1",
+        "bundle_id": "b338b1b891154b939f8d50429c1d33ba",
+        "end": "2026-03-15T06:00:00+00:00",
+        "git_commit": "ac64177",
+        "output_path": "reports/phase5/replay_runs/phase10_task3/test_window/bundles/b338b1b891154b939f8d50429c1d33ba.json",
+        "overall_status": "ready",
+        "replay_runs": [
+          {
+            "artifact_version": "phase5_replay_v1",
+            "detector_manifest_mismatches": 0,
+            "detector_missing_partitions": 0,
+            "detector_rows_observed": 1,
+            "end": "2026-03-15T06:00:00+00:00",
+            "git_commit": "ac64177",
+            "integrity_status": "ready",
+            "notes": "phase10_task3 replay bundle for test_window",
+            "output_path": "reports/phase5/replay_runs/phase10_task3/test_window/e043f2bb2eeb491fbd59bec3e95aac41.json",
+            "raw_manifest_mismatches": 0,
+            "raw_missing_partitions": 0,
+            "raw_partitions_touched": 1,
+            "raw_rows_scanned": 1,
+            "replay_run_id": "e043f2bb2eeb491fbd59bec3e95aac41",
+            "source_system": "phase10_holdout_prices",
+            "start": "2026-03-15T05:00:00+00:00",
+            "status": "completed"
+          },
+          {
+            "artifact_version": "phase5_replay_v1",
+            "detector_manifest_mismatches": 0,
+            "detector_missing_partitions": 0,
+            "detector_rows_observed": 1,
+            "end": "2026-03-15T06:00:00+00:00",
+            "git_commit": "ac64177",
+            "integrity_status": "ready",
+            "notes": "phase10_task3 replay bundle for test_window",
+            "output_path": "reports/phase5/replay_runs/phase10_task3/test_window/a09a3850bd1e4aca9226ecc4bd6981e8.json",
+            "raw_manifest_mismatches": 0,
+            "raw_missing_partitions": 0,
+            "raw_partitions_touched": 1,
+            "raw_rows_scanned": 1,
+            "replay_run_id": "a09a3850bd1e4aca9226ecc4bd6981e8",
+            "source_system": "phase10_holdout_trades",
+            "start": "2026-03-15T05:00:00+00:00",
+            "status": "completed"
+          }
+        ],
+        "source_systems": [
+          "phase10_holdout_prices",
+          "phase10_holdout_trades"
+        ],
+        "start": "2026-03-15T05:00:00+00:00",
+        "total_detector_rows_observed": 2,
+        "total_raw_rows_scanned": 2
+      }
+    ],
+    "replay_family_ready": true,
+    "task_contract_version": "phase10_task3_heldout_validation_pack_v1",
+    "window_family": [
+      {
+        "end": "2026-01-15T06:00:00+00:00",
+        "key": "train_window",
+        "role": "train",
+        "start": "2026-01-15T05:00:00+00:00"
+      },
+      {
+        "end": "2026-02-15T06:00:00+00:00",
+        "key": "validation_window",
+        "role": "validation",
+        "start": "2026-02-15T05:00:00+00:00"
+      },
+      {
+        "end": "2026-03-15T06:00:00+00:00",
+        "key": "test_window",
+        "role": "test",
+        "start": "2026-03-15T05:00:00+00:00"
+      }
+    ],
+    "window_family_name": "phase10_canonical_heldout_family"
+  },
+  "database_rows": {
+    "backtest_artifact_id": "c5fcb3003d284140928b858aaf65b05f",
+    "validation_run_id": "b123e51436ae47d59510c5b918b716d1"
+  },
+  "generated_at": "2026-04-23T00:58:21.351224+00:00",
+  "replay_bundles": [
+    {
+      "artifact_version": "phase5_replay_v1",
+      "bundle_id": "4922863e8a25425e97fe351c253a8586",
+      "end": "2026-01-15T06:00:00+00:00",
+      "git_commit": "ac64177",
+      "output_path": "reports/phase5/replay_runs/phase10_task3/train_window/bundles/4922863e8a25425e97fe351c253a8586.json",
+      "overall_status": "ready",
+      "replay_runs": [
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-01-15T06:00:00+00:00",
+          "git_commit": "ac64177",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for train_window",
+          "output_path": "reports/phase5/replay_runs/phase10_task3/train_window/62cadbad504f4513a873d67a5a2e73a4.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "62cadbad504f4513a873d67a5a2e73a4",
+          "source_system": "phase10_holdout_prices",
+          "start": "2026-01-15T05:00:00+00:00",
+          "status": "completed"
+        },
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-01-15T06:00:00+00:00",
+          "git_commit": "ac64177",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for train_window",
+          "output_path": "reports/phase5/replay_runs/phase10_task3/train_window/b268ab7d86d44b0fb9b9aacb1efb978e.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "b268ab7d86d44b0fb9b9aacb1efb978e",
+          "source_system": "phase10_holdout_trades",
+          "start": "2026-01-15T05:00:00+00:00",
+          "status": "completed"
+        }
+      ],
+      "source_systems": [
+        "phase10_holdout_prices",
+        "phase10_holdout_trades"
+      ],
+      "start": "2026-01-15T05:00:00+00:00",
+      "total_detector_rows_observed": 2,
+      "total_raw_rows_scanned": 2
+    },
+    {
+      "artifact_version": "phase5_replay_v1",
+      "bundle_id": "b5fa294f29414bc88d00961505a9a4b8",
+      "end": "2026-02-15T06:00:00+00:00",
+      "git_commit": "ac64177",
+      "output_path": "reports/phase5/replay_runs/phase10_task3/validation_window/bundles/b5fa294f29414bc88d00961505a9a4b8.json",
+      "overall_status": "ready",
+      "replay_runs": [
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-02-15T06:00:00+00:00",
+          "git_commit": "ac64177",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for validation_window",
+          "output_path": "reports/phase5/replay_runs/phase10_task3/validation_window/14d8867261b546e3a1c7c6c88ae7bc82.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "14d8867261b546e3a1c7c6c88ae7bc82",
+          "source_system": "phase10_holdout_prices",
+          "start": "2026-02-15T05:00:00+00:00",
+          "status": "completed"
+        },
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-02-15T06:00:00+00:00",
+          "git_commit": "ac64177",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for validation_window",
+          "output_path": "reports/phase5/replay_runs/phase10_task3/validation_window/51eae570ec0849c38ba1712219dbaeed.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "51eae570ec0849c38ba1712219dbaeed",
+          "source_system": "phase10_holdout_trades",
+          "start": "2026-02-15T05:00:00+00:00",
+          "status": "completed"
+        }
+      ],
+      "source_systems": [
+        "phase10_holdout_prices",
+        "phase10_holdout_trades"
+      ],
+      "start": "2026-02-15T05:00:00+00:00",
+      "total_detector_rows_observed": 2,
+      "total_raw_rows_scanned": 2
+    },
+    {
+      "artifact_version": "phase5_replay_v1",
+      "bundle_id": "b338b1b891154b939f8d50429c1d33ba",
+      "end": "2026-03-15T06:00:00+00:00",
+      "git_commit": "ac64177",
+      "output_path": "reports/phase5/replay_runs/phase10_task3/test_window/bundles/b338b1b891154b939f8d50429c1d33ba.json",
+      "overall_status": "ready",
+      "replay_runs": [
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-03-15T06:00:00+00:00",
+          "git_commit": "ac64177",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for test_window",
+          "output_path": "reports/phase5/replay_runs/phase10_task3/test_window/e043f2bb2eeb491fbd59bec3e95aac41.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "e043f2bb2eeb491fbd59bec3e95aac41",
+          "source_system": "phase10_holdout_prices",
+          "start": "2026-03-15T05:00:00+00:00",
+          "status": "completed"
+        },
+        {
+          "artifact_version": "phase5_replay_v1",
+          "detector_manifest_mismatches": 0,
+          "detector_missing_partitions": 0,
+          "detector_rows_observed": 1,
+          "end": "2026-03-15T06:00:00+00:00",
+          "git_commit": "ac64177",
+          "integrity_status": "ready",
+          "notes": "phase10_task3 replay bundle for test_window",
+          "output_path": "reports/phase5/replay_runs/phase10_task3/test_window/a09a3850bd1e4aca9226ecc4bd6981e8.json",
+          "raw_manifest_mismatches": 0,
+          "raw_missing_partitions": 0,
+          "raw_partitions_touched": 1,
+          "raw_rows_scanned": 1,
+          "replay_run_id": "a09a3850bd1e4aca9226ecc4bd6981e8",
+          "source_system": "phase10_holdout_trades",
+          "start": "2026-03-15T05:00:00+00:00",
+          "status": "completed"
+        }
+      ],
+      "source_systems": [
+        "phase10_holdout_prices",
+        "phase10_holdout_trades"
+      ],
+      "start": "2026-03-15T05:00:00+00:00",
+      "total_detector_rows_observed": 2,
+      "total_raw_rows_scanned": 2
+    }
+  ],
+  "seed_summary": {
+    "archive_summary": {
+      "detector_input_writes": [
+        {
+          "envelope_id": "aa69cb71393f4d65a9eb29e91c1cbbf7",
+          "partition_path": "data/detector_input/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "source_system": "phase10_holdout_prices",
+          "window_key": "train_window"
+        },
+        {
+          "envelope_id": "a02a2ad3de504510adb80aec47de4cdb",
+          "partition_path": "data/detector_input/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "source_system": "phase10_holdout_trades",
+          "window_key": "train_window"
+        },
+        {
+          "envelope_id": "d681dd7154444d9f91aae07f74138643",
+          "partition_path": "data/detector_input/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "source_system": "phase10_holdout_prices",
+          "window_key": "validation_window"
+        },
+        {
+          "envelope_id": "b06346cd7c444ed78cc4429a5524f6c1",
+          "partition_path": "data/detector_input/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "source_system": "phase10_holdout_trades",
+          "window_key": "validation_window"
+        },
+        {
+          "envelope_id": "8c60aab7e8984914b0d13d442c6af016",
+          "partition_path": "data/detector_input/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "source_system": "phase10_holdout_prices",
+          "window_key": "test_window"
+        },
+        {
+          "envelope_id": "eca0499e64a641399c858600fbca8f8d",
+          "partition_path": "data/detector_input/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "source_system": "phase10_holdout_trades",
+          "window_key": "test_window"
+        }
+      ],
+      "raw_archive_writes": [
+        {
+          "envelope_id": "c2f1ff6f697548a3a92b7dd3ac3b8b33",
+          "partition_path": "data/raw/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "source_system": "phase10_holdout_prices",
+          "window_key": "train_window"
+        },
+        {
+          "envelope_id": "f3398f21d9484662ac47176bb23c4aea",
+          "partition_path": "data/raw/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "source_system": "phase10_holdout_trades",
+          "window_key": "train_window"
+        },
+        {
+          "envelope_id": "866ed2c64df144d5806277014620eb79",
+          "partition_path": "data/raw/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "source_system": "phase10_holdout_prices",
+          "window_key": "validation_window"
+        },
+        {
+          "envelope_id": "4312320c77144a3d8a3c00ab9c904d49",
+          "partition_path": "data/raw/year=2026/month=02/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "source_system": "phase10_holdout_trades",
+          "window_key": "validation_window"
+        },
+        {
+          "envelope_id": "5999b3cd73ec464cbeabcc7308481592",
+          "partition_path": "data/raw/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
+          "source_system": "phase10_holdout_prices",
+          "window_key": "test_window"
+        },
+        {
+          "envelope_id": "d8087e6da5dc464d951cd9a744670000",
+          "partition_path": "data/raw/year=2026/month=03/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
+          "source_system": "phase10_holdout_trades",
+          "window_key": "test_window"
+        }
+      ]
+    },
+    "artifact_expectation": {
+      "rows_per_window": 32,
+      "time_splits": [
+        "train_window",
+        "validation_window",
+        "test_window"
+      ],
+      "total_rows": 96
+    },
+    "candidate_count": 96,
+    "cleanup_summary": {
+      "cleared_sources": [
+        "phase10_holdout_prices",
+        "phase10_holdout_trades"
+      ],
+      "deleted_event_count": 96,
+      "deleted_market_count": 96
+    },
+    "market_state_summary": {
+      "market_resolutions_written": 96,
+      "snapshots_written": 288
+    },
+    "materialization_summary": {
+      "alert_rows": [
+        {
+          "alert_id": "60ecb5c0a4c8447b9d69548e4c135529",
+          "alert_time": "2026-01-15T05:02:45+00:00",
+          "candidate_id": "f9db3ec1f0bc4209a9a7414b40a361c8",
+          "market_id": "phase10_holdout_market_train_001",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "2297b750862c48eeb58b25b9aa830bd4",
+          "alert_time": "2026-01-15T05:04:15+00:00",
+          "candidate_id": "fa27d63fd73b446a9d8b6eaa9852047b",
+          "market_id": "phase10_holdout_market_train_002",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "7ae2ec3d0a284822a7a2b7b522a13957",
+          "alert_time": "2026-01-15T05:05:45+00:00",
+          "candidate_id": "dd6067f2ab944893b1d6818c196c8882",
+          "market_id": "phase10_holdout_market_train_003",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "02612e4ee5184c8ea6ae5d670de907da",
+          "alert_time": "2026-01-15T05:07:15+00:00",
+          "candidate_id": "1e1a0ec64d79446bb5c64acaf5242f14",
+          "market_id": "phase10_holdout_market_train_004",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "a17c962bf60943838313fbaf035859b5",
+          "alert_time": "2026-01-15T05:08:45+00:00",
+          "candidate_id": "54412f43f85a44fd978f2bb5ba36e42e",
+          "market_id": "phase10_holdout_market_train_005",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "282473615bd44d15ad756b16225d8a08",
+          "alert_time": "2026-01-15T05:10:15+00:00",
+          "candidate_id": "329e908188ba4f6ba7cdaca8b9ca7d77",
+          "market_id": "phase10_holdout_market_train_006",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "5a2b226a28714c4bae2783e5e09acc12",
+          "alert_time": "2026-01-15T05:11:45+00:00",
+          "candidate_id": "1b5639f5f91c40a2ae0fc4ea7d068290",
+          "market_id": "phase10_holdout_market_train_007",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "93b50e965c3744c3b58c1aea0f53b42c",
+          "alert_time": "2026-01-15T05:13:15+00:00",
+          "candidate_id": "4562f94cdd75430aa014c0b4cdf1ebc1",
+          "market_id": "phase10_holdout_market_train_008",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "7cfd4a4d94fb4b9691db0fa906c47b5f",
+          "alert_time": "2026-01-15T05:14:45+00:00",
+          "candidate_id": "10e7da9c361d4b068d0597ac19fb5d10",
+          "market_id": "phase10_holdout_market_train_009",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "19350fedd261410e9592ebc0c93e5ca0",
+          "alert_time": "2026-01-15T05:16:15+00:00",
+          "candidate_id": "bf6ae1abee784da19834b6e9a0aaa2a1",
+          "market_id": "phase10_holdout_market_train_010",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "1c1a1ebee11d4d3cbab3bc0c5c623b0f",
+          "alert_time": "2026-01-15T05:17:45+00:00",
+          "candidate_id": "79f2da5e62c840cd8f15345ca74572fc",
+          "market_id": "phase10_holdout_market_train_011",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "75c022ae4a184ad48a31a15808528107",
+          "alert_time": "2026-01-15T05:19:15+00:00",
+          "candidate_id": "53ec3d78698d416cb28f142e2fa1729d",
+          "market_id": "phase10_holdout_market_train_012",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "0784ffe9c90f4efea0ae71dcec6cd400",
+          "alert_time": "2026-01-15T05:20:45+00:00",
+          "candidate_id": "93d9a28d2fbb47eaae8d4ad19e3d05b8",
+          "market_id": "phase10_holdout_market_train_013",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "2de67d29e82949e99beada855b26898d",
+          "alert_time": "2026-01-15T05:22:15+00:00",
+          "candidate_id": "fee01771d5c445deb769577a3f66b706",
+          "market_id": "phase10_holdout_market_train_014",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "3335a2bb196b4451875e28b8b656bb5b",
+          "alert_time": "2026-01-15T05:23:45+00:00",
+          "candidate_id": "f604debe06ec4af5adf28fc3813cc5ad",
+          "market_id": "phase10_holdout_market_train_015",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "217698e0a34f4674a8e24b20265373cf",
+          "alert_time": "2026-01-15T05:25:15+00:00",
+          "candidate_id": "dee5b4b0e79e48f09c98e40baad69611",
+          "market_id": "phase10_holdout_market_train_016",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "e8ed43f7a51f42dc8884d1d8e4fe95cb",
+          "alert_time": "2026-01-15T05:26:45+00:00",
+          "candidate_id": "c860d51a1b764f7dbe776cf4fd0ff6d9",
+          "market_id": "phase10_holdout_market_train_017",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "e19dec9f3e264273b0463cdf41884122",
+          "alert_time": "2026-01-15T05:28:15+00:00",
+          "candidate_id": "5402bdb8041b47d4a34729042955c458",
+          "market_id": "phase10_holdout_market_train_018",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "a3873d5e7ce14f9199e24002535a3740",
+          "alert_time": "2026-01-15T05:29:45+00:00",
+          "candidate_id": "8eec7965ea864aff99a0a957cf722843",
+          "market_id": "phase10_holdout_market_train_019",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "e006c174c59449c38b22ece050e02b25",
+          "alert_time": "2026-01-15T05:31:15+00:00",
+          "candidate_id": "12f46d76bb8a47bab32fcce8ad13eef6",
+          "market_id": "phase10_holdout_market_train_020",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "ed3970acdb9b4ba0a6c6efad48809d05",
+          "alert_time": "2026-01-15T05:32:45+00:00",
+          "candidate_id": "f0f4544f0a2447eb95bb32b8a0aa7303",
+          "market_id": "phase10_holdout_market_train_021",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "c6cd1b9540a844b5ab0e8ad8bc45746f",
+          "alert_time": "2026-01-15T05:34:15+00:00",
+          "candidate_id": "23dfa18aab954805bb5f016e7c47b21e",
+          "market_id": "phase10_holdout_market_train_022",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "e0cb96e329d9462f9e5540ae0ce04e6b",
+          "alert_time": "2026-01-15T05:35:45+00:00",
+          "candidate_id": "50f61e972ddc4158bea7dd8ada785517",
+          "market_id": "phase10_holdout_market_train_023",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "540d1ab3febf41beb6fdbf15ad54f442",
+          "alert_time": "2026-01-15T05:37:15+00:00",
+          "candidate_id": "b034918f07804640a5a89f3080e6d15b",
+          "market_id": "phase10_holdout_market_train_024",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "4e6aee3d7c704ad8a3522f03d57e304b",
+          "alert_time": "2026-01-15T05:38:45+00:00",
+          "candidate_id": "80f7382873284a38aeae142754a43aef",
+          "market_id": "phase10_holdout_market_train_025",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "d8d109a6a83a4070ac15f4240ba86de0",
+          "alert_time": "2026-01-15T05:40:15+00:00",
+          "candidate_id": "8f4daafdeb6449988ecc850132e36877",
+          "market_id": "phase10_holdout_market_train_026",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "bf040d47f6b64ac5af9fb58f92ff5d4d",
+          "alert_time": "2026-01-15T05:41:45+00:00",
+          "candidate_id": "8056f74433f84f15ba663af27e691f87",
+          "market_id": "phase10_holdout_market_train_027",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "7a34d49c18d84255bd5af060178b5466",
+          "alert_time": "2026-01-15T05:43:15+00:00",
+          "candidate_id": "00d941a0eca14b6e9acd425f137aec29",
+          "market_id": "phase10_holdout_market_train_028",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "cd6843c7cf14407792e6ac1cb1822311",
+          "alert_time": "2026-01-15T05:44:45+00:00",
+          "candidate_id": "68cb93999f234505a775a8e0762080e5",
+          "market_id": "phase10_holdout_market_train_029",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "ec37627f10bb43ca8b02e112177474a4",
+          "alert_time": "2026-01-15T05:46:15+00:00",
+          "candidate_id": "eb45603634a24879b486cbba772ab3e5",
+          "market_id": "phase10_holdout_market_train_030",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "3c4ea8b9eae14d2b951664f433bd02fa",
+          "alert_time": "2026-01-15T05:47:45+00:00",
+          "candidate_id": "9811d5b944574acba35de610a9a6a6cb",
+          "market_id": "phase10_holdout_market_train_031",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "d6214d2f3e5141d788412ccffa983b8f",
+          "alert_time": "2026-01-15T05:49:15+00:00",
+          "candidate_id": "f4a11dfc4d264a72a8ed467576f03a04",
+          "market_id": "phase10_holdout_market_train_032",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "alert_id": "fd1ff1df0d744390826a9d14095700bc",
+          "alert_time": "2026-02-15T05:02:45+00:00",
+          "candidate_id": "204f00ef7a0a428f9c61a54e54348f0e",
+          "market_id": "phase10_holdout_market_validation_033",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "1178c22239374837a5ef842af43812b6",
+          "alert_time": "2026-02-15T05:04:15+00:00",
+          "candidate_id": "0d3d018c822a4f0286cc0317f513f652",
+          "market_id": "phase10_holdout_market_validation_034",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "d6e305b15b064720b326d5ce7c62cf86",
+          "alert_time": "2026-02-15T05:05:45+00:00",
+          "candidate_id": "8f01bf7476c64015b86cd72e3607f92b",
+          "market_id": "phase10_holdout_market_validation_035",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "96f164fe54fe46b38d56d1a68e00dd36",
+          "alert_time": "2026-02-15T05:07:15+00:00",
+          "candidate_id": "2bd0ded1bb7749e7a4642c0624862f7a",
+          "market_id": "phase10_holdout_market_validation_036",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "252f93235d774ba0ba3a99e2ccd422eb",
+          "alert_time": "2026-02-15T05:08:45+00:00",
+          "candidate_id": "77ca1b032b594fca9df36d3d6452001b",
+          "market_id": "phase10_holdout_market_validation_037",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "86a3edb34b0148bda5a3611c0cd1c54d",
+          "alert_time": "2026-02-15T05:10:15+00:00",
+          "candidate_id": "0f6319e336244dc9a8a2d1ae11d50ba8",
+          "market_id": "phase10_holdout_market_validation_038",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "573bfe6106354352b3d194134e480a04",
+          "alert_time": "2026-02-15T05:11:45+00:00",
+          "candidate_id": "2435ead4695d49ba93e172e0913c548a",
+          "market_id": "phase10_holdout_market_validation_039",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "3b614afa552f45baa7367262d5e2a6ac",
+          "alert_time": "2026-02-15T05:13:15+00:00",
+          "candidate_id": "6b4b31d70558419fbd4de381e2162f07",
+          "market_id": "phase10_holdout_market_validation_040",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "051315ff6cc742d0854ba9af0bc46dd2",
+          "alert_time": "2026-02-15T05:14:45+00:00",
+          "candidate_id": "28b202ce4c3f487387727a41cc71a1bd",
+          "market_id": "phase10_holdout_market_validation_041",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "272fa87225ae45f6bd53c20aea50fe00",
+          "alert_time": "2026-02-15T05:16:15+00:00",
+          "candidate_id": "6f3dadf26c7a4416921b31e026577d86",
+          "market_id": "phase10_holdout_market_validation_042",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "d9e141639b7d438cafe46e575d0f9a87",
+          "alert_time": "2026-02-15T05:17:45+00:00",
+          "candidate_id": "38ebe2011baf4bbaa4e4036b9872bdff",
+          "market_id": "phase10_holdout_market_validation_043",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "4e84244c23524927a95f810e76f092e2",
+          "alert_time": "2026-02-15T05:19:15+00:00",
+          "candidate_id": "fea974cb764145d2bdcd9c1d4c09191e",
+          "market_id": "phase10_holdout_market_validation_044",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "cdba5700830f4cc2991893768a0df301",
+          "alert_time": "2026-02-15T05:20:45+00:00",
+          "candidate_id": "62f299f7e81d451ba66ebd495844470b",
+          "market_id": "phase10_holdout_market_validation_045",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "fc373fec05d646d08ccd323aa5878e89",
+          "alert_time": "2026-02-15T05:22:15+00:00",
+          "candidate_id": "2c9fa2ee898b43f9839194f4e0e726fd",
+          "market_id": "phase10_holdout_market_validation_046",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "365852f2507f42a2b9789699220fe876",
+          "alert_time": "2026-02-15T05:23:45+00:00",
+          "candidate_id": "4fc63cd12ac14870b1d7bf5f5f49f4c2",
+          "market_id": "phase10_holdout_market_validation_047",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "6b0a1f30b6a1456e90a6b474b5d28db6",
+          "alert_time": "2026-02-15T05:25:15+00:00",
+          "candidate_id": "189de53cdac049eabd692d8521a702c5",
+          "market_id": "phase10_holdout_market_validation_048",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "b24caef652844e878e763d9cbccec212",
+          "alert_time": "2026-02-15T05:26:45+00:00",
+          "candidate_id": "a30c85fa28d0461b9dbcf3d826b20874",
+          "market_id": "phase10_holdout_market_validation_049",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "4853fdc71d03430ab60fa59ffec95964",
+          "alert_time": "2026-02-15T05:28:15+00:00",
+          "candidate_id": "36d7e58e774c4c028a76070a43a7aeb8",
+          "market_id": "phase10_holdout_market_validation_050",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "3ac8f2f9c4cc45e093a0e44a1d5969c8",
+          "alert_time": "2026-02-15T05:29:45+00:00",
+          "candidate_id": "291259352c6b457db4cc91a9d14e8dbc",
+          "market_id": "phase10_holdout_market_validation_051",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "57283b150a7444f489330b0384fdf1e4",
+          "alert_time": "2026-02-15T05:31:15+00:00",
+          "candidate_id": "a3a5e27b7d764f83ad881b4210e7c1d1",
+          "market_id": "phase10_holdout_market_validation_052",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "c33cc54e553348e0b93f88e7aa930f17",
+          "alert_time": "2026-02-15T05:32:45+00:00",
+          "candidate_id": "78a27e03bf61461889b2e0839fc4db46",
+          "market_id": "phase10_holdout_market_validation_053",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "8541b5b0b68f48598a712fbf213991e0",
+          "alert_time": "2026-02-15T05:34:15+00:00",
+          "candidate_id": "3023c4f3467c4844ab066f0f3df33f86",
+          "market_id": "phase10_holdout_market_validation_054",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "999bdd47591c44a3a36ee8ac24f8e407",
+          "alert_time": "2026-02-15T05:35:45+00:00",
+          "candidate_id": "fa7b9331e4464be0ac1fc25679ba7140",
+          "market_id": "phase10_holdout_market_validation_055",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "bb115028247f470792f63b1ee70bcad1",
+          "alert_time": "2026-02-15T05:37:15+00:00",
+          "candidate_id": "e6a89b856e414a67acaccccabe6bf376",
+          "market_id": "phase10_holdout_market_validation_056",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "89375fc4be3341669cc155ed8a303d61",
+          "alert_time": "2026-02-15T05:38:45+00:00",
+          "candidate_id": "2f73032d342c49aba139a3795a93821c",
+          "market_id": "phase10_holdout_market_validation_057",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "b30791b42f494aabb29e02d52e1ab4d3",
+          "alert_time": "2026-02-15T05:40:15+00:00",
+          "candidate_id": "18de510add5742d196260dea6a18245d",
+          "market_id": "phase10_holdout_market_validation_058",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "a9c47a35b17049cd967989d174c612c9",
+          "alert_time": "2026-02-15T05:41:45+00:00",
+          "candidate_id": "4c72f05472ca4f3f99d70a353a3446f1",
+          "market_id": "phase10_holdout_market_validation_059",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "4dfffd09e2e442f081edff50107f0996",
+          "alert_time": "2026-02-15T05:43:15+00:00",
+          "candidate_id": "40cc3f1057f94604b9de8a233a4aa0b5",
+          "market_id": "phase10_holdout_market_validation_060",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "baa5fca625734bf8a98b7a2c1f7388d9",
+          "alert_time": "2026-02-15T05:44:45+00:00",
+          "candidate_id": "f346f2e2b1484adf8e1ffc16a350791d",
+          "market_id": "phase10_holdout_market_validation_061",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "5d10bcf1e8f94ac6936e7f92684ada7c",
+          "alert_time": "2026-02-15T05:46:15+00:00",
+          "candidate_id": "da294dfaee934c809f173bd3af2f6d91",
+          "market_id": "phase10_holdout_market_validation_062",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "628fb5fed14c450c961466fe5c1203d4",
+          "alert_time": "2026-02-15T05:47:45+00:00",
+          "candidate_id": "6a7a3fe0480946b48f559c3ef4acda81",
+          "market_id": "phase10_holdout_market_validation_063",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "9939849ec73a404fa6fff7b5ec69b80c",
+          "alert_time": "2026-02-15T05:49:15+00:00",
+          "candidate_id": "44018afa63104502b9dee2d2e7221b1f",
+          "market_id": "phase10_holdout_market_validation_064",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "alert_id": "b8940cf751c8447081db87fde1bbc9c7",
+          "alert_time": "2026-03-15T05:02:45+00:00",
+          "candidate_id": "58600cdd65944d9fa696a61454e67c32",
+          "market_id": "phase10_holdout_market_test_065",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "820b10100f2e489d9ddc5173d403d41a",
+          "alert_time": "2026-03-15T05:04:15+00:00",
+          "candidate_id": "d6aed99c824945e6945c8d2327dfb072",
+          "market_id": "phase10_holdout_market_test_066",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "e00600512d44457ca537e032e6e2a75d",
+          "alert_time": "2026-03-15T05:05:45+00:00",
+          "candidate_id": "de153a50c5504247a070c049b71ee3e0",
+          "market_id": "phase10_holdout_market_test_067",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "97f1e5475a1941c0ab974025a770a144",
+          "alert_time": "2026-03-15T05:07:15+00:00",
+          "candidate_id": "b91fae981130426fa6907d9e8b9ff475",
+          "market_id": "phase10_holdout_market_test_068",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "6a99520815ec46b7b95fafe3ba327ffa",
+          "alert_time": "2026-03-15T05:08:45+00:00",
+          "candidate_id": "054c6110293347069c7ed6f38fd169d9",
+          "market_id": "phase10_holdout_market_test_069",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "7b89217541fe48678a96e4f3668b544c",
+          "alert_time": "2026-03-15T05:10:15+00:00",
+          "candidate_id": "5e729661b3214a73a468734f87ba15ba",
+          "market_id": "phase10_holdout_market_test_070",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "cc0fcedeb1e14fd2b97ddc79d7a88534",
+          "alert_time": "2026-03-15T05:11:45+00:00",
+          "candidate_id": "afd54ba662d64b8e89c2355a63140791",
+          "market_id": "phase10_holdout_market_test_071",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "bf21e127f75a420bb5997a4fc6868f65",
+          "alert_time": "2026-03-15T05:13:15+00:00",
+          "candidate_id": "0ba48fdbf78d4802920baf1996be81fc",
+          "market_id": "phase10_holdout_market_test_072",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "a2033913ef3045ddacdc2e044567bb94",
+          "alert_time": "2026-03-15T05:14:45+00:00",
+          "candidate_id": "7ddb1540d3bf4d88b0020afb16c8026e",
+          "market_id": "phase10_holdout_market_test_073",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "cae334f3bf5146aa92495623065cc42a",
+          "alert_time": "2026-03-15T05:16:15+00:00",
+          "candidate_id": "a9a8bcd7c63d44ad9d438dec4784ce06",
+          "market_id": "phase10_holdout_market_test_074",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "f2d014ebeeb449eaa8bbfc5b6f979d96",
+          "alert_time": "2026-03-15T05:17:45+00:00",
+          "candidate_id": "ef6e964743ca43cf8702be90dd5281ba",
+          "market_id": "phase10_holdout_market_test_075",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "02e3e4adc2c24323b578e57abf4f6230",
+          "alert_time": "2026-03-15T05:19:15+00:00",
+          "candidate_id": "39b6da61610d44329bed87f0ba45c764",
+          "market_id": "phase10_holdout_market_test_076",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "ca3a2ed225b445f29773ed95ff48a867",
+          "alert_time": "2026-03-15T05:20:45+00:00",
+          "candidate_id": "418b7a18a6a14d1a9a746c10c435b5c1",
+          "market_id": "phase10_holdout_market_test_077",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "eeced324b95f464fa8520703f0b874eb",
+          "alert_time": "2026-03-15T05:22:15+00:00",
+          "candidate_id": "188d810bbff8430bb85a422d6d9a95cc",
+          "market_id": "phase10_holdout_market_test_078",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "3f2b2c7772ca42e397d0834fd3147a46",
+          "alert_time": "2026-03-15T05:23:45+00:00",
+          "candidate_id": "f5ba243b67744a199590bd1498b93dea",
+          "market_id": "phase10_holdout_market_test_079",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "d5f090a05acc4406af73b76681300ca5",
+          "alert_time": "2026-03-15T05:25:15+00:00",
+          "candidate_id": "b2f7e45a84ba4da0a8fc567459f24292",
+          "market_id": "phase10_holdout_market_test_080",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "29a175b8ff8d48dea7e317abd30df56f",
+          "alert_time": "2026-03-15T05:26:45+00:00",
+          "candidate_id": "efd0c66be37141a681932705a5ef7122",
+          "market_id": "phase10_holdout_market_test_081",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "dcc1ac48e9e34ba1b06aea747029d7c6",
+          "alert_time": "2026-03-15T05:28:15+00:00",
+          "candidate_id": "5939738c696146b093efb4a8d09784d7",
+          "market_id": "phase10_holdout_market_test_082",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "385816708c554983b21ecf1931eff6b1",
+          "alert_time": "2026-03-15T05:29:45+00:00",
+          "candidate_id": "985baf5f659d4896a6da206ffc565395",
+          "market_id": "phase10_holdout_market_test_083",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "5968a2073fea420fb8f2a12a577eebcf",
+          "alert_time": "2026-03-15T05:31:15+00:00",
+          "candidate_id": "8bf1ea7e66ed4ff2bb43c24a902b6e31",
+          "market_id": "phase10_holdout_market_test_084",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "e56bc0cac10d46b18cf778fc975b7cf6",
+          "alert_time": "2026-03-15T05:32:45+00:00",
+          "candidate_id": "9c0dc4d52648484490e4a45331dfdbe7",
+          "market_id": "phase10_holdout_market_test_085",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "4dc7b6ca335a4982884930949ab954f9",
+          "alert_time": "2026-03-15T05:34:15+00:00",
+          "candidate_id": "f0cc69367be04595b93ce60c0c38dd74",
+          "market_id": "phase10_holdout_market_test_086",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "610f017d970241afa33a4b893750e060",
+          "alert_time": "2026-03-15T05:35:45+00:00",
+          "candidate_id": "357bb54d24cc4e9ea1002522bc7520af",
+          "market_id": "phase10_holdout_market_test_087",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "78c5efe0385947ef8a7517b0883f784f",
+          "alert_time": "2026-03-15T05:37:15+00:00",
+          "candidate_id": "62993bec69954316b9ac10defee5e7f1",
+          "market_id": "phase10_holdout_market_test_088",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "68055e26c9d24683be32f61bc34402a7",
+          "alert_time": "2026-03-15T05:38:45+00:00",
+          "candidate_id": "a9e5621f74194bcbaca84a002c5a5109",
+          "market_id": "phase10_holdout_market_test_089",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "cb0e21641dbd4e0bb75c99cf4dd53f79",
+          "alert_time": "2026-03-15T05:40:15+00:00",
+          "candidate_id": "4bf5527345e24554b8256587133dfb36",
+          "market_id": "phase10_holdout_market_test_090",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "baaf18ae05dd45c78f8941333e19316f",
+          "alert_time": "2026-03-15T05:41:45+00:00",
+          "candidate_id": "1a57fa36410b4269b0ff3a43d5ad83ba",
+          "market_id": "phase10_holdout_market_test_091",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "696819bf785a42b6afa4e181fc3c5daf",
+          "alert_time": "2026-03-15T05:43:15+00:00",
+          "candidate_id": "c9081b1d21c24c36ab16c57c95b52054",
+          "market_id": "phase10_holdout_market_test_092",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "85b75f822c1b448d993c8903db30f93d",
+          "alert_time": "2026-03-15T05:44:45+00:00",
+          "candidate_id": "9c07b22bdac14ebbae15a7b61f3fbd61",
+          "market_id": "phase10_holdout_market_test_093",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "d001207020694a398f6d92e912697b6b",
+          "alert_time": "2026-03-15T05:46:15+00:00",
+          "candidate_id": "7c2d2e332e8e4ed8a7acb21ddace8a98",
+          "market_id": "phase10_holdout_market_test_094",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "fac478b98717483e84b0cb1cda3fa4b5",
+          "alert_time": "2026-03-15T05:47:45+00:00",
+          "candidate_id": "6b921cf839ae465689ede440a2ac531b",
+          "market_id": "phase10_holdout_market_test_095",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "alert_id": "363462879f9f47e8aac96961c2b92df3",
+          "alert_time": "2026-03-15T05:49:15+00:00",
+          "candidate_id": "c013c85aa5fd4d3fb1ad174e093fde71",
+          "market_id": "phase10_holdout_market_test_096",
+          "window_key": "test_window",
+          "window_role": "test"
+        }
+      ],
+      "candidate_rows": [
+        {
+          "candidate_id": "f9db3ec1f0bc4209a9a7414b40a361c8",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_001",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_001",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "fa27d63fd73b446a9d8b6eaa9852047b",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_002",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_002",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "dd6067f2ab944893b1d6818c196c8882",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_003",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_003",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "1e1a0ec64d79446bb5c64acaf5242f14",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_004",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_004",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "54412f43f85a44fd978f2bb5ba36e42e",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_005",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_005",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "329e908188ba4f6ba7cdaca8b9ca7d77",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_006",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_006",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "1b5639f5f91c40a2ae0fc4ea7d068290",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_007",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_007",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "4562f94cdd75430aa014c0b4cdf1ebc1",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_008",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_008",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "10e7da9c361d4b068d0597ac19fb5d10",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_009",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_009",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "bf6ae1abee784da19834b6e9a0aaa2a1",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_010",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_010",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "79f2da5e62c840cd8f15345ca74572fc",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_011",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_011",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "53ec3d78698d416cb28f142e2fa1729d",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_012",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_012",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "93d9a28d2fbb47eaae8d4ad19e3d05b8",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_013",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_013",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "fee01771d5c445deb769577a3f66b706",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_014",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_014",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "f604debe06ec4af5adf28fc3813cc5ad",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_015",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_015",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "dee5b4b0e79e48f09c98e40baad69611",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_016",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_016",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "c860d51a1b764f7dbe776cf4fd0ff6d9",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_017",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_017",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "5402bdb8041b47d4a34729042955c458",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_018",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_018",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "8eec7965ea864aff99a0a957cf722843",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_019",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_019",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "12f46d76bb8a47bab32fcce8ad13eef6",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_020",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_020",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "f0f4544f0a2447eb95bb32b8a0aa7303",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_021",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_021",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "23dfa18aab954805bb5f016e7c47b21e",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_022",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_022",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "50f61e972ddc4158bea7dd8ada785517",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_023",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_023",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "b034918f07804640a5a89f3080e6d15b",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_024",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_024",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "80f7382873284a38aeae142754a43aef",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_025",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_025",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "8f4daafdeb6449988ecc850132e36877",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_026",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_026",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "8056f74433f84f15ba663af27e691f87",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_027",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_027",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "00d941a0eca14b6e9acd425f137aec29",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_028",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_028",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "68cb93999f234505a775a8e0762080e5",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_029",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_029",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "eb45603634a24879b486cbba772ab3e5",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_030",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_030",
+          "resolution_outcome": "YES",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "9811d5b944574acba35de610a9a6a6cb",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_train_031",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_train_031",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "f4a11dfc4d264a72a8ed467576f03a04",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_train_032",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_train_032",
+          "resolution_outcome": "NO",
+          "window_key": "train_window",
+          "window_role": "train"
+        },
+        {
+          "candidate_id": "204f00ef7a0a428f9c61a54e54348f0e",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_033",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_033",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "0d3d018c822a4f0286cc0317f513f652",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_034",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_034",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "8f01bf7476c64015b86cd72e3607f92b",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_035",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_035",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "2bd0ded1bb7749e7a4642c0624862f7a",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_036",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_036",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "77ca1b032b594fca9df36d3d6452001b",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_037",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_037",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "0f6319e336244dc9a8a2d1ae11d50ba8",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_038",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_038",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "2435ead4695d49ba93e172e0913c548a",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_039",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_039",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "6b4b31d70558419fbd4de381e2162f07",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_040",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_040",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "28b202ce4c3f487387727a41cc71a1bd",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_041",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_041",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "6f3dadf26c7a4416921b31e026577d86",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_042",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_042",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "38ebe2011baf4bbaa4e4036b9872bdff",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_043",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_043",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "fea974cb764145d2bdcd9c1d4c09191e",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_044",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_044",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "62f299f7e81d451ba66ebd495844470b",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_045",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_045",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "2c9fa2ee898b43f9839194f4e0e726fd",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_046",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_046",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "4fc63cd12ac14870b1d7bf5f5f49f4c2",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_047",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_047",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "189de53cdac049eabd692d8521a702c5",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_048",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_048",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "a30c85fa28d0461b9dbcf3d826b20874",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_049",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_049",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "36d7e58e774c4c028a76070a43a7aeb8",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_050",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_050",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "291259352c6b457db4cc91a9d14e8dbc",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_051",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_051",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "a3a5e27b7d764f83ad881b4210e7c1d1",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_052",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_052",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "78a27e03bf61461889b2e0839fc4db46",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_053",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_053",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "3023c4f3467c4844ab066f0f3df33f86",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_054",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_054",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "fa7b9331e4464be0ac1fc25679ba7140",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_055",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_055",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "e6a89b856e414a67acaccccabe6bf376",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_056",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_056",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "2f73032d342c49aba139a3795a93821c",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_057",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_057",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "18de510add5742d196260dea6a18245d",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_058",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_058",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "4c72f05472ca4f3f99d70a353a3446f1",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_059",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_059",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "40cc3f1057f94604b9de8a233a4aa0b5",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_060",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_060",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "f346f2e2b1484adf8e1ffc16a350791d",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_061",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_061",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "da294dfaee934c809f173bd3af2f6d91",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_062",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_062",
+          "resolution_outcome": "YES",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "6a7a3fe0480946b48f559c3ef4acda81",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_validation_063",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_validation_063",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "44018afa63104502b9dee2d2e7221b1f",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_validation_064",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_validation_064",
+          "resolution_outcome": "NO",
+          "window_key": "validation_window",
+          "window_role": "validation"
+        },
+        {
+          "candidate_id": "58600cdd65944d9fa696a61454e67c32",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_065",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_065",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "d6aed99c824945e6945c8d2327dfb072",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_066",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_066",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "de153a50c5504247a070c049b71ee3e0",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_067",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_067",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "b91fae981130426fa6907d9e8b9ff475",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_068",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_068",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "054c6110293347069c7ed6f38fd169d9",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_069",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_069",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "5e729661b3214a73a468734f87ba15ba",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_070",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_070",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "afd54ba662d64b8e89c2355a63140791",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_071",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_071",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "0ba48fdbf78d4802920baf1996be81fc",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_072",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_072",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "7ddb1540d3bf4d88b0020afb16c8026e",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_073",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_073",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "a9a8bcd7c63d44ad9d438dec4784ce06",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_074",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_074",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "ef6e964743ca43cf8702be90dd5281ba",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_075",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_075",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "39b6da61610d44329bed87f0ba45c764",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_076",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_076",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "418b7a18a6a14d1a9a746c10c435b5c1",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_077",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_077",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "188d810bbff8430bb85a422d6d9a95cc",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_078",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_078",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "f5ba243b67744a199590bd1498b93dea",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_079",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_079",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "b2f7e45a84ba4da0a8fc567459f24292",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_080",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_080",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "efd0c66be37141a681932705a5ef7122",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_081",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_081",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "5939738c696146b093efb4a8d09784d7",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_082",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_082",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "985baf5f659d4896a6da206ffc565395",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_083",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_083",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "8bf1ea7e66ed4ff2bb43c24a902b6e31",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_084",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_084",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "9c0dc4d52648484490e4a45331dfdbe7",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_085",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_085",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "f0cc69367be04595b93ce60c0c38dd74",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_086",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_086",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "357bb54d24cc4e9ea1002522bc7520af",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_087",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_087",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "62993bec69954316b9ac10defee5e7f1",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_088",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_088",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "a9e5621f74194bcbaca84a002c5a5109",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_089",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_089",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "4bf5527345e24554b8256587133dfb36",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_090",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_090",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "1a57fa36410b4269b0ff3a43d5ad83ba",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_091",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_091",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "c9081b1d21c24c36ab16c57c95b52054",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_092",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_092",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "9c07b22bdac14ebbae15a7b61f3fbd61",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_093",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_093",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "7c2d2e332e8e4ed8a7acb21ddace8a98",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_094",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_094",
+          "resolution_outcome": "YES",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "6b921cf839ae465689ede440a2ac531b",
+          "direction": "YES",
+          "event_id": "phase10_holdout_event_test_095",
+          "label_success": false,
+          "market_id": "phase10_holdout_market_test_095",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        },
+        {
+          "candidate_id": "c013c85aa5fd4d3fb1ad174e093fde71",
+          "direction": "NO",
+          "event_id": "phase10_holdout_event_test_096",
+          "label_success": true,
+          "market_id": "phase10_holdout_market_test_096",
+          "resolution_outcome": "NO",
+          "window_key": "test_window",
+          "window_role": "test"
+        }
+      ],
+      "evidence_rows": [
+        {
+          "candidate_id": "f9db3ec1f0bc4209a9a7414b40a361c8",
+          "evidence_snapshot_id": "8190d0b030af4ac0ac9dd45364506fe6",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "fa27d63fd73b446a9d8b6eaa9852047b",
+          "evidence_snapshot_id": "99260712cc6c4fa4adc325c590bb124e",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "dd6067f2ab944893b1d6818c196c8882",
+          "evidence_snapshot_id": "fa9c42d7ee1947c5b4b3ae6df1248772",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "1e1a0ec64d79446bb5c64acaf5242f14",
+          "evidence_snapshot_id": "08cbcdbb9ca346718288e69ebd137a56",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "54412f43f85a44fd978f2bb5ba36e42e",
+          "evidence_snapshot_id": "48bb4c721dae424c947bd467e03a09b6",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "329e908188ba4f6ba7cdaca8b9ca7d77",
+          "evidence_snapshot_id": "3a5514e1ab1240f99b93a517438f270f",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "1b5639f5f91c40a2ae0fc4ea7d068290",
+          "evidence_snapshot_id": "1f948b5af74e4d86bd1b6d397913e2c3",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "4562f94cdd75430aa014c0b4cdf1ebc1",
+          "evidence_snapshot_id": "0c36cd3c11a945e6b37d9ee99ba19e29",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "10e7da9c361d4b068d0597ac19fb5d10",
+          "evidence_snapshot_id": "7cd3e8d9d98445c68d0b25be2787afc9",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "bf6ae1abee784da19834b6e9a0aaa2a1",
+          "evidence_snapshot_id": "c999505f9c93436b9e4c6e96938ff3c6",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "79f2da5e62c840cd8f15345ca74572fc",
+          "evidence_snapshot_id": "b187ea1f88014c029698f7bac8c10ff5",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "53ec3d78698d416cb28f142e2fa1729d",
+          "evidence_snapshot_id": "8d01d7669bce4539ada696cf90d2a9ba",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "93d9a28d2fbb47eaae8d4ad19e3d05b8",
+          "evidence_snapshot_id": "c894dd43bc52414988f7b25eb5d9c2de",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "fee01771d5c445deb769577a3f66b706",
+          "evidence_snapshot_id": "658e727d0f4a44a3afd3a130ed9f22d2",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "f604debe06ec4af5adf28fc3813cc5ad",
+          "evidence_snapshot_id": "12c57a4bd88a4d9e96b7d7c6d8703385",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "dee5b4b0e79e48f09c98e40baad69611",
+          "evidence_snapshot_id": "558fc20463974e799c7eb3780aff8dbc",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "c860d51a1b764f7dbe776cf4fd0ff6d9",
+          "evidence_snapshot_id": "8e38abbb58e04d44a112f0a746b5760f",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "5402bdb8041b47d4a34729042955c458",
+          "evidence_snapshot_id": "16805b4240c4403eb570450d438e9c63",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "8eec7965ea864aff99a0a957cf722843",
+          "evidence_snapshot_id": "cba43335a5f14edeaaf695e2ccb6b33f",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "12f46d76bb8a47bab32fcce8ad13eef6",
+          "evidence_snapshot_id": "de889e974edc4f169743d4bb32280ff4",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "f0f4544f0a2447eb95bb32b8a0aa7303",
+          "evidence_snapshot_id": "6dff1101d6f04b529ef3faca6f7e8acc",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "23dfa18aab954805bb5f016e7c47b21e",
+          "evidence_snapshot_id": "07c623bdde03410fb30842403250c39f",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "50f61e972ddc4158bea7dd8ada785517",
+          "evidence_snapshot_id": "a2f9166374ec43ef921b9c401681f159",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "b034918f07804640a5a89f3080e6d15b",
+          "evidence_snapshot_id": "76d022d1a0b04763b1fba85b6103d730",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "80f7382873284a38aeae142754a43aef",
+          "evidence_snapshot_id": "3c798ebaa12c48eda335d756a209431d",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "8f4daafdeb6449988ecc850132e36877",
+          "evidence_snapshot_id": "b2d62d985683408a8e1b8ad93c0f253e",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "8056f74433f84f15ba663af27e691f87",
+          "evidence_snapshot_id": "4f5cc859f075458a898b37557ed6b0a6",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "00d941a0eca14b6e9acd425f137aec29",
+          "evidence_snapshot_id": "a33e028612814b049c85d237649d21e7",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "68cb93999f234505a775a8e0762080e5",
+          "evidence_snapshot_id": "9ae884c80ca04323b6a283d46f65d004",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "eb45603634a24879b486cbba772ab3e5",
+          "evidence_snapshot_id": "665d3b95ffa84c83901813643b8bc039",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "9811d5b944574acba35de610a9a6a6cb",
+          "evidence_snapshot_id": "33e885852ce94d5989467ca1bd95bfe5",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "f4a11dfc4d264a72a8ed467576f03a04",
+          "evidence_snapshot_id": "6c8977ab294f4499bd8abe134baded52",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "204f00ef7a0a428f9c61a54e54348f0e",
+          "evidence_snapshot_id": "fc325a32e9a64429bb1d9253d6c52245",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "0d3d018c822a4f0286cc0317f513f652",
+          "evidence_snapshot_id": "a0c4d68059e54377a080b8eddc5a9f65",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "8f01bf7476c64015b86cd72e3607f92b",
+          "evidence_snapshot_id": "a3f7b9447ca541d3ba5d6b03fcec72cd",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "2bd0ded1bb7749e7a4642c0624862f7a",
+          "evidence_snapshot_id": "4755bb5b63094cecac5a2b7791d60a13",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "77ca1b032b594fca9df36d3d6452001b",
+          "evidence_snapshot_id": "51f5eb78e1d048a7bae19b623ccecfa1",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "0f6319e336244dc9a8a2d1ae11d50ba8",
+          "evidence_snapshot_id": "e158cf7ce8604a078c9085507420a754",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "2435ead4695d49ba93e172e0913c548a",
+          "evidence_snapshot_id": "ebcb277d21fe4f67b20fd35873d5b77d",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "6b4b31d70558419fbd4de381e2162f07",
+          "evidence_snapshot_id": "56f5111abd554af0a7f03570a34b3963",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "28b202ce4c3f487387727a41cc71a1bd",
+          "evidence_snapshot_id": "9bc134ea82494a19bd763b7c14a96768",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "6f3dadf26c7a4416921b31e026577d86",
+          "evidence_snapshot_id": "ddc96f0c9b0f4ba8891dfdc3656e5770",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "38ebe2011baf4bbaa4e4036b9872bdff",
+          "evidence_snapshot_id": "f61b5246f1774503964280172b3b5166",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "fea974cb764145d2bdcd9c1d4c09191e",
+          "evidence_snapshot_id": "4a99eb823a124a37b1bf9aa4dda7c6de",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "62f299f7e81d451ba66ebd495844470b",
+          "evidence_snapshot_id": "43c8b10f3d4d4818864a1a6bb5fa08a7",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "2c9fa2ee898b43f9839194f4e0e726fd",
+          "evidence_snapshot_id": "94809b5cb5144023a7f228a6a07ec6c8",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "4fc63cd12ac14870b1d7bf5f5f49f4c2",
+          "evidence_snapshot_id": "f092c64e19934f47b4a720d807ddbb22",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "189de53cdac049eabd692d8521a702c5",
+          "evidence_snapshot_id": "6168df58be484d6d9ec6bece55ff0e12",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "a30c85fa28d0461b9dbcf3d826b20874",
+          "evidence_snapshot_id": "76480a81daba42aabd531494e8305bac",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "36d7e58e774c4c028a76070a43a7aeb8",
+          "evidence_snapshot_id": "b570868eb3ac4310bb9380f7dd7f420c",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "291259352c6b457db4cc91a9d14e8dbc",
+          "evidence_snapshot_id": "de5645acb7b6413196e4d1141e83f170",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "a3a5e27b7d764f83ad881b4210e7c1d1",
+          "evidence_snapshot_id": "16bec2767efc4b89be57159788a1d09f",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "78a27e03bf61461889b2e0839fc4db46",
+          "evidence_snapshot_id": "cea5552c119b47998c8b8a3f060fd7c3",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "3023c4f3467c4844ab066f0f3df33f86",
+          "evidence_snapshot_id": "54b27924965a47d896c337075f5c9a74",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "fa7b9331e4464be0ac1fc25679ba7140",
+          "evidence_snapshot_id": "0c9aed1343db44268fdd7f4415f37ed0",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "e6a89b856e414a67acaccccabe6bf376",
+          "evidence_snapshot_id": "7304404ed7324f829a700d4edcb1337d",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "2f73032d342c49aba139a3795a93821c",
+          "evidence_snapshot_id": "fa44e975fdcf4487b098072ce2538408",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "18de510add5742d196260dea6a18245d",
+          "evidence_snapshot_id": "07b9a5ea7bac427092d5667d9d2434d1",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "4c72f05472ca4f3f99d70a353a3446f1",
+          "evidence_snapshot_id": "c996c74a71224ba68f591727c629b24f",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "40cc3f1057f94604b9de8a233a4aa0b5",
+          "evidence_snapshot_id": "cbbfce52d73542049f40b56329879e91",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "f346f2e2b1484adf8e1ffc16a350791d",
+          "evidence_snapshot_id": "ef5d19f3b4ec42d796c7b7c3cba05b73",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "da294dfaee934c809f173bd3af2f6d91",
+          "evidence_snapshot_id": "62155457f1d9464ab0c213dd25babeae",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "6a7a3fe0480946b48f559c3ef4acda81",
+          "evidence_snapshot_id": "be087ebd448c499db207b247ca9e9e01",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "44018afa63104502b9dee2d2e7221b1f",
+          "evidence_snapshot_id": "1d5bbb99925e44ad8a98fbce90132632",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "58600cdd65944d9fa696a61454e67c32",
+          "evidence_snapshot_id": "4e43f2f260244b96bdb07e8b5550bce6",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "d6aed99c824945e6945c8d2327dfb072",
+          "evidence_snapshot_id": "d4c451cbdede4fc792a3793a26b366e0",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "de153a50c5504247a070c049b71ee3e0",
+          "evidence_snapshot_id": "fda3472a1734459283adb77d04d2a3a1",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "b91fae981130426fa6907d9e8b9ff475",
+          "evidence_snapshot_id": "3624555f86d24f8e90f306047d5fcbea",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "054c6110293347069c7ed6f38fd169d9",
+          "evidence_snapshot_id": "9e8c82b729f9491980b7f4057d7e15c9",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "5e729661b3214a73a468734f87ba15ba",
+          "evidence_snapshot_id": "2d90dd564a75462aa87e10d2695ff7c6",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "afd54ba662d64b8e89c2355a63140791",
+          "evidence_snapshot_id": "889177f804214320ac0918b3434428f9",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "0ba48fdbf78d4802920baf1996be81fc",
+          "evidence_snapshot_id": "ef6364250a0c436797fa454a58a321e7",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "7ddb1540d3bf4d88b0020afb16c8026e",
+          "evidence_snapshot_id": "315b2aa127b442b6aa523c7339083c87",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "a9a8bcd7c63d44ad9d438dec4784ce06",
+          "evidence_snapshot_id": "f00dda4776124d879d160e24089bc65c",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "ef6e964743ca43cf8702be90dd5281ba",
+          "evidence_snapshot_id": "ee78771401cd41e7871430721739c64f",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "39b6da61610d44329bed87f0ba45c764",
+          "evidence_snapshot_id": "b732355c4050478b920705f91a3f34af",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "418b7a18a6a14d1a9a746c10c435b5c1",
+          "evidence_snapshot_id": "99d2bfe8cc2e417e9e9ec318fae86cdb",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "188d810bbff8430bb85a422d6d9a95cc",
+          "evidence_snapshot_id": "3295585d634f46eaa40d1bcbd8f28d9f",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "f5ba243b67744a199590bd1498b93dea",
+          "evidence_snapshot_id": "10727eef7699446494601b45fbfc78c6",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "b2f7e45a84ba4da0a8fc567459f24292",
+          "evidence_snapshot_id": "778c06124d3549a58c83409b0dd3839a",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "efd0c66be37141a681932705a5ef7122",
+          "evidence_snapshot_id": "44437cf84dc8461585e3e6f6accf6c21",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "5939738c696146b093efb4a8d09784d7",
+          "evidence_snapshot_id": "12ff7ee44a364bff83c73159684a1817",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "985baf5f659d4896a6da206ffc565395",
+          "evidence_snapshot_id": "4774d62aa0a9494394398cdcab84d002",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "8bf1ea7e66ed4ff2bb43c24a902b6e31",
+          "evidence_snapshot_id": "2d5a8863e2e34f6899820a714f56c9a3",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "9c0dc4d52648484490e4a45331dfdbe7",
+          "evidence_snapshot_id": "55af6029eab64f1fbdd20d6b27a16a85",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "f0cc69367be04595b93ce60c0c38dd74",
+          "evidence_snapshot_id": "e09ae85047074dcaa10c59e8bf6e8365",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "357bb54d24cc4e9ea1002522bc7520af",
+          "evidence_snapshot_id": "be2d1c5888e84ddbb288bc2c3bba3414",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "62993bec69954316b9ac10defee5e7f1",
+          "evidence_snapshot_id": "9fb357c080274a01a83417956c9f4670",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "a9e5621f74194bcbaca84a002c5a5109",
+          "evidence_snapshot_id": "d59d851b7d0f4295988961aa2caff4b9",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "4bf5527345e24554b8256587133dfb36",
+          "evidence_snapshot_id": "b532e1780c3248a0aa1d0b3d2f30e021",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "1a57fa36410b4269b0ff3a43d5ad83ba",
+          "evidence_snapshot_id": "0dd097871c8249948ccd3b0a2d995442",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "c9081b1d21c24c36ab16c57c95b52054",
+          "evidence_snapshot_id": "a8c22a69f70b4af2b3974eb66305ad44",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "9c07b22bdac14ebbae15a7b61f3fbd61",
+          "evidence_snapshot_id": "64b8eba62a0e4a87ba0b94d101d0a770",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "7c2d2e332e8e4ed8a7acb21ddace8a98",
+          "evidence_snapshot_id": "1cd433fbac194113b0dae6bf572b93b4",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "6b921cf839ae465689ede440a2ac531b",
+          "evidence_snapshot_id": "2f4b9336d2a240289e70b96ec632c24e",
+          "evidence_state": "weakly_public"
+        },
+        {
+          "candidate_id": "c013c85aa5fd4d3fb1ad174e093fde71",
+          "evidence_snapshot_id": "51b608fb609a4fce81fa55244a9d8fc5",
+          "evidence_state": "weakly_public"
+        }
+      ]
+    },
+    "metadata_summary": {
+      "events_upserted": 96,
+      "markets_upserted": 96
+    },
+    "overall_window": {
+      "end": "2026-03-15T06:00:00+00:00",
+      "start": "2026-01-15T05:00:00+00:00"
+    },
+    "window_family": [
+      {
+        "end": "2026-01-15T06:00:00+00:00",
+        "key": "train_window",
+        "role": "train",
+        "start": "2026-01-15T05:00:00+00:00"
+      },
+      {
+        "end": "2026-02-15T06:00:00+00:00",
+        "key": "validation_window",
+        "role": "validation",
+        "start": "2026-02-15T05:00:00+00:00"
+      },
+      {
+        "end": "2026-03-15T06:00:00+00:00",
+        "key": "test_window",
+        "role": "test",
+        "start": "2026-03-15T05:00:00+00:00"
+      }
+    ]
+  },
+  "task_contract_version": "phase10_task3_heldout_validation_pack_v1",
+  "task_name": "Phase 10 Task 3 - Held-Out Phase 5 Validation Pack",
+  "time_split_summary": {
+    "alert": [
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "alert_count": 32,
+          "alert_creation_rate_proxy": 32,
+          "alert_label_coverage": 1.0,
+          "alert_non_useful_rate": 0.5,
+          "alert_suppression_rate_proxy": 0.0,
+          "alert_usefulness_precision": 0.5,
+          "evidence_state_counts": [
+            {
+              "count": 32,
+              "evidence_state": "weakly_public"
+            }
+          ],
+          "metrics_version": "phase5_metrics_v1",
+          "severity_counts": [
+            {
+              "count": 32,
+              "severity": "ACTIONABLE"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-01-07:2026-02-06",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "alert_count": 32,
+          "alert_creation_rate_proxy": 32,
+          "alert_label_coverage": 1.0,
+          "alert_non_useful_rate": 0.5,
+          "alert_suppression_rate_proxy": 0.0,
+          "alert_usefulness_precision": 0.5,
+          "evidence_state_counts": [
+            {
+              "count": 32,
+              "evidence_state": "weakly_public"
+            }
+          ],
+          "metrics_version": "phase5_metrics_v1",
+          "severity_counts": [
+            {
+              "count": 32,
+              "severity": "ACTIONABLE"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-02-06:2026-03-08",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "alert_count": 32,
+          "alert_creation_rate_proxy": 32,
+          "alert_label_coverage": 1.0,
+          "alert_non_useful_rate": 0.5,
+          "alert_suppression_rate_proxy": 0.0,
+          "alert_usefulness_precision": 0.5,
+          "evidence_state_counts": [
+            {
+              "count": 32,
+              "evidence_state": "weakly_public"
+            }
+          ],
+          "metrics_version": "phase5_metrics_v1",
+          "severity_counts": [
+            {
+              "count": 32,
+              "severity": "ACTIONABLE"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-03-08:2026-04-07",
+        "status": "scored",
+        "total_rows": 32
+      }
+    ],
+    "candidate": [
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "candidate_count": 32,
+          "candidate_false_positive_rate": 0.5,
+          "candidate_precision": 0.5,
+          "candidate_resolution_reach_rate": 1.0,
+          "distinct_event_families": 32,
+          "distinct_markets": 32,
+          "label_coverage": 1.0,
+          "median_candidate_severity_score": 0.65,
+          "metrics_version": "phase5_metrics_v1",
+          "rule_family_counts": [
+            {
+              "count": 32,
+              "rule_family": "concentrated_directional_flow"
+            },
+            {
+              "count": 32,
+              "rule_family": "fast_repricing_with_wallet_support"
+            },
+            {
+              "count": 32,
+              "rule_family": "fresh_wallet_burst"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-01-07:2026-02-06",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "candidate_count": 32,
+          "candidate_false_positive_rate": 0.5,
+          "candidate_precision": 0.5,
+          "candidate_resolution_reach_rate": 1.0,
+          "distinct_event_families": 32,
+          "distinct_markets": 32,
+          "label_coverage": 1.0,
+          "median_candidate_severity_score": 0.65,
+          "metrics_version": "phase5_metrics_v1",
+          "rule_family_counts": [
+            {
+              "count": 32,
+              "rule_family": "concentrated_directional_flow"
+            },
+            {
+              "count": 32,
+              "rule_family": "fast_repricing_with_wallet_support"
+            },
+            {
+              "count": 32,
+              "rule_family": "fresh_wallet_burst"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-02-06:2026-03-08",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "candidate_count": 32,
+          "candidate_false_positive_rate": 0.5,
+          "candidate_precision": 0.5,
+          "candidate_resolution_reach_rate": 1.0,
+          "distinct_event_families": 32,
+          "distinct_markets": 32,
+          "label_coverage": 1.0,
+          "median_candidate_severity_score": 0.65,
+          "metrics_version": "phase5_metrics_v1",
+          "rule_family_counts": [
+            {
+              "count": 32,
+              "rule_family": "concentrated_directional_flow"
+            },
+            {
+              "count": 32,
+              "rule_family": "fast_repricing_with_wallet_support"
+            },
+            {
+              "count": 32,
+              "rule_family": "fresh_wallet_burst"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-03-08:2026-04-07",
+        "status": "scored",
+        "total_rows": 32
+      }
+    ],
+    "paper_trade": [
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "fill_rate": 1.0,
+          "hit_rate": 0.5,
+          "loss_rate": 0.5,
+          "mean_bounded_pnl": 14.593359,
+          "median_bounded_pnl": 14.076441,
+          "metrics_version": "phase5_metrics_v1",
+          "paper_trade_count": 32,
+          "skip_reason_counts": [],
+          "status": "scored",
+          "trade_eligibility_rate_proxy": 1.0,
+          "worst_decile_pnl": -44.350877
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-01-07:2026-02-06",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "fill_rate": 1.0,
+          "hit_rate": 0.5,
+          "loss_rate": 0.5,
+          "mean_bounded_pnl": 14.593359,
+          "median_bounded_pnl": 14.076441,
+          "metrics_version": "phase5_metrics_v1",
+          "paper_trade_count": 32,
+          "skip_reason_counts": [],
+          "status": "scored",
+          "trade_eligibility_rate_proxy": 1.0,
+          "worst_decile_pnl": -44.350877
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-02-06:2026-03-08",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "fill_rate": 1.0,
+          "hit_rate": 0.5,
+          "loss_rate": 0.5,
+          "mean_bounded_pnl": 14.593359,
+          "median_bounded_pnl": 14.076441,
+          "metrics_version": "phase5_metrics_v1",
+          "paper_trade_count": 32,
+          "skip_reason_counts": [],
+          "status": "scored",
+          "trade_eligibility_rate_proxy": 1.0,
+          "worst_decile_pnl": -44.350877
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-03-08:2026-04-07",
+        "status": "scored",
+        "total_rows": 32
+      }
+    ]
+  },
+  "validation_report": {
+    "alert_row_count": 96,
+    "assessment": {
+      "alert_usefulness_precision": 0.5,
+      "median_bounded_pnl": 14.076441,
+      "status": "promising",
+      "top_category_dependency_share": 0.25,
+      "top_event_family_dependency_share": 0.010417
+    },
+    "coverage_summary": {
+      "alert_rows": 96,
+      "paper_trade_fills": 96,
+      "paper_trade_skips": 0,
+      "rows_complete": 96,
+      "rows_coverage_insufficient": 0,
+      "rows_partial": 0,
+      "total_rows": 96
+    },
+    "evaluation_row_count": 96,
+    "paper_trade_count": 96
+  }
+}

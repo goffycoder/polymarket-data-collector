@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 10 Task 5 - Ops, Security, Governance, and Final Closeout}
+
+\textbf{Phase 10 parent doc:} \texttt{Documentation/phases/phase10.tex}\\
+\textbf{Task goal:} Implement the remaining SRS-required hardening controls, write the operating-mode promotion memo, and write the final Phase 10 completion memo stating whether the repo is now SRS-complete v1.
+
+\section*{Canonical Command}
+\begin{verbatim}
+python run_phase10_ops_governance_closeout.py --json
+\end{verbatim}
+
+\section*{Done Condition}
+Task 5 is complete when:
+\begin{itemize}
+\item monitoring, storage-audit, integrity, and health artifacts are regenerated for the canonical path,
+\item incident, backup, secret-handling, wallet-redaction, and audit-trace policy documents exist,
+\item the operating-mode memo states the canonical role of the held-out LightGBM model, and
+\item the final Phase 10 memo answers the SRS v1-complete question directly.
+\end{itemize}
+
+\end{document}

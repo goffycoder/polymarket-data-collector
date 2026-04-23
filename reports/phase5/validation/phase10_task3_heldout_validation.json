@@ -1,0 +1,1803 @@
+{
+  "alert_row_count": 96,
+  "assessment": {
+    "alert_usefulness_precision": 0.5,
+    "median_bounded_pnl": 14.076441,
+    "status": "promising",
+    "top_category_dependency_share": 0.25,
+    "top_event_family_dependency_share": 0.010417
+  },
+  "coverage_summary": {
+    "alert_rows": 96,
+    "paper_trade_fills": 96,
+    "paper_trade_skips": 0,
+    "rows_complete": 96,
+    "rows_coverage_insufficient": 0,
+    "rows_partial": 0,
+    "total_rows": 96
+  },
+  "end": "2026-03-15T06:00:00+00:00",
+  "evaluation_row_count": 96,
+  "metrics": {
+    "alert_overall": {
+      "alert_count": 96,
+      "alert_creation_rate_proxy": 96,
+      "alert_label_coverage": 1.0,
+      "alert_non_useful_rate": 0.5,
+      "alert_suppression_rate_proxy": 0.0,
+      "alert_usefulness_precision": 0.5,
+      "evidence_state_counts": [
+        {
+          "count": 96,
+          "evidence_state": "weakly_public"
+        }
+      ],
+      "metrics_version": "phase5_metrics_v1",
+      "severity_counts": [
+        {
+          "count": 96,
+          "severity": "ACTIONABLE"
+        }
+      ],
+      "status": "overall"
+    },
+    "alert_regimes": {
+      "category_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "alert_count": 24,
+            "alert_creation_rate_proxy": 24,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 0.0,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 1.0,
+            "evidence_state_counts": [
+              {
+                "count": 24,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 24,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:crypto",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "alert_count": 24,
+            "alert_creation_rate_proxy": 24,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 1.0,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 0.0,
+            "evidence_state_counts": [
+              {
+                "count": 24,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 24,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:macro",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "alert_count": 24,
+            "alert_creation_rate_proxy": 24,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 1.0,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 0.0,
+            "evidence_state_counts": [
+              {
+                "count": 24,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 24,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:politics",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "alert_count": 24,
+            "alert_creation_rate_proxy": 24,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 0.0,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 1.0,
+            "evidence_state_counts": [
+              {
+                "count": 24,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 24,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:sports",
+          "status": "descriptive_only",
+          "total_rows": 24
+        }
+      ],
+      "event_family_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 20,
+          "eligible_rows": 20,
+          "metrics": {
+            "alert_count": 20,
+            "alert_creation_rate_proxy": 20,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 0.5,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 0.5,
+            "evidence_state_counts": [
+              {
+                "count": 20,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 20,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "scored"
+          },
+          "resolved_rows": 20,
+          "split_key": "event_family_holdout:fold_1_of_5",
+          "status": "scored",
+          "total_rows": 20
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "alert_count": 19,
+            "alert_creation_rate_proxy": 19,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 0.526316,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 0.473684,
+            "evidence_state_counts": [
+              {
+                "count": 19,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 19,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_2_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "alert_count": 19,
+            "alert_creation_rate_proxy": 19,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 0.473684,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 0.526316,
+            "evidence_state_counts": [
+              {
+                "count": 19,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 19,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_3_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "alert_count": 19,
+            "alert_creation_rate_proxy": 19,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 0.473684,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 0.526316,
+            "evidence_state_counts": [
+              {
+                "count": 19,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 19,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_4_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "alert_count": 19,
+            "alert_creation_rate_proxy": 19,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 0.526316,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 0.473684,
+            "evidence_state_counts": [
+              {
+                "count": 19,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 19,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_5_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        }
+      ],
+      "time_split_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "alert_count": 32,
+            "alert_creation_rate_proxy": 32,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 0.5,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 0.5,
+            "evidence_state_counts": [
+              {
+                "count": 32,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 32,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "scored"
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-01-07:2026-02-06",
+          "status": "scored",
+          "total_rows": 32
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "alert_count": 32,
+            "alert_creation_rate_proxy": 32,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 0.5,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 0.5,
+            "evidence_state_counts": [
+              {
+                "count": 32,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 32,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "scored"
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-02-06:2026-03-08",
+          "status": "scored",
+          "total_rows": 32
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "alert_count": 32,
+            "alert_creation_rate_proxy": 32,
+            "alert_label_coverage": 1.0,
+            "alert_non_useful_rate": 0.5,
+            "alert_suppression_rate_proxy": 0.0,
+            "alert_usefulness_precision": 0.5,
+            "evidence_state_counts": [
+              {
+                "count": 32,
+                "evidence_state": "weakly_public"
+              }
+            ],
+            "metrics_version": "phase5_metrics_v1",
+            "severity_counts": [
+              {
+                "count": 32,
+                "severity": "ACTIONABLE"
+              }
+            ],
+            "status": "scored"
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-03-08:2026-04-07",
+          "status": "scored",
+          "total_rows": 32
+        }
+      ]
+    },
+    "candidate_overall": {
+      "candidate_count": 96,
+      "candidate_false_positive_rate": 0.5,
+      "candidate_precision": 0.5,
+      "candidate_resolution_reach_rate": 1.0,
+      "distinct_event_families": 96,
+      "distinct_markets": 96,
+      "label_coverage": 1.0,
+      "median_candidate_severity_score": 0.65,
+      "metrics_version": "phase5_metrics_v1",
+      "rule_family_counts": [
+        {
+          "count": 96,
+          "rule_family": "concentrated_directional_flow"
+        },
+        {
+          "count": 96,
+          "rule_family": "fast_repricing_with_wallet_support"
+        },
+        {
+          "count": 96,
+          "rule_family": "fresh_wallet_burst"
+        }
+      ],
+      "status": "overall"
+    },
+    "candidate_regimes": {
+      "category_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "candidate_count": 24,
+            "candidate_false_positive_rate": 0.0,
+            "candidate_precision": 1.0,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 24,
+            "distinct_markets": 24,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.655,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 24,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 24,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 24,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:crypto",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "candidate_count": 24,
+            "candidate_false_positive_rate": 1.0,
+            "candidate_precision": 0.0,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 24,
+            "distinct_markets": 24,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.645,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 24,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 24,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 24,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:macro",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "candidate_count": 24,
+            "candidate_false_positive_rate": 1.0,
+            "candidate_precision": 0.0,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 24,
+            "distinct_markets": 24,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.645,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 24,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 24,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 24,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:politics",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "candidate_count": 24,
+            "candidate_false_positive_rate": 0.0,
+            "candidate_precision": 1.0,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 24,
+            "distinct_markets": 24,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.65,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 24,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 24,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 24,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:sports",
+          "status": "descriptive_only",
+          "total_rows": 24
+        }
+      ],
+      "event_family_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 20,
+          "eligible_rows": 20,
+          "metrics": {
+            "candidate_count": 20,
+            "candidate_false_positive_rate": 0.5,
+            "candidate_precision": 0.5,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 20,
+            "distinct_markets": 20,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.64,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 20,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 20,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 20,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 20,
+          "split_key": "event_family_holdout:fold_1_of_5",
+          "status": "descriptive_only",
+          "total_rows": 20
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "candidate_count": 19,
+            "candidate_false_positive_rate": 0.526316,
+            "candidate_precision": 0.473684,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 19,
+            "distinct_markets": 19,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.65,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 19,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 19,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 19,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_2_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "candidate_count": 19,
+            "candidate_false_positive_rate": 0.473684,
+            "candidate_precision": 0.526316,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 19,
+            "distinct_markets": 19,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.65,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 19,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 19,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 19,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_3_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "candidate_count": 19,
+            "candidate_false_positive_rate": 0.473684,
+            "candidate_precision": 0.526316,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 19,
+            "distinct_markets": 19,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.66,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 19,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 19,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 19,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_4_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "candidate_count": 19,
+            "candidate_false_positive_rate": 0.526316,
+            "candidate_precision": 0.473684,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 19,
+            "distinct_markets": 19,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.65,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 19,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 19,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 19,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "descriptive_only"
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_5_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        }
+      ],
+      "time_split_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "candidate_count": 32,
+            "candidate_false_positive_rate": 0.5,
+            "candidate_precision": 0.5,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 32,
+            "distinct_markets": 32,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.65,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 32,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 32,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 32,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "scored"
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-01-07:2026-02-06",
+          "status": "scored",
+          "total_rows": 32
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "candidate_count": 32,
+            "candidate_false_positive_rate": 0.5,
+            "candidate_precision": 0.5,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 32,
+            "distinct_markets": 32,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.65,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 32,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 32,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 32,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "scored"
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-02-06:2026-03-08",
+          "status": "scored",
+          "total_rows": 32
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "candidate_count": 32,
+            "candidate_false_positive_rate": 0.5,
+            "candidate_precision": 0.5,
+            "candidate_resolution_reach_rate": 1.0,
+            "distinct_event_families": 32,
+            "distinct_markets": 32,
+            "label_coverage": 1.0,
+            "median_candidate_severity_score": 0.65,
+            "metrics_version": "phase5_metrics_v1",
+            "rule_family_counts": [
+              {
+                "count": 32,
+                "rule_family": "concentrated_directional_flow"
+              },
+              {
+                "count": 32,
+                "rule_family": "fast_repricing_with_wallet_support"
+              },
+              {
+                "count": 32,
+                "rule_family": "fresh_wallet_burst"
+              }
+            ],
+            "status": "scored"
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-03-08:2026-04-07",
+          "status": "scored",
+          "total_rows": 32
+        }
+      ]
+    },
+    "failure_overall": {
+      "coverage_insufficient_rows": 0,
+      "metrics_version": "phase5_metrics_v1",
+      "near_resolution_skip_rate": 0.0,
+      "partial_coverage_rows": 0,
+      "skip_due_to_data_rate": 0.0,
+      "top_category_dependency_share": 0.25,
+      "top_event_family_dependency_share": 0.010417
+    },
+    "lead_time_overall": {
+      "median_lead_time_seconds": 540.0,
+      "metrics_version": "phase5_metrics_v1",
+      "p25_lead_time_seconds": 480.0,
+      "p75_lead_time_seconds": 540.0,
+      "short_lead_alert_share": 1.0,
+      "status": "overall",
+      "successful_alert_count": 48
+    },
+    "lead_time_regimes": {
+      "category_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "median_lead_time_seconds": 540.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 480.0,
+            "p75_lead_time_seconds": 540.0,
+            "short_lead_alert_share": 1.0,
+            "status": "descriptive_only",
+            "successful_alert_count": 24
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:crypto",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "median_lead_time_seconds": 0.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 0.0,
+            "p75_lead_time_seconds": 0.0,
+            "short_lead_alert_share": 0.0,
+            "status": "descriptive_only",
+            "successful_alert_count": 0
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:macro",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "median_lead_time_seconds": 0.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 0.0,
+            "p75_lead_time_seconds": 0.0,
+            "short_lead_alert_share": 0.0,
+            "status": "descriptive_only",
+            "successful_alert_count": 0
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:politics",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "median_lead_time_seconds": 540.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 480.0,
+            "p75_lead_time_seconds": 540.0,
+            "short_lead_alert_share": 1.0,
+            "status": "descriptive_only",
+            "successful_alert_count": 24
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:sports",
+          "status": "descriptive_only",
+          "total_rows": 24
+        }
+      ],
+      "event_family_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 20,
+          "eligible_rows": 20,
+          "metrics": {
+            "median_lead_time_seconds": 540.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 480.0,
+            "p75_lead_time_seconds": 600.0,
+            "short_lead_alert_share": 1.0,
+            "status": "scored",
+            "successful_alert_count": 10
+          },
+          "resolved_rows": 20,
+          "split_key": "event_family_holdout:fold_1_of_5",
+          "status": "scored",
+          "total_rows": 20
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "median_lead_time_seconds": 540.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 480.0,
+            "p75_lead_time_seconds": 540.0,
+            "short_lead_alert_share": 1.0,
+            "status": "descriptive_only",
+            "successful_alert_count": 9
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_2_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "median_lead_time_seconds": 510.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 480.0,
+            "p75_lead_time_seconds": 540.0,
+            "short_lead_alert_share": 1.0,
+            "status": "descriptive_only",
+            "successful_alert_count": 10
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_3_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "median_lead_time_seconds": 540.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 480.0,
+            "p75_lead_time_seconds": 540.0,
+            "short_lead_alert_share": 1.0,
+            "status": "descriptive_only",
+            "successful_alert_count": 10
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_4_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "median_lead_time_seconds": 480.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 480.0,
+            "p75_lead_time_seconds": 540.0,
+            "short_lead_alert_share": 1.0,
+            "status": "descriptive_only",
+            "successful_alert_count": 9
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_5_of_5",
+          "status": "descriptive_only",
+          "total_rows": 19
+        }
+      ],
+      "time_split_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "median_lead_time_seconds": 540.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 480.0,
+            "p75_lead_time_seconds": 540.0,
+            "short_lead_alert_share": 1.0,
+            "status": "scored",
+            "successful_alert_count": 16
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-01-07:2026-02-06",
+          "status": "scored",
+          "total_rows": 32
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "median_lead_time_seconds": 540.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 480.0,
+            "p75_lead_time_seconds": 540.0,
+            "short_lead_alert_share": 1.0,
+            "status": "scored",
+            "successful_alert_count": 16
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-02-06:2026-03-08",
+          "status": "scored",
+          "total_rows": 32
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "median_lead_time_seconds": 540.0,
+            "metrics_version": "phase5_metrics_v1",
+            "p25_lead_time_seconds": 480.0,
+            "p75_lead_time_seconds": 540.0,
+            "short_lead_alert_share": 1.0,
+            "status": "scored",
+            "successful_alert_count": 16
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-03-08:2026-04-07",
+          "status": "scored",
+          "total_rows": 32
+        }
+      ]
+    },
+    "metrics_version": "phase5_metrics_v1",
+    "paper_trade_overall": {
+      "fill_rate": 1.0,
+      "hit_rate": 0.5,
+      "loss_rate": 0.5,
+      "mean_bounded_pnl": 14.593359,
+      "median_bounded_pnl": 14.076441,
+      "metrics_version": "phase5_metrics_v1",
+      "paper_trade_count": 96,
+      "skip_reason_counts": [],
+      "status": "overall",
+      "trade_eligibility_rate_proxy": 1.0,
+      "worst_decile_pnl": -44.350877
+    },
+    "paper_trade_regimes": {
+      "category_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 1.0,
+            "loss_rate": 0.0,
+            "mean_bounded_pnl": 71.438596,
+            "median_bounded_pnl": 71.438596,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 24,
+            "skip_reason_counts": [],
+            "status": "descriptive_only",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": 71.438596
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:crypto",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 0.0,
+            "loss_rate": 1.0,
+            "mean_bounded_pnl": -43.285714,
+            "median_bounded_pnl": -43.285714,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 24,
+            "skip_reason_counts": [],
+            "status": "descriptive_only",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": -43.285714
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:macro",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 0.0,
+            "loss_rate": 1.0,
+            "mean_bounded_pnl": -44.350877,
+            "median_bounded_pnl": -44.350877,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 24,
+            "skip_reason_counts": [],
+            "status": "descriptive_only",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": -44.350877
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:politics",
+          "status": "descriptive_only",
+          "total_rows": 24
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 1,
+          "distinct_event_families": 24,
+          "eligible_rows": 24,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 1.0,
+            "loss_rate": 0.0,
+            "mean_bounded_pnl": 74.571429,
+            "median_bounded_pnl": 74.571429,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 24,
+            "skip_reason_counts": [],
+            "status": "descriptive_only",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": 74.571429
+          },
+          "resolved_rows": 24,
+          "split_key": "category_holdout:sports",
+          "status": "descriptive_only",
+          "total_rows": 24
+        }
+      ],
+      "event_family_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 20,
+          "eligible_rows": 20,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 0.5,
+            "loss_rate": 0.5,
+            "mean_bounded_pnl": 14.593358,
+            "median_bounded_pnl": 14.076441,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 20,
+            "skip_reason_counts": [],
+            "status": "scored",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": -44.350877
+          },
+          "resolved_rows": 20,
+          "split_key": "event_family_holdout:fold_1_of_5",
+          "status": "scored",
+          "total_rows": 20
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 0.473684,
+            "loss_rate": 0.526316,
+            "mean_bounded_pnl": 11.601504,
+            "median_bounded_pnl": -43.285714,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 19,
+            "skip_reason_counts": [],
+            "status": "scored",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": -44.350877
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_2_of_5",
+          "status": "scored",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 0.526316,
+            "loss_rate": 0.473684,
+            "mean_bounded_pnl": 17.639625,
+            "median_bounded_pnl": 71.438596,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 19,
+            "skip_reason_counts": [],
+            "status": "scored",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": -44.350877
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_3_of_5",
+          "status": "scored",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 0.526316,
+            "loss_rate": 0.473684,
+            "mean_bounded_pnl": 17.695687,
+            "median_bounded_pnl": 71.438596,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 19,
+            "skip_reason_counts": [],
+            "status": "scored",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": -44.350877
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_4_of_5",
+          "status": "scored",
+          "total_rows": 19
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 19,
+          "eligible_rows": 19,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 0.473684,
+            "loss_rate": 0.526316,
+            "mean_bounded_pnl": 11.436618,
+            "median_bounded_pnl": -43.285714,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 19,
+            "skip_reason_counts": [],
+            "status": "scored",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": -44.350877
+          },
+          "resolved_rows": 19,
+          "split_key": "event_family_holdout:fold_5_of_5",
+          "status": "scored",
+          "total_rows": 19
+        }
+      ],
+      "time_split_holdout": [
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 0.5,
+            "loss_rate": 0.5,
+            "mean_bounded_pnl": 14.593359,
+            "median_bounded_pnl": 14.076441,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 32,
+            "skip_reason_counts": [],
+            "status": "scored",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": -44.350877
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-01-07:2026-02-06",
+          "status": "scored",
+          "total_rows": 32
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 0.5,
+            "loss_rate": 0.5,
+            "mean_bounded_pnl": 14.593359,
+            "median_bounded_pnl": 14.076441,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 32,
+            "skip_reason_counts": [],
+            "status": "scored",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": -44.350877
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-02-06:2026-03-08",
+          "status": "scored",
+          "total_rows": 32
+        },
+        {
+          "coverage_ratio": 1.0,
+          "distinct_categories": 4,
+          "distinct_event_families": 32,
+          "eligible_rows": 32,
+          "metrics": {
+            "fill_rate": 1.0,
+            "hit_rate": 0.5,
+            "loss_rate": 0.5,
+            "mean_bounded_pnl": 14.593359,
+            "median_bounded_pnl": 14.076441,
+            "metrics_version": "phase5_metrics_v1",
+            "paper_trade_count": 32,
+            "skip_reason_counts": [],
+            "status": "scored",
+            "trade_eligibility_rate_proxy": 1.0,
+            "worst_decile_pnl": -44.350877
+          },
+          "resolved_rows": 32,
+          "split_key": "time_split_holdout:time_block:2026-03-08:2026-04-07",
+          "status": "scored",
+          "total_rows": 32
+        }
+      ]
+    }
+  },
+  "metrics_version": "phase5_metrics_v1",
+  "paper_trade_count": 96,
+  "report_version": "phase5_report_v1",
+  "simulator_version": "phase5_simulator_v1",
+  "start": "2026-01-15T05:00:00+00:00",
+  "strongest_windows": [
+    {
+      "alert_count": 24,
+      "coverage_insufficient_count": 0,
+      "row_count": 24,
+      "window_key": "crypto"
+    },
+    {
+      "alert_count": 24,
+      "coverage_insufficient_count": 0,
+      "row_count": 24,
+      "window_key": "macro"
+    },
+    {
+      "alert_count": 24,
+      "coverage_insufficient_count": 0,
+      "row_count": 24,
+      "window_key": "politics"
+    }
+  ],
+  "task_contract_version": "phase10_task3_heldout_validation_pack_v1",
+  "time_split_summary": {
+    "alert": [
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "alert_count": 32,
+          "alert_creation_rate_proxy": 32,
+          "alert_label_coverage": 1.0,
+          "alert_non_useful_rate": 0.5,
+          "alert_suppression_rate_proxy": 0.0,
+          "alert_usefulness_precision": 0.5,
+          "evidence_state_counts": [
+            {
+              "count": 32,
+              "evidence_state": "weakly_public"
+            }
+          ],
+          "metrics_version": "phase5_metrics_v1",
+          "severity_counts": [
+            {
+              "count": 32,
+              "severity": "ACTIONABLE"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-01-07:2026-02-06",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "alert_count": 32,
+          "alert_creation_rate_proxy": 32,
+          "alert_label_coverage": 1.0,
+          "alert_non_useful_rate": 0.5,
+          "alert_suppression_rate_proxy": 0.0,
+          "alert_usefulness_precision": 0.5,
+          "evidence_state_counts": [
+            {
+              "count": 32,
+              "evidence_state": "weakly_public"
+            }
+          ],
+          "metrics_version": "phase5_metrics_v1",
+          "severity_counts": [
+            {
+              "count": 32,
+              "severity": "ACTIONABLE"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-02-06:2026-03-08",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "alert_count": 32,
+          "alert_creation_rate_proxy": 32,
+          "alert_label_coverage": 1.0,
+          "alert_non_useful_rate": 0.5,
+          "alert_suppression_rate_proxy": 0.0,
+          "alert_usefulness_precision": 0.5,
+          "evidence_state_counts": [
+            {
+              "count": 32,
+              "evidence_state": "weakly_public"
+            }
+          ],
+          "metrics_version": "phase5_metrics_v1",
+          "severity_counts": [
+            {
+              "count": 32,
+              "severity": "ACTIONABLE"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-03-08:2026-04-07",
+        "status": "scored",
+        "total_rows": 32
+      }
+    ],
+    "candidate": [
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "candidate_count": 32,
+          "candidate_false_positive_rate": 0.5,
+          "candidate_precision": 0.5,
+          "candidate_resolution_reach_rate": 1.0,
+          "distinct_event_families": 32,
+          "distinct_markets": 32,
+          "label_coverage": 1.0,
+          "median_candidate_severity_score": 0.65,
+          "metrics_version": "phase5_metrics_v1",
+          "rule_family_counts": [
+            {
+              "count": 32,
+              "rule_family": "concentrated_directional_flow"
+            },
+            {
+              "count": 32,
+              "rule_family": "fast_repricing_with_wallet_support"
+            },
+            {
+              "count": 32,
+              "rule_family": "fresh_wallet_burst"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-01-07:2026-02-06",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "candidate_count": 32,
+          "candidate_false_positive_rate": 0.5,
+          "candidate_precision": 0.5,
+          "candidate_resolution_reach_rate": 1.0,
+          "distinct_event_families": 32,
+          "distinct_markets": 32,
+          "label_coverage": 1.0,
+          "median_candidate_severity_score": 0.65,
+          "metrics_version": "phase5_metrics_v1",
+          "rule_family_counts": [
+            {
+              "count": 32,
+              "rule_family": "concentrated_directional_flow"
+            },
+            {
+              "count": 32,
+              "rule_family": "fast_repricing_with_wallet_support"
+            },
+            {
+              "count": 32,
+              "rule_family": "fresh_wallet_burst"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-02-06:2026-03-08",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "candidate_count": 32,
+          "candidate_false_positive_rate": 0.5,
+          "candidate_precision": 0.5,
+          "candidate_resolution_reach_rate": 1.0,
+          "distinct_event_families": 32,
+          "distinct_markets": 32,
+          "label_coverage": 1.0,
+          "median_candidate_severity_score": 0.65,
+          "metrics_version": "phase5_metrics_v1",
+          "rule_family_counts": [
+            {
+              "count": 32,
+              "rule_family": "concentrated_directional_flow"
+            },
+            {
+              "count": 32,
+              "rule_family": "fast_repricing_with_wallet_support"
+            },
+            {
+              "count": 32,
+              "rule_family": "fresh_wallet_burst"
+            }
+          ],
+          "status": "scored"
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-03-08:2026-04-07",
+        "status": "scored",
+        "total_rows": 32
+      }
+    ],
+    "paper_trade": [
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "fill_rate": 1.0,
+          "hit_rate": 0.5,
+          "loss_rate": 0.5,
+          "mean_bounded_pnl": 14.593359,
+          "median_bounded_pnl": 14.076441,
+          "metrics_version": "phase5_metrics_v1",
+          "paper_trade_count": 32,
+          "skip_reason_counts": [],
+          "status": "scored",
+          "trade_eligibility_rate_proxy": 1.0,
+          "worst_decile_pnl": -44.350877
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-01-07:2026-02-06",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "fill_rate": 1.0,
+          "hit_rate": 0.5,
+          "loss_rate": 0.5,
+          "mean_bounded_pnl": 14.593359,
+          "median_bounded_pnl": 14.076441,
+          "metrics_version": "phase5_metrics_v1",
+          "paper_trade_count": 32,
+          "skip_reason_counts": [],
+          "status": "scored",
+          "trade_eligibility_rate_proxy": 1.0,
+          "worst_decile_pnl": -44.350877
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-02-06:2026-03-08",
+        "status": "scored",
+        "total_rows": 32
+      },
+      {
+        "coverage_ratio": 1.0,
+        "distinct_categories": 4,
+        "distinct_event_families": 32,
+        "eligible_rows": 32,
+        "metrics": {
+          "fill_rate": 1.0,
+          "hit_rate": 0.5,
+          "loss_rate": 0.5,
+          "mean_bounded_pnl": 14.593359,
+          "median_bounded_pnl": 14.076441,
+          "metrics_version": "phase5_metrics_v1",
+          "paper_trade_count": 32,
+          "skip_reason_counts": [],
+          "status": "scored",
+          "trade_eligibility_rate_proxy": 1.0,
+          "worst_decile_pnl": -44.350877
+        },
+        "resolved_rows": 32,
+        "split_key": "time_split_holdout:time_block:2026-03-08:2026-04-07",
+        "status": "scored",
+        "total_rows": 32
+      }
+    ]
+  },
+  "weakest_windows": [
+    {
+      "alert_count": 24,
+      "coverage_insufficient_count": 0,
+      "row_count": 24,
+      "window_key": "sports"
+    },
+    {
+      "alert_count": 24,
+      "coverage_insufficient_count": 0,
+      "row_count": 24,
+      "window_key": "politics"
+    },
+    {
+      "alert_count": 24,
+      "coverage_insufficient_count": 0,
+      "row_count": 24,
+      "window_key": "macro"
+    }
+  ],
+  "window_family": [
+    {
+      "end": "2026-01-15T06:00:00+00:00",
+      "key": "train_window",
+      "role": "train",
+      "start": "2026-01-15T05:00:00+00:00"
+    },
+    {
+      "end": "2026-02-15T06:00:00+00:00",
+      "key": "validation_window",
+      "role": "validation",
+      "start": "2026-02-15T05:00:00+00:00"
+    },
+    {
+      "end": "2026-03-15T06:00:00+00:00",
+      "key": "test_window",
+      "role": "test",
+      "start": "2026-03-15T05:00:00+00:00"
+    }
+  ],
+  "window_family_name": "phase10_canonical_heldout_family"
+}

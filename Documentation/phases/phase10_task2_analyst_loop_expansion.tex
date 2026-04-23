@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 10 Task 2 - Analyst Loop Expansion and Suppression Review}
+
+\textbf{Phase 10 parent doc:} \texttt{Documentation/phases/phase10.tex}\\
+\textbf{Task goal:} Run more than one real alert episode through the canonical alert path so \texttt{alerts}, \texttt{delivery\_attempts}, \texttt{analyst\_feedback}, and suppression behavior are supported by multiple examples instead of the single seeded Phase 9 packet.
+
+\section*{Interpretation}
+Task 2 is the quality check on the alert loop after Task 1 proved the evidence provider is real.
+\begin{itemize}
+\item The task must materialize repeated replay-linked alert episodes, not just one alert row plus commentary.
+\item At least one later candidate must exercise duplicate suppression against a prior alert in the same event family.
+\item Analyst feedback must exist on more than one alert and should include at least one usefulness or false-positive style review outcome.
+\item Delivery attempts must be persisted for multiple created alerts even when the local environment keeps outbound channels disabled.
+\end{itemize}
+
+\section*{Canonical Command}
+\begin{verbatim}
+python run_phase10_analyst_loop_expansion.py --json
+\end{verbatim}
+
+\section*{Done Condition}
+Task 2 is complete when:
+\begin{itemize}
+\item more than one real-provider-backed alert episode reaches the canonical Phase 4 alert path,
+\item a suppression example is durably recorded for a repeated event family,
+\item multiple persisted analyst actions exist across the resulting alerts,
+\item delivery attempts are written for more than one created alert, and
+\item a compact review packet is written under \texttt{reports/phase10/analyst\_loop\_expansion/}.
+\end{itemize}
+
+\end{document}

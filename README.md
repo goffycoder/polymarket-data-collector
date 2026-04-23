@@ -21,6 +21,12 @@ The canonical roadmap lives in [Documentation/SRS.tex](Documentation/SRS.tex), a
 - The next concrete Phase 9 execution artifact now lives in [Documentation/phases/phase9_task3_replay_validation.tex](Documentation/phases/phase9_task3_replay_validation.tex), with generated Task 3 outputs under `reports/phase5/`.
 - The next concrete Phase 9 execution artifact now lives in [Documentation/phases/phase9_task4_phase6_model_completion.tex](Documentation/phases/phase9_task4_phase6_model_completion.tex), with generated Task 4 outputs under `reports/phase6/`.
 - The final concrete Phase 9 execution artifact now lives in [Documentation/phases/phase9_task5_closeout_refresh.tex](Documentation/phases/phase9_task5_closeout_refresh.tex), with refreshed closeout outputs under `reports/phase9/closeout_refresh/` and regenerated Phase 8 artifacts under `reports/phase8/`.
+- The next single-owner hardening plan now lives in [Documentation/phases/phase10.tex](Documentation/phases/phase10.tex). It translates the remaining Phase 9 blocker list into one operational-hardening and evidence-quality path.
+- The first concrete Phase 10 execution artifact now lives in [Documentation/phases/phase10_task1_real_provider_evidence.tex](Documentation/phases/phase10_task1_real_provider_evidence.tex), with generated Task 1 outputs under `reports/phase10/real_provider_evidence_hardening/`.
+- The next concrete Phase 10 execution artifact now lives in [Documentation/phases/phase10_task2_analyst_loop_expansion.tex](Documentation/phases/phase10_task2_analyst_loop_expansion.tex), with generated Task 2 outputs under `reports/phase10/analyst_loop_expansion/`.
+- The next concrete Phase 10 execution artifact now lives in [Documentation/phases/phase10_task3_heldout_validation.tex](Documentation/phases/phase10_task3_heldout_validation.tex), with generated Task 3 outputs under `reports/phase5/` and `reports/phase10/heldout_validation_pack/`.
+- The next concrete Phase 10 execution artifact now lives in [Documentation/phases/phase10_task4_heldout_model_completion.tex](Documentation/phases/phase10_task4_heldout_model_completion.tex), with generated Task 4 outputs under `reports/phase6/` and `reports/phase10/heldout_model_completion/`.
+- The final concrete Phase 10 execution artifact now lives in [Documentation/phases/phase10_task5_ops_governance_closeout.tex](Documentation/phases/phase10_task5_ops_governance_closeout.tex), with generated Task 5 outputs under `reports/phase10/final_closeout/`.
 - Runtime outputs under `data/` and `reports/` are generated locally and are not the source of truth in git by themselves.
 
 If you are orienting yourself quickly, read these in order:
@@ -39,9 +45,15 @@ If you are orienting yourself quickly, read these in order:
 12. [Documentation/phases/phase9_task3_replay_validation.tex](Documentation/phases/phase9_task3_replay_validation.tex)
 13. [Documentation/phases/phase9_task4_phase6_model_completion.tex](Documentation/phases/phase9_task4_phase6_model_completion.tex)
 14. [Documentation/phases/phase9_task5_closeout_refresh.tex](Documentation/phases/phase9_task5_closeout_refresh.tex)
-15. [Documentation/phases/phase8.tex](Documentation/phases/phase8.tex)
-16. [Documentation/phases/phase2.tex](Documentation/phases/phase2.tex)
-17. [Documentation/phases/phase4_gate4_signoff.tex](Documentation/phases/phase4_gate4_signoff.tex)
+15. [Documentation/phases/phase10.tex](Documentation/phases/phase10.tex)
+16. [Documentation/phases/phase10_task1_real_provider_evidence.tex](Documentation/phases/phase10_task1_real_provider_evidence.tex)
+17. [Documentation/phases/phase10_task2_analyst_loop_expansion.tex](Documentation/phases/phase10_task2_analyst_loop_expansion.tex)
+18. [Documentation/phases/phase10_task3_heldout_validation.tex](Documentation/phases/phase10_task3_heldout_validation.tex)
+19. [Documentation/phases/phase10_task4_heldout_model_completion.tex](Documentation/phases/phase10_task4_heldout_model_completion.tex)
+20. [Documentation/phases/phase10_task5_ops_governance_closeout.tex](Documentation/phases/phase10_task5_ops_governance_closeout.tex)
+21. [Documentation/phases/phase8.tex](Documentation/phases/phase8.tex)
+22. [Documentation/phases/phase2.tex](Documentation/phases/phase2.tex)
+23. [Documentation/phases/phase4_gate4_signoff.tex](Documentation/phases/phase4_gate4_signoff.tex)
 
 ## What This Is
 
