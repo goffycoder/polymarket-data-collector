@@ -17,6 +17,20 @@ from validation.phase1_validators import (
     load_phase1_validation_contract,
     run_phase1_validation,
 )
+from validation.phase2_archive_reader import (
+    ArchiveManifestEntry,
+    ArchiveRecordRejection,
+    RawArchiveRecord,
+)
+from validation.phase2_envelope_reconstruction import ReconstructionRejection
+from validation.phase2_replay_engine import ReplayMetadata
+from validation.phase2_replay_validation import (
+    _compare_with_manifest,
+    _compute_replay_metrics,
+    _detect_replay_discrepancies,
+    _validate_replay_output,
+)
+from validation.phase2_case_study import run_phase2_replay_case_study
 
 __all__ = [
     "FieldRule",
@@ -25,6 +39,16 @@ __all__ = [
     "FreshWalletRecord",
     "EpisodeLinkageRecord",
     "Phase1QASampleRow",
+    "ArchiveManifestEntry",
+    "ArchiveRecordRejection",
+    "RawArchiveRecord",
+    "ReconstructionRejection",
+    "ReplayMetadata",
+    "_compare_with_manifest",
+    "_compute_replay_metrics",
+    "_detect_replay_discrepancies",
+    "_validate_replay_output",
+    "run_phase2_replay_case_study",
     "ValidationFinding",
     "ValidationSummary",
     "generate_phase1_qa_samples",
