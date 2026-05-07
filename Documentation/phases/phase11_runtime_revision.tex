@@ -1,0 +1,226 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 11 Runtime Revision Plan - Single Owner}
+
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex}, the committed Phase 8 through Phase 10 closeout set under \texttt{Documentation/phases/}, the current operator runbooks under \texttt{database/*RUNBOOK.md}, and the live workspace inspection performed on \texttt{2026-05-07}.\\
+\textbf{Execution status:} Planned remediation and activation phase after the current workspace review.\\
+\textbf{Entry assumption:} The repo can collect and persist large amounts of Phase 2 data, and it contains later-phase code plus offline report artifacts, but the current live workspace is \textbf{not} operating as a true end-to-end detector-alert-shadow-ML runtime.
+
+\textbf{Phase goal:} Convert the current workspace from a \textbf{collector-heavy, downstream-inactive, storage-fragile local environment} into a \textbf{truthful, disk-bounded, end-to-end live runtime} that can actually emit candidates, generate evidence-backed alerts, and preserve enough replayability to validate what happened.\\
+\textbf{Interpretation note:} This is not a new research phase. It is a runtime revision and operational correction phase derived from the mismatch between the committed Phase 9 and Phase 10 claims and the current local reality observed on \texttt{2026-05-07}.\\
+\textbf{Implementation note:} The first priority is to make the canonical local runtime honest and operable. New modeling breadth, new research modules, or new delivery channels do not belong ahead of activation, backfill, retention, and observability fixes.
+
+\section*{Why Phase 11 Exists}
+The current workspace shows a structural gap between what the repo can do in reports and what it is actually doing live.
+\begin{itemize}
+\item The collector was actively running on \texttt{2026-05-07} and was writing book snapshots, raw archives, detector-input partitions, and SQLite state.
+\item The same workspace showed \texttt{0} persisted rows in \texttt{signal\_candidates}, \texttt{alerts}, \texttt{evidence\_snapshots}, \texttt{shadow\_model\_scores}, \texttt{model\_registry}, \texttt{model\_evaluation\_runs}, and \texttt{calibration\_profiles}.
+\item The collector entrypoint only enables Phase 3 live detection when \texttt{POLYMARKET\_ENABLE\_PHASE3\_DETECTOR=true}; the launchd setup used for the background collector did not prove that this was enabled.
+\item The current detector registration row records a Redis failure at \texttt{2026-04-21T13:45:40+00:00} and a fallback to \texttt{memory}, which is explicitly documented as useful only for smoke tests rather than canonical live operation.
+\item The repo does not auto-load \texttt{.env}; the Phase 4 runbook requires manual \texttt{source .env}. The launchd agent only launches \texttt{run\_collector.py}, so shell-exported vars do not automatically exist in that background runtime.
+\item Phase 4, Phase 5, and Phase 6 live or replay workflows are separate runner commands, not default background loops.
+\item The live Phase 3 runner only scans the current and previous detector-input hour, so later activation does not automatically recover old archived windows.
+\item Severe disk pressure already forced deletion of the entire \texttt{month=04} raw and detector-input archive tree before this plan was written, which means part of the replay surface is already gone.
+\end{itemize}
+
+Phase 11 therefore exists to close the gap between:
+\begin{itemize}
+\item a repo that can ingest high-volume data and produce selective offline evidence packets, and
+\item a repo that can actually run the canonical live workflow safely and repeatedly on one developer machine without silently dropping the downstream stages or filling the disk.
+\end{itemize}
+
+\section*{Current Issues To Fix}
+\begin{longtable}{p{0.23\linewidth}p{0.40\linewidth}p{0.25\linewidth}}
+\textbf{Issue} & \textbf{Current evidence} & \textbf{Why it matters} \\
+Phase 3 disabled by default & \texttt{run\_collector.py} only starts \texttt{phase3\_live\_loop()} when \texttt{POLYMARKET\_ENABLE\_PHASE3\_DETECTOR=true}. & The default live runtime can collect data forever without emitting a single candidate. \\
+Launchd path does not load operator env & \texttt{polymarket.plist} launches \texttt{run\_collector.py} directly; repo code does not auto-load \texttt{.env}. & Background runtime can miss Phase 3 enablement, Redis URL, and delivery config even if those exist interactively. \\
+Redis-backed detector state not established & \texttt{detector\_versions} shows fallback to \texttt{memory} after Redis connection failure on \texttt{2026-04-21}. & In-memory fallback is non-canonical and fragile for live state, cooldown continuity, and restart safety. \\
+No persisted Phase 3 output in current DB & \texttt{signal\_candidates=0}, \texttt{detector\_checkpoints=0}. & The collector is not leaving durable signal output. \\
+No persisted Phase 4 output in current DB & \texttt{alerts=0}, \texttt{evidence\_queries=0}, \texttt{evidence\_snapshots=0}, \texttt{alert\_delivery\_attempts=0}, \texttt{analyst\_feedback=0}. & No actual alert loop is running in the canonical live workspace. \\
+No persisted Phase 6 live output in current DB & \texttt{shadow\_model\_scores=0}, \texttt{model\_registry=0}, \texttt{model\_evaluation\_runs=0}, \texttt{calibration\_profiles=0}. & Shadow ML is present in reports but not activated live here. \\
+Later phases require manual orchestration & \texttt{run\_phase3\_live.py}, \texttt{run\_phase4\_pipeline.py}, and \texttt{run\_phase6\_shadow\_live.py} are separate commands. & The operator can mistakenly believe the collector implies end-to-end activation when it does not. \\
+Live detector does not back-process old windows & \texttt{Phase3LiveRunner} scans only the current and previous hour of detector-input partitions. & If Phase 3 is activated late, old archived windows are missed unless replay tools are run explicitly. \\
+Storage policy is too weak for one-machine operation & After the emergency April deletion, the workspace still held roughly \texttt{95G} under \texttt{data/} and \texttt{27G} under \texttt{database/}. & Disk exhaustion directly damages replayability and normal machine use. \\
+Raw and detector-input duplication is expensive & Both \texttt{data/raw} and \texttt{data/detector\_input} retain large copies of overlapping event streams. & The repo pays large local storage cost before downstream value is proven. \\
+Replay surface already degraded & \texttt{data/raw/year=2026/month=04} and \texttt{data/detector\_input/year=2026/month=04} are gone from the live workspace. & Some earlier frozen windows are no longer locally reproducible from archives alone. \\
+Secrets discipline is weak & \texttt{.env} currently contains a Telegram bot token and chat id in plaintext. & Secret handling and operator safety do not meet the repo's own governance goals. \\
+Live claims and local reality can diverge & Phase 10 reports claim completion, while the current DB snapshot shows empty later-phase runtime tables. & Reviewers can mistake offline packets for live runtime proof. \\
+\end{longtable}
+
+\section*{Owned Deliverables}
+\begin{enumerate}
+\item Build one canonical runtime activation path that starts collector, Phase 3, optional Phase 4, and optional Phase 6 with explicit configuration and health checks.
+\item Make the launchd or equivalent background path environment-safe so the background runtime uses the intended detector, Redis, and delivery settings.
+\item Restore durable Phase 3 live operation with Redis-backed state, persisted checkpoints, and non-zero candidate output on real data.
+\item Restore or explicitly redesign the Phase 4 alert path so candidates can become evidence-backed alerts with durable delivery and analyst feedback rows.
+\item Restore or explicitly redesign the Phase 6 live shadow path so live or rolling-window scoring can happen without pretending offline reports equal live activity.
+\item Add replay and backfill tooling that can intentionally process archived detector-input windows after the fact, rather than relying on the live hour-only tailer.
+\item Add a storage lifecycle policy with hot, warm, and cold retention plus safe compaction, deletion, and restore procedures for one-machine operation.
+\item Close the secret-handling gap by removing plaintext runtime secrets from repo-local defaults and replacing them with approved local secret-loading guidance.
+\item Refresh the truthfulness docs so the repo clearly distinguishes live runtime evidence from offline seeded or replay-only packets.
+\end{enumerate}
+
+\section*{Phase 11 Exit Criteria}
+\begin{itemize}
+\item A single documented local command path can launch the intended canonical runtime with Phase 3 enabled and observable.
+\item Redis-backed Phase 3 state is healthy, or a deliberately chosen non-Redis fallback is documented and accepted as canonical.
+\item The live DB shows non-zero \texttt{signal\_candidates} and \texttt{detector\_checkpoints} from real live operation.
+\item If Phase 4 is part of the canonical live path, the live DB shows non-zero \texttt{evidence\_queries}, \texttt{alerts}, and \texttt{alert\_delivery\_attempts}; otherwise the docs explicitly say Phase 4 remains manual.
+\item If Phase 6 shadow-live scoring is part of the canonical path, the live DB shows non-zero \texttt{shadow\_model\_scores}; otherwise the docs explicitly say Phase 6 remains offline-only.
+\item The operator can intentionally replay an archived detector-input window using explicit tooling rather than relying on the live tailer.
+\item The local runtime can run without filling the system disk under ordinary retention settings.
+\item Secret storage and runtime environment loading follow one explicit safe path rather than accidental shell state.
+\item Final docs explicitly state what the live runtime proves and what still remains replay-only or offline-only.
+\end{itemize}
+
+\section*{Locked Scope Decisions}
+\begin{itemize}
+\item Phase 11 is a runtime-correction and operator-safety phase, not a new research or model-invention phase.
+\item Truthfulness wins over convenience. If a subsystem is still offline-only after this phase, the docs must say so plainly.
+\item Disk-bounded operation is mandatory for the canonical local-first path.
+\item Replayability should be preserved intentionally, but not by keeping unlimited duplicate raw data forever on one laptop.
+\item Phase 4 and Phase 6 may remain manual if that is the honest architectural choice, but the repo must stop implying they are live by default if they are not.
+\item Secret values must not remain in committed or casually copied repo-local plaintext defaults.
+\item No cloud-first redesign, autonomous trading, or multi-host orchestration belongs ahead of fixing the one-machine canonical path.
+\end{itemize}
+
+\section*{Concrete Workstreams}
+\textbf{Workstream 1: Runtime activation and configuration}
+\begin{itemize}
+\item Create one canonical environment-loading path for all live runtimes.
+\item Decide whether launchd remains the canonical background runtime or whether a wrapper script becomes the source of truth.
+\item Make Phase 3 enablement explicit and testable at startup.
+\item Emit startup logs that state whether Phase 3, Phase 4, and Phase 6 are enabled.
+\end{itemize}
+
+\textbf{Workstream 2: Phase 3 state and detector health}
+\begin{itemize}
+\item Require a healthy Redis-backed state path for the canonical live detector unless an intentional alternative is approved.
+\item Add health checks that fail loudly when Redis is unreachable and the runtime is about to fall back to memory unexpectedly.
+\item Persist and inspect detector checkpoints continuously so hour-tail processing is auditable.
+\item Run a first real local Gate 3 evidence window after activation.
+\end{itemize}
+
+\textbf{Workstream 3: Later-phase orchestration honesty}
+\begin{itemize}
+\item Decide which of Phase 4 and Phase 6 are truly part of the live runtime and which remain manual or scheduled follow-ons.
+\item If Phase 4 is canonical live, add an operator-safe runner path that consumes pending candidates automatically.
+\item If Phase 6 is canonical live, add an operator-safe rolling scoring path with bounded cadence and observable outputs.
+\item If either stage remains manual, update docs and status messages so the operator cannot mistake collection for full activation.
+\end{itemize}
+
+\textbf{Workstream 4: Replay and backfill recovery}
+\begin{itemize}
+\item Promote the archived-window detector runner as the official path for old detector-input windows.
+\item Add one command that can process an exact archived window and report candidate counts, checkpoint behavior, and output rows.
+\item Record the consequences of the April archive deletion and identify which frozen windows are no longer restorable locally.
+\item Define the minimum archive set required to preserve future reproducibility.
+\end{itemize}
+
+\textbf{Workstream 5: Storage lifecycle and compaction}
+\begin{itemize}
+\item Define hot, warm, and cold retention classes for raw archives, detector-input, replay bundles, SQLite or PostgreSQL state, and logs.
+\item Decide which source systems must keep raw plus normalized copies and which can be reduced safely after promotion into the database.
+\item Add explicit compaction, pruning, and restore runbooks with projected disk savings.
+\item Add disk-pressure stop conditions so the collector can fail safe before the machine becomes unusable.
+\end{itemize}
+
+\textbf{Workstream 6: Security and secret handling}
+\begin{itemize}
+\item Remove plaintext secret dependence from the canonical workflow.
+\item Move Telegram or other delivery credentials to approved local secret storage paths.
+\item Update runbooks so environment loading is safe, repeatable, and reviewable.
+\item Rotate any secret that was pasted into repo-local plaintext or chat history.
+\end{itemize}
+
+\textbf{Workstream 7: Truthfulness refresh}
+\begin{itemize}
+\item Update the phase docs and runbooks to distinguish live proof from seeded or replay-only proof.
+\item Add one explicit current-state memo that answers whether the canonical runtime is collector-only, detector-live, alert-live, or shadow-live.
+\item Regenerate the most important closeout claims after activation so the workspace description matches reality.
+\end{itemize}
+
+\section*{Concrete Execution Sequence}
+\textbf{Block 1: Stabilize the machine first}
+\begin{itemize}
+\item Keep the collector stopped until retention and runtime activation changes are decided.
+\item Free enough disk space to make safe edits, logs, and optional database maintenance possible.
+\item Freeze the exact current-state inventory before any destructive cleanup continues.
+\end{itemize}
+
+\textbf{Block 2: Make canonical startup explicit}
+\begin{itemize}
+\item Create one wrapper or one documented startup path that loads environment, validates required dependencies, and then launches the intended services.
+\item Ensure that startup prints whether Phase 3 is enabled, which state backend is active, and whether outbound alert channels are enabled.
+\item Prevent silent fallback from the intended canonical runtime into a degraded but apparently healthy mode.
+\end{itemize}
+
+\textbf{Block 3: Activate and validate Phase 3 live}
+\begin{itemize}
+\item Bring up Redis and verify it before collector start.
+\item Launch the collector with Phase 3 enabled.
+\item Let the detector run long enough to produce a first real candidate window.
+\item Generate the Gate 3 candidate and reconciliation reports on that exact window.
+\end{itemize}
+
+\textbf{Block 4: Decide and implement the Phase 4 and Phase 6 live story}
+\begin{itemize}
+\item Either integrate the later-stage runners into the canonical operations path or document them as intentionally manual follow-ons.
+\item If integrated, run them on the same live window and confirm durable rows appear.
+\item If kept manual, make the operator flow explicit so collection is never mistaken for full activation.
+\end{itemize}
+
+\textbf{Block 5: Fix replay and retention}
+\begin{itemize}
+\item Build the archived-window processing path for old detector-input partitions.
+\item Define the minimum set of files that must be kept for future reproducibility.
+\item Add routine pruning and disk thresholds before restarting long-running collection.
+\end{itemize}
+
+\textbf{Block 6: Refresh docs and claims}
+\begin{itemize}
+\item Update runbooks, status docs, and any over-broad completion language.
+\item Publish one short current-state memo summarizing what is now truly live.
+\item Publish one operator memo summarizing what was lost by the April archive deletion and what is protected going forward.
+\end{itemize}
+
+\section*{Concrete Artifacts Required}
+\begin{longtable}{p{0.23\linewidth}p{0.38\linewidth}p{0.25\linewidth}}
+\textbf{Workstream} & \textbf{Artifact} & \textbf{Done condition} \\
+Runtime activation & Canonical startup path plus health-check output & Operator can start the intended live stack without relying on remembered shell state \\
+Phase 3 live proof & Gate 3 report on a real live window & Non-zero live candidates, detector checkpoints, and reconciliation evidence exist \\
+Phase 4 truthfulness & Activation memo or manual-only memo & Repo clearly states whether alerts are live by default or not \\
+Phase 6 truthfulness & Activation memo or offline-only memo & Repo clearly states whether live shadow scoring is active or only offline \\
+Replay recovery & Archived-window detector runbook and command path & Old detector-input windows can be processed intentionally when archives exist \\
+Storage lifecycle & Retention and compaction plan with projected savings & Machine can operate without recurring emergency deletions \\
+Secret handling & Updated secret-loading policy and rotated credentials & Plaintext repo-local secret dependence is removed from canonical workflow \\
+Closeout refresh & Current-state runtime memo & Live state claims match actual local behavior \\
+\end{longtable}
+
+\section*{Expected Areas To Touch}
+\begin{itemize}
+\item \texttt{run\_collector.py}
+\item \texttt{config/settings.py}
+\item \texttt{phase3/live\_runner.py}, \texttt{phase3/state\_store.py}, and related validation runners
+\item \texttt{phase4/} and \texttt{phase6/} runner entrypoints if those become part of canonical live operation
+\item \texttt{database/PHASE3\_LOCAL\_RUNBOOK.md}, \texttt{database/PHASE4\_LOCAL\_RUNBOOK.md}, and \texttt{database/PHASE6\_SINGLE\_OWNER\_RUNBOOK.md}
+\item \texttt{polymarket.plist} or its replacement startup wrapper
+\item \texttt{Documentation/phases/} closeout and current-state documents
+\item local retention and cleanup procedures affecting \texttt{data/}, \texttt{database/}, and \texttt{logs/}
+\end{itemize}
+
+\section*{Non-Goals}
+\begin{itemize}
+\item No new model family, graph-ranker expansion, or broader research package before runtime activation is repaired.
+\item No claim that deleting archives was harmless; the plan must acknowledge replay loss honestly.
+\item No hidden dependence on interactive shell exports for the canonical background runtime.
+\item No silent default to memory state if Redis-backed live detection is part of the claimed canonical path.
+\end{itemize}
+
+\section*{Phase 11 Readiness Standard}
+Phase 11 is complete when one developer machine can run the repo honestly as documented: collection is live, detector state is intentional, downstream phases are either actually active or explicitly manual, replay limits are known, disk use is bounded, and the documentation no longer overstates what the current workspace proves.
+
+\end{document}
