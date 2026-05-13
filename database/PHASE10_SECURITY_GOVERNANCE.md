@@ -4,6 +4,8 @@
 - Secrets must not be committed to git.
 - Runtime reports may only record whether a secret is configured, never the secret value itself.
 - Environment variables, the OS keychain, or a local secret manager are the approved local storage paths.
+- For this repo's canonical local runtime, `.env.runtime` is for non-secret toggles only.
+- If a file-based local fallback is needed, use the repo-ignored `.env.runtime.secrets` path instead of `.env` or `.env.runtime`.
 
 ## Wallet Redaction
 - User-facing alert payloads must redact wallet-like identifiers by default.

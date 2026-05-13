@@ -1,0 +1,329 @@
+{
+  "checklist": [
+    {
+      "checklist_id": "deliverable_1",
+      "evidence": [
+        "run_runtime.py exists as the canonical launcher.",
+        "polymarket.plist points at run_runtime.py.",
+        "run_runtime.py prints runtime plan and storage guard status."
+      ],
+      "remaining_work": [],
+      "requirement": "One canonical runtime activation path exists with explicit configuration and health checks.",
+      "section": "Owned Deliverables",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "deliverable_2",
+      "evidence": [
+        "polymarket.plist points to run_runtime.py=True.",
+        "runtime env source=explicit_env_file, secret source=shell_or_keychain_only.",
+        "config/runtime_env.py supports .env.runtime and .env.runtime.secrets."
+      ],
+      "remaining_work": [],
+      "requirement": "The background runtime path is environment-safe.",
+      "section": "Owned Deliverables",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "deliverable_3",
+      "evidence": [
+        "state_backend_health=reachable",
+        "registered_backend=sqlite",
+        "checkpoint_count_recent=4",
+        "candidate_count_recent=3"
+      ],
+      "remaining_work": [
+        "Run the canonical runtime long enough to produce fresh checkpoints and live candidates."
+      ],
+      "requirement": "Durable Phase 3 live operation is restored with an approved durable backend, persisted checkpoints, and non-zero live candidate output.",
+      "section": "Owned Deliverables",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "deliverable_4",
+      "evidence": [
+        "configured_profile=alert_live",
+        "phase4_registration_present=True",
+        "recent_alert_count=3"
+      ],
+      "remaining_work": [],
+      "requirement": "The Phase 4 alert path is either restored live or redesign-documented honestly.",
+      "section": "Owned Deliverables",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "deliverable_5",
+      "evidence": [
+        "phase6_runtime_decision=optional_shadow_live_extension",
+        "active_shadow_model_present=True",
+        "recent_shadow_score_count=0"
+      ],
+      "remaining_work": [
+        "Run Phase 6 live shadow scoring if you want fresh live proof beyond the current documented optional status."
+      ],
+      "requirement": "The Phase 6 live shadow story is either restored live or redesign-documented honestly.",
+      "section": "Owned Deliverables",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "deliverable_6",
+      "evidence": [
+        "run_runtime_replay_window.py exists.",
+        "run_runtime_replay_window.py records restore-plan, replay status, and candidate deltas.",
+        "database/PHASE11_RUNTIME_STORAGE_RUNBOOK.md documents the archived-window path."
+      ],
+      "remaining_work": [],
+      "requirement": "Replay and backfill tooling can intentionally process archived detector-input windows.",
+      "section": "Owned Deliverables",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "deliverable_7",
+      "evidence": [
+        "storage_status=blocked",
+        "storage_reason=free_bytes_below_threshold,free_percent_below_threshold",
+        "run_runtime_storage_status.py exists and refreshes storage audit + compaction plan.",
+        "phase7/runtime_storage.py defines retention policy and disk guard behavior."
+      ],
+      "remaining_work": [
+        "Free enough disk space to get above the configured runtime safety floor.",
+        "Only then restart the canonical runtime for sustained operation."
+      ],
+      "requirement": "A storage lifecycle policy with retention, restore, pruning, and disk-pressure safety exists.",
+      "section": "Owned Deliverables",
+      "status": "partially_implemented"
+    },
+    {
+      "checklist_id": "deliverable_8",
+      "evidence": [
+        "secret_env_source=shell_or_keychain_only",
+        "secret_keys_in_primary_env=[]",
+        ".env.runtime.secrets.example exists and .gitignore excludes secret env files."
+      ],
+      "remaining_work": [
+        "Rotate any previously exposed real credentials outside the repo."
+      ],
+      "requirement": "Plaintext-secret dependence is removed from the canonical workflow and replaced with approved local secret-loading guidance.",
+      "section": "Owned Deliverables",
+      "status": "partially_implemented"
+    },
+    {
+      "checklist_id": "deliverable_9",
+      "evidence": [
+        "phase11_current_state_memo.tex exists.",
+        "phase11_archive_loss_memo.tex exists.",
+        "run_runtime_status.py reports observed_recent_runtime_profile and archive_loss_truth."
+      ],
+      "remaining_work": [],
+      "requirement": "Truthfulness docs distinguish live proof from historical, replay-only, or offline evidence.",
+      "section": "Owned Deliverables",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "exit_1",
+      "evidence": [
+        "README documents run_runtime.py as the canonical path.",
+        "configured_runtime_profile=alert_live"
+      ],
+      "remaining_work": [],
+      "requirement": "A single documented local command path can launch the intended canonical runtime with Phase 3 enabled and observable.",
+      "section": "Phase 11 Exit Criteria",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "exit_2",
+      "evidence": [
+        "state_backend_health=reachable",
+        "registered_backend=sqlite"
+      ],
+      "remaining_work": [
+        "Run Phase 3 live with the configured durable backend so the detector registration row updates out of memory mode."
+      ],
+      "requirement": "Redis-backed Phase 3 state is healthy, or a non-Redis alternative is explicitly accepted as canonical.",
+      "section": "Phase 11 Exit Criteria",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "exit_3",
+      "evidence": [
+        "candidate_count_recent=3",
+        "checkpoint_count_recent=4",
+        "candidate_count_total=102"
+      ],
+      "remaining_work": [
+        "Produce a fresh live detector window under the canonical runtime."
+      ],
+      "requirement": "The live DB shows non-zero signal_candidates and detector_checkpoints from real live operation.",
+      "section": "Phase 11 Exit Criteria",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "exit_4",
+      "evidence": [
+        "evidence_query_count_recent=10",
+        "alert_count_recent=3",
+        "delivery_attempt_count_recent=4"
+      ],
+      "remaining_work": [
+        "Run a fresh Phase 4 live window under the canonical runtime and confirm new persisted rows."
+      ],
+      "requirement": "If Phase 4 is canonical live, the live DB shows non-zero recent evidence, alert, and delivery rows.",
+      "section": "Phase 11 Exit Criteria",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "exit_5",
+      "evidence": [
+        "phase6_runtime_decision=optional_shadow_live_extension",
+        "configured_runtime_profile=alert_live"
+      ],
+      "remaining_work": [],
+      "requirement": "If Phase 6 shadow-live scoring is not canonical, the docs state that clearly instead of implying it is live by default.",
+      "section": "Phase 11 Exit Criteria",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "exit_6",
+      "evidence": [
+        "run_runtime_replay_window.py exists.",
+        "run_runtime_replay_window.py documents checkpoint behavior and restore status."
+      ],
+      "remaining_work": [],
+      "requirement": "The operator can intentionally replay an archived detector-input window using explicit tooling.",
+      "section": "Phase 11 Exit Criteria",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "exit_7",
+      "evidence": [
+        "storage_status=blocked",
+        "free_gb=2.133",
+        "free_percent=1.101"
+      ],
+      "remaining_work": [
+        "Free enough disk headroom to clear the configured minimum free GB and percent thresholds."
+      ],
+      "requirement": "The local runtime can run without filling the system disk under ordinary retention settings.",
+      "section": "Phase 11 Exit Criteria",
+      "status": "not_implemented"
+    },
+    {
+      "checklist_id": "exit_8",
+      "evidence": [
+        "primary_env_source=explicit_env_file",
+        "secret_env_source=shell_or_keychain_only",
+        "warnings=[]"
+      ],
+      "remaining_work": [],
+      "requirement": "Secret storage and runtime env loading follow one explicit safer path rather than accidental shell state.",
+      "section": "Phase 11 Exit Criteria",
+      "status": "implemented"
+    },
+    {
+      "checklist_id": "exit_9",
+      "evidence": [
+        "observed_recent_runtime_profile=alert_live",
+        "phase11_current_state_memo.tex and phase11_archive_loss_memo.tex exist."
+      ],
+      "remaining_work": [],
+      "requirement": "Final docs explicitly state what the live runtime proves and what remains replay-only, historical-only, or optional.",
+      "section": "Phase 11 Exit Criteria",
+      "status": "implemented"
+    }
+  ],
+  "env_loading": {
+    "primary_env_file": "C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\.env.runtime.example",
+    "primary_env_source": "explicit_env_file",
+    "secret_env_file": null,
+    "secret_env_source": "shell_or_keychain_only",
+    "warnings": []
+  },
+  "next_required_actions": [
+    "Run the canonical runtime long enough to produce fresh checkpoints and live candidates.",
+    "Run Phase 6 live shadow scoring if you want fresh live proof beyond the current documented optional status.",
+    "Free enough disk space to get above the configured runtime safety floor.",
+    "Only then restart the canonical runtime for sustained operation.",
+    "Rotate any previously exposed real credentials outside the repo.",
+    "Run Phase 3 live with the configured durable backend so the detector registration row updates out of memory mode.",
+    "Produce a fresh live detector window under the canonical runtime.",
+    "Run a fresh Phase 4 live window under the canonical runtime and confirm new persisted rows.",
+    "Free enough disk headroom to clear the configured minimum free GB and percent thresholds."
+  ],
+  "phase3_runtime_status": {
+    "candidate_count_recent": 3,
+    "candidate_count_total": 102,
+    "checkpoint_count": 4,
+    "checkpoint_count_recent": 4,
+    "detector_version": "phase3_detector_v1",
+    "latest_candidate_at": "2026-05-13T19:01:41.825190+00:00",
+    "latest_captured_at": "2026-05-13T19:02:11.825190+00:00",
+    "latest_checkpoint_at": "2026-05-13T19:03:11.979754+00:00",
+    "latest_checkpoint_file_offset": 1120,
+    "latest_checkpoint_partition_path": "detector_input/year=2026/month=05/day=13/hour=19/source_system=phase11_runtime_proof_20260513T190311_trades/events.ndjson",
+    "latest_checkpoint_source_system": "phase11_runtime_proof_20260513T190311_trades",
+    "recent_window_hours": 24
+  },
+  "phase4_runtime_status": {
+    "alert_count_recent": 3,
+    "alert_count_total": 102,
+    "analyst_feedback_count_recent": 0,
+    "analyst_feedback_count_total": 2,
+    "delivery_attempt_count_recent": 4,
+    "delivery_attempt_count_total": 200,
+    "evidence_query_count_recent": 10,
+    "evidence_query_count_total": 13,
+    "evidence_snapshot_count_recent": 5,
+    "evidence_snapshot_count_total": 104,
+    "latest_alert_at": "2026-05-13T19:03:12.120540+00:00",
+    "latest_delivery_attempt_at": "2026-05-13T19:03:12.179240+00:00",
+    "latest_evidence_query_at": "2026-05-13T19:03:12.061656+00:00",
+    "latest_evidence_snapshot_at": "2026-05-13T19:03:12.067137+00:00",
+    "latest_feedback_at": "2026-04-22T22:41:58.782730+00:00",
+    "recent_window_hours": 24,
+    "workflow_version": "phase4_alerts_v1"
+  },
+  "phase6_runtime_status": {
+    "active_shadow_model_deployment_status": "shadow",
+    "active_shadow_model_present": true,
+    "active_shadow_model_version": "phase10_task4_lightgbm_v1",
+    "latest_shadow_score_at": "2026-04-20T05:18:45+00:00",
+    "model_registry_count_total": 2,
+    "recent_window_hours": 24,
+    "shadow_score_count_recent": 0,
+    "shadow_score_count_total": 98
+  },
+  "runtime_decision": {
+    "alert_authority": "phase4_rule_based",
+    "canonical_default_runtime_profile": "alert_live",
+    "canonical_v1_operating_mode": "rule_based_plus_shadow_ml",
+    "configured_runtime_profile": "alert_live",
+    "ml_authority": "phase6_shadow_only",
+    "observed_recent_runtime_profile": "alert_live",
+    "phase4_runtime_decision": "canonical_live_default",
+    "phase6_runtime_decision": "optional_shadow_live_extension"
+  },
+  "state_backend_health": {
+    "backend_name": "sqlite",
+    "notes": "Configured for durable SQLite Phase 3 state. SQLite state path=C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\database\\phase3_state.db.",
+    "status": "reachable"
+  },
+  "storage_status_summary": {
+    "free_gb": 2.133,
+    "free_percent": 1.101,
+    "latest_storage_audit_run_id": "03a68d19b2894067837702cf5e7fd43a",
+    "managed_bytes": 2863815,
+    "managed_gb": 0.003,
+    "output_path": null,
+    "prune_candidate_bytes": 0,
+    "prune_candidate_count": 0,
+    "reason": "free_bytes_below_threshold,free_percent_below_threshold",
+    "status": "blocked"
+  },
+  "summary": {
+    "implemented_count": 15,
+    "not_implemented_count": 1,
+    "overall_status": "not_implemented",
+    "partially_implemented_count": 2,
+    "recent_hours": 24
+  }
+}

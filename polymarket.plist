@@ -23,7 +23,9 @@
     <key>ProgramArguments</key>
     <array>
         <string>__PYTHON_PATH__</string>
-        <string>__PROJECT_DIR__/run_collector.py</string>
+        <string>__PROJECT_DIR__/run_runtime.py</string>
+        <string>--env-file</string>
+        <string>__PROJECT_DIR__/.env.runtime</string>
     </array>
 
     <!-- Working directory -->

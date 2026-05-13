@@ -62,6 +62,10 @@ venv/bin/python database/postgres_migrate.py \
 
 ## 4. Point the collector at PostgreSQL
 
+If the PostgreSQL DSN includes a password, keep it in shell environment
+variables or the repo-ignored `.env.runtime.secrets` file rather than
+`.env.runtime`.
+
 ```bash
 export POLYMARKET_DB_BACKEND=postgres
 export POLYMARKET_DATABASE_URL='postgresql+psycopg://localhost:5432/polymarket_phase2'

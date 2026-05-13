@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 11 Current State Memo}
+
+\textbf{Date:} May 13, 2026\\
+\textbf{Source of truth:} \texttt{run\_runtime.py --env-file .env.runtime.example --check-only}, \texttt{run\_runtime\_status.py --env-file .env.runtime.example --recent-hours 24}, and \texttt{run\_runtime\_storage\_status.py --env-file .env.runtime.example --refresh-storage-audit --json}.\\
+\textbf{Purpose:} Record the truthful current runtime state after the Phase 11 Task 1 through Task 5 remediation pass.
+
+\section*{Configured Runtime Story}
+The configured canonical local runtime profile is now \texttt{alert\_live}. In plain terms:
+\begin{itemize}
+\item Phase 3 live detection is required for the canonical runtime path.
+\item Phase 4 is the canonical downstream live path.
+\item Phase 6 remains a shadow-only extension and is \textbf{not} part of the default local runtime.
+\end{itemize}
+
+\section*{Observed Runtime Truth On May 13, 2026}
+The truthful observed state is still more limited than the configured story:
+\begin{itemize}
+\item recent live Phase 3 checkpoint activity is still \texttt{0} in the inspected 24-hour window,
+\item recent live Phase 4 evidence and alert activity is still \texttt{0} in the inspected 24-hour window,
+\item recent live Phase 6 shadow-score activity is still \texttt{0} in the inspected 24-hour window,
+\item the database still contains historical persisted rows from earlier seeded or replay-oriented work, but that is not the same thing as current live proof.
+\end{itemize}
+
+The correct truth label for the currently observed runtime is therefore closer to \textbf{historical-only evidence present, fresh live runtime proof not yet demonstrated} than to a claim of continuously healthy live end-to-end operation.
+
+\section*{Storage Truth}
+As of May 13, 2026, the new storage guard is correctly blocking canonical runtime startup on this machine because free disk headroom is below the configured Phase 11 safety floor. The remediation is therefore honest in an important way: the repo now refuses to pretend that long-running collection is safe when the machine is close to full.
+
+\section*{Secret Handling Truth}
+The canonical workflow no longer needs repo-local plaintext secret dependence. The intended posture is:
+\begin{itemize}
+\item keep non-secret toggles in \texttt{.env.runtime},
+\item keep secrets in OS environment variables, a keychain-backed loader, or the repo-ignored \texttt{.env.runtime.secrets} file,
+\item treat legacy \texttt{.env} loading as a compatibility fallback rather than the recommended path.
+\end{itemize}
+
+\section*{Bottom Line}
+Phase 11 has made the runtime more truthful and safer:
+\begin{itemize}
+\item startup is canonical,
+\item detector state is stricter,
+\item Phase 4 and Phase 6 status is explicit,
+\item replay and storage posture are now inspectable,
+\item secret handling guidance is safer.
+\end{itemize}
+
+What it has \textbf{not} yet proven is a fresh, sustained, fully healthy live \texttt{alert\_live} run on this specific machine under current disk conditions.
+
+\end{document}

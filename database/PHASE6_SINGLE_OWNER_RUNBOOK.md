@@ -9,6 +9,11 @@ Use this when you want to:
 - register and activate the shadow model
 - write shadow-score evidence for the same reference window
 
+Phase 11 runtime decision note:
+- Phase 6 remains shadow-only and non-authoritative.
+- The default canonical local runtime profile is `alert_live`, not `shadow_live`.
+- Live shadow scoring is an explicit extension that should only be enabled after a model is registered and activated in `model_registry`.
+
 ## 1. Move into the repo root
 
 ```bash

@@ -71,6 +71,21 @@ python run_phase5_window_health.py ^
 
 Use this before trusting a new historical window.
 
+## 5a. Canonical archived-window runtime replay path
+
+For the Phase 11 runtime-safe replay path that also checks restore coverage first:
+
+```bash
+python run_runtime_replay_window.py ^
+  --start 2026-04-20T05:00:00+00:00 ^
+  --end 2026-04-20T06:00:00+00:00 ^
+  --phase5-source-system phase9_seed_prices ^
+  --phase5-source-system phase9_seed_trades
+```
+
+This is the honest operator path when you want to know whether the window is
+restorable locally before trusting replay output.
+
 ## 6. Useful tables
 
 ```sql

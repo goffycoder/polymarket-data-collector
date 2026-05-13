@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 11 Runtime Mode Decision}
+
+\textbf{Purpose:} remove ambiguity about what Phase 4 and Phase 6 mean in the
+live local runtime after the Phase 11 startup and detector repairs.\\
+\textbf{Source of truth:} \texttt{Documentation/SRS.tex},
+\texttt{Documentation/phases/phase8\_v1\_operating\_mode.tex},
+\texttt{Documentation/phases/phase11\_runtime\_revision.tex}, and the current
+repo runtime entrypoints.
+
+\section*{Decision}
+
+\textbf{Decision 1: Phase 4 is part of the canonical live runtime.}
+
+The local canonical default runtime profile is now
+\texttt{alert\_live}. In that profile:
+\begin{itemize}
+\item Phase 3 detection is enabled and required.
+\item Phase 4 evidence, alert creation, suppression, and delivery-attempt
+logging are enabled as the authoritative downstream path.
+\item Delivery channels may still be locally disabled, but the runtime remains
+truthfully \texttt{alert\_live} if it is persisting evidence, alerts, and
+delivery-attempt rows.
+\end{itemize}
+
+\textbf{Decision 2: Phase 6 is shadow-only and optional in live runtime.}
+
+Phase 6 remains part of the canonical v1 operating story as
+\texttt{rule\_based\_plus\_shadow\_ml}, but it is \textbf{not} the default live
+profile on a fresh machine. Instead:
+\begin{itemize}
+\item Phase 6 shadow-live scoring is an explicit extension named
+\texttt{shadow\_live}.
+\item It should only be enabled after a shadow model is registered and
+activated in \texttt{model\_registry}.
+\item Phase 6 remains non-authoritative: it may score, log, and inform later
+evaluation, but it does not own alert decisions.
+\end{itemize}
+
+\section*{Runtime Profiles}
+
+\begin{itemize}
+\item \texttt{collector\_only}: explicit maintenance mode only.
+\item \texttt{detector\_live}: Phase 3 live, Phase 4 disabled.
+\item \texttt{alert\_live}: Phase 3 live plus Phase 4 live. This is the
+canonical default local runtime profile.
+\item \texttt{shadow\_live}: Phase 3 live plus Phase 4 live plus Phase 6
+shadow-live scoring. This is an explicit extension, not the default.
+\end{itemize}
+
+\section*{Operator Consequence}
+
+The repo must now say two different things clearly:
+\begin{itemize}
+\item what the runtime is \textbf{configured} to do, and
+\item what the database shows it has \textbf{recently persisted}.
+\end{itemize}
+
+The canonical command path therefore includes runtime status inspection so the
+workspace can distinguish:
+\begin{itemize}
+\item historical offline artifacts,
+\item detector-live operation,
+\item alert-live operation,
+\item and shadow-live operation.
+\end{itemize}
+
+\section*{Bottom Line}
+
+The honest Phase 11 decision is:
+\begin{itemize}
+\item Phase 4 is canonical live by default.
+\item Phase 6 is a shadow-live extension, enabled only after explicit model
+activation.
+\item The canonical v1 operating mode remains
+\texttt{rule\_based\_plus\_shadow\_ml}, but the default local runtime profile is
+\texttt{alert\_live}, not \texttt{shadow\_live}.
+\end{itemize}
+
+\end{document}

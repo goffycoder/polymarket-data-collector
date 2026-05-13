@@ -21,7 +21,12 @@ import signal
 import sys
 from datetime import datetime, timezone
 
-from config.settings import ENABLE_PHASE3_DETECTOR, PHASE3_POLL_SECONDS, PHASE3_SOURCE_SYSTEMS
+from config.settings import (
+    ENABLE_PHASE3_DETECTOR,
+    PHASE11_RUNTIME_STORAGE_CHECK_SECONDS,
+    PHASE3_POLL_SECONDS,
+    PHASE3_SOURCE_SYSTEMS,
+)
 from database.db_manager import apply_schema, backend_name, get_conn
 from collectors.events_collector import sync_events
 from collectors.markets_collector import sync_markets
@@ -39,6 +44,7 @@ from collectors.ws_listener import MarketWebSocketListener
 from phase3.detector import Phase3Repository
 from phase3.live_runner import Phase3LiveRunner
 from phase3.state_store import StateStoreContext, create_state_store
+from phase7.runtime_storage import RuntimeStorageSafetyError, build_runtime_storage_status, enforce_runtime_storage_safety
 from utils.logger import get_logger
 
 log = get_logger("run_collector")
@@ -197,6 +203,30 @@ async def ttl_loop():
         await asyncio.sleep(TTL_INTERVAL)
 
 
+async def storage_guard_loop():
+    """Continuously stop the collector if local disk headroom falls below the runtime floor."""
+    await asyncio.sleep(15)
+    while not _shutdown.is_set():
+        try:
+            summary, payload = await asyncio.to_thread(build_runtime_storage_status)
+            if summary.status == "blocked":
+                raise RuntimeStorageSafetyError(
+                    "Runtime storage guard triggered during collection: "
+                    f"{payload['status_reason']} free_gb={summary.free_gb} "
+                    f"free_percent={summary.free_percent} managed_gb={summary.managed_gb}"
+                )
+            if summary.status == "warning":
+                log.warning(
+                    "Storage warning: "
+                    f"{payload['status_reason']} "
+                    f"(managed_gb={summary.managed_gb}, prune_candidates={summary.prune_candidate_count})"
+                )
+        except Exception as e:
+            log.error(f"Storage guard loop error: {e}")
+            raise
+        await asyncio.sleep(PHASE11_RUNTIME_STORAGE_CHECK_SECONDS)
+
+
 async def ws_loop():
     """WebSocket real-time feed for Tier 0 markets — persistent, auto-reconnects.
 
@@ -230,7 +260,10 @@ async def phase3_live_loop():
     global _phase3_state_context
 
     await asyncio.sleep(20)  # Let the collector establish initial live data flow first
-    _phase3_state_context = await create_state_store()
+    _phase3_state_context = await create_state_store(
+        require_backend="durable",
+        allow_fallback=False,
+    )
     repository = Phase3Repository()
     repository.register_detector_version(
         backend_name=_phase3_state_context.backend_name,
@@ -270,6 +303,27 @@ async def main():
     log.info("  POLYMARKET V2 HIGH-RESOLUTION DATA COLLECTOR")
     log.info("=" * 55)
     log.info(f"🗄️ Runtime DB backend: {backend_name()}")
+    try:
+        storage_summary = enforce_runtime_storage_safety()
+        log.info(
+            "💽 Storage guard ready: "
+            f"free_gb={storage_summary.free_gb}, "
+            f"free_percent={storage_summary.free_percent}, "
+            f"managed_gb={storage_summary.managed_gb}, "
+            f"prune_candidates={storage_summary.prune_candidate_count}"
+        )
+    except RuntimeStorageSafetyError as exc:
+        log.error(str(exc))
+        raise
+
+    log.info(
+        "Runtime toggles: "
+        f"phase3_enabled={ENABLE_PHASE3_DETECTOR}, "
+        f"phase3_poll_seconds={PHASE3_POLL_SECONDS}, "
+        f"phase3_sources={list(PHASE3_SOURCE_SYSTEMS)}"
+    )
+    if not ENABLE_PHASE3_DETECTOR:
+        log.warning("Phase 3 detector is disabled in this collector process.")
 
     # ---- PHASE 1: Bootstrap ----
     log.info("📐 PHASE 1: Applying database schema...")
@@ -299,12 +353,24 @@ async def main():
         asyncio.create_task(trades_loop(), name="trades_loop"),
         asyncio.create_task(sync_loop(), name="sync_loop"),
         asyncio.create_task(ttl_loop(), name="ttl_loop"),
+        asyncio.create_task(storage_guard_loop(), name="storage_guard_loop"),
     ]
     if ENABLE_PHASE3_DETECTOR:
         tasks.append(asyncio.create_task(phase3_live_loop(), name="phase3_live_loop"))
     try:
-        await _shutdown.wait()
+        shutdown_waiter = asyncio.create_task(_shutdown.wait(), name="collector_shutdown_wait")
+        done, pending = await asyncio.wait(
+            {shutdown_waiter, *tasks},
+            return_when=asyncio.FIRST_COMPLETED,
+        )
+        if shutdown_waiter not in done:
+            finished_task = next(task for task in done if task in tasks)
+            exc = finished_task.exception()
+            if exc is None:
+                raise RuntimeError(f"Background task {finished_task.get_name()} exited unexpectedly.")
+            raise RuntimeError(f"Background task {finished_task.get_name()} failed.") from exc
     finally:
+        _shutdown.set()
         for task in tasks:
             task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)

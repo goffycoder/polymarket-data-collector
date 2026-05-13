@@ -1,0 +1,53 @@
+{
+  "artifact_version": "phase5_replay_v1",
+  "bundle_id": "7fd455292dc245528f1449ba54232172",
+  "end": "2026-04-20T06:00:00+00:00",
+  "git_commit": "22479d7",
+  "notes": "Generated from the Phase 11 archived-window replay path.",
+  "overall_status": "degraded",
+  "replay_runs": [
+    {
+      "artifact_version": "phase5_replay_v1",
+      "detector_manifest_mismatches": 0,
+      "detector_missing_partitions": 0,
+      "detector_rows_observed": 12,
+      "end": "2026-04-20T06:00:00+00:00",
+      "git_commit": "22479d7",
+      "integrity_status": "degraded",
+      "notes": "Generated from the Phase 11 archived-window replay path.",
+      "output_path": "reports\\phase5\\replay_runs\\runtime_replay\\77cbf779836347dd84d24be7d0d10dca.json",
+      "raw_manifest_mismatches": 0,
+      "raw_missing_partitions": 1,
+      "raw_partitions_touched": 0,
+      "raw_rows_scanned": 0,
+      "replay_run_id": "77cbf779836347dd84d24be7d0d10dca",
+      "source_system": "phase10_task2_seed_prices",
+      "start": "2026-04-20T05:00:00+00:00",
+      "status": "completed_with_gaps"
+    },
+    {
+      "artifact_version": "phase5_replay_v1",
+      "detector_manifest_mismatches": 0,
+      "detector_missing_partitions": 0,
+      "detector_rows_observed": 6,
+      "end": "2026-04-20T06:00:00+00:00",
+      "git_commit": "22479d7",
+      "integrity_status": "degraded",
+      "notes": "Generated from the Phase 11 archived-window replay path.",
+      "output_path": "reports\\phase5\\replay_runs\\runtime_replay\\70ea3381bf0a4fc5b4db35915155a00c.json",
+      "raw_manifest_mismatches": 0,
+      "raw_missing_partitions": 1,
+      "raw_partitions_touched": 0,
+      "raw_rows_scanned": 0,
+      "replay_run_id": "70ea3381bf0a4fc5b4db35915155a00c",
+      "source_system": "phase10_task2_seed_trades",
+      "start": "2026-04-20T05:00:00+00:00",
+      "status": "completed_with_gaps"
+    }
+  ],
+  "source_systems": [
+    "phase10_task2_seed_prices",
+    "phase10_task2_seed_trades"
+  ],
+  "start": "2026-04-20T05:00:00+00:00"
+}

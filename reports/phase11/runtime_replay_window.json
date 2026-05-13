@@ -1,0 +1,220 @@
+{
+  "backfill_requests": [],
+  "candidate_ids_created": [],
+  "candidate_rows_after": 3,
+  "candidate_rows_before": 3,
+  "candidate_rows_created": 0,
+  "checkpoint_after": {
+    "candidate_count_recent": 0,
+    "candidate_count_total": 99,
+    "checkpoint_count": 0,
+    "checkpoint_count_recent": 0,
+    "detector_version": "phase3_detector_v1",
+    "latest_candidate_at": "2026-04-20T05:22:00+00:00",
+    "latest_captured_at": null,
+    "latest_checkpoint_at": null,
+    "latest_checkpoint_file_offset": 0,
+    "latest_checkpoint_partition_path": null,
+    "latest_checkpoint_source_system": null,
+    "recent_window_hours": 24
+  },
+  "checkpoint_before": {
+    "candidate_count_recent": 0,
+    "candidate_count_total": 99,
+    "checkpoint_count": 0,
+    "checkpoint_count_recent": 0,
+    "detector_version": "phase3_detector_v1",
+    "latest_candidate_at": "2026-04-20T05:22:00+00:00",
+    "latest_captured_at": null,
+    "latest_checkpoint_at": null,
+    "latest_checkpoint_file_offset": 0,
+    "latest_checkpoint_partition_path": null,
+    "latest_checkpoint_source_system": null,
+    "recent_window_hours": 24
+  },
+  "checkpoint_behavior": "archived_window_replay_does_not_advance_live_detector_checkpoints",
+  "missing_source_systems": [],
+  "phase3_replay": {
+    "source_systems": [
+      "phase10_task2_seed_prices",
+      "phase10_task2_seed_trades"
+    ],
+    "state_backend": "memory",
+    "state_notes": "Archived-window replay defaults to isolated in-memory detector state.",
+    "summary": {
+      "candidates_deduplicated": 3,
+      "candidates_emitted": 0,
+      "candidates_suppressed": 6,
+      "ignored_envelopes": 0,
+      "processed_envelopes": 18,
+      "processed_snapshots": 12,
+      "processed_trades": 15
+    }
+  },
+  "phase5_replay_bundle": {
+    "artifact_version": "phase5_replay_v1",
+    "bundle_id": "7fd455292dc245528f1449ba54232172",
+    "end": "2026-04-20T06:00:00+00:00",
+    "git_commit": "22479d7",
+    "output_path": "reports\\phase5\\replay_runs\\runtime_replay\\bundles\\7fd455292dc245528f1449ba54232172.json",
+    "overall_status": "degraded",
+    "replay_runs": [
+      {
+        "artifact_version": "phase5_replay_v1",
+        "detector_manifest_mismatches": 0,
+        "detector_missing_partitions": 0,
+        "detector_rows_observed": 12,
+        "end": "2026-04-20T06:00:00+00:00",
+        "git_commit": "22479d7",
+        "integrity_status": "degraded",
+        "notes": "Generated from the Phase 11 archived-window replay path.",
+        "output_path": "reports\\phase5\\replay_runs\\runtime_replay\\77cbf779836347dd84d24be7d0d10dca.json",
+        "raw_manifest_mismatches": 0,
+        "raw_missing_partitions": 1,
+        "raw_partitions_touched": 0,
+        "raw_rows_scanned": 0,
+        "replay_run_id": "77cbf779836347dd84d24be7d0d10dca",
+        "source_system": "phase10_task2_seed_prices",
+        "start": "2026-04-20T05:00:00+00:00",
+        "status": "completed_with_gaps"
+      },
+      {
+        "artifact_version": "phase5_replay_v1",
+        "detector_manifest_mismatches": 0,
+        "detector_missing_partitions": 0,
+        "detector_rows_observed": 6,
+        "end": "2026-04-20T06:00:00+00:00",
+        "git_commit": "22479d7",
+        "integrity_status": "degraded",
+        "notes": "Generated from the Phase 11 archived-window replay path.",
+        "output_path": "reports\\phase5\\replay_runs\\runtime_replay\\70ea3381bf0a4fc5b4db35915155a00c.json",
+        "raw_manifest_mismatches": 0,
+        "raw_missing_partitions": 1,
+        "raw_partitions_touched": 0,
+        "raw_rows_scanned": 0,
+        "replay_run_id": "70ea3381bf0a4fc5b4db35915155a00c",
+        "source_system": "phase10_task2_seed_trades",
+        "start": "2026-04-20T05:00:00+00:00",
+        "status": "completed_with_gaps"
+      }
+    ],
+    "source_systems": [
+      "phase10_task2_seed_prices",
+      "phase10_task2_seed_trades"
+    ],
+    "start": "2026-04-20T05:00:00+00:00",
+    "total_detector_rows_observed": 18,
+    "total_raw_rows_scanned": 0
+  },
+  "restore_payload": {
+    "generated_at": "2026-05-13T18:11:51.470975+00:00",
+    "missing_item_count": 0,
+    "restore_items": [
+      {
+        "age_days": 23.534,
+        "byte_count": 5422,
+        "created_at": "2026-05-13 18:10:57",
+        "file_exists": true,
+        "metadata_json": {
+          "actual_bytes": 5422,
+          "entity_kind": "prices_batch",
+          "first_captured_at": "2026-04-20T05:00:00+00:00",
+          "last_captured_at": "2026-04-20T05:22:30+00:00",
+          "row_count": 12,
+          "schema_version": "normalized_envelope.v2"
+        },
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_prices/events.ndjson",
+        "recommended_action": "retain_hot",
+        "recommended_tier": "hot",
+        "restore_action": "load_from_hot_storage",
+        "source_system": "phase10_task2_seed_prices",
+        "storage_class": "detector_input",
+        "tiering_decision_id": "ba61cb4b3f1342c6af57a30c62d887df"
+      },
+      {
+        "age_days": 23.534,
+        "byte_count": 5357,
+        "created_at": "2026-05-13 18:10:57",
+        "file_exists": true,
+        "metadata_json": {
+          "actual_bytes": 5357,
+          "entity_kind": "recent_trades_page",
+          "first_captured_at": "2026-04-20T05:02:00+00:00",
+          "last_captured_at": "2026-04-20T05:22:00+00:00",
+          "row_count": 6,
+          "schema_version": "normalized_envelope.v2"
+        },
+        "partition_path": "data/detector_input/year=2026/month=04/day=20/hour=05/source_system=phase10_task2_seed_trades/events.ndjson",
+        "recommended_action": "retain_hot",
+        "recommended_tier": "hot",
+        "restore_action": "load_from_hot_storage",
+        "source_system": "phase10_task2_seed_trades",
+        "storage_class": "detector_input",
+        "tiering_decision_id": "3b2c129998b8407aabad5986ba37e292"
+      },
+      {
+        "age_days": 23.537,
+        "byte_count": 3358,
+        "created_at": "2026-05-13 18:10:57",
+        "file_exists": true,
+        "metadata_json": {
+          "actual_bytes": 3358,
+          "entity_kind": "prices_batch",
+          "first_captured_at": "2026-04-20T05:00:00+00:00",
+          "last_captured_at": "2026-04-20T05:17:30+00:00",
+          "row_count": 8,
+          "schema_version": "raw_event_envelope.v1"
+        },
+        "partition_path": "data/raw/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_prices/events.ndjson",
+        "recommended_action": "retain_hot",
+        "recommended_tier": "hot",
+        "restore_action": "load_from_hot_storage",
+        "source_system": "phase9_seed_prices",
+        "storage_class": "raw",
+        "tiering_decision_id": "cdbb84b57cbc4da18cb97f97c700dca4"
+      },
+      {
+        "age_days": 23.537,
+        "byte_count": 3350,
+        "created_at": "2026-05-13 18:10:57",
+        "file_exists": true,
+        "metadata_json": {
+          "actual_bytes": 3350,
+          "entity_kind": "recent_trades_page",
+          "first_captured_at": "2026-04-20T05:02:00+00:00",
+          "last_captured_at": "2026-04-20T05:18:00+00:00",
+          "row_count": 4,
+          "schema_version": "raw_event_envelope.v1"
+        },
+        "partition_path": "data/raw/year=2026/month=04/day=20/hour=05/source_system=phase9_seed_trades/events.ndjson",
+        "recommended_action": "retain_hot",
+        "recommended_tier": "hot",
+        "restore_action": "load_from_hot_storage",
+        "source_system": "phase9_seed_trades",
+        "storage_class": "raw",
+        "tiering_decision_id": "5bb6aa2b1d5945ab957aef2263368d7d"
+      }
+    ],
+    "restore_scope": "phase11_runtime_replay_window",
+    "storage_audit_run_id": "088ebc1dda084e0cb92cacd88beb9a79",
+    "total_items": 4,
+    "window": {
+      "end": "2026-04-20T06:00:00+00:00",
+      "start": "2026-04-20T05:00:00+00:00"
+    }
+  },
+  "restore_summary": {
+    "missing_item_count": 0,
+    "output_path": "reports\\phase11\\runtime_replay_restore_plan.json",
+    "restore_plan_run_id": "eafed3c41f1c4a4c817b623547b703e9",
+    "restore_scope": "phase11_runtime_replay_window",
+    "status": "completed",
+    "storage_audit_run_id": "088ebc1dda084e0cb92cacd88beb9a79",
+    "total_items": 4
+  },
+  "status": "completed",
+  "window": {
+    "end": "2026-04-20T06:00:00+00:00",
+    "start": "2026-04-20T05:00:00+00:00"
+  }
+}

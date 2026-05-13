@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from config.settings import PHASE3_POLL_SECONDS
+from config.settings import PHASE3_CHECKPOINT_INTERVAL, PHASE3_POLL_SECONDS
 from phase3.detector import DEFAULT_PHASE3_SOURCE_SYSTEMS, Phase3Detector, Phase3Repository
 from phase3.state_store import BaseStateStore
 from utils.event_log import DETECTOR_INPUT_ROOT
@@ -36,12 +36,14 @@ class LiveRunnerSummary:
     processed_envelopes: int = 0
     partitions_scanned: int = 0
     idle_polls: int = 0
+    checkpoint_writes: int = 0
 
     def to_dict(self) -> dict[str, int]:
         return {
             "processed_envelopes": self.processed_envelopes,
             "partitions_scanned": self.partitions_scanned,
             "idle_polls": self.idle_polls,
+            "checkpoint_writes": self.checkpoint_writes,
         }
 
 
@@ -94,6 +96,19 @@ class Phase3LiveRunner:
         processed = 0
         last_ordering_key = (checkpoint or {}).get("last_ordering_key")
         last_captured_at = (checkpoint or {}).get("last_captured_at")
+        checkpoint_interval = max(1, PHASE3_CHECKPOINT_INTERVAL)
+        processed_since_checkpoint = 0
+        final_offset = start_offset
+
+        def persist_checkpoint(offset: int) -> None:
+            self.repository.upsert_checkpoint(
+                source_system=source_system,
+                partition_path=relative_path,
+                file_offset=offset,
+                last_ordering_key=last_ordering_key,
+                last_captured_at=last_captured_at,
+            )
+            self.summary.checkpoint_writes += 1
 
         with partition_file.open("r", encoding="utf-8") as handle:
             handle.seek(start_offset)
@@ -103,7 +118,7 @@ class Phase3LiveRunner:
                 if not line:
                     final_offset = position
                     break
-                final_offset = handle.tell()
+                line_end = handle.tell()
                 try:
                     payload = json.loads(line)
                 except json.JSONDecodeError as exc:
@@ -114,30 +129,31 @@ class Phase3LiveRunner:
                         f"Skipping malformed detector-input envelope in {relative_path} "
                         f"at byte {position}: {exc}"
                     )
+                    final_offset = line_end
                     continue
                 try:
                     await self.detector.handle_envelope(payload)
                 except Exception as exc:
-                    log.warning(
-                        f"Skipping unreadable detector-input envelope in {relative_path} "
-                        f"at byte {position}: {exc}"
+                    log.error(
+                        f"Phase 3 live runner failed while processing {relative_path} "
+                        f"at byte {position}; checkpoint remains at byte {final_offset}: {exc}"
                     )
-                    continue
+                    raise
                 processed += 1
+                processed_since_checkpoint += 1
+                final_offset = line_end
                 last_ordering_key = payload.get("ordering_key")
                 last_captured_at = payload.get("captured_at")
+                if processed_since_checkpoint >= checkpoint_interval:
+                    persist_checkpoint(final_offset)
+                    processed_since_checkpoint = 0
 
         if final_offset != start_offset or processed:
-            self.repository.upsert_checkpoint(
-                source_system=source_system,
-                partition_path=relative_path,
-                file_offset=final_offset,
-                last_ordering_key=last_ordering_key,
-                last_captured_at=last_captured_at,
-            )
+            persist_checkpoint(final_offset)
 
         if processed:
             log.info(
-                f"Phase 3 live runner processed {processed} envelopes from {relative_path}"
+                f"Phase 3 live runner processed {processed} envelopes from {relative_path} "
+                f"(checkpoint_offset={final_offset})"
             )
         return processed

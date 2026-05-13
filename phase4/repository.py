@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
 from uuid import uuid4
 
@@ -120,6 +120,87 @@ class Phase4Repository:
             evidence_snapshots=int(evidence_snapshots or 0),
             analyst_feedback_rows=int(analyst_feedback_rows or 0),
         )
+
+    def load_workflow_registration(self) -> dict[str, Any] | None:
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                """
+                SELECT
+                    workflow_version,
+                    evidence_schema_version,
+                    alert_schema_version,
+                    delivery_channels,
+                    notes,
+                    created_at,
+                    last_used_at
+                FROM alert_workflow_versions
+                WHERE workflow_version = ?
+                """,
+                (PHASE4_WORKFLOW_VERSION,),
+            ).fetchone()
+        finally:
+            conn.close()
+
+        if row is None:
+            return None
+        return {
+            "workflow_version": row["workflow_version"],
+            "evidence_schema_version": row["evidence_schema_version"],
+            "alert_schema_version": row["alert_schema_version"],
+            "delivery_channels": json.loads(row["delivery_channels"] or "[]"),
+            "notes": row["notes"],
+            "created_at": row["created_at"],
+            "last_used_at": row["last_used_at"],
+        }
+
+    def live_runtime_status(self, *, recent_hours: int = 24) -> dict[str, Any]:
+        cutoff = _iso(datetime.now(timezone.utc) - timedelta(hours=max(1, recent_hours)))
+        conn = get_conn()
+        try:
+            summary = conn.execute(
+                """
+                SELECT
+                    (SELECT COUNT(*) FROM evidence_queries) AS evidence_query_count_total,
+                    (SELECT COUNT(*) FROM evidence_queries WHERE request_started_at >= ?) AS evidence_query_count_recent,
+                    (SELECT MAX(request_started_at) FROM evidence_queries) AS latest_evidence_query_at,
+                    (SELECT COUNT(*) FROM evidence_snapshots) AS evidence_snapshot_count_total,
+                    (SELECT COUNT(*) FROM evidence_snapshots WHERE snapshot_time >= ?) AS evidence_snapshot_count_recent,
+                    (SELECT MAX(snapshot_time) FROM evidence_snapshots) AS latest_evidence_snapshot_at,
+                    (SELECT COUNT(*) FROM alerts) AS alert_count_total,
+                    (SELECT COUNT(*) FROM alerts WHERE created_at >= ?) AS alert_count_recent,
+                    (SELECT MAX(created_at) FROM alerts) AS latest_alert_at,
+                    (SELECT COUNT(*) FROM alert_delivery_attempts) AS delivery_attempt_count_total,
+                    (SELECT COUNT(*) FROM alert_delivery_attempts WHERE attempted_at >= ?) AS delivery_attempt_count_recent,
+                    (SELECT MAX(attempted_at) FROM alert_delivery_attempts) AS latest_delivery_attempt_at,
+                    (SELECT COUNT(*) FROM analyst_feedback) AS analyst_feedback_count_total,
+                    (SELECT COUNT(*) FROM analyst_feedback WHERE created_at >= ?) AS analyst_feedback_count_recent,
+                    (SELECT MAX(created_at) FROM analyst_feedback) AS latest_feedback_at
+                """,
+                (cutoff, cutoff, cutoff, cutoff, cutoff),
+            ).fetchone()
+        finally:
+            conn.close()
+
+        return {
+            "workflow_version": PHASE4_WORKFLOW_VERSION,
+            "recent_window_hours": max(1, recent_hours),
+            "evidence_query_count_total": int((summary or {})["evidence_query_count_total"] or 0),
+            "evidence_query_count_recent": int((summary or {})["evidence_query_count_recent"] or 0),
+            "latest_evidence_query_at": (summary or {})["latest_evidence_query_at"],
+            "evidence_snapshot_count_total": int((summary or {})["evidence_snapshot_count_total"] or 0),
+            "evidence_snapshot_count_recent": int((summary or {})["evidence_snapshot_count_recent"] or 0),
+            "latest_evidence_snapshot_at": (summary or {})["latest_evidence_snapshot_at"],
+            "alert_count_total": int((summary or {})["alert_count_total"] or 0),
+            "alert_count_recent": int((summary or {})["alert_count_recent"] or 0),
+            "latest_alert_at": (summary or {})["latest_alert_at"],
+            "delivery_attempt_count_total": int((summary or {})["delivery_attempt_count_total"] or 0),
+            "delivery_attempt_count_recent": int((summary or {})["delivery_attempt_count_recent"] or 0),
+            "latest_delivery_attempt_at": (summary or {})["latest_delivery_attempt_at"],
+            "analyst_feedback_count_total": int((summary or {})["analyst_feedback_count_total"] or 0),
+            "analyst_feedback_count_recent": int((summary or {})["analyst_feedback_count_recent"] or 0),
+            "latest_feedback_at": (summary or {})["latest_feedback_at"],
+        }
 
     def pending_candidates(
         self,

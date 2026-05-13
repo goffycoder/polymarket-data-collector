@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-05-13T18:23:30.312834+00:00",
+  "plan_items": [],
+  "plan_scope": "phase11_runtime_storage_status",
+  "storage_audit_run_id": "03a68d19b2894067837702cf5e7fd43a",
+  "totals": {
+    "cold_archive_item_count": 0,
+    "compact_item_count": 0,
+    "total_items": 0
+  }
+}

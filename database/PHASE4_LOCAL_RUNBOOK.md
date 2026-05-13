@@ -2,9 +2,14 @@
 
 This runbook is the shortest practical path to exercise the Phase 4 local alert loop from a developer machine and capture a usable Gate 4 evidence packet.
 
+Phase 11 runtime decision note:
+- Phase 4 is now the canonical downstream live path for local `alert_live` runtime.
+- `run_runtime.py` can launch it continuously when `POLYMARKET_ENABLE_PHASE4_RUNTIME=true`.
+- Delivery channels may still be disabled locally; the alert loop remains live as long as evidence, alerts, and delivery-attempt rows are persisted honestly.
+
 Phase 4 assumes:
 - Phase 3 candidate generation already exists or can be seeded
-- local environment variables are exported in the current shell
+- the canonical runtime env has already been prepared
 - Telegram is the primary live delivery channel
 
 The current implementation supports:
@@ -16,27 +21,34 @@ The current implementation supports:
 - alert update/resend behavior
 - Gate 4 summary reporting
 
-## 1. Load environment
+## 1. Prepare runtime env and secret posture
 
 In the main repo:
 
 ```bash
-cd /Users/vrajpatel/All-projects/polymarket_arbitrage
-source .env
+cd C:\Users\parik\Desktop\Poly\polymarket-data-collector
+cp .env.runtime.example .env.runtime
+cp .env.runtime.secrets.example .env.runtime.secrets
 ```
 
-Recommended minimum Telegram variables:
+Keep non-secret toggles in `.env.runtime`:
 
 ```bash
-export POLYMARKET_PHASE4_TELEGRAM_BOT_TOKEN='YOUR_TELEGRAM_BOT_TOKEN'
-export POLYMARKET_PHASE4_TELEGRAM_CHAT_ID='YOUR_TELEGRAM_CHAT_ID'
 export POLYMARKET_ENABLE_PHASE4_TELEGRAM=true
 export POLYMARKET_ENABLE_PHASE4_DISCORD=false
 ```
 
+Keep secrets in shell env vars, an OS keychain-backed loader, or `.env.runtime.secrets`:
+
+```bash
+export POLYMARKET_PHASE4_TELEGRAM_BOT_TOKEN='YOUR_TELEGRAM_BOT_TOKEN'
+export POLYMARKET_PHASE4_TELEGRAM_CHAT_ID='YOUR_TELEGRAM_CHAT_ID'
+```
+
 Important:
-- rotate the Telegram bot token if it was ever pasted into chat or logs
-- Phase 4 reads environment variables from the current shell, so re-run `source .env` after editing the token
+- rotate the Telegram bot token if it was ever pasted into chat, logs, or repo-local plaintext
+- `.env.runtime` is not the approved place for Telegram or Discord credentials
+- the canonical runtime auto-loads `.env.runtime` and `.env.runtime.secrets`; the old `source .env` habit is legacy
 
 ## 2. Move into the Phase 4 worktree
 
@@ -211,17 +223,15 @@ echo "$POLYMARKET_PHASE4_TELEGRAM_CHAT_ID"
 
 The token should be non-empty, the chat id should be your Telegram chat id, and the enabled flag should be `true`.
 
-If you recently edited `.env`, reload it before retrying:
+If you recently edited your runtime env files, validate the canonical loader before retrying:
 
 ```bash
-cd /Users/vrajpatel/All-projects/polymarket_arbitrage
-source .env
-cd /private/tmp/polymarket_arbitrage_phase4
+python run_runtime.py --env-file .\.env.runtime --check-only
 ```
 
 ### Delivery attempts are recorded as `skipped`
 
-That means Phase 4 is healthy, but Telegram or Discord delivery is disabled or not configured in the current shell.
+That means Phase 4 is healthy, but Telegram or Discord delivery is disabled or not configured in the canonical runtime env / secret path.
 
 ### No alerts were created
 

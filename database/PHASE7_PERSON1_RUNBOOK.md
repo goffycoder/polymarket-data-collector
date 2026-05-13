@@ -210,3 +210,15 @@ This is the Phase 7 operational baseline:
 - package the current Phase 7 Person 1 state into one reviewable report before push or merge
 - hand Person 2 the final retained-data and restore guarantees they need for research work
 - close the phase with an explicit Gate 7 assessment and signoff memo
+
+## Phase 11 note
+
+Phase 11 promotes the Phase 7 storage audit and restore machinery into the
+canonical runtime-safety path. The shortest current operator entrypoint is:
+
+```bash
+python run_runtime_storage_status.py --refresh-storage-audit --json
+```
+
+The paired archived-window replay path is documented in
+`database/PHASE11_RUNTIME_STORAGE_RUNBOOK.md`.

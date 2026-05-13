@@ -1,0 +1,222 @@
+{
+  "assessment": {
+    "phase3_recent_candidates": 3,
+    "phase3_recent_checkpoints": 4,
+    "phase4_recent_alerts": 3,
+    "phase4_recent_deliveries": 4,
+    "status": "proof_succeeded"
+  },
+  "env_loading": {
+    "primary_env_file": "C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\.env.runtime.example",
+    "primary_env_source": "explicit_env_file",
+    "secret_env_file": null,
+    "secret_env_source": "shell_or_keychain_only",
+    "warnings": []
+  },
+  "generated_at": "2026-05-13T19:03:12.201810+00:00",
+  "historical_seed_window": {
+    "end": "2026-04-20T06:00:00+00:00",
+    "seed_row_count": 18,
+    "source_systems": [
+      "phase10_task2_seed_prices",
+      "phase10_task2_seed_trades"
+    ],
+    "start": "2026-04-20T05:00:00+00:00"
+  },
+  "phase3": {
+    "detector_registration": {
+      "created_at": "2026-04-22T20:18:25.526998+00:00",
+      "detector_version": "phase3_detector_v1",
+      "feature_schema_version": "phase3_v1",
+      "last_used_at": "2026-05-13T19:03:11.870161+00:00",
+      "notes": "Phase 11 bounded runtime proof over shifted seeded abnormal-activity detector-input window (run_id=20260513T190311, state_path=C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\database\\phase11_runtime_proof_state_20260513T190311.db).",
+      "state_backend": "sqlite"
+    },
+    "detector_summary": {
+      "candidates_deduplicated": 0,
+      "candidates_emitted": 3,
+      "candidates_suppressed": 6,
+      "ignored_envelopes": 0,
+      "processed_envelopes": 18,
+      "processed_snapshots": 12,
+      "processed_trades": 15
+    },
+    "processed_envelopes": 18,
+    "runner_summary": {
+      "checkpoint_writes": 4,
+      "idle_polls": 0,
+      "partitions_scanned": 4,
+      "processed_envelopes": 18
+    },
+    "runtime_status": {
+      "candidate_count_recent": 3,
+      "candidate_count_total": 102,
+      "checkpoint_count": 4,
+      "checkpoint_count_recent": 4,
+      "detector_version": "phase3_detector_v1",
+      "latest_candidate_at": "2026-05-13T19:01:41.825190+00:00",
+      "latest_captured_at": "2026-05-13T19:02:11.825190+00:00",
+      "latest_checkpoint_at": "2026-05-13T19:03:11.979754+00:00",
+      "latest_checkpoint_file_offset": 1120,
+      "latest_checkpoint_partition_path": "detector_input/year=2026/month=05/day=13/hour=19/source_system=phase11_runtime_proof_20260513T190311_trades/events.ndjson",
+      "latest_checkpoint_source_system": "phase11_runtime_proof_20260513T190311_trades",
+      "recent_window_hours": 24
+    }
+  },
+  "phase4": {
+    "alert_results": [
+      {
+        "alert_id": "1b65c50e4f1343fda6bf449733df5ab2",
+        "candidate_id": "bb0991e534b244fb8429e5b798077169",
+        "delivery_channels": [
+          "local_noop"
+        ],
+        "severity": "ACTIONABLE"
+      },
+      {
+        "alert_id": "30a97632af4342cb8213b0d62c94a28e",
+        "candidate_id": "4443465b488441789c16158a278dbe7f",
+        "delivery_channels": [
+          "local_noop"
+        ],
+        "severity": "ACTIONABLE"
+      },
+      {
+        "alert_id": "9aafcfdf69364af1ae3640897ff497ac",
+        "candidate_id": "ef72e972087d49938845c5a8c08c8d11",
+        "severity": "ACTIONABLE",
+        "status": "suppressed",
+        "suppressed_by": "1b65c50e4f1343fda6bf449733df5ab2"
+      },
+      {
+        "alert_id": "1672c39d26dc46e488857d2f478a7515",
+        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "resent": true,
+        "severity": "ACTIONABLE",
+        "status": "updated_resend"
+      },
+      {
+        "alert_id": "828cc457f8ec4afeb3b42678a12f771e",
+        "candidate_id": "923c5d0367af4eaab5f334d590d1fda8",
+        "resent": true,
+        "severity": "ACTIONABLE",
+        "status": "updated_resend"
+      }
+    ],
+    "alert_summary": {
+      "alerts_created": 2,
+      "alerts_suppressed": 1,
+      "alerts_updated": 2,
+      "candidates_seen": 5,
+      "delivery_attempts_written": 4
+    },
+    "evidence_results": [
+      {
+        "candidate_id": "bb0991e534b244fb8429e5b798077169",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "7e17e16100f04e1dad417ff11e73c869",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "noop_news",
+          "noop_social"
+        ]
+      },
+      {
+        "candidate_id": "4443465b488441789c16158a278dbe7f",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "da556c450528480895e62d1e96fe28f7",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "noop_news",
+          "noop_social"
+        ]
+      },
+      {
+        "candidate_id": "ef72e972087d49938845c5a8c08c8d11",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "e3ae7ac4824d4857961dcd7cadfbd4d2",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "noop_news",
+          "noop_social"
+        ]
+      },
+      {
+        "candidate_id": "9a6d96963f7d479ba9b118c0d144140c",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "620620f7bc404bec8ba049e6632d7799",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "noop_news",
+          "noop_social"
+        ]
+      },
+      {
+        "candidate_id": "923c5d0367af4eaab5f334d590d1fda8",
+        "confidence_modifier": 0.15,
+        "evidence_snapshot_id": "ec548b30cff847cbbbd26cf6d4101117",
+        "evidence_state": "not_publicly_explained",
+        "providers": [
+          "noop_news",
+          "noop_social"
+        ]
+      }
+    ],
+    "evidence_summary": {
+      "candidates_processed": 5,
+      "candidates_seen": 5,
+      "evidence_queries_written": 10,
+      "evidence_snapshots_written": 5
+    },
+    "runtime_status": {
+      "alert_count_recent": 3,
+      "alert_count_total": 102,
+      "analyst_feedback_count_recent": 0,
+      "analyst_feedback_count_total": 2,
+      "delivery_attempt_count_recent": 4,
+      "delivery_attempt_count_total": 200,
+      "evidence_query_count_recent": 10,
+      "evidence_query_count_total": 13,
+      "evidence_snapshot_count_recent": 5,
+      "evidence_snapshot_count_total": 104,
+      "latest_alert_at": "2026-05-13T19:03:12.120540+00:00",
+      "latest_delivery_attempt_at": "2026-05-13T19:03:12.179240+00:00",
+      "latest_evidence_query_at": "2026-05-13T19:03:12.061656+00:00",
+      "latest_evidence_snapshot_at": "2026-05-13T19:03:12.067137+00:00",
+      "latest_feedback_at": "2026-04-22T22:41:58.782730+00:00",
+      "recent_window_hours": 24,
+      "workflow_version": "phase4_alerts_v1"
+    },
+    "workflow_registration": {
+      "alert_schema_version": "phase4_alert_payload_v1",
+      "created_at": "2026-04-22T20:18:25.587549+00:00",
+      "delivery_channels": [
+        "telegram",
+        "discord"
+      ],
+      "evidence_schema_version": "phase4_evidence_v1",
+      "last_used_at": "2026-05-13T19:03:11.987357+00:00",
+      "notes": "Phase 11 bounded runtime proof run (run_id=20260513T190311) using noop evidence and local noop delivery.",
+      "workflow_version": "phase4_alerts_v1"
+    }
+  },
+  "proof_window": {
+    "approximate_end": "2026-05-13T19:02:11.825190+00:00",
+    "proof_source_mapping": {
+      "phase10_task2_seed_prices": "phase11_runtime_proof_20260513T190311_prices",
+      "phase10_task2_seed_trades": "phase11_runtime_proof_20260513T190311_trades"
+    },
+    "proof_state_path": "C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\database\\phase11_runtime_proof_state_20260513T190311.db",
+    "written_detector_input_partitions": {
+      "phase11_runtime_proof_20260513T190311_prices": [
+        "C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\data\\detector_input\\year=2026\\month=05\\day=13\\hour=18\\source_system=phase11_runtime_proof_20260513T190311_prices\\events.ndjson",
+        "C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\data\\detector_input\\year=2026\\month=05\\day=13\\hour=19\\source_system=phase11_runtime_proof_20260513T190311_prices\\events.ndjson"
+      ],
+      "phase11_runtime_proof_20260513T190311_trades": [
+        "C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\data\\detector_input\\year=2026\\month=05\\day=13\\hour=18\\source_system=phase11_runtime_proof_20260513T190311_trades\\events.ndjson",
+        "C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\data\\detector_input\\year=2026\\month=05\\day=13\\hour=19\\source_system=phase11_runtime_proof_20260513T190311_trades\\events.ndjson"
+      ]
+    }
+  },
+  "run_id": "20260513T190311"
+}

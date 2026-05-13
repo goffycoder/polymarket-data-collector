@@ -5,7 +5,13 @@ from phase3.detector import (
     run_phase3_detector_window,
 )
 from phase3.live_runner import LiveRunnerSummary, Phase3LiveRunner
-from phase3.state_store import BaseStateStore, MemoryStateStore, RedisStateStore, create_state_store
+from phase3.state_store import (
+    BaseStateStore,
+    MemoryStateStore,
+    Phase3StateStoreConfigurationError,
+    RedisStateStore,
+    create_state_store,
+)
 
 __all__ = [
     "BaseStateStore",
@@ -15,6 +21,7 @@ __all__ = [
     "MemoryStateStore",
     "Phase3LiveRunner",
     "Phase3Repository",
+    "Phase3StateStoreConfigurationError",
     "RedisStateStore",
     "create_state_store",
     "run_phase3_detector_window",

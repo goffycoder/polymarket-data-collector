@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
 from uuid import uuid4
 
@@ -820,3 +820,32 @@ class Phase6Repository:
             recent_models=recent_models,
             recent_shadow_scores=recent_scores,
         )
+
+    def live_runtime_status(self, *, recent_hours: int = 24) -> dict[str, Any]:
+        cutoff = (datetime.now(timezone.utc) - timedelta(hours=max(1, recent_hours))).replace(microsecond=0).isoformat()
+        active_shadow_model = self.load_active_shadow_model()
+        conn = get_conn()
+        try:
+            summary = conn.execute(
+                """
+                SELECT
+                    (SELECT COUNT(*) FROM model_registry) AS model_registry_count_total,
+                    (SELECT COUNT(*) FROM shadow_model_scores) AS shadow_score_count_total,
+                    (SELECT COUNT(*) FROM shadow_model_scores WHERE scored_at >= ?) AS shadow_score_count_recent,
+                    (SELECT MAX(scored_at) FROM shadow_model_scores) AS latest_shadow_score_at
+                """,
+                (cutoff,),
+            ).fetchone()
+        finally:
+            conn.close()
+
+        return {
+            "recent_window_hours": max(1, recent_hours),
+            "active_shadow_model_version": (active_shadow_model or {}).get("model_version"),
+            "active_shadow_model_deployment_status": (active_shadow_model or {}).get("deployment_status"),
+            "active_shadow_model_present": active_shadow_model is not None,
+            "model_registry_count_total": int((summary or {})["model_registry_count_total"] or 0),
+            "shadow_score_count_total": int((summary or {})["shadow_score_count_total"] or 0),
+            "shadow_score_count_recent": int((summary or {})["shadow_score_count_recent"] or 0),
+            "latest_shadow_score_at": (summary or {})["latest_shadow_score_at"],
+        }

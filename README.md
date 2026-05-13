@@ -244,14 +244,26 @@ git clone <repo-url> && cd polymarket_arbitrage
 python -m venv venv && source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
-# 2. Recommended: use local PostgreSQL for the canonical Phase 2 runtime
-export POLYMARKET_DB_BACKEND=postgres
-export POLYMARKET_DATABASE_URL='postgresql+psycopg://USER:PASS@localhost:5432/polymarket'
+# 2. Default local runtime uses SQLite; switch to PostgreSQL only if you want it
+# export POLYMARKET_DB_BACKEND=postgres
+# export POLYMARKET_DATABASE_URL='postgresql+psycopg://USER:PASS@localhost:5432/polymarket'
 
-# 3. Run interactively (for testing)
-python run_collector.py
+# 3. Create the canonical runtime env file
+cp .env.runtime.example .env.runtime
 
-# 4. Register as macOS background service
+# 4. Optional: create a separate repo-ignored secret file
+cp .env.runtime.secrets.example .env.runtime.secrets
+
+# 5. Validate the canonical startup plan
+python run_runtime.py --check-only
+
+# 6. Inspect the configured vs observed runtime mode
+python run_runtime_status.py --recent-hours 24
+
+# 7. Start the canonical local runtime
+python run_runtime.py
+
+# 8. Register as macOS background service
 sed -e "s|__PROJECT_DIR__|$(pwd)|g" \
     -e "s|__PYTHON_PATH__|$(pwd)/venv/bin/python|g" \
     polymarket.plist > ~/Library/LaunchAgents/com.polymarket.collector.plist
@@ -270,6 +282,25 @@ The full local Phase 2 runbook is in [database/POSTGRES_LOCAL_RUNBOOK.md](databa
 For the first real Phase 3 live run and Gate 3 reporting workflow, use
 [database/PHASE3_LOCAL_RUNBOOK.md](database/PHASE3_LOCAL_RUNBOOK.md).
 
+`run_runtime.py` is now the canonical local startup path. `run_collector.py`
+remains the collector-only entrypoint and is no longer the recommended
+background runtime command.
+
+Canonical secret posture:
+- keep non-secret toggles in `.env.runtime`
+- keep secrets in shell env vars, an OS keychain-backed loader, or `.env.runtime.secrets`
+- avoid putting Telegram, Discord, or passworded DSN values in `.env.runtime` or legacy `.env`
+
+The canonical default runtime profile is now `alert_live`: Phase 3 detection is
+required, Phase 4 rule-based alerting is enabled by default, and Phase 6
+shadow-live scoring remains an explicit extension that should only be enabled
+after a shadow model is registered and activated. The default local durable
+Phase 3 backend is now SQLite, so a single-machine runtime no longer depends on
+Redis just to prove detector state and checkpoints.
+
+For Phase 11 runtime-safe replay and storage hygiene, use
+[database/PHASE11_RUNTIME_STORAGE_RUNBOOK.md](database/PHASE11_RUNTIME_STORAGE_RUNBOOK.md).
+
 ## Phase 2 Deliverables In This Repo
 
 - Durable raw envelope archives under `data/raw/`
@@ -287,6 +318,18 @@ Smoke-test the live detector worker:
 venv/bin/python run_phase3_live.py --once
 ```
 
+Inspect persisted detector registration, checkpoints, and candidate activity:
+
+```bash
+venv/bin/python run_phase3_runtime_status.py --recent-hours 24
+```
+
+Inspect the overall runtime decision and observed mode:
+
+```bash
+venv/bin/python run_runtime_status.py --recent-hours 24
+```
+
 Run the combined Gate 3 evidence report for a chosen window:
 
 ```bash
@@ -296,11 +339,79 @@ venv/bin/python -m validation.run_phase3_gate3_report \
   --json
 ```
 
-To run Phase 3 inside the main collector runtime, enable:
+To run Phase 3 inside the canonical runtime, set it in `.env.runtime`:
 
 ```bash
-export POLYMARKET_ENABLE_PHASE3_DETECTOR=true
-venv/bin/python run_collector.py
+POLYMARKET_ENABLE_PHASE3_DETECTOR=true
+```
+
+Then start:
+
+```bash
+venv/bin/python run_runtime.py
+```
+
+If you intentionally want a degraded in-memory smoke test, use an explicit
+override:
+
+```bash
+venv/bin/python run_phase3_live.py --once --allow-memory-fallback
+```
+
+Run the bounded Phase 11 end-to-end proof that shifts the seeded abnormal
+window into the current time range and produces fresh candidates, checkpoints,
+alerts, and local noop delivery attempts:
+
+```bash
+venv/bin/python run_phase11_runtime_proof.py --env-file .env.runtime.example --json
+```
+
+Phase 4 is part of the canonical live runtime by default. Phase 6 remains
+shadow-only and non-authoritative; enable `POLYMARKET_ENABLE_PHASE6_LIVE_RUNTIME`
+only after `run_phase6_activate_model.py` has activated a shadow model.
+
+`run_runtime.py` and `run_runtime_status.py` now report env-loading posture as
+well, including whether a legacy `.env` fallback is still being used or whether
+secret-like keys are sitting in the main runtime env file.
+
+## Phase 11 Replay And Storage Commands
+
+Inspect retention rules, disk headroom, and safe prune candidates:
+
+```bash
+venv/bin/python run_runtime_storage_status.py --refresh-storage-audit --json
+```
+
+Replay one archived detector-input window through the canonical Task 4 path:
+
+```bash
+venv/bin/python run_runtime_replay_window.py \
+  --start '2026-04-20T05:00:00+00:00' \
+  --end '2026-04-20T06:00:00+00:00' \
+  --phase5-source-system phase9_seed_prices \
+  --phase5-source-system phase9_seed_trades \
+  --json
+```
+
+The archived-window replay path is intentionally honest:
+- it creates a restore plan first
+- it blocks on missing partitions unless you explicitly allow gaps
+- it does not advance live Phase 3 checkpoints
+- it can create backfill-request artifacts when historical partitions are missing
+
+The live collector now also includes a disk-pressure guard. If free headroom
+falls below the configured runtime floor, the collector stops instead of
+pretending the machine is still safe to keep filling.
+
+For the current truth-state and archive-loss memos, see:
+- [Documentation/phases/phase11_current_state_memo.tex](Documentation/phases/phase11_current_state_memo.tex)
+- [Documentation/phases/phase11_archive_loss_memo.tex](Documentation/phases/phase11_archive_loss_memo.tex)
+- [Documentation/phases/phase11_checklist_status.tex](Documentation/phases/phase11_checklist_status.tex)
+
+To evaluate the full Phase 11 checklist directly from current runtime evidence:
+
+```bash
+venv/bin/python run_phase11_status.py --env-file .env.runtime.example --recent-hours 24 --json
 ```
 
 ## What Is Legacy

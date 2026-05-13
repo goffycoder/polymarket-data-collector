@@ -112,6 +112,7 @@ class DetectorRunSummary:
     processed_trades: int = 0
     processed_snapshots: int = 0
     candidates_emitted: int = 0
+    candidates_deduplicated: int = 0
     candidates_suppressed: int = 0
     ignored_envelopes: int = 0
 
@@ -121,6 +122,7 @@ class DetectorRunSummary:
             "processed_trades": self.processed_trades,
             "processed_snapshots": self.processed_snapshots,
             "candidates_emitted": self.candidates_emitted,
+            "candidates_deduplicated": self.candidates_deduplicated,
             "candidates_suppressed": self.candidates_suppressed,
             "ignored_envelopes": self.ignored_envelopes,
         }
@@ -163,6 +165,30 @@ class Phase3Repository:
         finally:
             conn.close()
 
+    def load_detector_registration(self) -> dict[str, Any] | None:
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                """
+                SELECT detector_version, feature_schema_version, state_backend, notes, created_at, last_used_at
+                FROM detector_versions
+                WHERE detector_version = ?
+                """,
+                (PHASE3_DETECTOR_VERSION,),
+            ).fetchone()
+        finally:
+            conn.close()
+        if row is None:
+            return None
+        return {
+            "detector_version": row["detector_version"],
+            "feature_schema_version": row["feature_schema_version"],
+            "state_backend": row["state_backend"],
+            "notes": row["notes"],
+            "created_at": row["created_at"],
+            "last_used_at": row["last_used_at"],
+        }
+
     def market_metadata(self, market_id: str) -> dict[str, Any]:
         cached = self._market_cache.get(market_id)
         if cached is not None:
@@ -200,7 +226,7 @@ class Phase3Repository:
         self._market_cache[market_id] = metadata
         return metadata
 
-    def persist_candidate(self, candidate: dict[str, Any]) -> None:
+    def persist_candidate(self, candidate: dict[str, Any]) -> bool:
         feature_snapshot = candidate["feature_snapshot"]
         feature_items = [
             (
@@ -218,6 +244,23 @@ class Phase3Repository:
 
         conn = get_conn()
         try:
+            existing = conn.execute(
+                """
+                SELECT candidate_id
+                FROM signal_candidates
+                WHERE detector_version = ?
+                  AND market_id = ?
+                  AND trigger_time = ?
+                LIMIT 1
+                """,
+                (
+                    candidate["detector_version"],
+                    candidate["market_id"],
+                    candidate["trigger_time"],
+                ),
+            ).fetchone()
+            if existing is not None:
+                return False
             conn.execute(
                 """
                 INSERT INTO signal_episodes (
@@ -305,6 +348,7 @@ class Phase3Repository:
                     feature_items,
                 )
             conn.commit()
+            return True
         finally:
             conn.close()
 
@@ -427,6 +471,61 @@ class Phase3Repository:
             }
             for row in rows
         ]
+
+    def live_runtime_status(self, *, recent_hours: int = 24) -> dict[str, Any]:
+        cutoff = _iso(datetime.now(timezone.utc) - timedelta(hours=max(1, recent_hours)))
+        conn = get_conn()
+        try:
+            checkpoint_summary = conn.execute(
+                """
+                SELECT
+                    COUNT(*) AS checkpoint_count,
+                    SUM(CASE WHEN updated_at >= ? THEN 1 ELSE 0 END) AS checkpoint_count_recent,
+                    MAX(updated_at) AS latest_checkpoint_at,
+                    MAX(last_captured_at) AS latest_captured_at
+                FROM detector_checkpoints
+                WHERE detector_version = ?
+                """,
+                (cutoff, PHASE3_DETECTOR_VERSION),
+            ).fetchone()
+            latest_checkpoint = conn.execute(
+                """
+                SELECT source_system, partition_path, file_offset, updated_at, last_captured_at
+                FROM detector_checkpoints
+                WHERE detector_version = ?
+                ORDER BY updated_at DESC
+                LIMIT 1
+                """,
+                (PHASE3_DETECTOR_VERSION,),
+            ).fetchone()
+            candidate_summary = conn.execute(
+                """
+                SELECT
+                    COUNT(*) AS candidate_count_total,
+                    SUM(CASE WHEN trigger_time >= ? THEN 1 ELSE 0 END) AS candidate_count_recent,
+                    MAX(trigger_time) AS latest_candidate_at
+                FROM signal_candidates
+                WHERE detector_version = ?
+                """,
+                (cutoff, PHASE3_DETECTOR_VERSION),
+            ).fetchone()
+        finally:
+            conn.close()
+
+        return {
+            "detector_version": PHASE3_DETECTOR_VERSION,
+            "recent_window_hours": max(1, recent_hours),
+            "checkpoint_count": int((checkpoint_summary or {})["checkpoint_count"] or 0),
+            "checkpoint_count_recent": int((checkpoint_summary or {})["checkpoint_count_recent"] or 0),
+            "latest_checkpoint_at": (checkpoint_summary or {})["latest_checkpoint_at"],
+            "latest_captured_at": (checkpoint_summary or {})["latest_captured_at"],
+            "latest_checkpoint_source_system": latest_checkpoint["source_system"] if latest_checkpoint else None,
+            "latest_checkpoint_partition_path": latest_checkpoint["partition_path"] if latest_checkpoint else None,
+            "latest_checkpoint_file_offset": int(latest_checkpoint["file_offset"] or 0) if latest_checkpoint else 0,
+            "candidate_count_total": int((candidate_summary or {})["candidate_count_total"] or 0),
+            "candidate_count_recent": int((candidate_summary or {})["candidate_count_recent"] or 0),
+            "latest_candidate_at": (candidate_summary or {})["latest_candidate_at"],
+        }
 
 
 class Phase3Detector:
@@ -644,7 +743,7 @@ class Phase3Detector:
                 "event_title": metadata.get("event_title"),
             },
         }
-        self.repository.persist_candidate(candidate)
+        persisted = self.repository.persist_candidate(candidate)
         await self.store.set_last_candidate(
             market_id,
             {
@@ -653,6 +752,13 @@ class Phase3Detector:
                 "rule_families": rule_families,
             },
         )
+        if not persisted:
+            self.summary.candidates_deduplicated += 1
+            log.info(
+                f"Phase 3 candidate deduplicated market={market_id} trigger_time={candidate['trigger_time']}"
+            )
+            return
+
         self.summary.candidates_emitted += 1
         log.info(
             f"Phase 3 candidate emitted market={market_id} rules={','.join(rule_families)} "

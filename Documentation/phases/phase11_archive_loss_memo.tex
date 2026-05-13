@@ -1,0 +1,38 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Phase 11 Archive Loss Memo}
+
+\textbf{Date:} May 13, 2026\\
+\textbf{Purpose:} State plainly what was lost in the April archive deletion incident and what is protected going forward.
+
+\section*{What Was Lost}
+Before this Phase 11 remediation pass, severe disk pressure had already forced deletion of the broad \texttt{2026-04} raw and detector-input archive tree from the live workspace. This means the repository must not claim that every historically interesting April window is still locally restorable from archives alone.
+
+\section*{Concrete Consequence}
+Some frozen or previously referenced windows now have a split truth state:
+\begin{itemize}
+\item the contract for those windows may still exist in documentation, manifests, replay packets, or database rows,
+\item but the original local raw and detector-input partitions for those windows may no longer exist in the workspace.
+\end{itemize}
+
+This is already reflected in the earlier reference-window documentation that marked the canonical \texttt{gamma\_events} raw and detector-input partitions for the selected April 20, 2026 hour as missing locally.
+
+\section*{What Remains Restorable}
+Not all April evidence is gone. Some smaller seeded or frozen partitions and replay artifacts still exist locally, and the new Phase 11 restore and replay commands can identify those windows explicitly instead of guessing.
+
+\section*{What Is Protected Going Forward}
+The new canonical protection posture is:
+\begin{itemize}
+\item retain raw archive manifests and detector-input manifests so loss is auditable,
+\item retain detector-input partitions as the minimum replay contract for archived-window Phase 3 recovery,
+\item retain canonical database state for checkpoints, candidates, alerts, scores, audits, and restore plans,
+\item retain frozen replay packets already cited by later-phase documents,
+\item use storage audit, restore planning, and disk-pressure guards before any future cleanup.
+\end{itemize}
+
+\section*{Truthfulness Rule}
+If a historical window cannot be restored locally anymore, the repo should say \textbf{missing locally} or \textbf{replay-degraded} rather than silently leaning on old documentation language that assumed the files still existed.
+
+\end{document}

@@ -8,7 +8,9 @@ This runbook is the operational path for the first real local Phase 3 run:
 - generate candidate, reconciliation, and Gate 3 reports for that window
 
 Phase 3 can fall back to in-memory state, but that is only useful for smoke
-tests. For a real Gate 3 run, use a real local Redis instance.
+tests. For a real Gate 3 run, use a real local Redis instance. The canonical
+live runtime now fails fast if Redis is unavailable instead of silently falling
+back to memory.
 
 ## 1. Start Redis Locally
 
@@ -57,12 +59,18 @@ redis-cli -h 127.0.0.1 -p 6379 ping
 Use the canonical Phase 2+ database runtime first. PostgreSQL is the preferred
 operational backend.
 
+If your PostgreSQL DSN includes a password, treat it as a secret and keep it in
+shell environment variables or the repo-ignored `.env.runtime.secrets` file
+rather than `.env.runtime`.
+
 ```bash
 export POLYMARKET_DB_BACKEND=postgres
 export POLYMARKET_DATABASE_URL='postgresql+psycopg://localhost:5432/polymarket_phase3'
 export POLYMARKET_REDIS_URL='redis://localhost:6379/0'
 export POLYMARKET_ENABLE_PHASE3_DETECTOR=true
+export POLYMARKET_ALLOW_COLLECTOR_ONLY_RUNTIME=false
 export POLYMARKET_PHASE3_STATE_BACKEND=redis
+export POLYMARKET_PHASE3_CHECKPOINT_INTERVAL=25
 export POLYMARKET_PHASE3_SOURCE_SYSTEMS='clob_ws_market,data_api_trades,data_api_trades_backfill,clob_prices,clob_books'
 export POLYMARKET_PHASE3_POLL_SECONDS=5
 ```
@@ -83,7 +91,7 @@ export POLYMARKET_PHASE3_MIN_WINDOW_NOTIONAL=250
 ## 3. Start the Collector with Phase 3 Enabled
 
 ```bash
-venv/bin/python run_collector.py
+venv/bin/python run_runtime.py
 ```
 
 Look for these signs in the logs:
@@ -91,7 +99,20 @@ Look for these signs in the logs:
 - Redis is reachable
 - the collector enters Phase 3 loops normally
 - `Phase 3 detector enabled` appears in logs
+- detector checkpoints begin appearing in `detector_checkpoints`
 - detector-input partitions continue to grow under `data/detector_input/`
+
+You can inspect persisted runtime state at any time:
+
+```bash
+venv/bin/python run_phase3_runtime_status.py --recent-hours 24
+```
+
+For a non-canonical smoke test with explicit degraded state:
+
+```bash
+venv/bin/python run_phase3_live.py --once --allow-memory-fallback
+```
 
 Let the system run for at least 15-30 minutes before judging candidate rate.
 For a better first Gate 3 evidence window, run it longer.

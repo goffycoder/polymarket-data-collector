@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 11 Checklist Status}
+
+\textbf{Date:} May 13, 2026\\
+\textbf{Source of truth:} \texttt{run\_phase11\_status.py --env-file .env.runtime.example --recent-hours 24 --json}.\\
+\textbf{Purpose:} Convert the Phase 11 runtime-revision plan into a direct implementation checklist with explicit status labels.
+
+\section*{Status Legend}
+\begin{itemize}
+\item \textbf{Implemented}: the repo has the required code and documentation behavior, and the requirement is satisfied at the level the Phase 11 document asks for.
+\item \textbf{Partially implemented}: the repo has the structural code or documentation changes, but the operational proof is incomplete.
+\item \textbf{Not implemented}: the requirement is still blocked by missing operational evidence or unresolved machine state.
+\end{itemize}
+
+\section*{Checklist Snapshot}
+\begin{longtable}{p{0.18\linewidth}p{0.52\linewidth}p{0.20\linewidth}}
+\textbf{Status} & \textbf{Requirement} & \textbf{Current truth} \\
+Implemented & Canonical runtime activation path exists & \texttt{run\_runtime.py} is now the documented launcher and \texttt{polymarket.plist} points to it. \\
+Implemented & Background runtime path is environment-safe & Runtime env loading now supports \texttt{.env.runtime} and repo-ignored \texttt{.env.runtime.secrets}. \\
+Partially implemented & Durable Phase 3 live operation is restored & Strict Redis-backed logic exists, but the current inspected DB still shows \texttt{state\_backend=memory}, \texttt{checkpoint\_count=0}, and no recent live candidate activity. \\
+Implemented & Phase 4 live story is explicit & Phase 4 is documented as the canonical downstream live path for \texttt{alert\_live}. \\
+Implemented & Phase 6 live story is explicit & Phase 6 is documented as an optional shadow-only extension rather than the default runtime. \\
+Implemented & Archived-window replay path exists & \texttt{run\_runtime\_replay\_window.py} plus the Phase 11 storage runbook provide the explicit replay path. \\
+Partially implemented & Storage lifecycle tooling exists & Retention, restore, compaction planning, and disk-pressure guards exist, but this machine is still below the configured safe disk floor. \\
+Partially implemented & Plaintext-secret dependence is removed from the canonical workflow & The workflow now supports safe secret paths, but real credential rotation is still an external operational task. \\
+Implemented & Truthfulness refresh exists & Current-state and archive-loss memos now state the real runtime and replay truth explicitly. \\
+Not implemented & Redis-backed Phase 3 state is healthy in current operation & Current health evidence still does not show Redis-backed live detection in use. \\
+Not implemented & Live DB shows fresh recent Phase 3 candidates and checkpoints & The current inspected 24-hour window still shows zeros for recent candidate/checkpoint activity. \\
+Not implemented & Live DB shows fresh recent Phase 4 evidence, alerts, and deliveries & The current inspected 24-hour window still shows zeros for recent evidence, alert, and delivery activity. \\
+Implemented & Archived windows can be replayed intentionally & The operator no longer has to rely on the live hour-only tailer for historical windows. \\
+Not implemented & Machine can run safely under ordinary retention settings & The storage guard is correctly blocking startup because free disk headroom is currently below threshold. \\
+Implemented & Final docs distinguish live proof from historical or replay-only evidence & The runtime-status, current-state memo, and archive-loss memo now say this plainly. \\
+\end{longtable}
+
+\section*{Remaining Required Actions}
+The main remaining actions are operational rather than architectural:
+\begin{itemize}
+\item free enough disk space to get above the configured runtime safety floor,
+\item make Redis reachable in the canonical runtime environment,
+\item run the canonical runtime long enough to produce fresh live Phase 3 checkpoints and candidates,
+\item capture a fresh Phase 4 evidence/alert window under that live runtime,
+\item rotate any previously exposed real credentials outside the repository.
+\end{itemize}
+
+\section*{Bottom Line}
+Phase 11 is \textbf{mostly implemented structurally} but \textbf{not fully complete operationally}. The repo now has the right startup path, replay path, storage path, secret posture, and truthfulness posture. What it still lacks is fresh live proof that the canonical runtime is currently healthy end to end on this machine.
+
+\end{document}

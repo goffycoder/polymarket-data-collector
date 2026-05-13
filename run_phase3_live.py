@@ -33,10 +33,18 @@ async def _main() -> None:
         action="store_true",
         help="Process currently available envelopes once and exit.",
     )
+    parser.add_argument(
+        "--allow-memory-fallback",
+        action="store_true",
+        help="Allow a degraded in-memory state backend for smoke tests when Redis is unavailable.",
+    )
     args = parser.parse_args()
 
     apply_schema()
-    state_context = await create_state_store()
+    state_context = await create_state_store(
+        require_backend=None if args.allow_memory_fallback else "durable",
+        allow_fallback=args.allow_memory_fallback,
+    )
     repository = Phase3Repository()
     repository.register_detector_version(
         backend_name=state_context.backend_name,
@@ -59,6 +67,7 @@ async def _main() -> None:
                 "runner_summary": runner.summary.to_dict(),
                 "detector_summary": runner.detector.summary.to_dict(),
                 "state_backend": state_context.backend_name,
+                "runtime_status": repository.live_runtime_status(),
             }
             log.info(f"Phase 3 live-once summary: {json.dumps(payload, sort_keys=True)}")
             print(json.dumps(payload, indent=2, sort_keys=True))
