@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<rect x="0" y="0" width="1280" height="720" rx="8" fill="#ffffff" stroke="none" />
+<text x="80" y="70" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#1f2937" text-anchor="start">Phase 5 Validation Overview</text>
+<text x="80" y="108" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" fill="#4b5563" text-anchor="start">Held-out pack summary and category-level alert precision</text>
+<rect x="80" y="145" width="250" height="110" rx="8" fill="#f8fafc" stroke="#e5e7eb" /><rect x="80" y="145" width="8" height="110" rx="8" fill="#9b111e" stroke="none" /><text x="104" y="179" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#1f2937" text-anchor="start">Evaluation Rows</text><text x="104" y="227" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#9b111e" text-anchor="start">96</text>
+<rect x="360" y="145" width="250" height="110" rx="8" fill="#f8fafc" stroke="#e5e7eb" /><rect x="360" y="145" width="8" height="110" rx="8" fill="#2563eb" stroke="none" /><text x="384" y="179" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#1f2937" text-anchor="start">Alert Rows</text><text x="384" y="227" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#2563eb" text-anchor="start">96</text>
+<rect x="640" y="145" width="250" height="110" rx="8" fill="#f8fafc" stroke="#e5e7eb" /><rect x="640" y="145" width="8" height="110" rx="8" fill="#15803d" stroke="none" /><text x="664" y="179" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#1f2937" text-anchor="start">Paper Trade Fills</text><text x="664" y="227" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#15803d" text-anchor="start">96</text>
+<rect x="920" y="145" width="280" height="110" rx="8" fill="#f8fafc" stroke="#e5e7eb" /><rect x="920" y="145" width="8" height="110" rx="8" fill="#e34b5b" stroke="none" /><text x="944" y="179" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#1f2937" text-anchor="start">Median Bounded PnL</text><text x="944" y="227" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#e34b5b" text-anchor="start">14.08</text>
+<text x="80" y="290" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#1f2937" text-anchor="start">Category Holdout Alert Precision</text>
+<line x1="80" y1="600.0" x2="1200" y2="600.0" stroke="#d1d5db" stroke-width="1" />
+<text x="62" y="606.0" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#6b7280" text-anchor="end">0.0</text>
+<line x1="80" y1="544.0" x2="1200" y2="544.0" stroke="#d1d5db" stroke-width="1" />
+<text x="62" y="550.0" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#6b7280" text-anchor="end">0.2</text>
+<line x1="80" y1="488.0" x2="1200" y2="488.0" stroke="#d1d5db" stroke-width="1" />
+<text x="62" y="494.0" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#6b7280" text-anchor="end">0.4</text>
+<line x1="80" y1="432.0" x2="1200" y2="432.0" stroke="#d1d5db" stroke-width="1" />
+<text x="62" y="438.0" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#6b7280" text-anchor="end">0.6</text>
+<line x1="80" y1="376.0" x2="1200" y2="376.0" stroke="#d1d5db" stroke-width="1" />
+<text x="62" y="382.0" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#6b7280" text-anchor="end">0.8</text>
+<line x1="80" y1="320.0" x2="1200" y2="320.0" stroke="#d1d5db" stroke-width="1" />
+<text x="62" y="326.0" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#6b7280" text-anchor="end">1.0</text>
+<rect x="140" y="320.0" width="180" height="280.0" rx="10" fill="#15803d" stroke="none" />
+<text x="230.0" y="632" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" fill="#1f2937" text-anchor="middle">Crypto</text>
+<text x="230.0" y="308.0" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#15803d" text-anchor="middle">1.00</text>
+<rect x="400" y="600.0" width="180" height="0.0" rx="10" fill="#9b111e" stroke="none" />
+<text x="490.0" y="632" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" fill="#1f2937" text-anchor="middle">Macro</text>
+<text x="490.0" y="588.0" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#9b111e" text-anchor="middle">0.00</text>
+<rect x="660" y="600.0" width="180" height="0.0" rx="10" fill="#9b111e" stroke="none" />
+<text x="750.0" y="632" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" fill="#1f2937" text-anchor="middle">Politics</text>
+<text x="750.0" y="588.0" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#9b111e" text-anchor="middle">0.00</text>
+<rect x="920" y="320.0" width="180" height="280.0" rx="10" fill="#15803d" stroke="none" />
+<text x="1010.0" y="632" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" fill="#1f2937" text-anchor="middle">Sports</text>
+<text x="1010.0" y="308.0" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#15803d" text-anchor="middle">1.00</text>
+<text x="80" y="660" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#1f2937" text-anchor="start">Assessment: promising | Alert precision overall: 0.50 | Paper-trade hit rate: 0.50</text>
+</svg>

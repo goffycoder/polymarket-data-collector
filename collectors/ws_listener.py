@@ -432,7 +432,7 @@ class MarketWebSocketListener:
                 INSERT INTO snapshots (
                     market_id, captured_at,
                     yes_price, no_price, mid_price, best_bid, best_ask, spread, source
-                ) VALUES (?,?,?,?,?,?,?,?)
+                ) VALUES (?,?,?,?,?,?,?,?,?)
             """, rows)
             conn.commit()
 

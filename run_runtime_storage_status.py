@@ -37,8 +37,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = build_parser().parse_args()
-    if args.env_file:
-        load_runtime_env(args.env_file, override=True)
+    load_runtime_env(args.env_file or None, override=True)
 
     from database.db_manager import apply_schema
     from phase7.reporting import build_compaction_plan

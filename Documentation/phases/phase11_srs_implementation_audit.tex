@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\begin{document}
+
+\section*{Phase 11 SRS Implementation Audit}
+
+\textbf{Date:} May 15, 2026\\
+\textbf{Audited against:} \texttt{Documentation/SRS.tex} v4.1, current SQLite runtime state, Phase 11 status commands, and committed Phase 8--Phase 11 reports.\\
+\textbf{Purpose:} Identify what remains to implement or refresh before claiming the project is fully aligned with the original SRS.
+
+\section*{Executive Truth}
+Phase 11 now has a successful bounded end-to-end proof: Phase 3 emitted a candidate and checkpoints, Phase 4 produced evidence, an alert, a local delivery attempt, and analyst feedback, and Phase 6 produced one bounded shadow-score row after the background collector was paused to clear SQLite write contention. The local DB also now has one registered shadow model, one validation run, and one conservative backtest artifact. This is enough for a truthful project closeout claim if described as a bounded proof plus artifact-backed validation.
+
+The broader SRS v1 target is larger than Phase 11. Several SRS expectations are still either report-only, seeded/synthetic, optional, or not live in the current local runtime. The project should not claim production-grade or fully organic live SRS completion until the gaps below are closed.
+
+\section*{SRS Alignment Snapshot}
+\begin{longtable}{p{0.30\linewidth}p{0.20\linewidth}p{0.38\linewidth}}
+\textbf{Area} & \textbf{Status} & \textbf{Evidence / Gap} \\
+Canonical launcher and runtime plan & Implemented & \texttt{run\_runtime.py --check-only} passes under local \texttt{.env.runtime}; configured profile is \texttt{alert\_live}. \\
+Raw archive and detector-input log & Partially implemented & Raw and detector-input partitions exist, but the April archive loss means not every historical window is restorable locally. \\
+Phase 3 deterministic detector & Implemented for bounded proof & Current status shows \texttt{candidate\_count\_recent=1} and \texttt{checkpoint\_count\_recent=2}; proof input used \texttt{synthetic\_detector\_input\_fallback}. \\
+Phase 4 alert path & Implemented for bounded proof & Current status shows \texttt{evidence\_query\_count\_recent=2}, \texttt{alert\_count\_recent=1}, and \texttt{delivery\_attempt\_recent=1}; delivery was local no-op. \\
+Real-provider evidence & Partially implemented / needs refresh & Phase 10 has real-provider evidence artifacts, but the latest Phase 11 proof used no-op evidence providers. A fresh real-provider alert packet is still stronger evidence. \\
+Analyst feedback loop & Implemented for bounded proof & \texttt{analyst\_feedback=1} in the inspected SQLite DB after acknowledging the Phase 11 proof alert. \\
+Phase 6 model path & Implemented for bounded shadow proof & The Phase 10 LightGBM model is registered and active as shadow-only with \texttt{model\_registry=1}; the current inspected window shows \texttt{shadow\_score\_count\_recent=1}. \\
+Backtest and paper trading & Implemented for artifact-backed proof & Phase 10 reports include conservative backtest and paper trades, and current DB now shows \texttt{backtest\_artifacts=1} and \texttt{validation\_runs=1}. \\
+PostgreSQL canonical store & Not active locally & SRS names local PostgreSQL as canonical v1 operational store; current runtime uses SQLite. PostgreSQL schema/tooling exists, but this machine is still SQLite-backed. \\
+Wallet/profile entity plane & Partially implemented & Trade tables include wallet-linked fields and \texttt{canonical\_trades} has rows, but SRS-named wallet/profile/cluster tables are not present as first-class tables. \\
+Organic sustained live run & Not proven & Phase 11 proof is bounded and synthetic fallback-backed. Long organic live-market run remains optional future hardening. \\
+Storage safety & Implemented for bounded local proof & Guard exists and local profile reports \texttt{warning}; after SSD backup and local archive pruning, free headroom is about \texttt{132G}. The warning remains because the retained SQLite DB keeps managed storage slightly above the warning threshold. \\
+Secret posture & Partially implemented & Canonical workflow avoids secret values in \texttt{.env.runtime}, but credential rotation remains an external operational task. \\
+\end{longtable}
+
+\section*{High-Priority Remaining Implementation}
+\begin{enumerate}
+\item \textbf{Protect storage before sustained live collection.} The old raw and detector-input archives are backed up on the attached SSD, local archive copies have been pruned, and empty runtime directories have been recreated for future collection.
+\item \textbf{Clarify SQLite vs PostgreSQL truth.} SRS says PostgreSQL is canonical v1; current Phase 11 local proof uses SQLite. Either migrate this machine to PostgreSQL or state that SQLite is accepted for bounded local proof only.
+\item \textbf{Create a real-provider Phase 4 refresh if time allows.} The latest Phase 11 proof used local no-op evidence. A real-provider packet would better satisfy the SRS evidence layer.
+\item \textbf{Treat SQLite write contention as an operational risk.} The collector lock was resolved by pausing the background collector before Phase 6 scoring, but a sustained concurrent runtime should still use PostgreSQL or a carefully managed SQLite write schedule.
+\end{enumerate}
+
+\section*{Medium-Priority SRS Gaps}
+\begin{itemize}
+\item First-class wallet/profile/cluster tables are not present even though wallet-linked trade fields exist.
+\item Watermark and late-event handling are not yet proven as a first-class runtime feature.
+\item Retrieval benchmarking for public evidence quality is not proven in the current DB.
+\item Organic Telegram/Discord delivery is not configured in the current local proof; delivery is local no-op.
+\item Current model evidence remains small and should be described as bounded shadow-model evidence, not production ranking proof.
+\item First-class wallet/profile/cluster tables remain deferred even though wallet-linked trade capture exists.
+\end{itemize}
+
+\section*{Recommended Work Order From Here}
+\begin{enumerate}
+\item Keep the background collector paused until the final evidence package is committed or intentionally restart it for an organic rerun.
+\item Re-check storage guard status after any organic rerun so final docs do not drift from machine state.
+\item Update closeout docs to say: bounded alert-live proof succeeded; analyst feedback exists; Phase 6 model is active shadow-only with one shadow-score row; PostgreSQL remains a migration target unless switched on.
+\item Commit only code, docs, and lightweight reports. Do not commit \texttt{data/}, local DB files, local proof state DBs, or secrets.
+\item After the closeout commit, move/archive large runtime data and optionally run a longer organic live-market window.
+\end{enumerate}
+
+\section*{What Can Be Claimed Now}
+The project can claim a truthful Phase 11 closeout with bounded end-to-end \texttt{alert\_live} proof, one bounded \texttt{shadow\_live} Phase 6 score, analyst feedback, artifact-backed Phase 5/6 evidence, storage guard behavior, explicit secret posture, replay-aware docs, and clear archive-loss accounting.
+
+\section*{What Should Not Be Claimed Yet}
+Do not claim a production-grade organic live system, complete PostgreSQL-backed v1 runtime, real-provider-backed latest proof, non-noop outbound delivery, robust profitable trading edge, or broad Phase 6 production ranking evidence unless those are implemented and refreshed in the current runtime evidence.
+
+\end{document}

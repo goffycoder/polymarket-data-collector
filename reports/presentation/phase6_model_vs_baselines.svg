@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<rect x="0" y="0" width="1280" height="720" rx="8" fill="#ffffff" stroke="none" />
+<text x="80" y="70" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#1f2937" text-anchor="start">Phase 6 LightGBM vs Baselines</text>
+<text x="80" y="108" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" fill="#4b5563" text-anchor="start">Test-split comparison using AUC and Precision@10 on the 32-row held-out test block</text>
+<rect x="80" y="145" width="220" height="110" rx="8" fill="#f8fafc" stroke="#e5e7eb" /><rect x="80" y="145" width="8" height="110" rx="8" fill="#9b111e" stroke="none" /><text x="104" y="179" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#1f2937" text-anchor="start">Dataset Rows</text><text x="104" y="227" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#9b111e" text-anchor="start">96</text>
+<rect x="330" y="145" width="220" height="110" rx="8" fill="#f8fafc" stroke="#e5e7eb" /><rect x="330" y="145" width="8" height="110" rx="8" fill="#2563eb" stroke="none" /><text x="354" y="179" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#1f2937" text-anchor="start">Test Rows</text><text x="354" y="227" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#2563eb" text-anchor="start">32</text>
+<rect x="580" y="145" width="270" height="110" rx="8" fill="#f8fafc" stroke="#e5e7eb" /><rect x="580" y="145" width="8" height="110" rx="8" fill="#9b111e" stroke="none" /><text x="604" y="179" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#1f2937" text-anchor="start">Model AUC</text><text x="604" y="227" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#9b111e" text-anchor="start">0.586</text>
+<rect x="880" y="145" width="320" height="110" rx="8" fill="#f8fafc" stroke="#e5e7eb" /><rect x="880" y="145" width="8" height="110" rx="8" fill="#15803d" stroke="none" /><text x="904" y="179" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#1f2937" text-anchor="start">Model Precision@10</text><text x="904" y="227" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#15803d" text-anchor="start">0.60</text>
+<text x="80" y="295" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#1f2937" text-anchor="start">AUC</text>
+<text x="680" y="295" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#1f2937" text-anchor="start">Precision@10</text>
+<text x="80" y="337" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Model</text>
+<rect x="200" y="320" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="200" y="320" width="342.5483692307692" height="22" rx="6" fill="#9b111e" stroke="none" />
+<text x="550.5483692307691" y="337" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.586</text>
+<text x="680" y="337" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Model</text>
+<rect x="800" y="320" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="800" y="320" width="350.7692307692308" height="22" rx="6" fill="#9b111e" stroke="none" />
+<text x="1158.7692307692307" y="337" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.60</text>
+<text x="80" y="369" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Severity</text>
+<rect x="200" y="352" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="200" y="352" width="328.8461538461538" height="22" rx="6" fill="#2563eb" stroke="none" />
+<text x="536.8461538461538" y="369" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.562</text>
+<text x="680" y="369" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Severity</text>
+<rect x="800" y="352" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="800" y="352" width="292.30769230769226" height="22" rx="6" fill="#2563eb" stroke="none" />
+<text x="1100.3076923076924" y="369" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.50</text>
+<text x="80" y="401" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Momentum</text>
+<rect x="200" y="384" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="200" y="384" width="292.30769230769226" height="22" rx="6" fill="#93c5fd" stroke="none" />
+<text x="500.30769230769226" y="401" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.500</text>
+<text x="680" y="401" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Momentum</text>
+<rect x="800" y="384" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="800" y="384" width="292.30769230769226" height="22" rx="6" fill="#93c5fd" stroke="none" />
+<text x="1100.3076923076924" y="401" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.50</text>
+<text x="80" y="433" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Order Imb.</text>
+<rect x="200" y="416" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="200" y="416" width="292.30769230769226" height="22" rx="6" fill="#93c5fd" stroke="none" />
+<text x="500.30769230769226" y="433" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.500</text>
+<text x="680" y="433" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Order Imb.</text>
+<rect x="800" y="416" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="800" y="416" width="292.30769230769226" height="22" rx="6" fill="#93c5fd" stroke="none" />
+<text x="1100.3076923076924" y="433" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.50</text>
+<text x="80" y="465" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Microstruct.</text>
+<rect x="200" y="448" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="200" y="448" width="292.30769230769226" height="22" rx="6" fill="#93c5fd" stroke="none" />
+<text x="500.30769230769226" y="465" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.500</text>
+<text x="680" y="465" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Microstruct.</text>
+<rect x="800" y="448" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="800" y="448" width="292.30769230769226" height="22" rx="6" fill="#93c5fd" stroke="none" />
+<text x="1100.3076923076924" y="465" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.50</text>
+<text x="80" y="497" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">External</text>
+<rect x="200" y="480" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="200" y="480" width="292.30769230769226" height="22" rx="6" fill="#93c5fd" stroke="none" />
+<text x="500.30769230769226" y="497" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.500</text>
+<text x="680" y="497" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">External</text>
+<rect x="800" y="480" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="800" y="480" width="292.30769230769226" height="22" rx="6" fill="#93c5fd" stroke="none" />
+<text x="1100.3076923076924" y="497" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.50</text>
+<text x="80" y="529" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Fresh Wallet</text>
+<rect x="200" y="512" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="200" y="512" width="292.30769230769226" height="22" rx="6" fill="#93c5fd" stroke="none" />
+<text x="500.30769230769226" y="529" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.500</text>
+<text x="680" y="529" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="400" fill="#1f2937" text-anchor="start">Fresh Wallet</text>
+<rect x="800" y="512" width="380" height="22" rx="6" fill="#f3f4f6" stroke="#e5e7eb" />
+<rect x="800" y="512" width="292.30769230769226" height="22" rx="6" fill="#93c5fd" stroke="none" />
+<text x="1100.3076923076924" y="529" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1f2937" text-anchor="start">0.50</text>
+<text x="80" y="660" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" fill="#1f2937" text-anchor="start">Assessment: model_beats_required_baselines | Precision@25 is 0.52 for both model and baselines on this held-out pack</text>
+</svg>

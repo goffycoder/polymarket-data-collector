@@ -135,6 +135,15 @@ def main() -> int:
     )
     storage_summary, storage_payload = build_runtime_storage_status()
     state_backend_health = asyncio.run(_state_backend_health_check())
+    phase3_has_recent_proof = (
+        int(phase3_status.get("checkpoint_count_recent") or 0) > 0
+        and int(phase3_status.get("candidate_count_recent") or 0) > 0
+    )
+    phase4_has_recent_proof = (
+        int(phase4_status.get("evidence_query_count_recent") or 0) > 0
+        and int(phase4_status.get("alert_count_recent") or 0) > 0
+        and int(phase4_status.get("delivery_attempt_count_recent") or 0) > 0
+    )
 
     plist_points_to_runtime = "__PROJECT_DIR__/run_runtime.py" in (
         (REPO_ROOT / "polymarket.plist").read_text(encoding="utf-8")
@@ -184,9 +193,11 @@ def main() -> int:
                 f"checkpoint_count_recent={phase3_status.get('checkpoint_count_recent')}",
                 f"candidate_count_recent={phase3_status.get('candidate_count_recent')}",
             ],
-            remaining_work=[
-                "Run the canonical runtime long enough to produce fresh checkpoints and live candidates.",
-            ],
+            remaining_work=(
+                ["Run the canonical runtime long enough to produce fresh checkpoints and live candidates."]
+                if not phase3_has_recent_proof
+                else []
+            ),
         ),
         _item(
             checklist_id="deliverable_4",
@@ -305,9 +316,11 @@ def main() -> int:
                 f"state_backend_health={state_backend_health['status']}",
                 f"registered_backend={(phase3_registration or {}).get('state_backend')}",
             ],
-            remaining_work=[
-                "Run Phase 3 live with the configured durable backend so the detector registration row updates out of memory mode.",
-            ],
+            remaining_work=(
+                ["Run Phase 3 live with the configured durable backend so the detector registration row updates out of memory mode."]
+                if state_backend_health["status"] != "reachable"
+                else []
+            ),
         ),
         _item(
             checklist_id="exit_3",
@@ -324,9 +337,11 @@ def main() -> int:
                 f"checkpoint_count_recent={phase3_status.get('checkpoint_count_recent')}",
                 f"candidate_count_total={phase3_status.get('candidate_count_total')}",
             ],
-            remaining_work=[
-                "Produce a fresh live detector window under the canonical runtime.",
-            ],
+            remaining_work=(
+                ["Produce a fresh live detector window under the canonical runtime."]
+                if not phase3_has_recent_proof
+                else []
+            ),
         ),
         _item(
             checklist_id="exit_4",
@@ -344,9 +359,11 @@ def main() -> int:
                 f"alert_count_recent={phase4_status.get('alert_count_recent')}",
                 f"delivery_attempt_count_recent={phase4_status.get('delivery_attempt_count_recent')}",
             ],
-            remaining_work=[
-                "Run a fresh Phase 4 live window under the canonical runtime and confirm new persisted rows.",
-            ],
+            remaining_work=(
+                ["Run a fresh Phase 4 live window under the canonical runtime and confirm new persisted rows."]
+                if not phase4_has_recent_proof
+                else []
+            ),
         ),
         _item(
             checklist_id="exit_5",

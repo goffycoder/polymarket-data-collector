@@ -1,0 +1,281 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\usepackage{enumitem}
+\begin{document}
+
+\section*{Phase 12 Wallet Runtime Hardening Plan}
+
+\textbf{Date:} May 15, 2026\\
+\textbf{Purpose:} Convert the remaining whole-project gaps into an implementation plan for a mature wallet-aware runtime: first-class wallet/profile/cluster state, organic live proof, production delivery proof, evidence benchmarking, larger shadow-ML evidence, and SSD-backed replay.
+
+\section*{Executive Target}
+The target is \textbf{not} to turn the project into an autonomous trading system. The target is to make the existing local-first research/runtime system mature enough that it can honestly claim:
+\begin{itemize}[nosep]
+\item wallet entities are first-class tables, not only nullable fields on trades,
+\item live runtime evidence comes from an organic post-prune run, not only a bounded synthetic proof,
+\item alert delivery is proven through at least one real outbound provider or a clearly documented provider-disabled fallback,
+\item evidence retrieval quality is benchmarked instead of assumed,
+\item shadow ML evidence is expanded beyond the current small held-out packet,
+\item archived replay can run from the attached SSD without copying the full archive back to internal disk.
+\end{itemize}
+
+\section*{Current Baseline}
+\begin{longtable}{p{0.28\linewidth}p{0.58\linewidth}}
+\textbf{Area} & \textbf{Current truth} \\
+Trade wallet fields & \texttt{trades} has \texttt{proxy\_wallet}, \texttt{transaction\_hash}, \texttt{condition\_id}, \texttt{outcome\_side}, and \texttt{usdc\_notional}; \texttt{canonical\_trades} exposes these fields. \\
+Wallet entity plane & First-class SRS tables such as \texttt{wallets}, \texttt{wallet\_profiles}, \texttt{wallet\_activity}, \texttt{wallet\_positions}, and \texttt{wallet\_cluster\_membership} are not present in the operational DB schema. \\
+Live proof & Phase 11 has bounded Phase 3/4 proof plus one Phase 6 shadow score, but no sustained organic post-prune live run. \\
+Delivery proof & Phase 4 delivery classes exist for no-op, Telegram, and Discord; the current proof path used local/no-op delivery. \\
+Evidence proof & Phase 10 has real-provider evidence artifacts; the latest bounded Phase 11 proof used local/no-op evidence. Retrieval quality is not benchmarked as a dataset. \\
+ML proof & Phase 10 LightGBM beats required baselines on a 96-row held-out packet; current runtime uses it as shadow-only guidance. \\
+Replay storage & \texttt{data/raw} and \texttt{data/detector\_input} were copied to the attached SSD and pruned locally; local replay now needs SSD-aware archive paths or restore steps. \\
+\end{longtable}
+
+\section*{Implementation Principles}
+\begin{enumerate}[nosep]
+\item Keep rule-based Phase 4 alerts authoritative; ML remains shadow-only until a later promotion memo.
+\item Build wallet identity as public-wallet intelligence only. Never imply real-world identity.
+\item Prefer idempotent materializers over one-off notebooks or manual SQL.
+\item Every new claim needs a machine-readable report under \texttt{reports/phase12/}.
+\item Keep raw archives and detector-input archives off git; rely on SSD mount or explicit restore for heavy replay.
+\item Do not restart long-running collection until schema changes, storage checks, and delivery settings are known-good.
+\end{enumerate}
+
+\section*{Workstream A: First-Class Wallet/Profile/Cluster Plane}
+\textbf{Goal:} Promote wallet information from trade columns into durable entity tables with materialized activity/profile/cluster state.
+
+\subsection*{A1 Schema Additions}
+Add idempotent schema blocks to \texttt{database/schema.sql} and \texttt{database/postgres\_schema.sql}:
+\begin{itemize}[nosep]
+\item \texttt{wallets}: one row per public wallet/proxy wallet.
+\item \texttt{wallet\_first\_seen}: first observed trade/event provenance.
+\item \texttt{wallet\_activity}: rolling and lifetime activity aggregates.
+\item \texttt{wallet\_profiles}: optional public profile/API snapshot state.
+\item \texttt{wallet\_positions}: optional current or sampled market positions.
+\item \texttt{wallet\_cluster\_membership}: reversible statistical cluster labels.
+\item \texttt{wallet\_entity\_runs}: materialization run ledger.
+\end{itemize}
+
+\textbf{Minimum columns:}
+\begin{itemize}[nosep]
+\item \texttt{wallet\_id}, \texttt{proxy\_wallet}, \texttt{first\_seen\_at}, \texttt{last\_seen\_at}, \texttt{source\_count}, \texttt{created\_at}, \texttt{updated\_at}.
+\item Aggregate fields: \texttt{trade\_count}, \texttt{market\_count}, \texttt{condition\_count}, \texttt{notional\_total}, \texttt{notional\_24h}, \texttt{notional\_7d}, \texttt{avg\_trade\_size}, \texttt{last\_trade\_at}.
+\item Profile fields: \texttt{profile\_source}, \texttt{profile\_status}, \texttt{profile\_json}, \texttt{profile\_captured\_at}.
+\item Cluster fields: \texttt{cluster\_id}, \texttt{cluster\_version}, \texttt{method}, \texttt{confidence}, \texttt{features\_json}, \texttt{assigned\_at}.
+\end{itemize}
+
+\subsection*{A2 Materialization CLI}
+Create \texttt{run\_wallet\_entity\_materializer.py}. It should:
+\begin{enumerate}[nosep]
+\item read \texttt{canonical\_trades} where \texttt{proxy\_wallet} is not null,
+\item upsert \texttt{wallets} and \texttt{wallet\_first\_seen},
+\item compute aggregate rows into \texttt{wallet\_activity},
+\item write a \texttt{wallet\_entity\_runs} row,
+\item emit \texttt{reports/phase12/wallet\_entity\_materialization.json}.
+\end{enumerate}
+
+\textbf{Acceptance criteria:}
+\begin{itemize}[nosep]
+\item command exits 0 on SQLite,
+\item command can run twice without duplicating rows,
+\item report includes \texttt{wallet\_count}, \texttt{wallets\_with\_first\_seen}, \texttt{activity\_rows}, null-rate metrics, and top-wallet aggregate sanity checks,
+\item \texttt{run\_runtime\_status.py} or a new Phase 12 status command reports wallet-plane health.
+\end{itemize}
+
+\subsection*{A3 Profile and Position Enrichment}
+Create a second CLI, \texttt{run\_wallet\_profile\_refresh.py}, after A2 is stable. It should be budgeted and optional:
+\begin{itemize}[nosep]
+\item select top-N wallets by recent notional or alert involvement,
+\item call configured public profile/position endpoints only when enabled,
+\item cache every response with timestamp, provider, status, and raw metadata,
+\item fail soft when provider credentials or rate budgets are unavailable.
+\end{itemize}
+
+\textbf{Acceptance criteria:} at least one cached profile/position refresh packet exists, or the report explicitly says provider disabled with no false success.
+
+\subsection*{A4 Cluster Baseline}
+Start with transparent heuristic clusters, not graph ML:
+\begin{itemize}[nosep]
+\item cluster by repeated co-occurrence in the same markets/conditions,
+\item use common active-window overlap and notional concentration,
+\item write \texttt{wallet\_cluster\_membership} with \texttt{method=heuristic\_v1},
+\item include enough features in \texttt{features\_json} to audit why the assignment happened.
+\end{itemize}
+
+\textbf{Acceptance criteria:} cluster assignments exist for wallets with sufficient overlap, and docs clearly call them statistical groups, not people.
+
+\section*{Workstream B: Organic Live Runtime Proof}
+\textbf{Goal:} Produce a post-prune organic live run that proves the normal collector/runtime path can write fresh raw archives, detector input, candidates, alerts, and status artifacts.
+
+\subsection*{B1 Preflight}
+\begin{enumerate}[nosep]
+\item Confirm SSD backup remains mounted or documented.
+\item Run \texttt{run\_runtime\_storage\_status.py --json}.
+\item Run \texttt{run\_runtime.py --check-only}.
+\item Confirm local \texttt{data/raw} and \texttt{data/detector\_input} directories exist.
+\item Decide whether Phase 6 shadow live is enabled for the run.
+\end{enumerate}
+
+\subsection*{B2 Run Protocol}
+\begin{itemize}[nosep]
+\item Start with a \textbf{30--60 minute smoke run}.
+\item If stable, run a \textbf{3--6 hour organic window}.
+\item Keep a run ledger in \texttt{reports/phase12/organic\_runtime\_run.json}.
+\item Capture start/end disk, row deltas, alert deltas, delivery deltas, evidence deltas, and shadow-score deltas.
+\end{itemize}
+
+\textbf{Acceptance criteria:}
+\begin{itemize}[nosep]
+\item new raw archive bytes > 0,
+\item new detector-input bytes > 0,
+\item no storage blocker,
+\item no unhandled collector crash,
+\item Phase 3 status is reachable,
+\item if no candidate appears organically, the report says \texttt{no\_organic\_candidate\_observed} rather than forcing a synthetic proof.
+\end{itemize}
+
+\section*{Workstream C: Production-Real Alert Delivery}
+\textbf{Goal:} Prove at least one real outbound alert provider path or document provider-disabled status honestly.
+
+\subsection*{C1 Configuration}
+Use repo-ignored secret handling:
+\begin{itemize}[nosep]
+\item \texttt{POLYMARKET\_ENABLE\_PHASE4\_TELEGRAM=true},
+\item \texttt{POLYMARKET\_PHASE4\_TELEGRAM\_BOT\_TOKEN} from shell/keychain/\texttt{.env.runtime.secrets},
+\item \texttt{POLYMARKET\_PHASE4\_TELEGRAM\_CHAT\_ID} from shell/keychain/\texttt{.env.runtime.secrets}.
+\end{itemize}
+
+\subsection*{C2 Delivery Smoke Test}
+Create \texttt{run\_phase4\_delivery\_smoke.py}:
+\begin{itemize}[nosep]
+\item builds a redacted test alert payload,
+\item sends to enabled delivery providers,
+\item writes DB delivery attempt rows or a report-only smoke result,
+\item never prints secrets,
+\item emits \texttt{reports/phase12/delivery\_smoke.json}.
+\end{itemize}
+
+\textbf{Acceptance criteria:} either one provider returns a real provider message id / HTTP success, or the report explicitly says provider not configured and no production-delivery claim is made.
+
+\section*{Workstream D: Evidence Retrieval Benchmark}
+\textbf{Goal:} Measure evidence retrieval quality so ``public silence'' is no longer an assumption.
+
+\subsection*{D1 Benchmark Dataset}
+Create \texttt{config/evidence\_benchmark_cases.json} with 20--50 cases:
+\begin{itemize}[nosep]
+\item market/event id,
+\item query text,
+\item evaluation timestamp,
+\item expected state: \texttt{already\_public}, \texttt{weak\_public}, \texttt{silent}, \texttt{unknown},
+\item notes and source URLs where available.
+\end{itemize}
+
+\subsection*{D2 Benchmark Runner}
+Create \texttt{run\_evidence\_benchmark.py}:
+\begin{itemize}[nosep]
+\item reuses Phase 4 provider abstraction,
+\item logs provider latency, result count, state classification, and timeout rate,
+\item supports \texttt{--mode live}, \texttt{--mode cache}, and \texttt{--mode mixed},
+\item writes \texttt{reports/phase12/evidence\_benchmark.json}.
+\end{itemize}
+
+\textbf{Acceptance criteria:}
+\begin{itemize}[nosep]
+\item benchmark has at least 20 cases,
+\item report includes precision-like agreement with expected state,
+\item report includes timeout/error rate,
+\item docs state retrieval confidence limits.
+\end{itemize}
+
+\section*{Workstream E: Shadow ML Scale-Up}
+\textbf{Goal:} Expand beyond the current 96-row held-out packet while keeping ML shadow-only.
+
+\subsection*{E1 Dataset Expansion}
+\begin{itemize}[nosep]
+\item Use the SSD archive path for additional replay windows.
+\item Generate more Phase 5 validation rows across multiple days and market types.
+\item Preserve train/validation/test window separation.
+\item Add wallet-entity features from Workstream A once materialized.
+\end{itemize}
+
+\subsection*{E2 Required Reports}
+\begin{itemize}[nosep]
+\item \texttt{reports/phase12/shadow\_ml\_dataset\_expansion.json}
+\item \texttt{reports/phase12/shadow\_ml\_baseline\_comparison.json}
+\item \texttt{reports/phase12/shadow\_ml\_calibration\_review.json}
+\end{itemize}
+
+\textbf{Acceptance criteria:}
+\begin{itemize}[nosep]
+\item dataset row count materially exceeds 96,
+\item wallet-aware model is compared to wallet-unaware baselines,
+\item calibration and class balance are reported,
+\item operating-mode memo still says ML is shadow-only unless a separate promotion decision is made.
+\end{itemize}
+
+\section*{Workstream F: SSD-Backed Replay}
+\textbf{Goal:} Replay archived windows without recopying all raw archives to internal disk.
+
+\subsection*{F1 Archive Path Settings}
+Add environment/config support for:
+\begin{itemize}[nosep]
+\item \texttt{POLYMARKET\_RAW\_ARCHIVE\_ROOT},
+\item \texttt{POLYMARKET\_DETECTOR\_INPUT\_ROOT},
+\item optional \texttt{POLYMARKET\_ARCHIVE\_ROOT\_READONLY=true}.
+\end{itemize}
+
+\subsection*{F2 Replay Tooling}
+Update replay/storage tools to use configured archive roots:
+\begin{itemize}[nosep]
+\item \texttt{utils/event\_log.py},
+\item \texttt{run\_runtime\_replay\_window.py},
+\item \texttt{run\_runtime\_storage\_status.py},
+\item Phase 5 replay helpers.
+\end{itemize}
+
+\textbf{Acceptance criteria:}
+\begin{itemize}[nosep]
+\item one replay window can read from \texttt{/Volumes/T7 Shield/...},
+\item internal \texttt{data/raw} can remain empty,
+\item report records archive root and whether it was internal or SSD-backed,
+\item missing SSD mount produces a clear error, not silent zero-row replay.
+\end{itemize}
+
+\section*{Recommended Execution Order}
+\begin{longtable}{p{0.10\linewidth}p{0.30\linewidth}p{0.48\linewidth}}
+\textbf{Step} & \textbf{Work} & \textbf{Reason} \\
+1 & Wallet schema + materializer & Unlocks mature wallet features and stronger ML/evidence explanations. \\
+2 & SSD-backed replay paths & Prevents archived replay from depending on internal disk restores. \\
+3 & Organic 30--60 minute runtime smoke & Confirms post-prune collection writes to fresh local directories. \\
+4 & Delivery smoke test & Proves or honestly disables real outbound alerting. \\
+5 & Evidence benchmark dataset + runner & Makes public-silence claims measurable. \\
+6 & 3--6 hour organic runtime run & Produces stronger live evidence after basic smoke passes. \\
+7 & Shadow ML expansion & Uses wallet plane and replay improvements for a larger dataset. \\
+8 & Final scope memo & Updates SRS truth: mature research v1 vs production future work. \\
+\end{longtable}
+
+\section*{First Implementation Slice}
+Start with Workstream A because it is the highest-leverage code change and does not require external credentials.
+
+\textbf{Files to touch first:}
+\begin{itemize}[nosep]
+\item \texttt{database/schema.sql}
+\item \texttt{database/postgres\_schema.sql}
+\item new \texttt{wallets/} or \texttt{phase12/} module for materialization logic
+\item new \texttt{run\_wallet\_entity\_materializer.py}
+\item new \texttt{reports/phase12/wallet\_entity\_materialization.json}
+\end{itemize}
+
+\textbf{Do not start with:}
+\begin{itemize}[nosep]
+\item Telegram secrets,
+\item PostgreSQL migration,
+\item long collector restart,
+\item model promotion.
+\end{itemize}
+
+\section*{Final Claim Boundary}
+After this plan is implemented, the project may claim a mature local-first wallet-aware research/runtime platform with bounded and organic live evidence, real or honestly disabled delivery, benchmarked evidence retrieval, SSD-backed replay, and shadow ML evaluation. It still should not claim autonomous trading authority, human identity inference, guaranteed profitable edge, or production high-availability infrastructure unless those are explicitly built later.
+
+\end{document}

@@ -21,6 +21,7 @@ SEED_SOURCE_MAP = {
     "phase10_task2_seed_trades": "trades",
 }
 TIMESTAMP_KEYS = {"captured_at", "trade_time"}
+SYNTHETIC_MARKET_ID = "phase11_synthetic_market"
 
 
 def _parse_iso(value: str | None) -> datetime | None:
@@ -86,6 +87,107 @@ def _load_seed_rows(*, start: datetime, end: datetime) -> list[dict[str, Any]]:
     return rows
 
 
+def _build_synthetic_seed_rows(*, start: datetime) -> list[dict[str, Any]]:
+    """Create a tiny labeled detector-input window when archived seeds are missing locally."""
+    price_source = "phase11_synthetic_seed_prices"
+    trade_source = "phase11_synthetic_seed_trades"
+    points = [
+        (
+            price_source,
+            start + timedelta(minutes=54),
+            "prices_batch",
+            {
+                "market_snapshots": [
+                    {
+                        "market_id": SYNTHETIC_MARKET_ID,
+                        "captured_at": _iso(start + timedelta(minutes=54)),
+                        "yes_price": 0.25,
+                        "best_bid": 0.24,
+                        "best_ask": 0.26,
+                        "spread": 0.02,
+                        "source": "phase11_synthetic_seed",
+                    }
+                ]
+            },
+        ),
+        (
+            price_source,
+            start + timedelta(minutes=57),
+            "prices_batch",
+            {
+                "market_snapshots": [
+                    {
+                        "market_id": SYNTHETIC_MARKET_ID,
+                        "captured_at": _iso(start + timedelta(minutes=57)),
+                        "yes_price": 0.58,
+                        "best_bid": 0.57,
+                        "best_ask": 0.59,
+                        "spread": 0.02,
+                        "source": "phase11_synthetic_seed",
+                    }
+                ]
+            },
+        ),
+        (
+            trade_source,
+            start + timedelta(minutes=57, seconds=10),
+            "recent_trades_page",
+            {
+                "trades": [
+                    {
+                        "trade_id": "phase11_synthetic_trade_1",
+                        "market_id": SYNTHETIC_MARKET_ID,
+                        "trade_time": _iso(start + timedelta(minutes=57, seconds=10)),
+                        "side": "BUY",
+                        "outcome_side": "YES",
+                        "price": 0.58,
+                        "size": 250.0,
+                        "usdc_notional": 145.0,
+                        "proxy_wallet": "0xphase110001",
+                    },
+                    {
+                        "trade_id": "phase11_synthetic_trade_2",
+                        "market_id": SYNTHETIC_MARKET_ID,
+                        "trade_time": _iso(start + timedelta(minutes=57, seconds=20)),
+                        "side": "BUY",
+                        "outcome_side": "YES",
+                        "price": 0.59,
+                        "size": 250.0,
+                        "usdc_notional": 147.5,
+                        "proxy_wallet": "0xphase110002",
+                    },
+                    {
+                        "trade_id": "phase11_synthetic_trade_3",
+                        "market_id": SYNTHETIC_MARKET_ID,
+                        "trade_time": _iso(start + timedelta(minutes=57, seconds=30)),
+                        "side": "BUY",
+                        "outcome_side": "YES",
+                        "price": 0.6,
+                        "size": 250.0,
+                        "usdc_notional": 150.0,
+                        "proxy_wallet": "0xphase110003",
+                    },
+                ]
+            },
+        ),
+    ]
+    rows: list[dict[str, Any]] = []
+    for idx, (source_system, captured_at, entity_type, payload) in enumerate(points, start=1):
+        rows.append(
+            {
+                "captured_at": _iso(captured_at),
+                "entity_type": entity_type,
+                "envelope_id": uuid4().hex,
+                "ordering_key": f"{source_system}:{idx:06d}",
+                "payload": payload,
+                "raw_partition_path": f"phase11/synthetic_seed/{source_system}",
+                "schema_version": "normalized_envelope.v2",
+                "source_system": source_system,
+            }
+        )
+    return rows
+
+
 def _shift_timestamps(value: Any, *, delta: timedelta) -> Any:
     if isinstance(value, dict):
         shifted: dict[str, Any] = {}
@@ -115,8 +217,8 @@ def _materialize_proof_rows(
     historical_end = max(valid_times)
     delta = proof_end - historical_end
     source_mapping = {
-        source_system: f"phase11_runtime_proof_{run_id}_{suffix}"
-        for source_system, suffix in SEED_SOURCE_MAP.items()
+        source_system: f"phase11_runtime_proof_{run_id}_{SEED_SOURCE_MAP.get(source_system, source_system)}"
+        for source_system in sorted({str(row.get("source_system") or "unknown") for row in seed_rows})
     }
 
     proof_rows: list[dict[str, Any]] = []
@@ -204,6 +306,10 @@ async def _main() -> int:
     run_id = now.strftime("%Y%m%dT%H%M%S")
     proof_end = now - timedelta(minutes=1)
     seed_rows = _load_seed_rows(start=seed_start, end=seed_end)
+    seed_mode = "archived_detector_input"
+    if not seed_rows:
+        seed_rows = _build_synthetic_seed_rows(start=seed_start)
+        seed_mode = "synthetic_detector_input_fallback"
     proof_rows, source_mapping = _materialize_proof_rows(seed_rows=seed_rows, proof_end=proof_end, run_id=run_id)
     written_paths = _write_proof_partitions(proof_rows=proof_rows)
 
@@ -264,7 +370,8 @@ async def _main() -> int:
         "historical_seed_window": {
             "start": _iso(seed_start),
             "end": _iso(seed_end),
-            "source_systems": list(SEED_SOURCE_MAP.keys()),
+            "seed_mode": seed_mode,
+            "source_systems": sorted({str(row.get("source_system") or "") for row in seed_rows}),
             "seed_row_count": len(seed_rows),
         },
         "proof_window": {

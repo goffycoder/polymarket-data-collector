@@ -1,0 +1,7 @@
+[ACTIONABLE] Bitcoin price and crypto market momentum
+Candidate 18f57f5643764f0499dcb0f0c2823fb1 triggered at Apr 20, 2026 1:06 AM ET
+Triggered: Apr 20, 2026 1:06 AM ET
+Rules=['fresh_wallet_burst', 'concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=15.127473
+Public evidence: already_public
+Detector: phase3_detector_v1 / phase3_v1
+Alert ID: 96400ba43299411c854dad2c7589e36f

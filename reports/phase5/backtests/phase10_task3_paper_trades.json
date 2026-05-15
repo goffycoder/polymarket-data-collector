@@ -1,7 +1,7 @@
 [
   {
-    "alert_id": "60ecb5c0a4c8447b9d69548e4c135529",
-    "candidate_id": "f9db3ec1f0bc4209a9a7414b40a361c8",
+    "alert_id": "6ae909752f414cdfb7c2193cf921a637",
+    "candidate_id": "e4ba716742264746806b2a17c39ce63b",
     "decision_timestamp": "2026-01-15T05:02:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -15,14 +15,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "a30e466881ec3c82",
+    "paper_trade_id": "576e800a5f0a0d28",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "2297b750862c48eeb58b25b9aa830bd4",
-    "candidate_id": "fa27d63fd73b446a9d8b6eaa9852047b",
+    "alert_id": "de00fcb617de43b3860e328ab2e04c49",
+    "candidate_id": "aaf0c561012c4bcba77d3d7f2da05363",
     "decision_timestamp": "2026-01-15T05:04:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -36,14 +36,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "246fb416c7795235",
+    "paper_trade_id": "bf7e2d32c08eaee8",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "7ae2ec3d0a284822a7a2b7b522a13957",
-    "candidate_id": "dd6067f2ab944893b1d6818c196c8882",
+    "alert_id": "1a60ce09197e474db486ccca9e704381",
+    "candidate_id": "3f63c7a2f5294c12a73e029a9faf3f14",
     "decision_timestamp": "2026-01-15T05:05:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -57,14 +57,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "07a8bc15db348c23",
+    "paper_trade_id": "65b5c4d9e181fae4",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "02612e4ee5184c8ea6ae5d670de907da",
-    "candidate_id": "1e1a0ec64d79446bb5c64acaf5242f14",
+    "alert_id": "a12e3e00009b473e86e4c44a41734919",
+    "candidate_id": "6bf08e1ec0b049bca73e84a12fe3bdfd",
     "decision_timestamp": "2026-01-15T05:07:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -78,14 +78,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "be17b193bdbbd31b",
+    "paper_trade_id": "08c73d8696c23152",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "a17c962bf60943838313fbaf035859b5",
-    "candidate_id": "54412f43f85a44fd978f2bb5ba36e42e",
+    "alert_id": "d406a17761474234bd3267f0dc1cd10e",
+    "candidate_id": "44315092fe554e86b21ee8f2ba9dd941",
     "decision_timestamp": "2026-01-15T05:08:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -99,14 +99,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "1fcd93736f9b4d0f",
+    "paper_trade_id": "2403427a015a9859",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "282473615bd44d15ad756b16225d8a08",
-    "candidate_id": "329e908188ba4f6ba7cdaca8b9ca7d77",
+    "alert_id": "9a88500acd9843228465bcd7139bd9b0",
+    "candidate_id": "68e6af5f67a7420d9675508c44d5f187",
     "decision_timestamp": "2026-01-15T05:10:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -120,14 +120,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "adfd24ccb6c00f70",
+    "paper_trade_id": "7bb2f74f23a8abb9",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "5a2b226a28714c4bae2783e5e09acc12",
-    "candidate_id": "1b5639f5f91c40a2ae0fc4ea7d068290",
+    "alert_id": "c9b8f604eea54bbdb4679ff3d45e3bff",
+    "candidate_id": "f601d3d8a79d4dcea925bfd036c799b8",
     "decision_timestamp": "2026-01-15T05:11:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -141,14 +141,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "a1624048ae41e4bf",
+    "paper_trade_id": "729294b9587e5e19",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "93b50e965c3744c3b58c1aea0f53b42c",
-    "candidate_id": "4562f94cdd75430aa014c0b4cdf1ebc1",
+    "alert_id": "2f0816c066c04c009e3a008ae199cfce",
+    "candidate_id": "384acdc373c84f3885a3ca6eb92cd267",
     "decision_timestamp": "2026-01-15T05:13:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -162,14 +162,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "acc08386787fea75",
+    "paper_trade_id": "60f78bf5e22ed8e1",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "7cfd4a4d94fb4b9691db0fa906c47b5f",
-    "candidate_id": "10e7da9c361d4b068d0597ac19fb5d10",
+    "alert_id": "fe9b50a6acc34c14a18fddafab3508a0",
+    "candidate_id": "1ba02517ee264f8e8d9c84d6282c8830",
     "decision_timestamp": "2026-01-15T05:14:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -183,14 +183,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "1886210b53eb2f56",
+    "paper_trade_id": "1dad3c4fc4782b6a",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "19350fedd261410e9592ebc0c93e5ca0",
-    "candidate_id": "bf6ae1abee784da19834b6e9a0aaa2a1",
+    "alert_id": "7e83a44c0d264c68aa8255e342fe4ab2",
+    "candidate_id": "0856a79490f94cac9d59170ef011464d",
     "decision_timestamp": "2026-01-15T05:16:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -204,14 +204,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "96bd02f6f7fbe326",
+    "paper_trade_id": "0369329809e94b2b",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "1c1a1ebee11d4d3cbab3bc0c5c623b0f",
-    "candidate_id": "79f2da5e62c840cd8f15345ca74572fc",
+    "alert_id": "9d5814c30b2e40e18f843de7a30285b8",
+    "candidate_id": "f2b9fc8e65bf4e128309e690a5939817",
     "decision_timestamp": "2026-01-15T05:17:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -225,14 +225,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "62e7532dca787efd",
+    "paper_trade_id": "c4bf09093bf3a670",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "75c022ae4a184ad48a31a15808528107",
-    "candidate_id": "53ec3d78698d416cb28f142e2fa1729d",
+    "alert_id": "e1632cd48df04a13b70058b05fda4918",
+    "candidate_id": "86fb7fab802145f18f01a9409401f58c",
     "decision_timestamp": "2026-01-15T05:19:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -246,14 +246,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "777e2658b2db9e71",
+    "paper_trade_id": "529b49ed0d012669",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "0784ffe9c90f4efea0ae71dcec6cd400",
-    "candidate_id": "93d9a28d2fbb47eaae8d4ad19e3d05b8",
+    "alert_id": "a3f396c4e0a34bb48853212860e066c3",
+    "candidate_id": "e0b93870839349c18bbdbddfc35801a4",
     "decision_timestamp": "2026-01-15T05:20:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -267,14 +267,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "a4fbae1bb56b5128",
+    "paper_trade_id": "ad62987f77c01bca",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "2de67d29e82949e99beada855b26898d",
-    "candidate_id": "fee01771d5c445deb769577a3f66b706",
+    "alert_id": "2aabe55e0b9f414388584b8187da91a4",
+    "candidate_id": "13a022069561495ba465795198c9cd79",
     "decision_timestamp": "2026-01-15T05:22:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -288,14 +288,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "407301fb995cc679",
+    "paper_trade_id": "205937b6c6b6d3ca",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "3335a2bb196b4451875e28b8b656bb5b",
-    "candidate_id": "f604debe06ec4af5adf28fc3813cc5ad",
+    "alert_id": "944e9d820992472f95e681feb175d9a5",
+    "candidate_id": "0c730f1bb10246e785ade839e04c3066",
     "decision_timestamp": "2026-01-15T05:23:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -309,14 +309,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "a134e1600b4bff6d",
+    "paper_trade_id": "dd834240b7dc8155",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "217698e0a34f4674a8e24b20265373cf",
-    "candidate_id": "dee5b4b0e79e48f09c98e40baad69611",
+    "alert_id": "b988c87fdf45460f9bb874583af6de9a",
+    "candidate_id": "26e6963f4a2e4e40945e175e2f03c966",
     "decision_timestamp": "2026-01-15T05:25:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -330,14 +330,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "77a90b6f36b5b65e",
+    "paper_trade_id": "1b7a6ffd422e4667",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "e8ed43f7a51f42dc8884d1d8e4fe95cb",
-    "candidate_id": "c860d51a1b764f7dbe776cf4fd0ff6d9",
+    "alert_id": "fb68964f364f4c65bf22ebbdaceb9291",
+    "candidate_id": "66b5e23ce00e4714947e31ebad5e818d",
     "decision_timestamp": "2026-01-15T05:26:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -351,14 +351,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "0db3d5226cbf2db5",
+    "paper_trade_id": "a3aaddd925070862",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "e19dec9f3e264273b0463cdf41884122",
-    "candidate_id": "5402bdb8041b47d4a34729042955c458",
+    "alert_id": "1664953d95e94e5f88766bb25aa0ccf7",
+    "candidate_id": "c1752d3fa8804a98ab277ca29c56dea2",
     "decision_timestamp": "2026-01-15T05:28:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -372,14 +372,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "45f5ea7bced07c71",
+    "paper_trade_id": "0e35b1ce3afd7e5f",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "a3873d5e7ce14f9199e24002535a3740",
-    "candidate_id": "8eec7965ea864aff99a0a957cf722843",
+    "alert_id": "4c8fbfeb4a624cfe8a1441ae600107f6",
+    "candidate_id": "f66d720759ca44cda975bb71e1e08abe",
     "decision_timestamp": "2026-01-15T05:29:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -393,14 +393,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "c0c2e66feb992d57",
+    "paper_trade_id": "ef8590b44e1697f2",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "e006c174c59449c38b22ece050e02b25",
-    "candidate_id": "12f46d76bb8a47bab32fcce8ad13eef6",
+    "alert_id": "95a0dbcdb84842ec8fc957d8bd9c50a4",
+    "candidate_id": "bfaec76d04284147a3d6e1cbf15b9d29",
     "decision_timestamp": "2026-01-15T05:31:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -414,14 +414,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "2765ce607a4bd943",
+    "paper_trade_id": "37f7c15b6be21430",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "ed3970acdb9b4ba0a6c6efad48809d05",
-    "candidate_id": "f0f4544f0a2447eb95bb32b8a0aa7303",
+    "alert_id": "c02fda81ef624cd5a01551d77c1fc9f2",
+    "candidate_id": "06205e8664994ef3a66a3528ab0994bf",
     "decision_timestamp": "2026-01-15T05:32:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -435,14 +435,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "8ee6251b83aa109e",
+    "paper_trade_id": "53c5e685dda6c48a",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "c6cd1b9540a844b5ab0e8ad8bc45746f",
-    "candidate_id": "23dfa18aab954805bb5f016e7c47b21e",
+    "alert_id": "3291d854e5aa4f20b72929cb4d4a2c94",
+    "candidate_id": "11bdff6e65ff464e8b8e2876806f63e8",
     "decision_timestamp": "2026-01-15T05:34:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -456,14 +456,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "82d284bc6e620cb3",
+    "paper_trade_id": "532c20fafc54f982",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "e0cb96e329d9462f9e5540ae0ce04e6b",
-    "candidate_id": "50f61e972ddc4158bea7dd8ada785517",
+    "alert_id": "ad8c971e153e40d5b8a7df6c7c23b49e",
+    "candidate_id": "051eaa1b4d18426c91488bbb5236db20",
     "decision_timestamp": "2026-01-15T05:35:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -477,14 +477,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "0279fc1eaca482c4",
+    "paper_trade_id": "6dcfade5577688e2",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "540d1ab3febf41beb6fdbf15ad54f442",
-    "candidate_id": "b034918f07804640a5a89f3080e6d15b",
+    "alert_id": "c44d5d2ce5cf4c3f8e3eaa13a6284cc9",
+    "candidate_id": "5baac18e0eab4b988dd369a2dd4bac25",
     "decision_timestamp": "2026-01-15T05:37:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -498,14 +498,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "446573906b584204",
+    "paper_trade_id": "c5b4c36c62657ce4",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "4e6aee3d7c704ad8a3522f03d57e304b",
-    "candidate_id": "80f7382873284a38aeae142754a43aef",
+    "alert_id": "b154071a2c6741929923606f79661bd8",
+    "candidate_id": "5c4e9366a9b04ded960a237e400dd320",
     "decision_timestamp": "2026-01-15T05:38:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -519,14 +519,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "951b69b8a48af391",
+    "paper_trade_id": "0c23efa32e29c2c3",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "d8d109a6a83a4070ac15f4240ba86de0",
-    "candidate_id": "8f4daafdeb6449988ecc850132e36877",
+    "alert_id": "0096f21cf4f3411f97d008586a2e2d5b",
+    "candidate_id": "5236488dde8c459ea34d3af2d00e1f57",
     "decision_timestamp": "2026-01-15T05:40:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -540,14 +540,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "0898ddae38867a16",
+    "paper_trade_id": "465b72e49957cd73",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "bf040d47f6b64ac5af9fb58f92ff5d4d",
-    "candidate_id": "8056f74433f84f15ba663af27e691f87",
+    "alert_id": "ced262de99964ea090bf76ebc7d3121f",
+    "candidate_id": "52786a92a79d4241a42229ae76564e34",
     "decision_timestamp": "2026-01-15T05:41:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -561,14 +561,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "199afdbe63b052b0",
+    "paper_trade_id": "51632dafe1b1a205",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "7a34d49c18d84255bd5af060178b5466",
-    "candidate_id": "00d941a0eca14b6e9acd425f137aec29",
+    "alert_id": "a9bcfbfaa45e4348868cfbe8eaf7cfcf",
+    "candidate_id": "b43c2428e0f942a589abb6961258a558",
     "decision_timestamp": "2026-01-15T05:43:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -582,14 +582,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "753df7eca1c58dc6",
+    "paper_trade_id": "3794a30388141916",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "cd6843c7cf14407792e6ac1cb1822311",
-    "candidate_id": "68cb93999f234505a775a8e0762080e5",
+    "alert_id": "ac863c482c1846ae81f3a4adc9508d64",
+    "candidate_id": "246eed54060f4ba6acbacc1f03a83523",
     "decision_timestamp": "2026-01-15T05:44:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -603,14 +603,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "3a3de294853b4b4e",
+    "paper_trade_id": "5554fc42eecd7366",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "ec37627f10bb43ca8b02e112177474a4",
-    "candidate_id": "eb45603634a24879b486cbba772ab3e5",
+    "alert_id": "0cf2ac176dc149b5938f64646cd4654d",
+    "candidate_id": "8acf02343d0a4a73bc47b976872a6ec8",
     "decision_timestamp": "2026-01-15T05:46:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -624,14 +624,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "69f68b07c225b12f",
+    "paper_trade_id": "f911e0accaf96071",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "3c4ea8b9eae14d2b951664f433bd02fa",
-    "candidate_id": "9811d5b944574acba35de610a9a6a6cb",
+    "alert_id": "bb8d6b41ab784c87b7bbea77a5992780",
+    "candidate_id": "8ac4478f48fb435cb9fba10d9cd7cc8a",
     "decision_timestamp": "2026-01-15T05:47:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -645,14 +645,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "097d226fa211afaf",
+    "paper_trade_id": "dd2b139b0eef0996",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "d6214d2f3e5141d788412ccffa983b8f",
-    "candidate_id": "f4a11dfc4d264a72a8ed467576f03a04",
+    "alert_id": "5df5f25097af489fa5089dee210180df",
+    "candidate_id": "13ca2c087ee6438885bf7e7c2da36146",
     "decision_timestamp": "2026-01-15T05:49:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -666,14 +666,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "cd1aecbe57e7a2b7",
+    "paper_trade_id": "72d35db4cda4a7b7",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "fd1ff1df0d744390826a9d14095700bc",
-    "candidate_id": "204f00ef7a0a428f9c61a54e54348f0e",
+    "alert_id": "a47e759d7a8d4cc78eaf73f823e71d64",
+    "candidate_id": "7080097086a64dbf8b38007496d7abb1",
     "decision_timestamp": "2026-02-15T05:02:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -687,14 +687,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "c0dd965a6963b31d",
+    "paper_trade_id": "ddab1d8c3ecb51ac",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "1178c22239374837a5ef842af43812b6",
-    "candidate_id": "0d3d018c822a4f0286cc0317f513f652",
+    "alert_id": "a6d2963e3820407a88b04afb5d9f126e",
+    "candidate_id": "929949e7df5d42a393edf0ef43bf4a2d",
     "decision_timestamp": "2026-02-15T05:04:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -708,14 +708,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "f15a8a4ffcb34808",
+    "paper_trade_id": "59e58931b3fc42e8",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "d6e305b15b064720b326d5ce7c62cf86",
-    "candidate_id": "8f01bf7476c64015b86cd72e3607f92b",
+    "alert_id": "20131387790646aca362cf4ecc0412ca",
+    "candidate_id": "d965b9dc291546239b3bc665b7df6317",
     "decision_timestamp": "2026-02-15T05:05:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -729,14 +729,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "869985bc822317b4",
+    "paper_trade_id": "c8d6e09f942b3130",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "96f164fe54fe46b38d56d1a68e00dd36",
-    "candidate_id": "2bd0ded1bb7749e7a4642c0624862f7a",
+    "alert_id": "1fa12c53ddcc4966a364897b4d412036",
+    "candidate_id": "661dfe1213594609b448756e3e52ffe8",
     "decision_timestamp": "2026-02-15T05:07:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -750,14 +750,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "4fa6a9ac5319896a",
+    "paper_trade_id": "7dbf1368a370a098",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "252f93235d774ba0ba3a99e2ccd422eb",
-    "candidate_id": "77ca1b032b594fca9df36d3d6452001b",
+    "alert_id": "065576ef845f4b408289b3cb3b11bfc7",
+    "candidate_id": "ddbf4872a969407988766371e8ac0196",
     "decision_timestamp": "2026-02-15T05:08:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -771,14 +771,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "6ee52ff9b7523d14",
+    "paper_trade_id": "3938af6ff6f3eb21",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "86a3edb34b0148bda5a3611c0cd1c54d",
-    "candidate_id": "0f6319e336244dc9a8a2d1ae11d50ba8",
+    "alert_id": "e6df6e2678cd4f3b82f134879b7209d1",
+    "candidate_id": "cd80f06d2bb6429ebae6e9ed01d518fe",
     "decision_timestamp": "2026-02-15T05:10:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -792,14 +792,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "89197fe44d465b34",
+    "paper_trade_id": "e12b730411c08c39",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "573bfe6106354352b3d194134e480a04",
-    "candidate_id": "2435ead4695d49ba93e172e0913c548a",
+    "alert_id": "1fc4dfdbce914aeaa594ad0055e52776",
+    "candidate_id": "8ff499b9481143ff97e1bd9975391ef2",
     "decision_timestamp": "2026-02-15T05:11:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -813,14 +813,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "0613fca375858700",
+    "paper_trade_id": "81bbd29886195bf5",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "3b614afa552f45baa7367262d5e2a6ac",
-    "candidate_id": "6b4b31d70558419fbd4de381e2162f07",
+    "alert_id": "4f507f5e6c85469ba07613c79720870a",
+    "candidate_id": "14df81d92e3e4ad29cf28455de9ad077",
     "decision_timestamp": "2026-02-15T05:13:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -834,14 +834,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "1f4130f876098630",
+    "paper_trade_id": "0974459e4733e515",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "051315ff6cc742d0854ba9af0bc46dd2",
-    "candidate_id": "28b202ce4c3f487387727a41cc71a1bd",
+    "alert_id": "5c21d1a605b1412ba59d0ce4577fe63d",
+    "candidate_id": "4e30ee33a22d488fbda2ec412a551045",
     "decision_timestamp": "2026-02-15T05:14:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -855,14 +855,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "e3ca7f2307b1e3b2",
+    "paper_trade_id": "7a0d48417060ba30",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "272fa87225ae45f6bd53c20aea50fe00",
-    "candidate_id": "6f3dadf26c7a4416921b31e026577d86",
+    "alert_id": "1f588be053004c50844cf2e5cd5e2a62",
+    "candidate_id": "be710c3bf9f440cbbea85bf60d17ef8e",
     "decision_timestamp": "2026-02-15T05:16:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -876,14 +876,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "6233939d4594b9e3",
+    "paper_trade_id": "5c3af204515dde5b",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "d9e141639b7d438cafe46e575d0f9a87",
-    "candidate_id": "38ebe2011baf4bbaa4e4036b9872bdff",
+    "alert_id": "e41204e3fab048f9ac61297e2e8bb43b",
+    "candidate_id": "28537bb3d56647ddb365d06476e5b6cf",
     "decision_timestamp": "2026-02-15T05:17:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -897,14 +897,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "9abaaa9c306309c3",
+    "paper_trade_id": "caca9f4ead8c398b",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "4e84244c23524927a95f810e76f092e2",
-    "candidate_id": "fea974cb764145d2bdcd9c1d4c09191e",
+    "alert_id": "8c68873d89274a819abdd94ce016b18e",
+    "candidate_id": "c16f96271b7d488cb93fc873700e651a",
     "decision_timestamp": "2026-02-15T05:19:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -918,14 +918,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "28eea96db73841f1",
+    "paper_trade_id": "9f5d18b64e1d41ac",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "cdba5700830f4cc2991893768a0df301",
-    "candidate_id": "62f299f7e81d451ba66ebd495844470b",
+    "alert_id": "3330b25156784166bf265f362e498115",
+    "candidate_id": "9d4454db3d4e48239d33e585fed3dbbb",
     "decision_timestamp": "2026-02-15T05:20:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -939,14 +939,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "f50b052cbe057d71",
+    "paper_trade_id": "45dad86a41b7c820",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "fc373fec05d646d08ccd323aa5878e89",
-    "candidate_id": "2c9fa2ee898b43f9839194f4e0e726fd",
+    "alert_id": "bf6f1e88de0e43329043c68b9c6b457a",
+    "candidate_id": "28479a80f472418f85448c8b705c65d2",
     "decision_timestamp": "2026-02-15T05:22:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -960,14 +960,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "40052da133495b3b",
+    "paper_trade_id": "e9b7c055bb049495",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "365852f2507f42a2b9789699220fe876",
-    "candidate_id": "4fc63cd12ac14870b1d7bf5f5f49f4c2",
+    "alert_id": "82d2e7e1dca84d0083ffd6fb86bc4d40",
+    "candidate_id": "8cdb7e058b1f4271b3c9a60202ce8170",
     "decision_timestamp": "2026-02-15T05:23:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -981,14 +981,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "eb2679e7993cabc6",
+    "paper_trade_id": "44aeaaffa189c59a",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "6b0a1f30b6a1456e90a6b474b5d28db6",
-    "candidate_id": "189de53cdac049eabd692d8521a702c5",
+    "alert_id": "2528eb81b1af480396a5b6ff8f940fc2",
+    "candidate_id": "0ef2725ab6f94e27886cfd74f109a37b",
     "decision_timestamp": "2026-02-15T05:25:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1002,14 +1002,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "a1359754611c3e62",
+    "paper_trade_id": "3b04f5c9b806d710",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "b24caef652844e878e763d9cbccec212",
-    "candidate_id": "a30c85fa28d0461b9dbcf3d826b20874",
+    "alert_id": "79569be169354049bb088bf5fa61c365",
+    "candidate_id": "c9e162cc3f1c484fa3c2dc5465bf0739",
     "decision_timestamp": "2026-02-15T05:26:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1023,14 +1023,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "7c3bf1c667df678f",
+    "paper_trade_id": "109c60b6d4935f0d",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "4853fdc71d03430ab60fa59ffec95964",
-    "candidate_id": "36d7e58e774c4c028a76070a43a7aeb8",
+    "alert_id": "3b3351c555734ef8b507b9932ab6a0c8",
+    "candidate_id": "b086f0d45a5e437eb73f9ba45adea820",
     "decision_timestamp": "2026-02-15T05:28:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1044,14 +1044,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "9419aaf69338fe2e",
+    "paper_trade_id": "b380d76dbea076d2",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "3ac8f2f9c4cc45e093a0e44a1d5969c8",
-    "candidate_id": "291259352c6b457db4cc91a9d14e8dbc",
+    "alert_id": "5f61b2fe1c7545afadf64616ba17a4d3",
+    "candidate_id": "bf2cace55dc446bcb00a7492f2cfb6f0",
     "decision_timestamp": "2026-02-15T05:29:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1065,14 +1065,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "32c9f4afd3d829af",
+    "paper_trade_id": "489b7d88f41ac320",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "57283b150a7444f489330b0384fdf1e4",
-    "candidate_id": "a3a5e27b7d764f83ad881b4210e7c1d1",
+    "alert_id": "1af976b59e4844328e9d43fc7dc2048a",
+    "candidate_id": "7413de06c0d744429413efb03abdf073",
     "decision_timestamp": "2026-02-15T05:31:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1086,14 +1086,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "94c9e67cd403aaae",
+    "paper_trade_id": "0f6b2e9ffa46771e",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "c33cc54e553348e0b93f88e7aa930f17",
-    "candidate_id": "78a27e03bf61461889b2e0839fc4db46",
+    "alert_id": "1d4cc3d739f54ca086af6b3e0e04b5ce",
+    "candidate_id": "f1de3b7eded04a19b691d72e642fdbaa",
     "decision_timestamp": "2026-02-15T05:32:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1107,14 +1107,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "f5f459b9ad716f75",
+    "paper_trade_id": "d8bf92066a375e06",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "8541b5b0b68f48598a712fbf213991e0",
-    "candidate_id": "3023c4f3467c4844ab066f0f3df33f86",
+    "alert_id": "adf0b136a7b145f7ad863c6da9ef8664",
+    "candidate_id": "e251628ed07d4d21809d611200091e50",
     "decision_timestamp": "2026-02-15T05:34:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1128,14 +1128,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "2f1457f579bcaae4",
+    "paper_trade_id": "523acdef6bdf7701",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "999bdd47591c44a3a36ee8ac24f8e407",
-    "candidate_id": "fa7b9331e4464be0ac1fc25679ba7140",
+    "alert_id": "f1bfe57756144bab8556071cf000f7e8",
+    "candidate_id": "f5483b2b53314e689944de4c89e3b04e",
     "decision_timestamp": "2026-02-15T05:35:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1149,14 +1149,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "9dd203ae03b39657",
+    "paper_trade_id": "de705634e47f978a",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "bb115028247f470792f63b1ee70bcad1",
-    "candidate_id": "e6a89b856e414a67acaccccabe6bf376",
+    "alert_id": "4d6f7589ce964364b6f230067dfa0388",
+    "candidate_id": "ee620e3a989e4693ac534ac07a5e877e",
     "decision_timestamp": "2026-02-15T05:37:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1170,14 +1170,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "c3dc3cb24ae46df4",
+    "paper_trade_id": "3178c07eb2ef2f19",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "89375fc4be3341669cc155ed8a303d61",
-    "candidate_id": "2f73032d342c49aba139a3795a93821c",
+    "alert_id": "91143a49a92849dc8e0458710ae3ef11",
+    "candidate_id": "2160f0234729498ab0168a5de9744705",
     "decision_timestamp": "2026-02-15T05:38:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1191,14 +1191,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "abf7896ffec7c705",
+    "paper_trade_id": "de8a0c6e9f71e369",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "b30791b42f494aabb29e02d52e1ab4d3",
-    "candidate_id": "18de510add5742d196260dea6a18245d",
+    "alert_id": "13010cdd80b24ddfbac1f2324d54c928",
+    "candidate_id": "aaaba44107e443c8b03a5e78ac70aaea",
     "decision_timestamp": "2026-02-15T05:40:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1212,14 +1212,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "2ed565db6e68c04b",
+    "paper_trade_id": "12404fd528fb846f",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "a9c47a35b17049cd967989d174c612c9",
-    "candidate_id": "4c72f05472ca4f3f99d70a353a3446f1",
+    "alert_id": "044fca9e02fa4968b30e671b0a1d2832",
+    "candidate_id": "cb91b26c41054a08b1d02b19db3015e9",
     "decision_timestamp": "2026-02-15T05:41:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1233,14 +1233,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "7baef14f50182ebc",
+    "paper_trade_id": "53c96d34e352d2be",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "4dfffd09e2e442f081edff50107f0996",
-    "candidate_id": "40cc3f1057f94604b9de8a233a4aa0b5",
+    "alert_id": "7a36b7c8de5d479ba4f820ace48e3201",
+    "candidate_id": "979bff16a78d4af5ac590c2cbfce7d6c",
     "decision_timestamp": "2026-02-15T05:43:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1254,14 +1254,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "dacbf9ffe0313fbe",
+    "paper_trade_id": "2dbb89b42f3ad4dd",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "baa5fca625734bf8a98b7a2c1f7388d9",
-    "candidate_id": "f346f2e2b1484adf8e1ffc16a350791d",
+    "alert_id": "a56f9de0d36547ecbe881364934de85e",
+    "candidate_id": "523d0a57c21446fbb35b2b8fc5d8948b",
     "decision_timestamp": "2026-02-15T05:44:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1275,14 +1275,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "5116a3a21f22ed0f",
+    "paper_trade_id": "47d94f29e6bc7c02",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "5d10bcf1e8f94ac6936e7f92684ada7c",
-    "candidate_id": "da294dfaee934c809f173bd3af2f6d91",
+    "alert_id": "8f1910b305e04ed9803125fd2fb5f1a8",
+    "candidate_id": "08bd13f09f064e76bb2822fccfe4001f",
     "decision_timestamp": "2026-02-15T05:46:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1296,14 +1296,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "2823fb1abd184631",
+    "paper_trade_id": "6fe907b261a83e4d",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "628fb5fed14c450c961466fe5c1203d4",
-    "candidate_id": "6a7a3fe0480946b48f559c3ef4acda81",
+    "alert_id": "5816c68fbf7b49c683c3269179788aeb",
+    "candidate_id": "112326215221433bbb17d51ba14aa10c",
     "decision_timestamp": "2026-02-15T05:47:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1317,14 +1317,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "dc806bbae77d1506",
+    "paper_trade_id": "d356e70d8d1d1393",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "9939849ec73a404fa6fff7b5ec69b80c",
-    "candidate_id": "44018afa63104502b9dee2d2e7221b1f",
+    "alert_id": "9013be14cdd3452087abbc9e39430d14",
+    "candidate_id": "09da38d0d49642d5ac6c58415c86e722",
     "decision_timestamp": "2026-02-15T05:49:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1338,14 +1338,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "fd47e7adb17c2a4e",
+    "paper_trade_id": "174194e372e6b02c",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "b8940cf751c8447081db87fde1bbc9c7",
-    "candidate_id": "58600cdd65944d9fa696a61454e67c32",
+    "alert_id": "033fb2c9b5c34340b2d386426fab84b4",
+    "candidate_id": "76a62375bc1a4f308945708edcbbde0d",
     "decision_timestamp": "2026-03-15T05:02:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1359,14 +1359,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "2023cc0c2d954b9e",
+    "paper_trade_id": "6e680c609686901e",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "820b10100f2e489d9ddc5173d403d41a",
-    "candidate_id": "d6aed99c824945e6945c8d2327dfb072",
+    "alert_id": "41c872150aa041858515dc340e31907c",
+    "candidate_id": "5f439d27d9f6442eab964851925ff9b9",
     "decision_timestamp": "2026-03-15T05:04:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1380,14 +1380,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "dcc9b598112ba3cf",
+    "paper_trade_id": "0bf9f87c133a94f7",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "e00600512d44457ca537e032e6e2a75d",
-    "candidate_id": "de153a50c5504247a070c049b71ee3e0",
+    "alert_id": "19b44ac701974a33bb4fef443a22fd52",
+    "candidate_id": "94feb7b4547a44eaac13fc5365b2178e",
     "decision_timestamp": "2026-03-15T05:05:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1401,14 +1401,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "1251bcc513c7a106",
+    "paper_trade_id": "63ca59211df0ebcc",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "97f1e5475a1941c0ab974025a770a144",
-    "candidate_id": "b91fae981130426fa6907d9e8b9ff475",
+    "alert_id": "c4aab2c701dc4f67ae30b277781aed8f",
+    "candidate_id": "8a456fe29e164a2cbf9218d31306b4c3",
     "decision_timestamp": "2026-03-15T05:07:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1422,14 +1422,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "81eeef79b414bdc5",
+    "paper_trade_id": "be52b8777516ce59",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "6a99520815ec46b7b95fafe3ba327ffa",
-    "candidate_id": "054c6110293347069c7ed6f38fd169d9",
+    "alert_id": "69d7b652286e4f06912c40d7b6146173",
+    "candidate_id": "4567235be4ec41ce9b1a0333218a0933",
     "decision_timestamp": "2026-03-15T05:08:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1443,14 +1443,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "32db960e62fea71e",
+    "paper_trade_id": "b7b950da5692cdb1",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "7b89217541fe48678a96e4f3668b544c",
-    "candidate_id": "5e729661b3214a73a468734f87ba15ba",
+    "alert_id": "b88f43bfa3224b0c8d0f2ce8782df19c",
+    "candidate_id": "d0f2444efea34446abfe054c28e86177",
     "decision_timestamp": "2026-03-15T05:10:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1464,14 +1464,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "51893a14d1ac8d81",
+    "paper_trade_id": "6ecc63a9c2628c97",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "cc0fcedeb1e14fd2b97ddc79d7a88534",
-    "candidate_id": "afd54ba662d64b8e89c2355a63140791",
+    "alert_id": "72c042077a494d81bd07ea6432a9e0a5",
+    "candidate_id": "c6219c8ac2c7423e96cab8144292b37d",
     "decision_timestamp": "2026-03-15T05:11:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1485,14 +1485,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "8d1c4814aa299ca0",
+    "paper_trade_id": "caf245a3fd770a43",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "bf21e127f75a420bb5997a4fc6868f65",
-    "candidate_id": "0ba48fdbf78d4802920baf1996be81fc",
+    "alert_id": "826ba3432a974963a46433a66a666f3a",
+    "candidate_id": "48958432ea0e460bbcb2a622d94a8270",
     "decision_timestamp": "2026-03-15T05:13:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1506,14 +1506,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "79fa5fcae7520f03",
+    "paper_trade_id": "6d35c4b821e50fa5",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "a2033913ef3045ddacdc2e044567bb94",
-    "candidate_id": "7ddb1540d3bf4d88b0020afb16c8026e",
+    "alert_id": "0a3e8f2f333c4b4ca1a8174498aec67c",
+    "candidate_id": "c2420bcec79c4656bdc68bf51f20b193",
     "decision_timestamp": "2026-03-15T05:14:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1527,14 +1527,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "82849d454eba56f2",
+    "paper_trade_id": "63faa3efc71291b8",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "cae334f3bf5146aa92495623065cc42a",
-    "candidate_id": "a9a8bcd7c63d44ad9d438dec4784ce06",
+    "alert_id": "2be944fa87e04321a8ba171bbc6676eb",
+    "candidate_id": "28e8211652344fb0a760015b21a1e807",
     "decision_timestamp": "2026-03-15T05:16:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1548,14 +1548,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "ec3591e48aab4c96",
+    "paper_trade_id": "5a40143986017184",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "f2d014ebeeb449eaa8bbfc5b6f979d96",
-    "candidate_id": "ef6e964743ca43cf8702be90dd5281ba",
+    "alert_id": "16b9891ef9e6499197316cf0c2a2ae08",
+    "candidate_id": "2b11f7e972a94d9b9f24dc0c9bb6ba55",
     "decision_timestamp": "2026-03-15T05:17:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1569,14 +1569,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "27aa2882988bdf4c",
+    "paper_trade_id": "a0f42e8eb5e2c220",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "02e3e4adc2c24323b578e57abf4f6230",
-    "candidate_id": "39b6da61610d44329bed87f0ba45c764",
+    "alert_id": "57b2654d4b31446e94c6b8c8774b060d",
+    "candidate_id": "30f13e3f305c4b6cad067483b7597e21",
     "decision_timestamp": "2026-03-15T05:19:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1590,14 +1590,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "37c82ccb6440778f",
+    "paper_trade_id": "979a100f74f429a5",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "ca3a2ed225b445f29773ed95ff48a867",
-    "candidate_id": "418b7a18a6a14d1a9a746c10c435b5c1",
+    "alert_id": "32d9fa0cadd8467aad00197be4778048",
+    "candidate_id": "50beaf7cd000491aa19236842e82ae5e",
     "decision_timestamp": "2026-03-15T05:20:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1611,14 +1611,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "91223f967a6db00c",
+    "paper_trade_id": "d1365304b1c16c4d",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "eeced324b95f464fa8520703f0b874eb",
-    "candidate_id": "188d810bbff8430bb85a422d6d9a95cc",
+    "alert_id": "d17f6e2c15ae4201bea54aedf90b0ecd",
+    "candidate_id": "0354d4ee1d194bcab79dc014be03e4c9",
     "decision_timestamp": "2026-03-15T05:22:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1632,14 +1632,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "4a42417dbfef8cb6",
+    "paper_trade_id": "94bc6f8767596d39",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "3f2b2c7772ca42e397d0834fd3147a46",
-    "candidate_id": "f5ba243b67744a199590bd1498b93dea",
+    "alert_id": "802081624f684d8b8664906898d3cbbd",
+    "candidate_id": "c5570c5df58146b0b16669f332a85214",
     "decision_timestamp": "2026-03-15T05:23:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1653,14 +1653,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "dc31224263afd031",
+    "paper_trade_id": "90031ccce5652aff",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "d5f090a05acc4406af73b76681300ca5",
-    "candidate_id": "b2f7e45a84ba4da0a8fc567459f24292",
+    "alert_id": "3bcb14299e1f46dab7e96f7d6984482a",
+    "candidate_id": "0e8c523604c641c68dc3de76d8d60fa5",
     "decision_timestamp": "2026-03-15T05:25:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1674,14 +1674,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "0038bb9664ff40cc",
+    "paper_trade_id": "62e2462723be8047",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "29a175b8ff8d48dea7e317abd30df56f",
-    "candidate_id": "efd0c66be37141a681932705a5ef7122",
+    "alert_id": "72d4fef34e5d4780bd6aa910314a0732",
+    "candidate_id": "1243532a2ebe45c5805931c5364e93c8",
     "decision_timestamp": "2026-03-15T05:26:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1695,14 +1695,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "ec44e52f528006fd",
+    "paper_trade_id": "621c4bfa7b0228c9",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "dcc1ac48e9e34ba1b06aea747029d7c6",
-    "candidate_id": "5939738c696146b093efb4a8d09784d7",
+    "alert_id": "8fa62079ee124b06b10c72251741e630",
+    "candidate_id": "2db2f46b3be94795ad4cd28010fe83f1",
     "decision_timestamp": "2026-03-15T05:28:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1716,14 +1716,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "65056af25b7520f3",
+    "paper_trade_id": "29a7ea56289bdd79",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "385816708c554983b21ecf1931eff6b1",
-    "candidate_id": "985baf5f659d4896a6da206ffc565395",
+    "alert_id": "75c01c0825994894bf98d319bca4d914",
+    "candidate_id": "ba5e915229784678a23a7bf131ad0920",
     "decision_timestamp": "2026-03-15T05:29:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1737,14 +1737,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "109d7f0ffe7fc5f1",
+    "paper_trade_id": "1928c0ba8aed733e",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "5968a2073fea420fb8f2a12a577eebcf",
-    "candidate_id": "8bf1ea7e66ed4ff2bb43c24a902b6e31",
+    "alert_id": "06f6dd601ffe47c9ba5e04f7e0820fe4",
+    "candidate_id": "55f709269d2d48ccb2a6f3cd0b6cb2d6",
     "decision_timestamp": "2026-03-15T05:31:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1758,14 +1758,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "81ba0cb9de9cf7c9",
+    "paper_trade_id": "18018c37b07ebc58",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "e56bc0cac10d46b18cf778fc975b7cf6",
-    "candidate_id": "9c0dc4d52648484490e4a45331dfdbe7",
+    "alert_id": "4e69916ce017442fb88570da9d697697",
+    "candidate_id": "f8e1b379f3ef4330ad7b3668fd69dc2a",
     "decision_timestamp": "2026-03-15T05:32:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1779,14 +1779,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "6fe68f5216755b82",
+    "paper_trade_id": "64b4c8af852cea90",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "4dc7b6ca335a4982884930949ab954f9",
-    "candidate_id": "f0cc69367be04595b93ce60c0c38dd74",
+    "alert_id": "a243a445e4bf4cbf9508ec45785eccba",
+    "candidate_id": "5da0a511ccb74cda88f88436b1d4b298",
     "decision_timestamp": "2026-03-15T05:34:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1800,14 +1800,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "155c3be97e3fb40c",
+    "paper_trade_id": "7d68c79ad162adc4",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "610f017d970241afa33a4b893750e060",
-    "candidate_id": "357bb54d24cc4e9ea1002522bc7520af",
+    "alert_id": "b6e9c3a8a3fe47c6b80c9c50b9ca07dc",
+    "candidate_id": "1ed592a7329444918bc4f313dcf71121",
     "decision_timestamp": "2026-03-15T05:35:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1821,14 +1821,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "57affd963830f912",
+    "paper_trade_id": "3029c7c8bc26f915",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "78c5efe0385947ef8a7517b0883f784f",
-    "candidate_id": "62993bec69954316b9ac10defee5e7f1",
+    "alert_id": "04dd101323b54206ba318aa516093ff7",
+    "candidate_id": "31f1ad439c2e42a49d367a163a8c8d66",
     "decision_timestamp": "2026-03-15T05:37:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1842,14 +1842,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "6c914c34efe9d601",
+    "paper_trade_id": "1d908167505b2142",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "68055e26c9d24683be32f61bc34402a7",
-    "candidate_id": "a9e5621f74194bcbaca84a002c5a5109",
+    "alert_id": "88056bfd9394407c8dc7b14815714800",
+    "candidate_id": "4716ed7baba6479ba9c84188406b5d0d",
     "decision_timestamp": "2026-03-15T05:38:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1863,14 +1863,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "782b050045416bd1",
+    "paper_trade_id": "0ada7d64b98593a2",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "cb0e21641dbd4e0bb75c99cf4dd53f79",
-    "candidate_id": "4bf5527345e24554b8256587133dfb36",
+    "alert_id": "09e4ea55435e4c44b0f717d564274cc7",
+    "candidate_id": "05d8c1ea55a749e1b18b88bdc371e87a",
     "decision_timestamp": "2026-03-15T05:40:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1884,14 +1884,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "8a82545351fdf5ec",
+    "paper_trade_id": "af5072bb591486dd",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "baaf18ae05dd45c78f8941333e19316f",
-    "candidate_id": "1a57fa36410b4269b0ff3a43d5ad83ba",
+    "alert_id": "fa62265325884f00af101971bc2309ca",
+    "candidate_id": "37f1ff7ecb4744d38bfd74d451f28b07",
     "decision_timestamp": "2026-03-15T05:41:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1905,14 +1905,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "b0eac189e2a126e2",
+    "paper_trade_id": "cc00e206c4fc4808",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "696819bf785a42b6afa4e181fc3c5daf",
-    "candidate_id": "c9081b1d21c24c36ab16c57c95b52054",
+    "alert_id": "c978b9855f0e41adae7d257fdbdc3e8f",
+    "candidate_id": "6b97478fc2c14927a90d489eaa6283de",
     "decision_timestamp": "2026-03-15T05:43:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1926,14 +1926,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "a658c52715314bc1",
+    "paper_trade_id": "90c8a2f60dac3024",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "85b75f822c1b448d993c8903db30f93d",
-    "candidate_id": "9c07b22bdac14ebbae15a7b61f3fbd61",
+    "alert_id": "f294ed6230a642d1adcbafa8bf4040d8",
+    "candidate_id": "db33f61518c64289b940b5a9693c990e",
     "decision_timestamp": "2026-03-15T05:44:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1947,14 +1947,14 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "d2ae51587610e95d",
+    "paper_trade_id": "225237708200c416",
     "pnl_bounded": 71.438596,
     "skip_reason": null,
     "status": "resolved"
   },
   {
-    "alert_id": "d001207020694a398f6d92e912697b6b",
-    "candidate_id": "7c2d2e332e8e4ed8a7acb21ddace8a98",
+    "alert_id": "79ee57bc270d4e20ba73adb9cd793a1f",
+    "candidate_id": "ce0a724f6a1c490187e3b9ab00232363",
     "decision_timestamp": "2026-03-15T05:46:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -1968,14 +1968,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "192ce76f51bf423a",
+    "paper_trade_id": "12b152d2b152c2e7",
     "pnl_bounded": -43.285714,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "fac478b98717483e84b0cb1cda3fa4b5",
-    "candidate_id": "6b921cf839ae465689ede440a2ac531b",
+    "alert_id": "99d552ffd4a24204a802ca7a1cc45bb8",
+    "candidate_id": "9c1677db1e274c2cbca4009b0f7952ba",
     "decision_timestamp": "2026-03-15T05:47:45+00:00",
     "direction": "YES",
     "entry_price": 0.57,
@@ -1989,14 +1989,14 @@
     "notes": [
       "risk_stop"
     ],
-    "paper_trade_id": "63ea61035be49af6",
+    "paper_trade_id": "2ac4b69f311c4beb",
     "pnl_bounded": -44.350877,
     "skip_reason": null,
     "status": "filled"
   },
   {
-    "alert_id": "363462879f9f47e8aac96961c2b92df3",
-    "candidate_id": "c013c85aa5fd4d3fb1ad174e093fde71",
+    "alert_id": "5f3ff7909d624fb38278bf1ea38b4455",
+    "candidate_id": "c7a80ca3300b42c7aca5faab6c8f8707",
     "decision_timestamp": "2026-03-15T05:49:15+00:00",
     "direction": "NO",
     "entry_price": 0.56,
@@ -2010,7 +2010,7 @@
     "notes": [
       "resolution_exit"
     ],
-    "paper_trade_id": "dcbaa8d6b5809d8d",
+    "paper_trade_id": "683d55c1bd53d73a",
     "pnl_bounded": 74.571429,
     "skip_reason": null,
     "status": "resolved"

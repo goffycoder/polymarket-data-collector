@@ -1,0 +1,41 @@
+{
+  "feature_schema_version": "phase6_features_v1",
+  "model_version": "phase10_task4_lightgbm_v1",
+  "score_rows": [
+    {
+      "alert_id": "26e008c8cf26454a9fd1fc547fa0eb49",
+      "candidate_id": "8cea673071914f6b96c7f945e7632273",
+      "decision_timestamp": "2026-05-15T15:32:00.062495+00:00",
+      "event_family_id": "phase11_synthetic_market",
+      "event_id": null,
+      "market_id": "phase11_synthetic_market",
+      "score_label": "INFO",
+      "score_metadata": {
+        "feature_order": [
+          "candidate_severity_score",
+          "alert_severity_rank",
+          "has_alert",
+          "rule_count",
+          "fresh_wallet_count",
+          "fresh_wallet_notional_share",
+          "directional_imbalance",
+          "concentration_ratio",
+          "probability_velocity_abs",
+          "probability_acceleration_abs",
+          "volume_acceleration"
+        ],
+        "model_kind": "phase6_lightgbm_ranker_v1",
+        "thresholds": {
+          "actionable": 0.665739,
+          "critical": 0.665739,
+          "watch": 0.665739
+        }
+      },
+      "score_value": 0.5
+    }
+  ],
+  "window": {
+    "end": "2026-05-15T21:22:57+00:00",
+    "start": "2026-05-14T21:22:57+00:00"
+  }
+}

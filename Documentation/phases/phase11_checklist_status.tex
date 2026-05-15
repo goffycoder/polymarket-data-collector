@@ -5,8 +5,8 @@
 
 \section*{Phase 11 Checklist Status}
 
-\textbf{Date:} May 13, 2026\\
-\textbf{Source of truth:} \texttt{run\_phase11\_status.py --env-file .env.runtime.example --recent-hours 24 --json}.\\
+\textbf{Date:} May 15, 2026\\
+\textbf{Source of truth:} \texttt{run\_phase11\_status.py --recent-hours 24 --json}, \texttt{run\_runtime.py --check-only}, \texttt{run\_phase11\_runtime\_proof.py --json}, \texttt{run\_runtime\_status.py --recent-hours 24}, and \texttt{run\_runtime\_storage\_status.py --json}.\\
 \textbf{Purpose:} Convert the Phase 11 runtime-revision plan into a direct implementation checklist with explicit status labels.
 
 \section*{Status Legend}
@@ -21,32 +21,69 @@
 \textbf{Status} & \textbf{Requirement} & \textbf{Current truth} \\
 Implemented & Canonical runtime activation path exists & \texttt{run\_runtime.py} is now the documented launcher and \texttt{polymarket.plist} points to it. \\
 Implemented & Background runtime path is environment-safe & Runtime env loading now supports \texttt{.env.runtime} and repo-ignored \texttt{.env.runtime.secrets}. \\
-Partially implemented & Durable Phase 3 live operation is restored & Strict Redis-backed logic exists, but the current inspected DB still shows \texttt{state\_backend=memory}, \texttt{checkpoint\_count=0}, and no recent live candidate activity. \\
+Implemented & Durable Phase 3 operation is restored for bounded proof & Durable state preflight succeeds with \texttt{backend=sqlite}; the current inspected DB shows \texttt{checkpoint\_count\_recent=2} and \texttt{candidate\_count\_recent=1}. \\
 Implemented & Phase 4 live story is explicit & Phase 4 is documented as the canonical downstream live path for \texttt{alert\_live}. \\
-Implemented & Phase 6 live story is explicit & Phase 6 is documented as an optional shadow-only extension rather than the default runtime. \\
+Implemented & Phase 6 live story is explicit & Phase 6 is documented as an optional shadow-only extension rather than the default runtime; the inspected DB now has \texttt{shadow\_score\_count\_recent=1}. \\
 Implemented & Archived-window replay path exists & \texttt{run\_runtime\_replay\_window.py} plus the Phase 11 storage runbook provide the explicit replay path. \\
-Partially implemented & Storage lifecycle tooling exists & Retention, restore, compaction planning, and disk-pressure guards exist, but this machine is still below the configured safe disk floor. \\
+Implemented & Storage lifecycle tooling exists & Retention, restore, compaction planning, and disk-pressure guards exist; after SSD backup and local archive pruning, free headroom is about \texttt{132G}. \\
 Partially implemented & Plaintext-secret dependence is removed from the canonical workflow & The workflow now supports safe secret paths, but real credential rotation is still an external operational task. \\
 Implemented & Truthfulness refresh exists & Current-state and archive-loss memos now state the real runtime and replay truth explicitly. \\
-Not implemented & Redis-backed Phase 3 state is healthy in current operation & Current health evidence still does not show Redis-backed live detection in use. \\
-Not implemented & Live DB shows fresh recent Phase 3 candidates and checkpoints & The current inspected 24-hour window still shows zeros for recent candidate/checkpoint activity. \\
-Not implemented & Live DB shows fresh recent Phase 4 evidence, alerts, and deliveries & The current inspected 24-hour window still shows zeros for recent evidence, alert, and delivery activity. \\
+Implemented & Durable Phase 3 state backend preflight is healthy & \texttt{run\_runtime.py --env-file .env.runtime.example --check-only} reports a successful Phase 3 state-backend preflight with \texttt{backend=sqlite}. \\
+Implemented & DB shows fresh recent Phase 3 candidates and checkpoints & The current inspected 24-hour window shows \texttt{candidate\_count\_recent=1} and \texttt{checkpoint\_count\_recent=2}. \\
+Implemented & DB shows fresh recent Phase 4 evidence, alerts, and deliveries & The current inspected 24-hour window shows \texttt{evidence\_query\_count\_recent=2}, \texttt{alert\_count\_recent=1}, and \texttt{delivery\_attempt\_count\_recent=1}. \\
+Implemented & DB shows fresh recent Phase 6 shadow scoring & The current inspected 24-hour window shows \texttt{shadow\_score\_count\_recent=1} after pausing the background collector and running one bounded shadow-scoring pass. \\
 Implemented & Archived windows can be replayed intentionally & The operator no longer has to rely on the live hour-only tailer for historical windows. \\
-Not implemented & Machine can run safely under ordinary retention settings & The storage guard is correctly blocking startup because free disk headroom is currently below threshold. \\
+Implemented & Machine can run bounded proof work under the local proof profile & The storage guard now reports \texttt{warning} only because the retained SQLite DB keeps managed storage slightly above the warning threshold; local free headroom is no longer the blocker. \\
 Implemented & Final docs distinguish live proof from historical or replay-only evidence & The runtime-status, current-state memo, and archive-loss memo now say this plainly. \\
 \end{longtable}
 
 \section*{Remaining Required Actions}
 The main remaining actions are operational rather than architectural:
 \begin{itemize}
-\item free enough disk space to get above the configured runtime safety floor,
-\item make Redis reachable in the canonical runtime environment,
-\item run the canonical runtime long enough to produce fresh live Phase 3 checkpoints and candidates,
-\item capture a fresh Phase 4 evidence/alert window under that live runtime,
+\item completed: back up the local data-bearing machine's Phase 11 DB, reports, docs, raw data, and detector-input archives to the attached SSD,
+\item completed: prune the local \texttt{data/raw} and \texttt{data/detector\_input} archive copies after backup, then recreate empty runtime directories,
+\item optionally run a longer organic live-market window after storage headroom improves and the collector is restarted,
+\item keep the May 15 proof wording honest: it used \texttt{synthetic\_detector\_input\_fallback} because the expected April seed partitions were missing locally,
 \item rotate any previously exposed real credentials outside the repository.
 \end{itemize}
 
+\section*{Data Ownership Constraint}
+The current project state is asymmetric across collaborators:
+\begin{itemize}
+\item The primary operator machine has the large local runtime state: roughly \texttt{100G} under \texttt{data/} and \texttt{27G} under \texttt{database/}.
+\item A collaborator without that data can still work on documentation, code review, presentation packaging, runbook cleanup, CLI dry runs against examples, and small seeded proof paths.
+\item The collaborator cannot honestly prove fresh live Phase 3 or Phase 4 runtime health unless they receive a database/archive subset or the proof is run on the data-bearing machine.
+\item Therefore, final Phase 11 operational proof must be produced on the data-bearing machine, while cleanup, review, and packaging can be parallelized on a code-only clone.
+\end{itemize}
+
+\section*{Four-Day Closeout Plan}
+\begin{longtable}{p{0.12\linewidth}p{0.39\linewidth}p{0.35\linewidth}}
+\textbf{Day} & \textbf{Primary operator with data} & \textbf{Friend without full data} \\
+1 & Freeze current evidence, back up or preserve the SQLite DB, inspect storage status, and free enough disk to pass the Phase 11 storage guard. & Review Phase 11 docs for truthfulness, remove stale Redis-only wording, prepare final report/presentation structure, and verify commands against \texttt{.env.runtime.example}. \\
+2 & Completed: \texttt{run\_runtime.py --check-only} passed under the local proof profile, and \texttt{run\_phase11\_runtime\_proof.py --json} produced fresh Phase 3 and Phase 4 rows. & Review collector, detector, and Phase 4 paths for obvious blockers; prepare screenshots/tables explaining configured vs observed runtime. \\
+3 & Completed: copy the SQLite DB, report artifacts, Phase 11 docs, raw archives, and detector-input archives to the attached SSD, then prune local archive copies and rerun storage checks. Next, package proof artifacts and only then optionally run a longer organic live-market window. & Package proof artifacts, update final checklist language, and prepare the friend handoff explaining which artifacts require the original data machine. \\
+4 & Re-run \texttt{run\_runtime\_status.py}, \texttt{run\_runtime\_storage\_status.py}, and \texttt{run\_phase11\_status.py}; commit final docs and evidence artifacts. & Final read-through, presentation polish, and consistency check against SRS/Phase 8--10 claims. \\
+\end{longtable}
+
+\section*{Final Stretch Goal}
+The realistic final stretch goal is not to prove a profitable autonomous trading system. The final stretch goal is to deliver a truthful, reproducible local-first research/runtime project with:
+\begin{itemize}
+\item a working canonical runtime launcher,
+\item safe environment and secret handling,
+\item disk-pressure protection,
+\item replay-aware storage documentation,
+\item fresh Phase 3 bounded runtime evidence,
+\item Phase 4 evidence/alert proof from bounded proof input,
+\item one Phase 6 shadow-score proof row,
+\item clear separation between live runtime proof, replay proof, seeded proof, and offline reports.
+\end{itemize}
+
+\section*{Can This Be Fixed In Four Days?}
+Yes, if the target is Phase 11 closeout and project submission quality. The remaining work is feasible because the hard architectural pieces already exist. The critical path is operational: disk headroom, one successful canonical run, generated status artifacts, and truthful final documentation.
+
+No, if the target is a new production-grade always-on trading or ML system. That would exceed Phase 11 scope and should not be claimed.
+
 \section*{Bottom Line}
-Phase 11 is \textbf{mostly implemented structurally} but \textbf{not fully complete operationally}. The repo now has the right startup path, replay path, storage path, secret posture, and truthfulness posture. What it still lacks is fresh live proof that the canonical runtime is currently healthy end to end on this machine.
+Phase 11 is \textbf{implemented for project closeout with bounded proof}. The repo now has the right startup path, replay path, storage path, secret posture, truthfulness posture, a fresh bounded Phase 3-to-Phase 4 proof, one current Phase 6 shadow-score row, an attached-SSD backup of the DB, report artifacts, raw archives, and detector-input archives, and restored local disk headroom after pruning the backed-up archive copies. What it still lacks is a long organic live-market run under comfortable storage conditions. The next step is to package the final evidence and avoid overclaiming beyond the bounded proof.
 
 \end{document}

@@ -1,0 +1,53 @@
+{
+  "artifact_version": "phase5_replay_v1",
+  "bundle_id": "ccf54b5c1b75470b8b1dc3602ba27083",
+  "end": "2026-03-15T06:00:00+00:00",
+  "git_commit": "2e379c9",
+  "notes": "phase10_task3 replay bundle for test_window",
+  "overall_status": "ready",
+  "replay_runs": [
+    {
+      "artifact_version": "phase5_replay_v1",
+      "detector_manifest_mismatches": 0,
+      "detector_missing_partitions": 0,
+      "detector_rows_observed": 1,
+      "end": "2026-03-15T06:00:00+00:00",
+      "git_commit": "2e379c9",
+      "integrity_status": "ready",
+      "notes": "phase10_task3 replay bundle for test_window",
+      "output_path": "reports/phase5/replay_runs/phase10_task3/test_window/480759e550f04bfb88054a359267de87.json",
+      "raw_manifest_mismatches": 0,
+      "raw_missing_partitions": 0,
+      "raw_partitions_touched": 1,
+      "raw_rows_scanned": 1,
+      "replay_run_id": "480759e550f04bfb88054a359267de87",
+      "source_system": "phase10_holdout_prices",
+      "start": "2026-03-15T05:00:00+00:00",
+      "status": "completed"
+    },
+    {
+      "artifact_version": "phase5_replay_v1",
+      "detector_manifest_mismatches": 0,
+      "detector_missing_partitions": 0,
+      "detector_rows_observed": 1,
+      "end": "2026-03-15T06:00:00+00:00",
+      "git_commit": "2e379c9",
+      "integrity_status": "ready",
+      "notes": "phase10_task3 replay bundle for test_window",
+      "output_path": "reports/phase5/replay_runs/phase10_task3/test_window/59bc1966801d4c579f84950713d594f7.json",
+      "raw_manifest_mismatches": 0,
+      "raw_missing_partitions": 0,
+      "raw_partitions_touched": 1,
+      "raw_rows_scanned": 1,
+      "replay_run_id": "59bc1966801d4c579f84950713d594f7",
+      "source_system": "phase10_holdout_trades",
+      "start": "2026-03-15T05:00:00+00:00",
+      "status": "completed"
+    }
+  ],
+  "source_systems": [
+    "phase10_holdout_prices",
+    "phase10_holdout_trades"
+  ],
+  "start": "2026-03-15T05:00:00+00:00"
+}

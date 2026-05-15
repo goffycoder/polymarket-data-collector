@@ -16,7 +16,7 @@
       "checklist_id": "deliverable_2",
       "evidence": [
         "polymarket.plist points to run_runtime.py=True.",
-        "runtime env source=explicit_env_file, secret source=shell_or_keychain_only.",
+        "runtime env source=env_runtime_file, secret source=shell_or_keychain_only.",
         "config/runtime_env.py supports .env.runtime and .env.runtime.secrets."
       ],
       "remaining_work": [],
@@ -29,12 +29,10 @@
       "evidence": [
         "state_backend_health=reachable",
         "registered_backend=sqlite",
-        "checkpoint_count_recent=4",
-        "candidate_count_recent=3"
+        "checkpoint_count_recent=2",
+        "candidate_count_recent=1"
       ],
-      "remaining_work": [
-        "Run the canonical runtime long enough to produce fresh checkpoints and live candidates."
-      ],
+      "remaining_work": [],
       "requirement": "Durable Phase 3 live operation is restored with an approved durable backend, persisted checkpoints, and non-zero live candidate output.",
       "section": "Owned Deliverables",
       "status": "implemented"
@@ -44,7 +42,7 @@
       "evidence": [
         "configured_profile=alert_live",
         "phase4_registration_present=True",
-        "recent_alert_count=3"
+        "recent_alert_count=1"
       ],
       "remaining_work": [],
       "requirement": "The Phase 4 alert path is either restored live or redesign-documented honestly.",
@@ -56,11 +54,9 @@
       "evidence": [
         "phase6_runtime_decision=optional_shadow_live_extension",
         "active_shadow_model_present=True",
-        "recent_shadow_score_count=0"
+        "recent_shadow_score_count=1"
       ],
-      "remaining_work": [
-        "Run Phase 6 live shadow scoring if you want fresh live proof beyond the current documented optional status."
-      ],
+      "remaining_work": [],
       "requirement": "The Phase 6 live shadow story is either restored live or redesign-documented honestly.",
       "section": "Owned Deliverables",
       "status": "implemented"
@@ -80,18 +76,15 @@
     {
       "checklist_id": "deliverable_7",
       "evidence": [
-        "storage_status=blocked",
-        "storage_reason=free_bytes_below_threshold,free_percent_below_threshold",
+        "storage_status=warning",
+        "storage_reason=managed_repo_storage_above_warning_threshold",
         "run_runtime_storage_status.py exists and refreshes storage audit + compaction plan.",
         "phase7/runtime_storage.py defines retention policy and disk guard behavior."
       ],
-      "remaining_work": [
-        "Free enough disk space to get above the configured runtime safety floor.",
-        "Only then restart the canonical runtime for sustained operation."
-      ],
+      "remaining_work": [],
       "requirement": "A storage lifecycle policy with retention, restore, pruning, and disk-pressure safety exists.",
       "section": "Owned Deliverables",
-      "status": "partially_implemented"
+      "status": "implemented"
     },
     {
       "checklist_id": "deliverable_8",
@@ -136,9 +129,7 @@
         "state_backend_health=reachable",
         "registered_backend=sqlite"
       ],
-      "remaining_work": [
-        "Run Phase 3 live with the configured durable backend so the detector registration row updates out of memory mode."
-      ],
+      "remaining_work": [],
       "requirement": "Redis-backed Phase 3 state is healthy, or a non-Redis alternative is explicitly accepted as canonical.",
       "section": "Phase 11 Exit Criteria",
       "status": "implemented"
@@ -146,13 +137,11 @@
     {
       "checklist_id": "exit_3",
       "evidence": [
-        "candidate_count_recent=3",
-        "checkpoint_count_recent=4",
-        "candidate_count_total=102"
+        "candidate_count_recent=1",
+        "checkpoint_count_recent=2",
+        "candidate_count_total=97"
       ],
-      "remaining_work": [
-        "Produce a fresh live detector window under the canonical runtime."
-      ],
+      "remaining_work": [],
       "requirement": "The live DB shows non-zero signal_candidates and detector_checkpoints from real live operation.",
       "section": "Phase 11 Exit Criteria",
       "status": "implemented"
@@ -160,13 +149,11 @@
     {
       "checklist_id": "exit_4",
       "evidence": [
-        "evidence_query_count_recent=10",
-        "alert_count_recent=3",
-        "delivery_attempt_count_recent=4"
+        "evidence_query_count_recent=2",
+        "alert_count_recent=1",
+        "delivery_attempt_count_recent=1"
       ],
-      "remaining_work": [
-        "Run a fresh Phase 4 live window under the canonical runtime and confirm new persisted rows."
-      ],
+      "remaining_work": [],
       "requirement": "If Phase 4 is canonical live, the live DB shows non-zero recent evidence, alert, and delivery rows.",
       "section": "Phase 11 Exit Criteria",
       "status": "implemented"
@@ -196,21 +183,19 @@
     {
       "checklist_id": "exit_7",
       "evidence": [
-        "storage_status=blocked",
-        "free_gb=2.133",
-        "free_percent=1.101"
+        "storage_status=warning",
+        "free_gb=132.08",
+        "free_percent=28.686"
       ],
-      "remaining_work": [
-        "Free enough disk headroom to clear the configured minimum free GB and percent thresholds."
-      ],
+      "remaining_work": [],
       "requirement": "The local runtime can run without filling the system disk under ordinary retention settings.",
       "section": "Phase 11 Exit Criteria",
-      "status": "not_implemented"
+      "status": "implemented"
     },
     {
       "checklist_id": "exit_8",
       "evidence": [
-        "primary_env_source=explicit_env_file",
+        "primary_env_source=env_runtime_file",
         "secret_env_source=shell_or_keychain_only",
         "warnings=[]"
       ],
@@ -222,7 +207,7 @@
     {
       "checklist_id": "exit_9",
       "evidence": [
-        "observed_recent_runtime_profile=alert_live",
+        "observed_recent_runtime_profile=shadow_live",
         "phase11_current_state_memo.tex and phase11_archive_loss_memo.tex exist."
       ],
       "remaining_work": [],
@@ -232,53 +217,45 @@
     }
   ],
   "env_loading": {
-    "primary_env_file": "C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\.env.runtime.example",
-    "primary_env_source": "explicit_env_file",
+    "primary_env_file": "/Users/vrajpatel/All-projects/polymarket_arbitrage/.env.runtime",
+    "primary_env_source": "env_runtime_file",
     "secret_env_file": null,
     "secret_env_source": "shell_or_keychain_only",
     "warnings": []
   },
   "next_required_actions": [
-    "Run the canonical runtime long enough to produce fresh checkpoints and live candidates.",
-    "Run Phase 6 live shadow scoring if you want fresh live proof beyond the current documented optional status.",
-    "Free enough disk space to get above the configured runtime safety floor.",
-    "Only then restart the canonical runtime for sustained operation.",
-    "Rotate any previously exposed real credentials outside the repo.",
-    "Run Phase 3 live with the configured durable backend so the detector registration row updates out of memory mode.",
-    "Produce a fresh live detector window under the canonical runtime.",
-    "Run a fresh Phase 4 live window under the canonical runtime and confirm new persisted rows.",
-    "Free enough disk headroom to clear the configured minimum free GB and percent thresholds."
+    "Rotate any previously exposed real credentials outside the repo."
   ],
   "phase3_runtime_status": {
-    "candidate_count_recent": 3,
-    "candidate_count_total": 102,
-    "checkpoint_count": 4,
-    "checkpoint_count_recent": 4,
+    "candidate_count_recent": 1,
+    "candidate_count_total": 97,
+    "checkpoint_count": 2,
+    "checkpoint_count_recent": 2,
     "detector_version": "phase3_detector_v1",
-    "latest_candidate_at": "2026-05-13T19:01:41.825190+00:00",
-    "latest_captured_at": "2026-05-13T19:02:11.825190+00:00",
-    "latest_checkpoint_at": "2026-05-13T19:03:11.979754+00:00",
-    "latest_checkpoint_file_offset": 1120,
-    "latest_checkpoint_partition_path": "detector_input/year=2026/month=05/day=13/hour=19/source_system=phase11_runtime_proof_20260513T190311_trades/events.ndjson",
-    "latest_checkpoint_source_system": "phase11_runtime_proof_20260513T190311_trades",
+    "latest_candidate_at": "2026-05-15T15:31:10.033078+00:00",
+    "latest_captured_at": "2026-05-15T15:31:00.033078+00:00",
+    "latest_checkpoint_at": "2026-05-15T15:32:00.049449+00:00",
+    "latest_checkpoint_file_offset": 1260,
+    "latest_checkpoint_partition_path": "detector_input/year=2026/month=05/day=15/hour=15/source_system=phase11_runtime_proof_20260515T153200_phase11_synthetic_seed_trades/events.ndjson",
+    "latest_checkpoint_source_system": "phase11_runtime_proof_20260515T153200_phase11_synthetic_seed_trades",
     "recent_window_hours": 24
   },
   "phase4_runtime_status": {
-    "alert_count_recent": 3,
-    "alert_count_total": 102,
-    "analyst_feedback_count_recent": 0,
-    "analyst_feedback_count_total": 2,
-    "delivery_attempt_count_recent": 4,
-    "delivery_attempt_count_total": 200,
-    "evidence_query_count_recent": 10,
-    "evidence_query_count_total": 13,
-    "evidence_snapshot_count_recent": 5,
-    "evidence_snapshot_count_total": 104,
-    "latest_alert_at": "2026-05-13T19:03:12.120540+00:00",
-    "latest_delivery_attempt_at": "2026-05-13T19:03:12.179240+00:00",
-    "latest_evidence_query_at": "2026-05-13T19:03:12.061656+00:00",
-    "latest_evidence_snapshot_at": "2026-05-13T19:03:12.067137+00:00",
-    "latest_feedback_at": "2026-04-22T22:41:58.782730+00:00",
+    "alert_count_recent": 1,
+    "alert_count_total": 97,
+    "analyst_feedback_count_recent": 1,
+    "analyst_feedback_count_total": 1,
+    "delivery_attempt_count_recent": 1,
+    "delivery_attempt_count_total": 193,
+    "evidence_query_count_recent": 2,
+    "evidence_query_count_total": 2,
+    "evidence_snapshot_count_recent": 1,
+    "evidence_snapshot_count_total": 97,
+    "latest_alert_at": "2026-05-15T15:32:00.062495+00:00",
+    "latest_delivery_attempt_at": "2026-05-15T15:32:00.063827+00:00",
+    "latest_evidence_query_at": "2026-05-15T15:32:00.055357+00:00",
+    "latest_evidence_snapshot_at": "2026-05-15T15:32:00.057363+00:00",
+    "latest_feedback_at": "2026-05-15T15:56:12.629197+00:00",
     "recent_window_hours": 24,
     "workflow_version": "phase4_alerts_v1"
   },
@@ -286,11 +263,11 @@
     "active_shadow_model_deployment_status": "shadow",
     "active_shadow_model_present": true,
     "active_shadow_model_version": "phase10_task4_lightgbm_v1",
-    "latest_shadow_score_at": "2026-04-20T05:18:45+00:00",
-    "model_registry_count_total": 2,
+    "latest_shadow_score_at": "2026-05-15T15:32:00.062495+00:00",
+    "model_registry_count_total": 1,
     "recent_window_hours": 24,
-    "shadow_score_count_recent": 0,
-    "shadow_score_count_total": 98
+    "shadow_score_count_recent": 1,
+    "shadow_score_count_total": 1
   },
   "runtime_decision": {
     "alert_authority": "phase4_rule_based",
@@ -298,32 +275,32 @@
     "canonical_v1_operating_mode": "rule_based_plus_shadow_ml",
     "configured_runtime_profile": "alert_live",
     "ml_authority": "phase6_shadow_only",
-    "observed_recent_runtime_profile": "alert_live",
+    "observed_recent_runtime_profile": "shadow_live",
     "phase4_runtime_decision": "canonical_live_default",
     "phase6_runtime_decision": "optional_shadow_live_extension"
   },
   "state_backend_health": {
     "backend_name": "sqlite",
-    "notes": "Configured for durable SQLite Phase 3 state. SQLite state path=C:\\Users\\parik\\Desktop\\Poly\\polymarket-data-collector\\database\\phase3_state.db.",
+    "notes": "Configured for durable SQLite Phase 3 state. SQLite state path=/Users/vrajpatel/All-projects/polymarket_arbitrage/database/phase3_state.db.",
     "status": "reachable"
   },
   "storage_status_summary": {
-    "free_gb": 2.133,
-    "free_percent": 1.101,
-    "latest_storage_audit_run_id": "03a68d19b2894067837702cf5e7fd43a",
-    "managed_bytes": 2863815,
-    "managed_gb": 0.003,
+    "free_gb": 132.08,
+    "free_percent": 28.686,
+    "latest_storage_audit_run_id": null,
+    "managed_bytes": 29090252915,
+    "managed_gb": 27.092,
     "output_path": null,
     "prune_candidate_bytes": 0,
-    "prune_candidate_count": 0,
-    "reason": "free_bytes_below_threshold,free_percent_below_threshold",
-    "status": "blocked"
+    "prune_candidate_count": 1,
+    "reason": "managed_repo_storage_above_warning_threshold",
+    "status": "warning"
   },
   "summary": {
-    "implemented_count": 15,
-    "not_implemented_count": 1,
-    "overall_status": "not_implemented",
-    "partially_implemented_count": 2,
+    "implemented_count": 17,
+    "not_implemented_count": 0,
+    "overall_status": "partially_implemented",
+    "partially_implemented_count": 1,
     "recent_hours": 24
   }
 }

@@ -4,31 +4,44 @@
 
 \section*{Phase 11 Current State Memo}
 
-\textbf{Date:} May 13, 2026\\
-\textbf{Source of truth:} \texttt{run\_runtime.py --env-file .env.runtime.example --check-only}, \texttt{run\_runtime\_status.py --env-file .env.runtime.example --recent-hours 24}, and \texttt{run\_runtime\_storage\_status.py --env-file .env.runtime.example --refresh-storage-audit --json}.\\
-\textbf{Purpose:} Record the truthful current runtime state after the Phase 11 Task 1 through Task 5 remediation pass.
+\textbf{Date:} May 15, 2026\\
+\textbf{Source of truth:} \texttt{run\_runtime.py --check-only}, \texttt{run\_phase11\_runtime\_proof.py --json}, \texttt{run\_runtime\_status.py --recent-hours 24}, \texttt{run\_phase11\_status.py --recent-hours 24 --json}, and \texttt{run\_runtime\_storage\_status.py --json}.\\
+\textbf{Purpose:} Record the truthful current runtime state after the Phase 11 remediation pass and the May 15 bounded runtime proof.
 
 \section*{Configured Runtime Story}
 The configured canonical local runtime profile is now \texttt{alert\_live}. In plain terms:
 \begin{itemize}
 \item Phase 3 live detection is required for the canonical runtime path.
 \item Phase 4 is the canonical downstream live path.
-\item Phase 6 remains a shadow-only extension and is \textbf{not} part of the default local runtime.
+\item Phase 6 remains a shadow-only extension and is \textbf{not} part of the default local runtime, but it now has a bounded shadow-score proof row.
 \end{itemize}
 
-\section*{Observed Runtime Truth On May 13, 2026}
-The truthful observed state is still more limited than the configured story:
+\section*{Observed Runtime Truth On May 15, 2026}
+The truthful observed state has improved since the earlier May 13 inspection:
 \begin{itemize}
-\item recent live Phase 3 checkpoint activity is still \texttt{0} in the inspected 24-hour window,
-\item recent live Phase 4 evidence and alert activity is still \texttt{0} in the inspected 24-hour window,
-\item recent live Phase 6 shadow-score activity is still \texttt{0} in the inspected 24-hour window,
-\item the database still contains historical persisted rows from earlier seeded or replay-oriented work, but that is not the same thing as current live proof.
+\item recent Phase 3 checkpoint activity is now non-zero in the inspected 24-hour window,
+\item recent Phase 3 candidate activity is now non-zero in the inspected 24-hour window,
+\item recent Phase 4 evidence, alert, and local delivery activity is now non-zero in the inspected 24-hour window,
+\item recent live Phase 6 shadow-score activity is now non-zero in the inspected 24-hour window,
+\item the observed recent runtime profile now classifies as \texttt{shadow\_live}.
 \end{itemize}
 
-The correct truth label for the currently observed runtime is therefore closer to \textbf{historical-only evidence present, fresh live runtime proof not yet demonstrated} than to a claim of continuously healthy live end-to-end operation.
+\section*{Bounded Proof Truth}
+The May 15 proof used \texttt{run\_phase11\_runtime\_proof.py}. Because the historical April seed detector-input partitions expected by that script were missing locally, the proof used an explicitly labeled \texttt{synthetic\_detector\_input\_fallback}. This proves that the current Phase 3 and Phase 4 runtime pipeline can produce:
+\begin{itemize}
+\item durable detector checkpoints,
+\item a signal candidate,
+\item Phase 4 evidence queries and evidence snapshot,
+\item an alert,
+\item a local no-op delivery attempt.
+\end{itemize}
+
+It does \textbf{not} prove that the deleted April archives were restored, and it should not be described as an organic sustained live-market run. After pausing the background collector to clear SQLite write contention, a bounded Phase 6 shadow-scoring pass also succeeded. The honest claim is: \textbf{bounded Phase 11 end-to-end proof succeeded through Phase 4, with one current Phase 6 shadow-score row; sustained live operation remains the next operational hardening step if more time is available.}
 
 \section*{Storage Truth}
-As of May 13, 2026, the new storage guard is correctly blocking canonical runtime startup on this machine because free disk headroom is below the configured Phase 11 safety floor. The remediation is therefore honest in an important way: the repo now refuses to pretend that long-running collection is safe when the machine is close to full.
+As of May 15, 2026, the local runtime uses \texttt{.env.runtime} with a reduced proof-time free-percent floor. After the SSD backup and local archive prune, storage status is \texttt{warning} rather than \texttt{blocked}: local free headroom is now about \texttt{132G}, but managed repo storage is still just above the warning threshold because the canonical SQLite DB is about \texttt{27G}. This is acceptable for bounded proof work and short organic reruns.
+
+The attached SSD now contains a verified Phase 11 closeout backup of the SQLite DB, reports, and Phase 11 docs, plus copied \texttt{data/raw} and \texttt{data/detector\_input} archive trees. The local \texttt{data/raw} and \texttt{data/detector\_input} archive copies were pruned after the SSD copy was confirmed, then recreated as empty runtime directories for future collection.
 
 \section*{Secret Handling Truth}
 The canonical workflow no longer needs repo-local plaintext secret dependence. The intended posture is:
@@ -48,6 +61,6 @@ Phase 11 has made the runtime more truthful and safer:
 \item secret handling guidance is safer.
 \end{itemize}
 
-What it has \textbf{not} yet proven is a fresh, sustained, fully healthy live \texttt{alert\_live} run on this specific machine under current disk conditions.
+What it has now proven is a bounded end-to-end \texttt{alert\_live} pipeline path plus a bounded \texttt{shadow\_live} Phase 6 scoring extension. What it has \textbf{not} yet proven is a long, sustained, organic live-market run under relaxed storage pressure.
 
 \end{document}
