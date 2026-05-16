@@ -1,0 +1,96 @@
+{
+  "acceptance": {
+    "clob_rows_increased": true,
+    "queried_markets": true,
+    "wallet_linked_rows_increased": true
+  },
+  "completed_at": "2026-05-15T22:34:38.057054+00:00",
+  "deltas": {
+    "clob_rows": 500,
+    "total": 500,
+    "transaction_linked": 500,
+    "wallet_linked": 500,
+    "ws_rows": 0
+  },
+  "market_limit": 10,
+  "run_id": "5433677821f84fc3be9d241de3f7a832",
+  "selected_market_count": 10,
+  "selected_markets": [
+    {
+      "condition_id": "0x70f1a7d2cd490b640676d5e31470bcbe16fef40087de1af8b6f6e44e299b5784",
+      "market_id": "601831",
+      "question": "Will Eduardo Leite win the 2026 Brazilian presidential election?",
+      "tier": 1
+    },
+    {
+      "condition_id": "0x5f3b3456b2d6ef0d6f15d7492162725057be78d738d2465456e2835f1d89046c",
+      "market_id": "562008",
+      "question": "Will Pete Hegseth win the 2028 Republican presidential nomination?",
+      "tier": 1
+    },
+    {
+      "condition_id": "0xea649be6ea3447f3c145a173883c68a89faf4edda1f85109b76baa93b3ee7a87",
+      "market_id": "561264",
+      "question": "Will Pete Hegseth win the 2028 US Presidential Election?",
+      "tier": 1
+    },
+    {
+      "condition_id": "0xf2cb33c6634ee4676b642e728715c68441fb8d8c90f730ba0b5c3cd1f436a4be",
+      "market_id": "562007",
+      "question": "Will Joe Kent win the 2028 Republican presidential nomination?",
+      "tier": 1
+    },
+    {
+      "condition_id": "0xafd3f96b7b6084509e625270538ff0699003fafc042263c1216e7f084cef753a",
+      "market_id": "601832",
+      "question": "Will Aldo Rebelo win the 2026 Brazilian presidential election?",
+      "tier": 1
+    },
+    {
+      "condition_id": "0x054725b2a7971376f7924a7021221b12acc50fe78d97817824fe411704d5b5a2",
+      "market_id": "601828",
+      "question": "Will Romeu Zema win the 2026 Brazilian presidential election?",
+      "tier": 1
+    },
+    {
+      "condition_id": "0xbca3d70ec52a5a441ccc365a3b1b48b9cd0f08dfff4bc5871e2cd92d0d92caa1",
+      "market_id": "601827",
+      "question": "Will Ronaldo Caiado win the 2026 Brazilian presidential election?",
+      "tier": 1
+    },
+    {
+      "condition_id": "0xd0536d9612e041312235baceac52bde48821e8aad4607533513b3782904b7d49",
+      "market_id": "601830",
+      "question": "Will Geraldo Alckmin win the 2026 Brazilian presidential election?",
+      "tier": 1
+    },
+    {
+      "condition_id": "0x101d084cd035070abde58d8a3113b78e11ba68028b0d9e7e38ea7d780797aecc",
+      "market_id": "601829",
+      "question": "Will Camilo Santana win the 2026 Brazilian presidential election?",
+      "tier": 1
+    },
+    {
+      "condition_id": "0x83d00d2378c0f5bb34a3a8e9b009bde54f0ab34668bf6a456aec1e66bf961481",
+      "market_id": "628958",
+      "question": "Will Elaine Culotti win the California Governor Election in 2026?",
+      "tier": 1
+    }
+  ],
+  "started_at": "2026-05-15T22:34:37.103872+00:00",
+  "tier": 1,
+  "trade_counts_after": {
+    "clob_rows": 500,
+    "total": 6328,
+    "transaction_linked": 500,
+    "wallet_linked": 500,
+    "ws_rows": 5828
+  },
+  "trade_counts_before": {
+    "clob_rows": 0,
+    "total": 5828,
+    "transaction_linked": 0,
+    "wallet_linked": 0,
+    "ws_rows": 5828
+  }
+}

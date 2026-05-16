@@ -49,6 +49,32 @@ def _env_csv(name: str, default: tuple[str, ...]) -> tuple[str, ...]:
     return values or default
 
 
+def _env_path(name: str, default: Path) -> Path:
+    raw = os.getenv(name)
+    if raw is None or not raw.strip():
+        return default
+    path = Path(raw.strip()).expanduser()
+    if not path.is_absolute():
+        path = REPO_ROOT / path
+    return path
+
+
+def _env_paths(name: str, default: tuple[Path, ...] = ()) -> tuple[Path, ...]:
+    raw = os.getenv(name)
+    if raw is None or not raw.strip():
+        return default
+    paths: list[Path] = []
+    for item in raw.split(","):
+        item = item.strip()
+        if not item:
+            continue
+        path = Path(item).expanduser()
+        if not path.is_absolute():
+            path = REPO_ROOT / path
+        paths.append(path)
+    return tuple(paths)
+
+
 REDIS_URL = os.getenv("POLYMARKET_REDIS_URL", "redis://localhost:6379/0").strip()
 PHASE3_STATE_BACKEND = os.getenv("POLYMARKET_PHASE3_STATE_BACKEND", "redis").strip().lower()
 PHASE3_STATE_SQLITE_PATH = os.getenv(
@@ -103,6 +129,18 @@ PHASE3_SOURCE_SYSTEMS = _env_csv(
     "POLYMARKET_PHASE3_SOURCE_SYSTEMS",
     ("clob_ws_market", "data_api_trades", "data_api_trades_backfill", "clob_prices", "clob_books"),
 )
+
+RAW_ARCHIVE_ROOT = _env_path(
+    "POLYMARKET_RAW_ARCHIVE_ROOT",
+    REPO_ROOT / "data" / "raw",
+)
+DETECTOR_INPUT_ROOT = _env_path(
+    "POLYMARKET_DETECTOR_INPUT_ROOT",
+    REPO_ROOT / "data" / "detector_input",
+)
+ARCHIVE_ROOT_READONLY = _env_bool("POLYMARKET_ARCHIVE_ROOT_READONLY", False)
+EXTERNAL_ARCHIVE_ROOTS = _env_paths("POLYMARKET_EXTERNAL_ARCHIVE_ROOTS")
+ENABLE_TTL_MAINTENANCE = _env_bool("POLYMARKET_ENABLE_TTL_MAINTENANCE", False)
 
 PHASE4_WORKFLOW_VERSION = os.getenv(
     "POLYMARKET_PHASE4_WORKFLOW_VERSION",

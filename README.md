@@ -71,7 +71,10 @@ database/        runtime schema, DB abstraction, PostgreSQL migration, runbook
 utils/           logging, HTTP helpers, Phase 2 event-log helpers
 validation/      Phase 1 validation plus Phase 2 replay/republish tools
 Documentation/   canonical SRS, phase docs, signoff artifacts, reference notes
-ml_pipeline/     future Phase 3+ feature and modeling work
+phase3-10/       implemented detection, evidence, replay, ML, and governance modules
+reports/         generated phase evidence and runtime proof artifacts
+scripts/         small support scripts and runner index
+ml_pipeline/     feature-building helpers for modeling work
 Old-content/     legacy experiments kept for reference only
 ```
 
@@ -439,8 +442,19 @@ launchctl unload ~/Library/LaunchAgents/com.polymarket.collector.plist
 # ── FORCE KILL (if unresponsive) ──────────────────────────────────
 pkill -9 -f run_collector.py
 
-# ── DATA HEALTH CHECK ─────────────────────────────────────────────
-python Old-content/audit_v2.py
+# ── RUNTIME / STORAGE STATUS ──────────────────────────────────────
+venv/bin/python run_runtime_status.py --json
+venv/bin/python run_runtime_storage_status.py --env-file .env.runtime --json
+venv/bin/python run_phase11_status.py --env-file .env.runtime --recent-hours 24 --json
+
+# ── CLOB V2 PUBLIC-DATA CHECKS ────────────────────────────────────
+venv/bin/python run_clob_v2_smoke.py --env-file .env.runtime --json
+venv/bin/python run_clob_v2_fee_refresh.py --env-file .env.runtime --market-limit 10 --json
+
+# ── WALLET PLANE ──────────────────────────────────────────────────
+venv/bin/python run_wallet_trade_refresh.py --env-file .env.runtime --market-limit 10 --json
+venv/bin/python run_wallet_entity_materializer.py --env-file .env.runtime --json
+venv/bin/python run_wallet_cluster_materializer.py --env-file .env.runtime --json
 
 # ── HISTORICAL TRADE BACKFILL ─────────────────────────────────────
 python -m collectors.backfill               # all history, all T1 markets

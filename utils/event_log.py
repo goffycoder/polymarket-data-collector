@@ -19,14 +19,13 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
+from config.settings import ARCHIVE_ROOT_READONLY, DETECTOR_INPUT_ROOT, RAW_ARCHIVE_ROOT
 from database.db_manager import get_conn
 from utils.logger import get_logger
 
 log = get_logger("event_log")
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-RAW_ARCHIVE_ROOT = REPO_ROOT / "data" / "raw"
-DETECTOR_INPUT_ROOT = REPO_ROOT / "data" / "detector_input"
 
 RAW_ENVELOPE_SCHEMA_VERSION = "raw_event_envelope.v1"
 NORMALIZED_ENVELOPE_SCHEMA_VERSION = "normalized_envelope.v2"
@@ -93,11 +92,25 @@ def _json_default(value: Any) -> str:
 def _append_json_line(path: Path, payload: dict[str, Any]) -> int:
     """Append one JSON line to the given partition file and return bytes written."""
 
+    if ARCHIVE_ROOT_READONLY:
+        raise RuntimeError(
+            "Archive roots are configured read-only. Disable POLYMARKET_ARCHIVE_ROOT_READONLY "
+            "before running collectors that write raw or detector-input partitions."
+        )
     path.parent.mkdir(parents=True, exist_ok=True)
     encoded = json.dumps(payload, sort_keys=True, default=_json_default).encode("utf-8") + b"\n"
     with path.open("ab") as handle:
         handle.write(encoded)
     return len(encoded)
+
+
+def _manifest_path(path: Path) -> str:
+    """Store repo-relative paths by default and absolute paths for external archive roots."""
+
+    try:
+        return path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return str(path)
 
 
 def _register_schema_version(component: str, schema_version: str, notes: str) -> None:
@@ -238,7 +251,7 @@ def archive_raw_event(
     captured_iso = captured_dt.isoformat()
     envelope_id = uuid4().hex
     partition = _partition_path(RAW_ARCHIVE_ROOT, source_system, captured_dt)
-    relative_partition = partition.relative_to(REPO_ROOT).as_posix()
+    manifest_partition = _manifest_path(partition)
     envelope = {
         "envelope_id": envelope_id,
         "schema_version": schema_version,
@@ -250,7 +263,7 @@ def archive_raw_event(
     }
     bytes_written = _append_json_line(partition, envelope)
     _update_raw_manifest(
-        partition_path=relative_partition,
+        partition_path=manifest_partition,
         source_system=source_system,
         event_type=event_type,
         schema_version=schema_version,
@@ -264,7 +277,7 @@ def archive_raw_event(
         notes="Local Phase 2 raw envelope archive format.",
     )
     return PartitionWriteResult(
-        partition_path=relative_partition,
+        partition_path=manifest_partition,
         bytes_written=bytes_written,
         captured_at=captured_iso,
         envelope_id=envelope_id,
@@ -288,7 +301,7 @@ def publish_detector_input(
     captured_iso = captured_dt.isoformat()
     envelope_id = uuid4().hex
     partition = _partition_path(DETECTOR_INPUT_ROOT, source_system, captured_dt)
-    relative_partition = partition.relative_to(REPO_ROOT).as_posix()
+    manifest_partition = _manifest_path(partition)
     envelope = {
         "envelope_id": envelope_id,
         "schema_version": schema_version,
@@ -301,7 +314,7 @@ def publish_detector_input(
     }
     bytes_written = _append_json_line(partition, envelope)
     _update_detector_manifest(
-        partition_path=relative_partition,
+        partition_path=manifest_partition,
         source_system=source_system,
         entity_type=entity_type,
         schema_version=schema_version,
@@ -315,7 +328,7 @@ def publish_detector_input(
         notes="Local Phase 2 detector-input envelope format.",
     )
     return PartitionWriteResult(
-        partition_path=relative_partition,
+        partition_path=manifest_partition,
         bytes_written=bytes_written,
         captured_at=captured_iso,
         envelope_id=envelope_id,

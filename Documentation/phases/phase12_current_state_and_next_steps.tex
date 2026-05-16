@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\usepackage{enumitem}
+\begin{document}
+
+\section*{Phase 12 Current State and Next Steps}
+
+\textbf{Date:} May 16, 2026\\
+\textbf{Purpose:} Give a plain project-status answer after wallet-plane, SSD, CLOB V2, archive reconciliation, and organic runtime-smoke work.
+
+\section*{Current State}
+The project is now a working local-first Polymarket research/runtime system with:
+\begin{itemize}[nosep]
+\item public-data collection through CLOB/Data API/WebSocket paths,
+\item Phase 3 rule-based candidate detection,
+\item Phase 4 evidence and alert generation with local/no-provider delivery by default,
+\item Phase 6 ML in shadow-only mode,
+\item first-class wallet/activity/cluster database tables,
+\item SSD-backed archived replay,
+\item bounded organic live runtime proof after local hot-root restore and storage-lock hardening.
+\end{itemize}
+
+\section*{Latest Proof}
+\begin{longtable}{p{0.30\linewidth}p{0.56\linewidth}}
+\textbf{Proof} & \textbf{Result} \\
+Wallet materialization & 212 wallets, 212 wallet activity rows, 212 first-seen rows, and 10 heuristic clusters. \\
+CLOB V2 smoke & Public data endpoints and market WebSocket subscription shape passed. Fee-rate payloads were captured for active tokens. \\
+SSD replay & T7 archive replay processed 2{,}000 detector-input envelopes, 3{,}792 snapshots, and 3 trades with zero missing restore items. \\
+60-minute organic live smoke & \texttt{reports/phase12/organic\_runtime\_smoke\_60min\_after\_lock\_hardening.json} passed: controlled shutdown, runtime exit code 0, raw archive +1{,}635{,}850{,}582 bytes, detector input +898{,}675{,}302 bytes, 2{,}738 trades, 224 signal candidates, 590 evidence snapshots, and 29 alerts. \\
+Archive reconciliation smoke & \texttt{reports/phase12/runtime\_storage\_status\_after\_archive\_reconciliation.json} proves the audit now reports configured roots and external archive roots. The current shell did not see the SSD mount, so missing partitions remain unresolved until the SSD path is visible or configured. \\
+3-minute post-reconciliation smoke & \texttt{reports/phase12/organic\_runtime\_smoke\_3min\_after\_archive\_reconciliation.json} passed: controlled shutdown, runtime exit code 0, raw archive +814{,}694{,}158 bytes, detector input +35{,}079{,}539 bytes, 1{,}386 trades, 52 signal candidates, and 30 evidence snapshots. \\
+\end{longtable}
+
+\section*{What Is Still Left}
+\begin{enumerate}[nosep]
+\item Add market traceability into alert payloads: \texttt{market\_slug}, \texttt{event\_slug}, \texttt{condition\_id}, \texttt{market\_url}, and \texttt{event\_url}.
+\item Update Telegram/Discord renderers so an operator can tap the alert and open the exact Polymarket market.
+\item Prove real Telegram delivery with secrets supplied through ignored runtime secrets, or explicitly preserve provider-disabled mode.
+\item Populate or honestly disable \texttt{wallet\_profiles} and \texttt{wallet\_positions}; current counts are zero.
+\item Re-run storage audit after the SSD is visible to the shell and set \texttt{POLYMARKET\_EXTERNAL\_ARCHIVE\_ROOTS} if auto-discovery cannot see it.
+\item Add evidence retrieval benchmarking with a small labeled case file.
+\item Expand shadow-ML data beyond the 96-row packet using SSD-backed replay.
+\item Run a 3--6 hour organic live window after alert-link and storage-reconciliation fixes.
+\item Decide whether to keep, archive, or delete \texttt{Old-content/}; it is not a blocker.
+\end{enumerate}
+
+\section*{Four-Day Final Stretch}
+\begin{longtable}{p{0.18\linewidth}p{0.68\linewidth}}
+\textbf{Day} & \textbf{Goal} \\
+Day 1 & Run and report a 30--60 minute organic live window; fix any startup/shutdown/runtime drift. \\
+Day 2 & Prove Telegram or document provider-disabled alert posture; add delivery smoke report. \\
+Day 3 & Build evidence benchmark cases and runner; run the first benchmark report. \\
+Day 4 & Expand shadow-ML replay dataset from SSD, refresh final docs, and prepare a clean commit/push. \\
+\end{longtable}
+
+\section*{Recommended Immediate Next Implementation}
+Implement alert payload market links first. This is the highest-leverage missing piece because it turns detected abnormal activity into an operator-actionable alert.
+\begin{enumerate}[nosep]
+\item Extend \texttt{Phase4Repository.pending\_candidates()} with \texttt{markets.slug}, \texttt{markets.condition\_id}, and \texttt{events.slug}.
+\item Add \texttt{market\_url} and \texttt{event\_url} to \texttt{render\_alert\_payload()}.
+\item Add the market URL to Telegram and Discord renderers.
+\item Write a small smoke report proving a stored alert can be traced to a clickable Polymarket URL.
+\end{enumerate}
+
+\end{document}

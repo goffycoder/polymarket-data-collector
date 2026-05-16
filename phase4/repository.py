@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import json
+import sqlite3
+import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Any
+from typing import Any, Callable, TypeVar
 from uuid import uuid4
 
 from config.settings import (
@@ -13,6 +15,45 @@ from config.settings import (
     PHASE4_EVIDENCE_SCHEMA_VERSION,
 )
 from database.db_manager import get_conn
+
+
+_T = TypeVar("_T")
+
+
+def is_sqlite_lock_error(exc: BaseException) -> bool:
+    message = str(exc).lower()
+    return isinstance(exc, sqlite3.OperationalError) and (
+        "database is locked" in message or "database table is locked" in message
+    )
+
+
+def _write_with_retry(
+    operation_name: str,
+    writer: Callable[[Any], _T],
+    *,
+    attempts: int = 6,
+    base_sleep_seconds: float = 0.75,
+) -> _T:
+    last_exc: sqlite3.OperationalError | None = None
+    for attempt in range(1, attempts + 1):
+        conn = get_conn()
+        try:
+            result = writer(conn)
+            conn.commit()
+            return result
+        except sqlite3.OperationalError as exc:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+            if not is_sqlite_lock_error(exc) or attempt >= attempts:
+                raise
+            last_exc = exc
+            sleep_seconds = min(base_sleep_seconds * (2 ** (attempt - 1)), 8.0)
+            time.sleep(sleep_seconds)
+        finally:
+            conn.close()
+    raise RuntimeError(f"SQLite write retry exhausted during {operation_name}") from last_exc
 
 
 def _iso(dt: datetime) -> str:
@@ -59,9 +100,8 @@ class Phase4BootstrapSummary:
 
 class Phase4Repository:
     def register_workflow_version(self, *, notes: str) -> None:
-        conn = get_conn()
         now = _iso(datetime.now(timezone.utc))
-        try:
+        def _write(conn: Any) -> None:
             conn.execute(
                 """
                 INSERT INTO alert_workflow_versions (
@@ -90,9 +130,8 @@ class Phase4Repository:
                     now,
                 ),
             )
-            conn.commit()
-        finally:
-            conn.close()
+
+        _write_with_retry("register_workflow_version", _write)
 
     def bootstrap_summary(self) -> Phase4BootstrapSummary:
         conn = get_conn()
@@ -279,8 +318,8 @@ class Phase4Repository:
         alert_id: str | None = None,
     ) -> str:
         evidence_query_id = uuid4().hex
-        conn = get_conn()
-        try:
+
+        def _write(conn: Any) -> None:
             conn.execute(
                 """
                 INSERT INTO evidence_queries (
@@ -317,9 +356,8 @@ class Phase4Repository:
                     error_message,
                 ),
             )
-            conn.commit()
-        finally:
-            conn.close()
+
+        _write_with_retry("record_evidence_query", _write)
         return evidence_query_id
 
     def record_evidence_snapshot(
@@ -336,8 +374,8 @@ class Phase4Repository:
         freshness_seconds: int | None = None,
     ) -> str:
         evidence_snapshot_id = uuid4().hex
-        conn = get_conn()
-        try:
+
+        def _write(conn: Any) -> None:
             conn.execute(
                 """
                 INSERT INTO evidence_snapshots (
@@ -366,9 +404,8 @@ class Phase4Repository:
                     json.dumps(metadata_json or {}, sort_keys=True),
                 ),
             )
-            conn.commit()
-        finally:
-            conn.close()
+
+        _write_with_retry("record_evidence_snapshot", _write)
         return evidence_snapshot_id
 
     def latest_evidence_query_for_cache(
@@ -598,8 +635,8 @@ class Phase4Repository:
     ) -> str:
         alert_id = uuid4().hex
         now = _iso(datetime.now(timezone.utc))
-        conn = get_conn()
-        try:
+
+        def _write(conn: Any) -> None:
             conn.execute(
                 """
                 INSERT INTO alerts (
@@ -640,9 +677,8 @@ class Phase4Repository:
                     now,
                 ),
             )
-            conn.commit()
-        finally:
-            conn.close()
+
+        _write_with_retry("record_alert", _write)
         return alert_id
 
     def record_delivery_attempt(
@@ -660,8 +696,8 @@ class Phase4Repository:
         delivery_attempt_id = uuid4().hex
         attempted_at = _iso(datetime.now(timezone.utc))
         completed_at = _iso(datetime.now(timezone.utc))
-        conn = get_conn()
-        try:
+
+        def _write(conn: Any) -> None:
             conn.execute(
                 """
                 INSERT INTO alert_delivery_attempts (
@@ -710,9 +746,8 @@ class Phase4Repository:
                     alert_id,
                 ),
             )
-            conn.commit()
-        finally:
-            conn.close()
+
+        _write_with_retry("record_delivery_attempt", _write)
         return delivery_attempt_id
 
     def delivery_attempt_count(self, alert_id: str) -> int:
@@ -819,8 +854,7 @@ class Phase4Repository:
             params.append(evidence_snapshot_id)
 
         params.append(alert_id)
-        conn = get_conn()
-        try:
+        def _write(conn: Any) -> None:
             conn.execute(
                 f"""
                 UPDATE alerts
@@ -829,9 +863,8 @@ class Phase4Repository:
                 """,
                 tuple(params),
             )
-            conn.commit()
-        finally:
-            conn.close()
+
+        _write_with_retry("update_alert_status", _write)
 
     def record_analyst_feedback(
         self,
@@ -844,8 +877,8 @@ class Phase4Repository:
     ) -> str:
         feedback_id = uuid4().hex
         created_at = _iso(datetime.now(timezone.utc))
-        conn = get_conn()
-        try:
+
+        def _write(conn: Any) -> None:
             conn.execute(
                 """
                 INSERT INTO analyst_feedback (
@@ -868,9 +901,8 @@ class Phase4Repository:
                     created_at,
                 ),
             )
-            conn.commit()
-        finally:
-            conn.close()
+
+        _write_with_retry("record_analyst_feedback", _write)
         return feedback_id
 
     def recent_feedback_for_alert(self, alert_id: str, *, limit: int = 20) -> list[dict[str, Any]]:

@@ -1,0 +1,103 @@
+{
+  "acceptance": {
+    "activity_rows_match_wallets": true,
+    "first_seen_rows_match_wallets": true,
+    "idempotent_rebuild_strategy": "delete_and_rebuild_materialized_wallet_tables",
+    "wallet_rows_nonzero": true
+  },
+  "summary": {
+    "activity_rows": 212,
+    "canonical_trade_count": 6328,
+    "completed_at": "2026-05-15T22:34:44.952552+00:00",
+    "reference_time": "2026-05-15T22:29:47+00:00",
+    "run_id": "03be02627c1644eb8ddf965da5c484ae",
+    "started_at": "2026-05-15T22:34:44.753729+00:00",
+    "status": "completed",
+    "top_wallets_by_notional": [
+      {
+        "last_trade_at": "2026-05-15T10:28:05+00:00",
+        "market_count": 1,
+        "notional_total": 2023.96292,
+        "top_market_id": "628958",
+        "trade_count": 1,
+        "wallet_id": "0xcff75352f8afdc755250d5a49f0874cd2a8f0b0d"
+      },
+      {
+        "last_trade_at": "2026-05-15T12:34:54+00:00",
+        "market_count": 1,
+        "notional_total": 2016.159888,
+        "top_market_id": "601830",
+        "trade_count": 2,
+        "wallet_id": "0x2954ccb03f38a6070d7cf3ac00fb0793dd09c452"
+      },
+      {
+        "last_trade_at": "2026-05-15T15:04:37+00:00",
+        "market_count": 1,
+        "notional_total": 1957.920046,
+        "top_market_id": "601827",
+        "trade_count": 2,
+        "wallet_id": "0x29810d558768c534a915e993c6a1d15f9e9459e9"
+      },
+      {
+        "last_trade_at": "2026-05-15T11:12:02+00:00",
+        "market_count": 1,
+        "notional_total": 1940.51221,
+        "top_market_id": "601830",
+        "trade_count": 2,
+        "wallet_id": "0xa311279ec77c5c243c21133e2aece177dd2bb7ce"
+      },
+      {
+        "last_trade_at": "2026-05-15T22:16:17+00:00",
+        "market_count": 2,
+        "notional_total": 1499.999911,
+        "top_market_id": "601827",
+        "trade_count": 2,
+        "wallet_id": "0xb22d4f1286f54277c1502beb5f5f67f6f4b97148"
+      },
+      {
+        "last_trade_at": "2026-05-15T18:06:42+00:00",
+        "market_count": 1,
+        "notional_total": 925.33155,
+        "top_market_id": "601829",
+        "trade_count": 4,
+        "wallet_id": "0x5c7ae9d70bcee044792a656173d085e27da01a97"
+      },
+      {
+        "last_trade_at": "2026-05-15T20:44:54+00:00",
+        "market_count": 1,
+        "notional_total": 435.774768,
+        "top_market_id": "562007",
+        "trade_count": 2,
+        "wallet_id": "0xa0e5f00d9a0bf1522f0921adfb052024bd2d075a"
+      },
+      {
+        "last_trade_at": "2026-05-15T22:14:49+00:00",
+        "market_count": 1,
+        "notional_total": 399.791523,
+        "top_market_id": "561264",
+        "trade_count": 2,
+        "wallet_id": "0x9cf933fae844964ff2ca92b65f98dc66046c6bdc"
+      },
+      {
+        "last_trade_at": "2026-05-15T22:14:44+00:00",
+        "market_count": 6,
+        "notional_total": 389.259875,
+        "top_market_id": "601830",
+        "trade_count": 24,
+        "wallet_id": "0x72e0244cfb38200a90271ca9f10286e49a030b96"
+      },
+      {
+        "last_trade_at": "2026-05-15T16:06:35+00:00",
+        "market_count": 1,
+        "notional_total": 376.8264,
+        "top_market_id": "628958",
+        "trade_count": 9,
+        "wallet_id": "0x4f1d5ae26fc31472966e951af3183308736d8de2"
+      }
+    ],
+    "wallet_count": 212,
+    "wallet_field_null_rate": 0.920986,
+    "wallet_linked_trade_count": 500,
+    "wallets_with_first_seen": 212
+  }
+}

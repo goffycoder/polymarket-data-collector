@@ -9,6 +9,7 @@ from typing import Any
 
 from config import settings
 from phase7.reporting import _load_latest_audit
+from phase7.storage import external_archive_roots
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -47,21 +48,23 @@ def _managed_paths() -> list[dict[str, Any]]:
     paths: list[dict[str, Any]] = [
         {
             "storage_class": "raw_archives",
-            "path": REPO_ROOT / "data" / "raw",
+            "path": Path(str(settings.RAW_ARCHIVE_ROOT)),
             "retention": {
                 "hot_days": int(settings.PHASE7_HOT_RETENTION_DAYS),
                 "warm_days": int(settings.PHASE7_WARM_RETENTION_DAYS),
                 "cold_days": int(settings.PHASE7_COLD_RETENTION_DAYS),
+                "readonly": bool(settings.ARCHIVE_ROOT_READONLY),
             },
             "reproducibility_requirement": "required_for_raw_envelope_auditability",
         },
         {
             "storage_class": "detector_input",
-            "path": REPO_ROOT / "data" / "detector_input",
+            "path": Path(str(settings.DETECTOR_INPUT_ROOT)),
             "retention": {
                 "hot_days": int(settings.PHASE7_HOT_RETENTION_DAYS),
                 "warm_days": int(settings.PHASE7_WARM_RETENTION_DAYS),
                 "cold_days": int(settings.PHASE7_COLD_RETENTION_DAYS),
+                "readonly": bool(settings.ARCHIVE_ROOT_READONLY),
             },
             "reproducibility_requirement": "required_for_archived_window_phase3_replay",
         },
@@ -187,7 +190,7 @@ def _retention_policy() -> list[dict[str, Any]]:
 def _reproducibility_contract() -> list[dict[str, Any]]:
     return [
         {
-            "artifact": "data/detector_input/",
+            "artifact": str(settings.DETECTOR_INPUT_ROOT),
             "required": True,
             "reason": "Archived-window Phase 3 replay and late detector activation recovery depend on detector-input partitions.",
         },
@@ -207,7 +210,7 @@ def _reproducibility_contract() -> list[dict[str, Any]]:
             "reason": "These are frozen reference evidence packets already cited by later-phase docs.",
         },
         {
-            "artifact": "data/raw/",
+            "artifact": str(settings.RAW_ARCHIVE_ROOT),
             "required": True,
             "reason": "Raw envelopes preserve source-of-truth payloads for auditability and republish validation.",
         },
@@ -319,12 +322,19 @@ def build_runtime_storage_status(*, output_path: str | None = None) -> tuple[Run
 
     status = "ok"
     reason = "storage_headroom_healthy"
+    latest_audit_totals = {}
+    if latest_audit is not None:
+        latest_audit_totals = dict((latest_audit.get("summary_json") or {}).get("totals") or {})
+    missing_file_count = int(latest_audit.get("missing_file_count") or 0) if latest_audit is not None else 0
+    archive_only_count = int(latest_audit_totals.get("archive_only_count") or 0)
     if disk["blockers"]:
         status = "blocked"
         reason = ",".join(disk["blockers"])
-    elif latest_audit is not None and int(latest_audit.get("missing_file_count") or 0) > 0:
+    elif missing_file_count > 0:
         status = "warning"
         reason = "missing_archive_files_detected"
+    elif archive_only_count > 0:
+        reason = "storage_headroom_healthy_archive_verified"
     elif managed_bytes >= warn_managed_bytes:
         status = "warning"
         reason = "managed_repo_storage_above_warning_threshold"
@@ -350,10 +360,20 @@ def build_runtime_storage_status(*, output_path: str | None = None) -> tuple[Run
             "candidate_gb": _bytes_to_gb(prune_candidate_bytes),
         },
         "latest_storage_audit": latest_audit,
+        "archive_reconciliation": {
+            "missing_file_count": missing_file_count,
+            "archive_only_count": archive_only_count,
+            "external_archive_roots": [str(root) for root in external_archive_roots()],
+        },
         "historical_loss_note": (
             "Phase 11 records that the 2026-04 raw and detector-input archive tree was already deleted "
             "before this runtime revision work, so some older windows are no longer locally restorable."
         ),
+        "archive_roots": {
+            "raw_archive_root": str(settings.RAW_ARCHIVE_ROOT),
+            "detector_input_root": str(settings.DETECTOR_INPUT_ROOT),
+            "archive_root_readonly": bool(settings.ARCHIVE_ROOT_READONLY),
+        },
     }
     summary = RuntimeStorageStatusSummary(
         status=status,

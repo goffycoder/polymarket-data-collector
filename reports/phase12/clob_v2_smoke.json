@@ -1,0 +1,99 @@
+{
+  "checked_at": "2026-05-15T22:41:44.910061+00:00",
+  "checks": {
+    "clob_book": {
+      "ask_levels": 94,
+      "asset_id": "69324317355037271422943965141382095011871956039434394956830818206664869608517",
+      "bid_levels": 21,
+      "error": null,
+      "last_trade_price": "0.022",
+      "market_ref": "0x0b4cc3b739e1dfe5d73274740e7308b6fb389c5af040c3a174923d928d134bee",
+      "ok": true,
+      "present_fields": [
+        "asks",
+        "asset_id",
+        "bids",
+        "market"
+      ],
+      "tick_size": "0.001",
+      "url": "https://clob.polymarket.com/book?token_id=69324317355037271422943965141382095011871956039434394956830818206664869608517"
+    },
+    "clob_fee_rate": {
+      "error": null,
+      "ok": true,
+      "response": {
+        "base_fee": 1000
+      },
+      "response_type": "dict",
+      "url": "https://clob.polymarket.com/fee-rate?token_id=69324317355037271422943965141382095011871956039434394956830818206664869608517"
+    },
+    "clob_time": {
+      "error": null,
+      "ok": true,
+      "response_type": "int",
+      "server_time": 1778884904,
+      "url": "https://clob.polymarket.com/time"
+    },
+    "data_api_trades": {
+      "error": null,
+      "ok": true,
+      "row_count": 5,
+      "sample_has_proxy_wallet": true,
+      "sample_has_transaction_hash": true,
+      "sample_keys": [
+        "asset",
+        "bio",
+        "conditionId",
+        "eventSlug",
+        "icon",
+        "name",
+        "outcome",
+        "outcomeIndex",
+        "price",
+        "profileImage",
+        "profileImageOptimized",
+        "proxyWallet",
+        "pseudonym",
+        "side",
+        "size",
+        "slug",
+        "timestamp",
+        "title",
+        "transactionHash"
+      ],
+      "url": "https://data-api.polymarket.com/trades?market=0x0b4cc3b739e1dfe5d73274740e7308b6fb389c5af040c3a174923d928d134bee&limit=5"
+    },
+    "ws_market_subscription_shape": {
+      "ok": true,
+      "subscription": {
+        "assets_ids": [
+          "69324317355037271422943965141382095011871956039434394956830818206664869608517"
+        ],
+        "custom_feature_enabled": true,
+        "type": "market"
+      },
+      "url": "wss://ws-subscriptions-clob.polymarket.com/ws/market"
+    }
+  },
+  "clob_v2_live_date": "2026-04-28",
+  "next_actions": [
+    "Keep public collection on https://clob.polymarket.com and data-api trades.",
+    "Do not claim V2 order-placement support; this repo does not currently sign or submit orders.",
+    "Replace hardcoded simulator fee assumptions with live fee-rate enrichment before production economic claims.",
+    "Refresh this smoke report before long organic runtime windows."
+  ],
+  "selected_market": {
+    "condition_id": "0x0b4cc3b739e1dfe5d73274740e7308b6fb389c5af040c3a174923d928d134bee",
+    "market_id": "703258",
+    "question": "Will Jesus Christ return before 2027?",
+    "token_id": "69324317355037271422943965141382095011871956039434394956830818206664869608517"
+  },
+  "summary": {
+    "data_api_url": "https://data-api.polymarket.com",
+    "public_data_endpoints_compatible": true,
+    "status": "compatible_public_data_smoke",
+    "trading_sdk_or_order_signing_in_scope": false,
+    "v2_production_clob_url": "https://clob.polymarket.com",
+    "ws_market_url": "wss://ws-subscriptions-clob.polymarket.com/ws/market"
+  }
+}

@@ -89,7 +89,9 @@ def parse_trade_time(raw_ts) -> str | None:
         return None
     try:
         if isinstance(raw_ts, (int, float)):
-            return datetime.fromtimestamp(float(raw_ts) / 1000, tz=timezone.utc).isoformat()
+            raw_value = float(raw_ts)
+            scale = 1000 if abs(raw_value) >= 1_000_000_000_000 else 1
+            return datetime.fromtimestamp(raw_value / scale, tz=timezone.utc).isoformat()
         text = str(raw_ts).strip()
         if not text:
             return None
@@ -138,10 +140,6 @@ def make_trade_row(
     source: str,
 ) -> dict | None:
     """Normalize a trade payload from Polymarket into the local trade schema."""
-    trade_id = str(trade.get("id") or trade.get("tradeId") or trade.get("tradeID") or "")
-    if not trade_id:
-        return None
-
     asset_id = str(trade.get("asset") or trade.get("asset_id") or trade.get("assetId") or "")
     proxy_wallet = str(trade.get("proxyWallet") or trade.get("proxy_wallet") or "").lower() or None
     transaction_hash = str(
@@ -171,6 +169,9 @@ def make_trade_row(
         size=size,
         trade_time=trade_time,
     )
+    trade_id = str(trade.get("id") or trade.get("tradeId") or trade.get("tradeID") or "")
+    if not trade_id:
+        trade_id = transaction_hash or f"trade_{dedupe_key}"
 
     return {
         "trade_id": trade_id,

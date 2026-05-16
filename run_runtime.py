@@ -12,6 +12,10 @@ from utils.logger import get_logger
 
 log = get_logger("run_runtime")
 
+PROCESS_SHUTDOWN_TIMEOUT_SECONDS = float(
+    os.getenv("POLYMARKET_RUNTIME_PROCESS_SHUTDOWN_TIMEOUT_SECONDS", "45")
+)
+
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -160,7 +164,7 @@ async def _terminate_process(name: str, process: asyncio.subprocess.Process) -> 
     log.info(f"Stopping {name}...")
     process.terminate()
     try:
-        await asyncio.wait_for(process.wait(), timeout=10)
+        await asyncio.wait_for(process.wait(), timeout=PROCESS_SHUTDOWN_TIMEOUT_SECONDS)
     except asyncio.TimeoutError:
         log.warning(f"{name} did not stop in time; killing it.")
         process.kill()

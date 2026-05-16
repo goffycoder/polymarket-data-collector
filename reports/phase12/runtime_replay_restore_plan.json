@@ -1,0 +1,233 @@
+{
+  "generated_at": "2026-05-15T23:01:56.730715+00:00",
+  "missing_item_count": 0,
+  "restore_items": [
+    {
+      "age_days": 1.873,
+      "byte_count": 304208087,
+      "created_at": "2026-05-15 22:57:09",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 304208087,
+        "entity_kind": "ws_frame::price_change",
+        "first_captured_at": "2026-05-14T01:00:00.037217+00:00",
+        "last_captured_at": "2026-05-14T01:59:59.986603+00:00",
+        "resolved_path": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/detector_input/year=2026/month=05/day=14/hour=01/source_system=clob_ws_market/events.ndjson",
+        "row_count": 208461,
+        "schema_version": "normalized_envelope.v2"
+      },
+      "partition_path": "data/detector_input/year=2026/month=05/day=14/hour=01/source_system=clob_ws_market/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "restore_action": "load_from_hot_storage",
+      "source_system": "clob_ws_market",
+      "storage_class": "detector_input",
+      "tiering_decision_id": "516b7d14e3b943da91c8c082edfbeb8d"
+    },
+    {
+      "age_days": 1.873,
+      "byte_count": 218918063,
+      "created_at": "2026-05-15 22:57:09",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 219876412,
+        "entity_kind": "market_ws_frame",
+        "first_captured_at": "2026-05-14T01:00:00.037217+00:00",
+        "last_captured_at": "2026-05-14T01:59:59.986603+00:00",
+        "resolved_path": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/raw/year=2026/month=05/day=14/hour=01/source_system=clob_ws_market/events.ndjson",
+        "row_count": 208461,
+        "schema_version": "raw_event_envelope.v1"
+      },
+      "partition_path": "data/raw/year=2026/month=05/day=14/hour=01/source_system=clob_ws_market/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "restore_action": "load_from_hot_storage",
+      "source_system": "clob_ws_market",
+      "storage_class": "raw",
+      "tiering_decision_id": "1e90d21926d4455d803517fc0567ef24"
+    },
+    {
+      "age_days": 1.885,
+      "byte_count": 44715414,
+      "created_at": "2026-05-15 22:57:09",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 44715414,
+        "entity_kind": "events_page",
+        "first_captured_at": "2026-05-14T01:42:37.541100+00:00",
+        "last_captured_at": "2026-05-14T01:42:44.250777+00:00",
+        "resolved_path": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/raw/year=2026/month=05/day=14/hour=01/source_system=gamma_events/events.ndjson",
+        "row_count": 9,
+        "schema_version": "raw_event_envelope.v1"
+      },
+      "partition_path": "data/raw/year=2026/month=05/day=14/hour=01/source_system=gamma_events/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "restore_action": "load_from_hot_storage",
+      "source_system": "gamma_events",
+      "storage_class": "raw",
+      "tiering_decision_id": "d17f240b9fca4b12aafc63cdd37c3af8"
+    },
+    {
+      "age_days": 1.881,
+      "byte_count": 29541748,
+      "created_at": "2026-05-15 22:57:09",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 29541748,
+        "entity_kind": "markets_page",
+        "first_captured_at": "2026-05-14T01:00:09.917120+00:00",
+        "last_captured_at": "2026-05-14T01:48:35.373553+00:00",
+        "resolved_path": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/raw/year=2026/month=05/day=14/hour=01/source_system=gamma_markets/events.ndjson",
+        "row_count": 42,
+        "schema_version": "raw_event_envelope.v1"
+      },
+      "partition_path": "data/raw/year=2026/month=05/day=14/hour=01/source_system=gamma_markets/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "restore_action": "load_from_hot_storage",
+      "source_system": "gamma_markets",
+      "storage_class": "raw",
+      "tiering_decision_id": "c96051c6ee504de9b70730fd4cb0b440"
+    },
+    {
+      "age_days": 1.877,
+      "byte_count": 6547095,
+      "created_at": "2026-05-15 22:57:09",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 6547095,
+        "entity_kind": "recent_trades_page",
+        "first_captured_at": "2026-05-14T01:04:40.868524+00:00",
+        "last_captured_at": "2026-05-14T01:54:19.237749+00:00",
+        "resolved_path": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/raw/year=2026/month=05/day=14/hour=01/source_system=data_api_trades/events.ndjson",
+        "row_count": 159,
+        "schema_version": "raw_event_envelope.v1"
+      },
+      "partition_path": "data/raw/year=2026/month=05/day=14/hour=01/source_system=data_api_trades/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "restore_action": "load_from_hot_storage",
+      "source_system": "data_api_trades",
+      "storage_class": "raw",
+      "tiering_decision_id": "e5c620791a1f4e26ae0273f278b0a783"
+    },
+    {
+      "age_days": 1.874,
+      "byte_count": 2791474,
+      "created_at": "2026-05-15 22:57:09",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 3022376,
+        "entity_kind": "books_batch",
+        "first_captured_at": "2026-05-14T01:01:44.599982+00:00",
+        "last_captured_at": "2026-05-14T01:58:05.111130+00:00",
+        "resolved_path": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/raw/year=2026/month=05/day=14/hour=01/source_system=clob_books/events.ndjson",
+        "row_count": 29,
+        "schema_version": "raw_event_envelope.v1"
+      },
+      "partition_path": "data/raw/year=2026/month=05/day=14/hour=01/source_system=clob_books/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "restore_action": "load_from_hot_storage",
+      "source_system": "clob_books",
+      "storage_class": "raw",
+      "tiering_decision_id": "35f8fac92f1e4d598cf1438bbf9ebf71"
+    },
+    {
+      "age_days": 1.874,
+      "byte_count": 519185,
+      "created_at": "2026-05-15 22:57:09",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 519185,
+        "entity_kind": "books_batch",
+        "first_captured_at": "2026-05-14T01:01:44.599982+00:00",
+        "last_captured_at": "2026-05-14T01:58:05.111130+00:00",
+        "resolved_path": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/detector_input/year=2026/month=05/day=14/hour=01/source_system=clob_books/events.ndjson",
+        "row_count": 29,
+        "schema_version": "normalized_envelope.v2"
+      },
+      "partition_path": "data/detector_input/year=2026/month=05/day=14/hour=01/source_system=clob_books/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "restore_action": "load_from_hot_storage",
+      "source_system": "clob_books",
+      "storage_class": "detector_input",
+      "tiering_decision_id": "322c6196ab444bca853ec900b7812de8"
+    },
+    {
+      "age_days": 1.881,
+      "byte_count": 60776,
+      "created_at": "2026-05-15 22:57:09",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 60776,
+        "entity_kind": "markets_page",
+        "first_captured_at": "2026-05-14T01:00:09.917120+00:00",
+        "last_captured_at": "2026-05-14T01:48:35.373553+00:00",
+        "resolved_path": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/detector_input/year=2026/month=05/day=14/hour=01/source_system=gamma_markets/events.ndjson",
+        "row_count": 42,
+        "schema_version": "normalized_envelope.v2"
+      },
+      "partition_path": "data/detector_input/year=2026/month=05/day=14/hour=01/source_system=gamma_markets/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "restore_action": "load_from_hot_storage",
+      "source_system": "gamma_markets",
+      "storage_class": "detector_input",
+      "tiering_decision_id": "edb77ab9c4ec49cabd26ba78bd1ffd37"
+    },
+    {
+      "age_days": 1.885,
+      "byte_count": 44881,
+      "created_at": "2026-05-15 22:57:09",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 44881,
+        "entity_kind": "events_page",
+        "first_captured_at": "2026-05-14T01:42:37.541100+00:00",
+        "last_captured_at": "2026-05-14T01:42:44.250777+00:00",
+        "resolved_path": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/detector_input/year=2026/month=05/day=14/hour=01/source_system=gamma_events/events.ndjson",
+        "row_count": 9,
+        "schema_version": "normalized_envelope.v2"
+      },
+      "partition_path": "data/detector_input/year=2026/month=05/day=14/hour=01/source_system=gamma_events/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "restore_action": "load_from_hot_storage",
+      "source_system": "gamma_events",
+      "storage_class": "detector_input",
+      "tiering_decision_id": "2b72bb9559d64ce4a100f516998ffc67"
+    },
+    {
+      "age_days": 1.879,
+      "byte_count": 14716,
+      "created_at": "2026-05-15 22:57:09",
+      "file_exists": true,
+      "metadata_json": {
+        "actual_bytes": 18235,
+        "entity_kind": "prices_batch",
+        "first_captured_at": "2026-05-14T01:21:39.311597+00:00",
+        "last_captured_at": "2026-05-14T01:51:53.118995+00:00",
+        "resolved_path": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/raw/year=2026/month=05/day=14/hour=01/source_system=clob_prices/events.ndjson",
+        "row_count": 5,
+        "schema_version": "raw_event_envelope.v1"
+      },
+      "partition_path": "data/raw/year=2026/month=05/day=14/hour=01/source_system=clob_prices/events.ndjson",
+      "recommended_action": "retain_hot",
+      "recommended_tier": "hot",
+      "restore_action": "load_from_hot_storage",
+      "source_system": "clob_prices",
+      "storage_class": "raw",
+      "tiering_decision_id": "8e291e50eb8a4970b0d948e981d49aaf"
+    }
+  ],
+  "restore_scope": "phase11_runtime_replay_window",
+  "storage_audit_run_id": "17fa0a0ac1754d6789f75edc7c15c6aa",
+  "total_items": 10,
+  "window": {
+    "end": "2026-05-14T01:30:00+00:00",
+    "start": "2026-05-14T01:00:00+00:00"
+  }
+}

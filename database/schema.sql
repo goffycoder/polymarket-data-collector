@@ -135,6 +135,34 @@ CREATE INDEX IF NOT EXISTS idx_snapshots_market_time ON snapshots(market_id, cap
 CREATE INDEX IF NOT EXISTS idx_snapshots_time ON snapshots(captured_at DESC);
 
 -- -----------------------------------------------------------------
+-- 3b. MARKET_FEE_RATES - CLOB V2 token fee-rate snapshots
+-- -----------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS market_fee_rates (
+    fee_rate_id        TEXT PRIMARY KEY,
+    token_id           TEXT NOT NULL,
+    market_id          TEXT,
+    condition_id       TEXT,
+    outcome_side       TEXT,
+    captured_at        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    clob_url           TEXT NOT NULL,
+    base_fee           REAL,
+    fee_rate_bps       REAL,
+    raw_payload_json   TEXT,
+    status             TEXT DEFAULT 'ok',
+    error              TEXT,
+    created_at         DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at         DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(market_id) REFERENCES markets(market_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_market_fee_rates_token_time
+    ON market_fee_rates(token_id, captured_at DESC);
+CREATE INDEX IF NOT EXISTS idx_market_fee_rates_market_time
+    ON market_fee_rates(market_id, captured_at DESC);
+CREATE INDEX IF NOT EXISTS idx_market_fee_rates_status
+    ON market_fee_rates(status);
+
+-- -----------------------------------------------------------------
 -- 4. ORDER_BOOK_SNAPSHOTS — full depth (Tier 1 only)
 -- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS order_book_snapshots (
@@ -203,6 +231,126 @@ CREATE INDEX IF NOT EXISTS idx_trades_condition_time ON trades(condition_id, tra
 CREATE INDEX IF NOT EXISTS idx_trades_asset_time ON trades(asset_id, trade_time DESC);
 CREATE INDEX IF NOT EXISTS idx_trades_proxy_wallet_time ON trades(proxy_wallet, trade_time DESC);
 CREATE INDEX IF NOT EXISTS idx_trades_dedupe_key ON trades(dedupe_key);
+
+-- -----------------------------------------------------------------
+-- 5b. WALLET ENTITY PLANE — first-class wallet/profile/cluster state
+-- -----------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS wallets (
+    wallet_id          TEXT PRIMARY KEY,
+    proxy_wallet       TEXT NOT NULL,
+    first_seen_at      DATETIME,
+    last_seen_at       DATETIME,
+    first_market_id    TEXT,
+    first_condition_id TEXT,
+    first_trade_id     TEXT,
+    source_count       INTEGER DEFAULT 0,
+    created_at         DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at         DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_wallets_last_seen
+    ON wallets(last_seen_at DESC);
+
+CREATE TABLE IF NOT EXISTS wallet_first_seen (
+    wallet_id              TEXT PRIMARY KEY,
+    first_seen_at          DATETIME NOT NULL,
+    first_seen_source      TEXT,
+    first_seen_trade_id    TEXT,
+    first_seen_market_id   TEXT,
+    first_seen_condition_id TEXT,
+    provenance_json        TEXT,
+    created_at             DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at             DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_wallet_first_seen_time
+    ON wallet_first_seen(first_seen_at DESC);
+
+CREATE TABLE IF NOT EXISTS wallet_activity (
+    wallet_id              TEXT PRIMARY KEY,
+    trade_count            INTEGER DEFAULT 0,
+    buy_count              INTEGER DEFAULT 0,
+    sell_count             INTEGER DEFAULT 0,
+    market_count           INTEGER DEFAULT 0,
+    condition_count        INTEGER DEFAULT 0,
+    notional_total         REAL DEFAULT 0,
+    notional_24h           REAL DEFAULT 0,
+    notional_7d            REAL DEFAULT 0,
+    avg_trade_size         REAL DEFAULT 0,
+    avg_usdc_notional      REAL DEFAULT 0,
+    first_trade_at         DATETIME,
+    last_trade_at          DATETIME,
+    top_market_id          TEXT,
+    top_condition_id       TEXT,
+    feature_json           TEXT,
+    materialized_at        DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_wallet_activity_last_trade
+    ON wallet_activity(last_trade_at DESC);
+CREATE INDEX IF NOT EXISTS idx_wallet_activity_notional
+    ON wallet_activity(notional_total DESC);
+
+CREATE TABLE IF NOT EXISTS wallet_profiles (
+    wallet_id             TEXT PRIMARY KEY,
+    profile_source        TEXT,
+    profile_status        TEXT,
+    profile_json          TEXT,
+    profile_captured_at   DATETIME,
+    error_message         TEXT,
+    created_at            DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at            DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS wallet_positions (
+    wallet_id             TEXT NOT NULL,
+    market_id             TEXT NOT NULL,
+    condition_id          TEXT,
+    outcome_side          TEXT,
+    position_size         REAL,
+    position_notional     REAL,
+    position_source       TEXT,
+    position_json         TEXT,
+    captured_at           DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(wallet_id, market_id, outcome_side)
+);
+
+CREATE INDEX IF NOT EXISTS idx_wallet_positions_market
+    ON wallet_positions(market_id, wallet_id);
+
+CREATE TABLE IF NOT EXISTS wallet_cluster_membership (
+    wallet_id             TEXT NOT NULL,
+    cluster_id            TEXT NOT NULL,
+    cluster_version       TEXT NOT NULL,
+    method                TEXT NOT NULL,
+    confidence            REAL,
+    features_json         TEXT,
+    assigned_at           DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(wallet_id, cluster_version)
+);
+
+CREATE INDEX IF NOT EXISTS idx_wallet_cluster_membership_cluster
+    ON wallet_cluster_membership(cluster_id, cluster_version);
+
+CREATE TABLE IF NOT EXISTS wallet_entity_runs (
+    wallet_entity_run_id  TEXT PRIMARY KEY,
+    run_type              TEXT NOT NULL,
+    status                TEXT NOT NULL,
+    started_at            DATETIME NOT NULL,
+    completed_at          DATETIME,
+    wallet_count          INTEGER DEFAULT 0,
+    activity_row_count    INTEGER DEFAULT 0,
+    profile_row_count     INTEGER DEFAULT 0,
+    cluster_row_count     INTEGER DEFAULT 0,
+    config_json           TEXT,
+    summary_json          TEXT,
+    output_path           TEXT,
+    notes                 TEXT,
+    created_at            DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_wallet_entity_runs_created
+    ON wallet_entity_runs(created_at DESC);
 
 -- -----------------------------------------------------------------
 -- 6. PHASE 2 DURABLE DATA PLANE METADATA

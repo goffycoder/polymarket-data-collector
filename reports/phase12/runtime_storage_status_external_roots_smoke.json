@@ -1,0 +1,212 @@
+{
+  "prune_payload": null,
+  "prune_summary": null,
+  "refreshed_artifacts": {},
+  "storage_status": {
+    "archive_roots": {
+      "archive_root_readonly": true,
+      "detector_input_root": "/private/tmp/polymarket_archive_test/detector_input",
+      "raw_archive_root": "/private/tmp/polymarket_archive_test/raw"
+    },
+    "disk_headroom": {
+      "blockers": [],
+      "free_bytes": 141836840960,
+      "free_gb": 132.096,
+      "free_percent": 28.69,
+      "min_free_bytes": 5368709120,
+      "min_free_gb": 5,
+      "min_free_percent": 5.0,
+      "total_bytes": 494384795648,
+      "used_bytes": 352547954688
+    },
+    "generated_at": "2026-05-15T22:50:59.185803+00:00",
+    "historical_loss_note": "Phase 11 records that the 2026-04 raw and detector-input archive tree was already deleted before this runtime revision work, so some older windows are no longer locally restorable.",
+    "latest_storage_audit": null,
+    "managed_paths": [
+      {
+        "exists": false,
+        "path": "/private/tmp/polymarket_archive_test/raw",
+        "reproducibility_requirement": "required_for_raw_envelope_auditability",
+        "retention": {
+          "cold_days": 365,
+          "hot_days": 30,
+          "readonly": true,
+          "warm_days": 120
+        },
+        "size_bytes": 0,
+        "storage_class": "raw_archives"
+      },
+      {
+        "exists": false,
+        "path": "/private/tmp/polymarket_archive_test/detector_input",
+        "reproducibility_requirement": "required_for_archived_window_phase3_replay",
+        "retention": {
+          "cold_days": 365,
+          "hot_days": 30,
+          "readonly": true,
+          "warm_days": 120
+        },
+        "size_bytes": 0,
+        "storage_class": "detector_input"
+      },
+      {
+        "exists": true,
+        "path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/database/polymarket_state.db",
+        "reproducibility_requirement": "required_for_candidates_alerts_scores_and_audit_ledgers",
+        "retention": {
+          "notes": "Do not prune canonical DB state without an explicit dump or backup.",
+          "policy": "retain_canonical_runtime_state"
+        },
+        "size_bytes": 29045542912,
+        "storage_class": "database_state"
+      },
+      {
+        "exists": true,
+        "path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/logs",
+        "reproducibility_requirement": "short_lived_operator_debugging_only",
+        "retention": {
+          "prune_scope": "rotated_and_old_runtime_logs",
+          "retain_days": 14
+        },
+        "size_bytes": 44719247,
+        "storage_class": "logs"
+      },
+      {
+        "exists": false,
+        "path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/reports/phase5/replay_runs/manual",
+        "reproducibility_requirement": "manual_runs_only_frozen_phase9_phase10_packets_are_protected_elsewhere",
+        "retention": {
+          "protected_dirs": [
+            "phase10_task3",
+            "phase9_task3"
+          ],
+          "retain_days": 30
+        },
+        "size_bytes": 0,
+        "storage_class": "manual_replay_artifacts"
+      },
+      {
+        "exists": false,
+        "path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/reports/phase7",
+        "reproducibility_requirement": "refreshable_from_db_when_runtime_state_is_intact",
+        "retention": {
+          "prune_scope": "refreshable_operator_reports",
+          "retain_days": 30
+        },
+        "size_bytes": 0,
+        "storage_class": "operator_reports"
+      }
+    ],
+    "managed_totals": {
+      "managed_bytes": 29090262159,
+      "managed_gb": 27.092,
+      "warning_threshold_gb": 25
+    },
+    "protected_replay_dirs": [
+      "phase10_task3",
+      "phase9_task3"
+    ],
+    "prune_candidate_totals": {
+      "candidate_bytes": 0,
+      "candidate_count": 1,
+      "candidate_gb": 0.0
+    },
+    "prune_candidates": [
+      {
+        "age_days": 38.767,
+        "category": "logs",
+        "path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/logs/launchd_stdout.log",
+        "recommended_action": "delete_file",
+        "size_bytes": 0
+      }
+    ],
+    "reproducibility_contract": [
+      {
+        "artifact": "/private/tmp/polymarket_archive_test/detector_input",
+        "reason": "Archived-window Phase 3 replay and late detector activation recovery depend on detector-input partitions.",
+        "required": true
+      },
+      {
+        "artifact": "raw_archive_manifests + detector_input_manifests",
+        "reason": "These tables prove which partitions existed, which are missing, and what was lost.",
+        "required": true
+      },
+      {
+        "artifact": "database runtime state",
+        "reason": "Persisted candidates, alerts, scores, checkpoints, and restore/audit ledgers live here.",
+        "required": true
+      },
+      {
+        "artifact": "reports/phase5/replay_runs/phase9_task3 + phase10_task3",
+        "reason": "These are frozen reference evidence packets already cited by later-phase docs.",
+        "required": true
+      },
+      {
+        "artifact": "/private/tmp/polymarket_archive_test/raw",
+        "reason": "Raw envelopes preserve source-of-truth payloads for auditability and republish validation.",
+        "required": true
+      },
+      {
+        "artifact": "logs/",
+        "reason": "Useful for incident debugging but not a long-term reproducibility requirement.",
+        "required": false
+      }
+    ],
+    "retention_policy": [
+      {
+        "archive_only_after_days": 365,
+        "cold_days": 365,
+        "hot_days": 30,
+        "operator_rule": "Do not delete blindly; use storage audit, compaction plan, and restore plan first.",
+        "storage_class": "raw_archives",
+        "warm_days": 120
+      },
+      {
+        "archive_only_after_days": 365,
+        "cold_days": 365,
+        "hot_days": 30,
+        "operator_rule": "This is the minimum archive needed for archived-window Phase 3 replay.",
+        "storage_class": "detector_input",
+        "warm_days": 120
+      },
+      {
+        "operator_rule": "SQLite file or PostgreSQL dump must exist before invasive cleanup.",
+        "retention_mode": "retain_indefinitely_with_backup_before_maintenance",
+        "storage_class": "database_state"
+      },
+      {
+        "operator_rule": "Safe pruning target. Older logs are helpful but not part of the replay contract.",
+        "retain_days": 14,
+        "storage_class": "logs"
+      },
+      {
+        "operator_rule": "Prune ad hoc replay output; preserve frozen evidence packets referenced by docs.",
+        "protected_dirs": [
+          "phase10_task3",
+          "phase9_task3"
+        ],
+        "retain_days": 30,
+        "storage_class": "manual_replay_artifacts"
+      },
+      {
+        "operator_rule": "Safe pruning target because these reports can be regenerated from current state.",
+        "retain_days": 30,
+        "storage_class": "operator_reports"
+      }
+    ],
+    "status": "warning",
+    "status_reason": "managed_repo_storage_above_warning_threshold"
+  },
+  "storage_status_summary": {
+    "free_gb": 132.096,
+    "free_percent": 28.69,
+    "latest_storage_audit_run_id": null,
+    "managed_bytes": 29090262159,
+    "managed_gb": 27.092,
+    "output_path": "reports/phase12/runtime_storage_status_external_roots_smoke.json",
+    "prune_candidate_bytes": 0,
+    "prune_candidate_count": 1,
+    "reason": "managed_repo_storage_above_warning_threshold",
+    "status": "warning"
+  }
+}

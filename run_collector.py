@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 
 from config.settings import (
     ENABLE_PHASE3_DETECTOR,
+    ENABLE_TTL_MAINTENANCE,
     PHASE11_RUNTIME_STORAGE_CHECK_SECONDS,
     PHASE3_POLL_SECONDS,
     PHASE3_SOURCE_SYSTEMS,
@@ -194,6 +195,12 @@ async def trades_loop():
 
 async def ttl_loop():
     """Run TTL maintenance every 30 minutes."""
+    if not ENABLE_TTL_MAINTENANCE:
+        log.warning("TTL maintenance is disabled; archive retention is preserving collected history.")
+        while not _shutdown.is_set():
+            await asyncio.sleep(TTL_INTERVAL)
+        return
+
     await asyncio.sleep(SYNC_INTERVAL)  # First TTL after first full sync
     while not _shutdown.is_set():
         try:
@@ -320,7 +327,8 @@ async def main():
         "Runtime toggles: "
         f"phase3_enabled={ENABLE_PHASE3_DETECTOR}, "
         f"phase3_poll_seconds={PHASE3_POLL_SECONDS}, "
-        f"phase3_sources={list(PHASE3_SOURCE_SYSTEMS)}"
+        f"phase3_sources={list(PHASE3_SOURCE_SYSTEMS)}, "
+        f"ttl_enabled={ENABLE_TTL_MAINTENANCE}"
     )
     if not ENABLE_PHASE3_DETECTOR:
         log.warning("Phase 3 detector is disabled in this collector process.")

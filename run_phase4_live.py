@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import sqlite3
 
 from config.settings import (
     ENABLE_PHASE4_DISCORD,
@@ -16,6 +17,7 @@ from config.settings import (
 )
 from database.db_manager import apply_schema
 from phase4 import Phase4AlertWorker, Phase4EvidenceWorker, Phase4Repository
+from phase4.repository import is_sqlite_lock_error
 from utils.logger import get_logger
 
 log = get_logger("run_phase4_live")
@@ -96,7 +98,21 @@ async def _main() -> int:
     summaries: list[dict[str, object]] = []
     while True:
         iteration += 1
-        summary = await run_pipeline_iteration(repository, limit=args.limit)
+        try:
+            summary = await run_pipeline_iteration(repository, limit=args.limit)
+        except sqlite3.OperationalError as exc:
+            if not is_sqlite_lock_error(exc):
+                raise
+            summary = {
+                "status": "skipped_database_locked",
+                "error": str(exc),
+                "evidence_results": [],
+                "alert_results": [],
+            }
+            log.warning(
+                "Phase 4 live iteration skipped because SQLite was locked; "
+                "the next polling pass will retry."
+            )
         summary["iteration"] = iteration
         summaries.append(summary)
         log.info(f"Phase 4 live summary: {json.dumps(summary, sort_keys=True, default=str)}")

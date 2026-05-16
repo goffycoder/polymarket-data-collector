@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable}
+\usepackage{enumitem}
+\begin{document}
+
+\section*{Phase 12 CLOB V2 Compatibility Audit}
+
+\textbf{Date:} May 15, 2026\\
+\textbf{Audit scope:} Current repo compatibility with Polymarket CLOB V2 for public data collection, wallet refresh, replay inputs, and paper-trading assumptions.
+
+\section*{Conclusion}
+Polymarket CLOB V2 is live as of April 28, 2026. The current repo is \textbf{compatible for public data collection} because it uses the production CLOB URL, Data API trades endpoint, and market WebSocket subscription shape that remain valid under CLOB V2. The repo does \textbf{not} currently implement order placement, raw order signing, builder attribution, pUSD collateral handling, or live trading lifecycle management, so it should not claim V2 trading support.
+
+\section*{Evidence}
+\begin{longtable}{p{0.26\linewidth}p{0.60\linewidth}}
+\textbf{Check} & \textbf{Result} \\
+CLOB production URL & \texttt{https://clob.polymarket.com/time} returned a valid server-time integer. \\
+Order book endpoint & \texttt{https://clob.polymarket.com/book?token\_id=...} returned a book with \texttt{market}, \texttt{asset\_id}, \texttt{bids}, \texttt{asks}, \texttt{tick\_size}, and \texttt{last\_trade\_price}. \\
+Data API trades & \texttt{https://data-api.polymarket.com/trades?market=...} returned list-shaped trades with \texttt{proxyWallet} and \texttt{transactionHash}, matching the wallet refresh path. \\
+Fee-rate endpoint & \texttt{https://clob.polymarket.com/fee-rate?token\_id=...} returned a fee-rate payload. This should be used for future economic accuracy instead of relying only on static simulator assumptions. \\
+Market WebSocket & Current subscription shape remains \texttt{\{type: market, assets\_ids: [...], custom\_feature\_enabled: true\}}. \\
+\end{longtable}
+
+\textbf{Machine-readable report:} \texttt{reports/phase12/clob\_v2\_smoke.json}\\
+\textbf{Checker:} \texttt{run\_clob\_v2\_smoke.py}\\
+\textbf{Fee-rate report:} \texttt{reports/phase12/clob\_v2\_fee\_refresh.json}\\
+\textbf{Fee-rate refresher:} \texttt{run\_clob\_v2\_fee\_refresh.py}
+
+\section*{Repo Impact}
+\begin{itemize}[nosep]
+\item \texttt{config/settings.py} already points \texttt{CLOB\_API\_URL} to \texttt{https://clob.polymarket.com}.
+\item \texttt{collectors/price\_collector.py} uses the same production CLOB host.
+\item \texttt{collectors/trades\_collector.py} and \texttt{run\_wallet\_trade\_refresh.py} use Data API trades, not V1 order signing.
+\item \texttt{collectors/ws\_listener.py} uses the unchanged market WebSocket URL and subscription shape.
+\item \texttt{market\_fee\_rates} now stores CLOB V2 fee-rate endpoint responses for active market tokens.
+\item No active dependency on \texttt{py-clob-client} or \texttt{py-clob-client-v2} was found in the repo; that is acceptable for collection-only runtime, but it means trading support is not implemented.
+\end{itemize}
+
+\section*{Next Engineering Step}
+The next useful CLOB V2 task is \textbf{fee interpretation and reporting}. Phase 5 simulation currently has a static fee assumption, while CLOB V2 fee handling is dynamic. The repo now records live token-level fee-rate payloads, but paper-trading PnL should not consume \texttt{base\_fee} numerically until its exact unit semantics are pinned to official docs and tested against observed fills.
+
+\section*{Claim Boundary}
+Safe claim: the project is CLOB V2-compatible for public market-data collection and wallet-aware trade ingestion as of the latest smoke run.\\
+Unsafe claim: the project is CLOB V2-compatible for live order placement, settlement, collateral wrapping, or builder-attributed trading.
+
+\end{document}

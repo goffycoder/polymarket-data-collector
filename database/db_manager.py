@@ -240,12 +240,13 @@ class PostgresConnectionWrapper:
 def _sqlite_get_conn() -> sqlite3.Connection:
     """Return a SQLite connection with the local performance pragmas applied."""
 
-    conn = sqlite3.connect(DB_PATH, check_same_thread=False)
+    conn = sqlite3.connect(DB_PATH, timeout=30.0, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=OFF")
     conn.execute("PRAGMA synchronous=NORMAL")
     conn.execute("PRAGMA cache_size=-32000")
+    conn.execute("PRAGMA busy_timeout=30000")
     return conn
 
 

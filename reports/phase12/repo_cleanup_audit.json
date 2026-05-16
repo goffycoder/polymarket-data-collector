@@ -1,0 +1,111 @@
+{
+  "checked_at": "2026-05-15T22:46:30+00:00",
+  "summary": {
+    "status": "cleanup_started",
+    "deleted_generated_noise": true,
+    "large_state_not_deleted": true,
+    "clob_v2_public_data_compatibility": "implemented",
+    "clob_v2_trading_compatibility": "out_of_scope",
+    "ssd_archive_roots": "implemented",
+    "ssd_mount_visible_to_shell": true,
+    "ssd_replay_smoke": "passed"
+  },
+  "observed_sizes": {
+    "database": "27G",
+    "data": "239M",
+    "logs": "45M",
+    "reports": "2.0M",
+    "Documentation": "2.9M",
+    "Old-content": "84K",
+    "venv": "268M"
+  },
+  "deleted_now": [
+    "repo-level .DS_Store files outside .git and venv",
+    "repo-level __pycache__ directories outside venv"
+  ],
+  "keep_for_now": [
+    {
+      "path": "database/polymarket_state.db",
+      "reason": "Large but contains current local operational state, wallet materialization, and CLOB V2 fee snapshots."
+    },
+    {
+      "path": "data/replay_runs",
+      "reason": "Replay evidence until SSD-backed replay paths are fully verified."
+    },
+    {
+      "path": "reports/",
+      "reason": "Project proof artifacts and phase evidence."
+    },
+    {
+      "path": "logs/",
+      "reason": "Safe to prune later, but latest runtime diagnostics may still be useful."
+    }
+  ],
+  "safe_next_deletions_after_confirmation": [
+    "logs/collector.log.* rotated logs",
+    "logs/launchd_stderr.log after saving tail",
+    "Old-content/ if no historical archive is needed"
+  ],
+  "clob_v2_work_completed": [
+    "run_clob_v2_smoke.py",
+    "reports/phase12/clob_v2_smoke.json",
+    "market_fee_rates schema table",
+    "run_clob_v2_fee_refresh.py",
+    "reports/phase12/clob_v2_fee_refresh.json",
+    "Documentation/phases/phase12_clob_v2_compatibility_audit.tex"
+  ],
+  "ssd_replay_work_completed": [
+    "POLYMARKET_RAW_ARCHIVE_ROOT setting",
+    "POLYMARKET_DETECTOR_INPUT_ROOT setting",
+    "POLYMARKET_ARCHIVE_ROOT_READONLY setting",
+    "utils/event_log.py configured archive roots",
+    "phase7/storage.py absolute manifest path resolver",
+    "phase7/runtime_storage.py archive-root status reporting",
+    "reports/phase12/runtime_storage_status_ssd_ready.json",
+    "reports/phase12/runtime_storage_status_external_roots_smoke.json",
+    "reports/phase12/storage_audit_ssd_ready.json",
+    "reports/phase12/storage_audit_t7_archive.json",
+    "reports/phase12/runtime_storage_status_t7_after_audit.json",
+    "reports/phase12/runtime_replay_t7_smoke.json",
+    "reports/phase12/runtime_replay_t7_30min_bounded.json"
+  ],
+  "latest_replay_proof": {
+    "report": "reports/phase12/runtime_replay_t7_30min_bounded.json",
+    "window": {
+      "start": "2026-05-14T01:00:00+00:00",
+      "end": "2026-05-14T01:30:00+00:00"
+    },
+    "source_systems": [
+      "clob_ws_market",
+      "clob_books"
+    ],
+    "processed_envelopes": 2000,
+    "processed_snapshots": 3792,
+    "processed_trades": 3,
+    "missing_restore_items": 0
+  },
+  "mount_check": {
+    "checked_paths": [
+      "/Volumes",
+      "df -h",
+      "mount"
+    ],
+    "visible_external_volumes": [
+      "/Volumes/T7 Shield"
+    ],
+    "configured_archive_roots": {
+      "raw": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/raw",
+      "detector_input": "/Volumes/T7 Shield/polymarket_phase11_data_archive_2026-05-15/data/detector_input",
+      "readonly": true
+    },
+    "notes": "T7 archive is visible and .env.runtime points to its read-only raw and detector-input roots."
+  },
+  "next_actions": [
+    "Refresh CLOB V2 smoke before organic runtime.",
+    "Use market_fee_rates as fee assumption disclosure evidence.",
+    "Do not claim live order-placement compatibility without V2 SDK/signing implementation.",
+    "Investigate remaining missing manifest partitions or accept the documented partial archive boundary.",
+    "Run a longer replay window from the T7 archive after choosing a target source/window.",
+    "Move or compact the 27G SQLite database only after backup/SSD path is verified."
+  ]
+}
