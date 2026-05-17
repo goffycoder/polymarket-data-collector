@@ -9,11 +9,20 @@ from phase4.alerts import NoopDeliveryChannel, Phase4AlertWorker
 
 
 class FakePhase4Repository:
-    def __init__(self, candidates: list[dict[str, Any]]):
+    def __init__(self, candidates: list[dict[str, Any]], *, existing_delivery_attempts: int = 0):
         self.candidates = candidates
         self.alerts_by_candidate: dict[str, dict[str, Any]] = {}
         self.alerts_by_id: dict[str, dict[str, Any]] = {}
-        self.delivery_attempts: list[dict[str, Any]] = []
+        self.delivery_attempts: list[dict[str, Any]] = [
+            {
+                "delivery_attempt_id": f"existing-delivery-{index}",
+                "alert_id": f"existing-alert-{index}",
+                "delivery_channel": "telegram",
+                "attempt_number": 1,
+                "delivery_status": "sent",
+            }
+            for index in range(1, existing_delivery_attempts + 1)
+        ]
         self._next_alert = 0
 
     def pending_candidates(
@@ -41,6 +50,24 @@ class FakePhase4Repository:
 
     def delivery_attempt_count(self, alert_id: str) -> int:
         return sum(1 for attempt in self.delivery_attempts if attempt["alert_id"] == alert_id)
+
+    def delivery_attempt_count_since(
+        self,
+        *,
+        since_time: str,
+        delivery_channel: str | None = None,
+        delivery_status: str | None = None,
+    ) -> int:
+        attempts = self.delivery_attempts
+        if delivery_channel:
+            attempts = [
+                attempt for attempt in attempts if attempt["delivery_channel"] == delivery_channel
+            ]
+        if delivery_status:
+            attempts = [
+                attempt for attempt in attempts if attempt["delivery_status"] == delivery_status
+            ]
+        return len(attempts)
 
     def recent_alert_for_suppression(self, *, suppression_key: str, since_time: str) -> dict[str, Any] | None:
         for alert in reversed(list(self.alerts_by_id.values())):
@@ -131,8 +158,16 @@ def _candidate(index: int, *, event_id: str, score: float = 100.0) -> dict[str, 
     }
 
 
-def _run_case(name: str, candidates: list[dict[str, Any]]) -> dict[str, Any]:
-    repository = FakePhase4Repository(candidates)
+def _run_case(
+    name: str,
+    candidates: list[dict[str, Any]],
+    *,
+    existing_delivery_attempts: int = 0,
+) -> dict[str, Any]:
+    repository = FakePhase4Repository(
+        candidates,
+        existing_delivery_attempts=existing_delivery_attempts,
+    )
     worker = Phase4AlertWorker(
         repository=repository,  # type: ignore[arg-type]
         channels=[NoopDeliveryChannel("telegram")],
@@ -142,7 +177,8 @@ def _run_case(name: str, candidates: list[dict[str, Any]]) -> dict[str, Any]:
         "name": name,
         "results": results,
         "summary": worker.summary.to_dict(),
-        "delivery_attempts": len(repository.delivery_attempts),
+        "new_delivery_attempts": len(repository.delivery_attempts) - existing_delivery_attempts,
+        "total_delivery_attempts": len(repository.delivery_attempts),
         "alert_statuses": [alert["alert_status"] for alert in repository.alerts_by_id.values()],
     }
 
@@ -156,11 +192,20 @@ def main() -> int:
         "delivery_budget",
         [_candidate(index, event_id=f"event-{index}") for index in range(1, 5)],
     )
+    hourly_budget = _run_case(
+        "hourly_delivery_budget",
+        [_candidate(index, event_id=f"hourly-{index}") for index in range(1, 3)],
+        existing_delivery_attempts=6,
+    )
     payload = {
         "status": "passed"
-        if same_event["delivery_attempts"] == 1 and delivery_budget["delivery_attempts"] == 3
+        if (
+            same_event["new_delivery_attempts"] == 1
+            and delivery_budget["new_delivery_attempts"] == 1
+            and hourly_budget["new_delivery_attempts"] == 0
+        )
         else "failed",
-        "cases": [same_event, delivery_budget],
+        "cases": [same_event, delivery_budget, hourly_budget],
     }
     output = Path("reports/phase12/alert_normalization_smoke.json")
     output.parent.mkdir(parents=True, exist_ok=True)

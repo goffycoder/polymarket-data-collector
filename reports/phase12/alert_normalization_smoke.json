@@ -7,8 +7,8 @@
         "suppressed",
         "suppressed"
       ],
-      "delivery_attempts": 1,
       "name": "same_event_suppression",
+      "new_delivery_attempts": 1,
       "results": [
         {
           "alert_id": "fake-alert-1",
@@ -47,17 +47,18 @@
         "alerts_updated": 0,
         "candidates_seen": 4,
         "delivery_attempts_written": 1
-      }
+      },
+      "total_delivery_attempts": 1
     },
     {
       "alert_statuses": [
         "created",
-        "created",
-        "created",
+        "created_silent",
+        "created_silent",
         "created_silent"
       ],
-      "delivery_attempts": 3,
       "name": "delivery_budget",
+      "new_delivery_attempts": 1,
       "results": [
         {
           "alert_id": "fake-alert-1",
@@ -70,35 +71,67 @@
         {
           "alert_id": "fake-alert-2",
           "candidate_id": "candidate-2",
-          "delivery_channels": [
-            "telegram"
-          ],
-          "severity": "ACTIONABLE"
+          "delivery_block_reason": "delivery_budget_exhausted:1",
+          "severity": "ACTIONABLE",
+          "status": "created_silent"
         },
         {
           "alert_id": "fake-alert-3",
           "candidate_id": "candidate-3",
-          "delivery_channels": [
-            "telegram"
-          ],
-          "severity": "ACTIONABLE"
+          "delivery_block_reason": "delivery_budget_exhausted:1",
+          "severity": "ACTIONABLE",
+          "status": "created_silent"
         },
         {
           "alert_id": "fake-alert-4",
           "candidate_id": "candidate-4",
-          "delivery_block_reason": "delivery_budget_exhausted:3",
+          "delivery_block_reason": "delivery_budget_exhausted:1",
           "severity": "ACTIONABLE",
           "status": "created_silent"
         }
       ],
       "summary": {
         "alerts_created": 4,
-        "alerts_delivery_suppressed": 1,
+        "alerts_delivery_suppressed": 3,
         "alerts_suppressed": 0,
         "alerts_updated": 0,
         "candidates_seen": 4,
-        "delivery_attempts_written": 3
-      }
+        "delivery_attempts_written": 1
+      },
+      "total_delivery_attempts": 1
+    },
+    {
+      "alert_statuses": [
+        "created_silent",
+        "created_silent"
+      ],
+      "name": "hourly_delivery_budget",
+      "new_delivery_attempts": 0,
+      "results": [
+        {
+          "alert_id": "fake-alert-1",
+          "candidate_id": "candidate-1",
+          "delivery_block_reason": "hourly_delivery_budget_exhausted:6",
+          "severity": "ACTIONABLE",
+          "status": "created_silent"
+        },
+        {
+          "alert_id": "fake-alert-2",
+          "candidate_id": "candidate-2",
+          "delivery_block_reason": "hourly_delivery_budget_exhausted:6",
+          "severity": "ACTIONABLE",
+          "status": "created_silent"
+        }
+      ],
+      "summary": {
+        "alerts_created": 2,
+        "alerts_delivery_suppressed": 2,
+        "alerts_suppressed": 0,
+        "alerts_updated": 0,
+        "candidates_seen": 2,
+        "delivery_attempts_written": 0
+      },
+      "total_delivery_attempts": 6
     }
   ],
   "status": "passed"

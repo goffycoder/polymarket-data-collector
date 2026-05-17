@@ -772,6 +772,32 @@ class Phase4Repository:
             conn.close()
         return int((row[0] if row else 0) or 0)
 
+    def delivery_attempt_count_since(
+        self,
+        *,
+        since_time: str,
+        delivery_channel: str | None = None,
+        delivery_status: str | None = None,
+    ) -> int:
+        conditions = ["attempted_at >= ?"]
+        params: list[Any] = [since_time]
+        if delivery_channel:
+            conditions.append("delivery_channel = ?")
+            params.append(delivery_channel)
+        if delivery_status:
+            conditions.append("delivery_status = ?")
+            params.append(delivery_status)
+        where_clause = " AND ".join(conditions)
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                f"SELECT COUNT(*) FROM alert_delivery_attempts WHERE {where_clause}",
+                tuple(params),
+            ).fetchone()
+        finally:
+            conn.close()
+        return int((row[0] if row else 0) or 0)
+
     def recent_alert_for_suppression(
         self,
         *,

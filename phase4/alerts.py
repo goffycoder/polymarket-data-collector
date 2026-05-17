@@ -16,6 +16,7 @@ from config.settings import (
     PHASE4_ALERT_CHANNELS,
     PHASE4_ALERT_DELIVERY_MIN_SEVERITY,
     PHASE4_ALERT_EVENT_SUPPRESSION_SECONDS,
+    PHASE4_ALERT_MAX_DELIVERIES_PER_HOUR,
     PHASE4_ALERT_MAX_DELIVERIES_PER_PASS,
     PHASE4_ALERT_INFO_THRESHOLD,
     PHASE4_ALERT_SUPPRESSION_SECONDS,
@@ -558,4 +559,12 @@ class Phase4AlertWorker:
             return f"below_delivery_min_severity:{PHASE4_ALERT_DELIVERY_MIN_SEVERITY}"
         if PHASE4_ALERT_MAX_DELIVERIES_PER_PASS > 0 and self._deliveries_this_pass >= PHASE4_ALERT_MAX_DELIVERIES_PER_PASS:
             return f"delivery_budget_exhausted:{PHASE4_ALERT_MAX_DELIVERIES_PER_PASS}"
+        if PHASE4_ALERT_MAX_DELIVERIES_PER_HOUR > 0:
+            hourly_sent = self.repository.delivery_attempt_count_since(
+                since_time=_iso(datetime.now(timezone.utc) - timedelta(hours=1)),
+                delivery_channel="telegram",
+                delivery_status="sent",
+            )
+            if hourly_sent >= PHASE4_ALERT_MAX_DELIVERIES_PER_HOUR:
+                return f"hourly_delivery_budget_exhausted:{PHASE4_ALERT_MAX_DELIVERIES_PER_HOUR}"
         return None

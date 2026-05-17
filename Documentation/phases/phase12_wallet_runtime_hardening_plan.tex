@@ -48,7 +48,7 @@ Shadow ML scale & LightGBM exists, is registered as active shadow model, and bea
 Long organic proof & A 60-minute organic run passed after lock hardening, and a 3-minute post-reconciliation smoke passed. & After alert-link and archive reconciliation fixes, run a 3--6 hour organic proof with fresh raw/detector/candidate/evidence/alert deltas and clean shutdown. \\
 Provider/API backpressure & Runtime survives provider timeouts and WebSocket reconnects, and the latest connectivity gate passed for Gamma events, Gamma markets, CLOB time/book, and Data API trades. A 5-minute provider-healthy smoke produced fresh raw/detector/trade/candidate/evidence/alert deltas. & Keep configurable backoff/concurrency and re-run the connectivity gate before longer 24/7-style proofs. \\
 Live alert freshness & Telegram delivery works, but earlier smokes showed startup could flush old candidates and make them look like current alerts. & Live mode now uses \texttt{POLYMARKET\_PHASE4\_RUNTIME\_MAX\_CANDIDATE\_AGE\_MINUTES}; keep it at 120 minutes for 24/7 use and set it to 0 only for deliberate backlog/replay drains. \\
-Alert normalization & A 5-minute provider-healthy smoke created 10 alerts and 18 delivery attempts, proving the pipeline but exposing a Telegram noise risk. & Event-level cooldown, minimum delivery severity, and per-pass delivery budget are implemented and covered by \texttt{reports/phase12/alert\_normalization\_smoke.json}. Tune values after a 30--60 minute live run. \\
+Alert normalization & A 5-minute provider-healthy smoke created 10 alerts and 18 delivery attempts, proving the pipeline but exposing a Telegram noise risk. An attempted 30-minute run was stopped early after 7 Telegram sends showed that the original per-pass cap was still too noisy. & Event-level cooldown, minimum delivery severity, per-pass delivery budget, and hourly delivery budget are implemented and covered by \texttt{reports/phase12/alert\_normalization\_smoke.json}. Defaults are now \texttt{max\_deliveries\_per\_pass=1} and \texttt{max\_deliveries\_per\_hour=6}; \texttt{organic\_runtime\_smoke\_alert\_hourly\_budget\_3min.json} proves zero delivery attempts while the hourly budget was full. \\
 \end{longtable}
 
 \section*{Final Finish Plan}
@@ -394,7 +394,7 @@ CLOB V2 changes fee handling and order signing. The current repo should:
 \section*{Recommended Execution Order}
 \begin{longtable}{p{0.10\linewidth}p{0.30\linewidth}p{0.48\linewidth}}
 \textbf{Step} & \textbf{Work} & \textbf{Reason} \\
-1 & Alert-normalized 30--60 minute runtime proof & Provider connectivity and a 5-minute provider-healthy smoke now pass; the next risk is Telegram noise/quality under longer organic runtime. \\
+1 & Alert-normalized 30--60 minute runtime proof & Provider connectivity and a 5-minute provider-healthy smoke now pass; re-run after the current hourly budget cools down with the stricter one-per-pass and six-per-hour Telegram budget. \\
 2 & Phase 6 shadow-live decision & Decide whether to enable LightGBM as shadow-only during the next proof, without using it to create alerts. \\
 3 & Wallet profile/position refresh decision & Completes or explicitly disables the remaining wallet-plane tables. \\
 4 & Evidence benchmark dataset + runner & Makes public-silence claims measurable. \\
@@ -403,7 +403,7 @@ CLOB V2 changes fee handling and order signing. The current repo should:
 \end{longtable}
 
 \section*{Next Implementation Slice}
-Start with an alert-normalized 30--60 minute runtime proof. Provider connectivity now passes and the 5-minute provider-healthy smoke proved fresh collection through Phase 4, but it also showed why Telegram delivery needs cooldown and budget controls before a longer run.
+Start with an alert-normalized 30--60 minute runtime proof. Provider connectivity now passes and the 5-minute provider-healthy smoke proved fresh collection through Phase 4. The first longer attempt was intentionally stopped because the initial budget was still noisy; the next run should use \texttt{POLYMARKET\_PHASE4\_ALERT\_MAX\_DELIVERIES\_PER\_PASS=1} and \texttt{POLYMARKET\_PHASE4\_ALERT\_MAX\_DELIVERIES\_PER\_HOUR=6}.
 
 \textbf{Files to touch first:}
 \begin{itemize}[nosep]

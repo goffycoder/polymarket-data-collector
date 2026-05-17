@@ -2,69 +2,69 @@
   "check_count": 5,
   "checks": [
     {
-      "finished_at": "2026-05-17T01:48:49.731071+00:00",
+      "finished_at": "2026-05-17T02:28:44.423669+00:00",
       "http_status": 200,
       "method": "GET",
       "name": "gamma_events",
       "ok": true,
       "response_preview": "[{\"id\":\"16167\",\"ticker\":\"microstrategy-sell-any-bitcoin-in-2025\",\"slug\":\"microstrategy-sell-any-bitcoin-in-2025\",\"title\":\"MicroStrategy sells any Bitcoin by ___ ?\",\"description\":\"This market will resolve to \\\"Yes\\\" if MicroStrategy sells any of its Bitcoin by December 31, 2025, 11:59 PM ET. Otherwis",
       "response_shape": "list",
-      "started_at": "2026-05-17T01:48:49.616666+00:00",
+      "started_at": "2026-05-17T02:28:44.347632+00:00",
       "url": "https://gamma-api.polymarket.com/events?active=true&closed=false&limit=1"
     },
     {
-      "finished_at": "2026-05-17T01:48:49.784823+00:00",
+      "finished_at": "2026-05-17T02:28:44.469529+00:00",
       "http_status": 200,
       "method": "GET",
       "name": "gamma_markets",
       "ok": true,
-      "response_preview": "[{\"id\":\"540817\",\"question\":\"New Rihanna Album before GTA VI?\",\"conditionId\":\"0x1fad72fae204143ff1c3035e99e7c0f65ea8d5cd9bd1070987bd1a3316f772be\",\"slug\":\"new-rhianna-album-before-gta-vi-926\",\"resolutionSource\":\"\",\"endDate\":\"2026-07-31T12:00:00Z\",\"liquidity\":\"10030.6495\",\"startDate\":\"2025-05-02T15:48:",
+      "response_preview": "[{\"id\":\"540817\",\"question\":\"New Rihanna Album before GTA VI?\",\"conditionId\":\"0x1fad72fae204143ff1c3035e99e7c0f65ea8d5cd9bd1070987bd1a3316f772be\",\"slug\":\"new-rhianna-album-before-gta-vi-926\",\"resolutionSource\":\"\",\"endDate\":\"2026-07-31T12:00:00Z\",\"liquidity\":\"9792.4858\",\"startDate\":\"2025-05-02T15:48:1",
       "response_shape": "list",
-      "started_at": "2026-05-17T01:48:49.731122+00:00",
+      "started_at": "2026-05-17T02:28:44.423711+00:00",
       "url": "https://gamma-api.polymarket.com/markets?active=true&closed=false&limit=1"
     },
     {
-      "finished_at": "2026-05-17T01:48:49.913593+00:00",
+      "finished_at": "2026-05-17T02:28:44.746673+00:00",
       "http_status": 200,
       "method": "GET",
       "name": "clob_time",
       "ok": true,
-      "response_preview": "1778982529",
+      "response_preview": "1778984924",
       "response_shape": "int",
-      "started_at": "2026-05-17T01:48:49.784851+00:00",
+      "started_at": "2026-05-17T02:28:44.469558+00:00",
       "url": "https://clob.polymarket.com/time"
     },
     {
-      "finished_at": "2026-05-17T01:48:50.210046+00:00",
+      "finished_at": "2026-05-17T02:28:44.962887+00:00",
       "http_status": 200,
       "method": "GET",
       "name": "data_api_trades",
       "ok": true,
-      "response_preview": "[{\"proxyWallet\":\"0x613b668ef24d3a37417cb5756c5943cae761da44\",\"side\":\"SELL\",\"asset\":\"53782419122673047891660241423664156467281482130640719603420691754159071318120\",\"conditionId\":\"0xf23716a3fdb338cdc046144994d9b451cc8d7a7a7d1d3296e4252499a2edc1f7\",\"size\":11.2,\"price\":0.026,\"timestamp\":1778875327,\"titl",
+      "response_preview": "[{\"proxyWallet\":\"0xfd557e6db670c9704bc1d0d8e8b585c7d9c9f905\",\"side\":\"BUY\",\"asset\":\"64633878657285576959137539510148623306180117167578279928823970791829387927888\",\"conditionId\":\"0xd0fa27da024261ba5edb5e9eda33651a224fb5a2137d3c9e73b216109b12dd79\",\"size\":15,\"price\":0.83,\"timestamp\":1778673426,\"title\":\"",
       "response_shape": "list",
-      "started_at": "2026-05-17T01:48:49.913626+00:00",
-      "url": "https://data-api.polymarket.com/trades?market=0xf23716a3fdb338cdc046144994d9b451cc8d7a7a7d1d3296e4252499a2edc1f7&limit=1"
+      "started_at": "2026-05-17T02:28:44.746830+00:00",
+      "url": "https://data-api.polymarket.com/trades?market=0xd0fa27da024261ba5edb5e9eda33651a224fb5a2137d3c9e73b216109b12dd79&limit=1"
     },
     {
-      "finished_at": "2026-05-17T01:48:50.346394+00:00",
+      "finished_at": "2026-05-17T02:28:45.273418+00:00",
       "http_status": 200,
       "method": "GET",
       "name": "clob_book",
       "ok": true,
-      "response_preview": "{\"market\":\"0xf23716a3fdb338cdc046144994d9b451cc8d7a7a7d1d3296e4252499a2edc1f7\",\"asset_id\":\"53782419122673047891660241423664156467281482130640719603420691754159071318120\",\"timestamp\":\"1778982528245\",\"hash\":\"90ba9c5ba268a113adffb10813e1845a2deed476\",\"bids\":[{\"price\":\"0.001\",\"size\":\"1467\"},{\"price\":\"0.",
+      "response_preview": "{\"market\":\"0xd0fa27da024261ba5edb5e9eda33651a224fb5a2137d3c9e73b216109b12dd79\",\"asset_id\":\"31752155862447409149067389255977203243895111018202743434902043543164266789354\",\"timestamp\":\"1778984802444\",\"hash\":\"8162ea9dc42dd8bac517ef2719d0cc7f467d219b\",\"bids\":[{\"price\":\"0.01\",\"size\":\"100\"},{\"price\":\"0.02",
       "response_shape": "dict",
-      "started_at": "2026-05-17T01:48:50.210109+00:00",
-      "url": "https://clob.polymarket.com/book?token_id=53782419122673047891660241423664156467281482130640719603420691754159071318120"
+      "started_at": "2026-05-17T02:28:44.962933+00:00",
+      "url": "https://clob.polymarket.com/book?token_id=31752155862447409149067389255977203243895111018202743434902043543164266789354"
     }
   ],
   "env_file": "/Users/vrajpatel/All-projects/polymarket_arbitrage/.env.runtime",
   "failed_required_checks": [],
-  "generated_at": "2026-05-17T01:48:50.346465+00:00",
+  "generated_at": "2026-05-17T02:28:45.273508+00:00",
   "next_action": "Provider connectivity is good enough for a fresh live collection smoke.",
   "ok_count": 5,
   "sample_market": {
-    "condition_id": "0xf23716a3fdb338cdc046144994d9b451cc8d7a7a7d1d3296e4252499a2edc1f7",
-    "token_id": "53782419122673047891660241423664156467281482130640719603420691754159071318120"
+    "condition_id": "0xd0fa27da024261ba5edb5e9eda33651a224fb5a2137d3c9e73b216109b12dd79",
+    "token_id": "31752155862447409149067389255977203243895111018202743434902043543164266789354"
   },
   "status": "healthy"
 }

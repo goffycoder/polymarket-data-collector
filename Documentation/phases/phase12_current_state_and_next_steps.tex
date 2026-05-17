@@ -37,7 +37,9 @@ Runtime preflight & \texttt{run\_runtime.py --env-file .env.runtime --check-only
 Provider connectivity gate & \texttt{reports/phase12/provider\_connectivity.json} passed after backpressure tuning: Gamma events, Gamma markets, CLOB time/book, and Data API trades were reachable from the runtime network. \\
 5-minute provider-healthy runtime smoke & \texttt{reports/phase12/organic\_runtime\_smoke\_provider\_healthy\_5min.json} passed: controlled shutdown, runtime exit code 0, raw archive +871{,}280{,}099 bytes, detector input +58{,}226{,}280 bytes, 3{,}110 trades, 171 signal candidates, 10 alerts, and 18 delivery-attempt rows. This proves fresh provider ingestion can reach Phase 3/4, but it also exposed a Telegram noise risk. \\
 Live alert freshness guard & Phase 4 live mode now ignores candidates older than \texttt{POLYMARKET\_PHASE4\_RUNTIME\_MAX\_CANDIDATE\_AGE\_MINUTES}; the current runtime plan prints \texttt{max\_candidate\_age\_minutes=120}. This prevents startup from treating old backlog candidates as fresh 24/7 alerts. \\
-Alert normalization smoke & \texttt{reports/phase12/alert\_normalization\_smoke.json} passed: same-event bursts deliver once and suppress follow-on alerts, while cross-event bursts are capped by \texttt{POLYMARKET\_PHASE4\_ALERT\_MAX\_DELIVERIES\_PER\_PASS}. \\
+Alert normalization smoke & \texttt{reports/phase12/alert\_normalization\_smoke.json} passed: same-event bursts deliver once and suppress follow-on alerts, cross-event bursts are capped by \texttt{POLYMARKET\_PHASE4\_ALERT\_MAX\_DELIVERIES\_PER\_PASS=1}, and a full hourly budget blocks delivery while retaining silent DB rows. \\
+Aborted alert-normalized runtime proof & A 30-minute smoke was started after provider connectivity passed, but was stopped early because 7 Telegram sends in the first live window showed that the original \texttt{max\_deliveries\_per\_pass=3} was still too noisy. Runtime processes were stopped; the next run should use the stricter defaults \texttt{max\_deliveries\_per\_pass=1} and \texttt{max\_deliveries\_per\_hour=6}. \\
+3-minute hourly-budget smoke & \texttt{reports/phase12/organic\_runtime\_smoke\_alert\_hourly\_budget\_3min.json} passed with controlled shutdown, fresh raw/detector/trade/candidate deltas, 13 signal candidates, 30 evidence snapshots, and \texttt{alert\_delivery\_attempts} delta 0. This proves the hourly delivery cap can prevent further Telegram sends after a burst while collection and detection continue. \\
 \end{longtable}
 
 \section*{What Is Still Left}
@@ -48,7 +50,7 @@ Alert normalization smoke & \texttt{reports/phase12/alert\_normalization\_smoke.
 \item Re-run \texttt{run\_phase12\_archive\_reconciliation.py} after the SSD is visible to the shell, or pass \texttt{--external-root /absolute/path/to/archive}; the current report is honestly blocked at \texttt{external\_archive\_not\_visible}.
 \item Add evidence retrieval benchmarking with a small labeled case file.
 \item Keep provider backpressure/error telemetry because earlier live smokes showed repeated Gamma/Data API/CLOB/WS failures.
-\item Tune alert normalization after the next live proof: cooldowns now exist, but the right production values need a 30--60 minute and then 3--6 hour observation window.
+\item Re-run alert-normalized 30--60 minute live proof after the current hourly budget cools down; the 3-minute budget smoke proved no additional Telegram delivery while the hourly cap was full.
 \item Expand shadow-ML data beyond the 96-row packet when SSD-backed replay is available again.
 \item Run a 3--6 hour organic live window with Telegram enabled and Phase 6 either explicitly disabled or enabled as shadow-only.
 \item Decide whether to keep, archive, or delete \texttt{Old-content/}; it is not a blocker.
@@ -64,11 +66,11 @@ Day 4 & Expand shadow-ML replay dataset from SSD, refresh final docs, and prepar
 \end{longtable}
 
 \section*{Recommended Immediate Next Implementation}
-Because no SSD is attached now, the immediate next step is not archive replay or ML. Provider connectivity and a 5-minute fresh live proof have passed; next, run a longer live window with alert normalization enabled and measure Telegram volume.
+Because no SSD is attached now, the immediate next step is not archive replay or ML. Provider connectivity and a 5-minute fresh live proof have passed; next, re-run a longer live window with the stricter alert budget and measure Telegram volume.
 \begin{enumerate}[nosep]
 \item Keep \texttt{POLYMARKET\_ENABLE\_PHASE4\_TELEGRAM=true} in \texttt{.env.runtime}; keep the token/chat id only in \texttt{.env.runtime.secrets}.
 \item Keep \texttt{POLYMARKET\_PHASE4\_RUNTIME\_MAX\_CANDIDATE\_AGE\_MINUTES=120} unless deliberately replaying or draining backlog.
-\item Keep \texttt{POLYMARKET\_PHASE4\_ALERT\_DELIVERY\_MIN\_SEVERITY=ACTIONABLE} and \texttt{POLYMARKET\_PHASE4\_ALERT\_MAX\_DELIVERIES\_PER\_PASS=3} for the next live run.
+\item Keep \texttt{POLYMARKET\_PHASE4\_ALERT\_DELIVERY\_MIN\_SEVERITY=ACTIONABLE}, \texttt{POLYMARKET\_PHASE4\_ALERT\_MAX\_DELIVERIES\_PER\_PASS=1}, and \texttt{POLYMARKET\_PHASE4\_ALERT\_MAX\_DELIVERIES\_PER\_HOUR=6} for the next live run.
 \item Run a 30--60 minute organic live smoke and confirm fresh raw/detector/trade/candidate/evidence/alert deltas plus acceptable Telegram volume.
 \item Leave \texttt{POLYMARKET\_ENABLE\_PHASE6\_LIVE\_RUNTIME=false} unless we explicitly want shadow scores during the proof.
 \end{enumerate}
