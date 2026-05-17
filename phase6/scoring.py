@@ -67,6 +67,17 @@ def _score_label(score_value: float, thresholds: dict[str, float]) -> str:
     return "INFO"
 
 
+def _optional_value(value: Any) -> Any:
+    if value is None:
+        return None
+    try:
+        if pd.isna(value):
+            return None
+    except (TypeError, ValueError):
+        pass
+    return value
+
+
 def build_shadow_scores(
     frame: pd.DataFrame,
     *,
@@ -107,10 +118,10 @@ def build_shadow_scores(
         score_rows.append(
             {
                 "candidate_id": record["candidate_id"],
-                "alert_id": record.get("alert_id"),
+                "alert_id": _optional_value(record.get("alert_id")),
                 "market_id": record["market_id"],
-                "event_id": record.get("event_id"),
-                "event_family_id": record.get("event_family_id"),
+                "event_id": _optional_value(record.get("event_id")),
+                "event_family_id": _optional_value(record.get("event_family_id")),
                 "decision_timestamp": record["decision_timestamp"],
                 "score_value": score_value,
                 "score_label": _score_label(score_value, thresholds),

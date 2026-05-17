@@ -70,7 +70,10 @@ def main() -> int:
         "window": {"start": args.start, "end": args.end},
         "score_rows": score_rows,
     }
-    artifact_path.write_text(json.dumps(artifact_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    artifact_path.write_text(
+        json.dumps(artifact_payload, allow_nan=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
     summaries = []
     for row in score_rows:

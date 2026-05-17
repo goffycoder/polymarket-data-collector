@@ -40,18 +40,19 @@ Live alert freshness guard & Phase 4 live mode now ignores candidates older than
 Alert normalization smoke & \texttt{reports/phase12/alert\_normalization\_smoke.json} passed: same-event bursts deliver once and suppress follow-on alerts, cross-event bursts are capped by \texttt{POLYMARKET\_PHASE4\_ALERT\_MAX\_DELIVERIES\_PER\_PASS=1}, and a full hourly budget blocks delivery while retaining silent DB rows. \\
 Aborted alert-normalized runtime proof & A 30-minute smoke was started after provider connectivity passed, but was stopped early because 7 Telegram sends in the first live window showed that the original \texttt{max\_deliveries\_per\_pass=3} was still too noisy. Runtime processes were stopped; the next run should use the stricter defaults \texttt{max\_deliveries\_per\_pass=1} and \texttt{max\_deliveries\_per\_hour=6}. \\
 3-minute hourly-budget smoke & \texttt{reports/phase12/organic\_runtime\_smoke\_alert\_hourly\_budget\_3min.json} passed with controlled shutdown, fresh raw/detector/trade/candidate deltas, 13 signal candidates, 30 evidence snapshots, and \texttt{alert\_delivery\_attempts} delta 0. This proves the hourly delivery cap can prevent further Telegram sends after a burst while collection and detection continue. \\
+Phase 6 live shadow scoring & \texttt{reports/phase6/live\_shadow/phase10\_task4\_lightgbm\_v1\_2026-05-17T01-25-47+00-00\_2026-05-17T03-25-47+00-00.json} scored 36 recent live candidates with the active \texttt{phase10\_task4\_lightgbm\_v1} shadow model. The artifact is strict JSON and all scores remained \texttt{INFO}; ML still does not control alerts. \\
 \end{longtable}
 
 \section*{What Is Still Left}
 \begin{enumerate}[nosep]
 \item Keep Telegram secrets in \texttt{.env.runtime.secrets} or shell env only; rotate the bot token after the exposed-token smoke test.
-\item Decide whether to enable Phase 6 live shadow scoring. Current alerts are Phase 3/4 rule-based; LightGBM is registered but not part of the alert decision path.
+\item Decide whether the next 30--60 minute runtime proof should include Phase 6 live shadow scoring. Current alerts are still Phase 3/4 rule-based; LightGBM is now proven on a recent live window but remains non-authoritative.
 \item Populate or honestly disable \texttt{wallet\_profiles} and \texttt{wallet\_positions}; current counts are zero.
 \item Re-run \texttt{run\_phase12\_archive\_reconciliation.py} after the SSD is visible to the shell, or pass \texttt{--external-root /absolute/path/to/archive}; the current report is honestly blocked at \texttt{external\_archive\_not\_visible}.
 \item Add evidence retrieval benchmarking with a small labeled case file.
 \item Keep provider backpressure/error telemetry because earlier live smokes showed repeated Gamma/Data API/CLOB/WS failures.
 \item Re-run alert-normalized 30--60 minute live proof after the current hourly budget cools down; the 3-minute budget smoke proved no additional Telegram delivery while the hourly cap was full.
-\item Expand shadow-ML data beyond the 96-row packet when SSD-backed replay is available again.
+\item Expand shadow-ML training/evaluation data beyond the 96-row packet when SSD-backed replay is available again; the current live shadow proof is scoring-only, not a larger training set.
 \item Run a 3--6 hour organic live window with Telegram enabled and Phase 6 either explicitly disabled or enabled as shadow-only.
 \item Decide whether to keep, archive, or delete \texttt{Old-content/}; it is not a blocker.
 \end{enumerate}

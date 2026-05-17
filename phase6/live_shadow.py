@@ -71,7 +71,10 @@ def run_live_shadow_window(
         "window": {"start": start, "end": end},
         "score_rows": score_rows,
     }
-    artifact_path.write_text(json.dumps(artifact_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    artifact_path.write_text(
+        json.dumps(artifact_payload, allow_nan=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
     for row in score_rows:
         repo.log_shadow_score(
