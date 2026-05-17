@@ -14,6 +14,9 @@ from config.settings import (
     ENABLE_PHASE4_TELEGRAM,
     PHASE4_ALERT_ACTIONABLE_THRESHOLD,
     PHASE4_ALERT_CHANNELS,
+    PHASE4_ALERT_DELIVERY_MIN_SEVERITY,
+    PHASE4_ALERT_EVENT_SUPPRESSION_SECONDS,
+    PHASE4_ALERT_MAX_DELIVERIES_PER_PASS,
     PHASE4_ALERT_INFO_THRESHOLD,
     PHASE4_ALERT_SUPPRESSION_SECONDS,
     PHASE4_ALERT_WATCH_THRESHOLD,
@@ -76,6 +79,21 @@ def should_resend_alert(
     if previous_payload.get("why_it_looks_informed") != new_payload.get("why_it_looks_informed"):
         return True
     return False
+
+
+def is_delivery_eligible(severity: str) -> bool:
+    min_rank = SEVERITY_RANK.get(PHASE4_ALERT_DELIVERY_MIN_SEVERITY, SEVERITY_RANK["ACTIONABLE"])
+    return SEVERITY_RANK.get(str(severity or "").upper(), 0) >= min_rank
+
+
+def _suppression_key(candidate: dict[str, Any]) -> str | None:
+    event_key = candidate.get("event_family_id") or candidate.get("event_id") or candidate.get("event_slug")
+    if event_key:
+        return f"event:{event_key}"
+    market_key = candidate.get("market_id") or candidate.get("market_slug")
+    if market_key:
+        return f"market:{market_key}"
+    return None
 
 
 def _slug_url(slug: Any) -> str | None:
@@ -324,6 +342,7 @@ class AlertWorkerSummary:
     alerts_created: int = 0
     alerts_updated: int = 0
     alerts_suppressed: int = 0
+    alerts_delivery_suppressed: int = 0
     delivery_attempts_written: int = 0
 
     def to_dict(self) -> dict[str, int]:
@@ -332,6 +351,7 @@ class AlertWorkerSummary:
             "alerts_created": self.alerts_created,
             "alerts_updated": self.alerts_updated,
             "alerts_suppressed": self.alerts_suppressed,
+            "alerts_delivery_suppressed": self.alerts_delivery_suppressed,
             "delivery_attempts_written": self.delivery_attempts_written,
         }
 
@@ -346,6 +366,7 @@ class Phase4AlertWorker:
         self.repository = repository
         self.channels = channels or build_default_channels()
         self.summary = AlertWorkerSummary()
+        self._deliveries_this_pass = 0
 
     def process_pending_candidates(
         self,
@@ -359,6 +380,7 @@ class Phase4AlertWorker:
             min_trigger_time=min_trigger_time,
         )
         self.summary.candidates_seen += len(candidates)
+        self._deliveries_this_pass = 0
         outputs: list[dict[str, Any]] = []
 
         for candidate in candidates:
@@ -401,7 +423,8 @@ class Phase4AlertWorker:
             self.summary.alerts_updated += 1
 
             delivery_results: list[dict[str, Any]] = []
-            if resend:
+            delivery_block_reason = self._delivery_block_reason(severity=severity) if resend else None
+            if resend and delivery_block_reason is None:
                 outbound_alert = {"alert_id": existing_alert["alert_id"], **rendered_payload}
                 next_attempt_number = self.repository.delivery_attempt_count(str(existing_alert["alert_id"]))
                 for offset, channel in enumerate(self.channels, start=1):
@@ -418,23 +441,37 @@ class Phase4AlertWorker:
                     )
                     self.summary.delivery_attempts_written += 1
                     delivery_results.append(response)
+                self._deliveries_this_pass += 1
+            elif resend:
+                self.summary.alerts_delivery_suppressed += 1
+                self.repository.update_alert_status(
+                    alert_id=str(existing_alert["alert_id"]),
+                    alert_status=f"{updated_status}_silent",
+                    suppression_state=delivery_block_reason,
+                )
 
             payload = {
                 "candidate_id": candidate["candidate_id"],
                 "alert_id": existing_alert["alert_id"],
-                "status": updated_status,
+                "status": f"{updated_status}_silent" if delivery_block_reason is not None else updated_status,
                 "severity": severity,
-                "resent": resend,
+                "resent": resend and delivery_block_reason is None,
+                "delivery_block_reason": delivery_block_reason,
             }
             log.info(f"Phase 4 alert updated: {payload}")
             return payload
 
-        suppression_key = str(candidate.get("event_family_id") or candidate.get("market_id") or "")
+        suppression_key = _suppression_key(candidate) or ""
         suppressed_by = None
         if suppression_key:
+            suppression_seconds = (
+                PHASE4_ALERT_EVENT_SUPPRESSION_SECONDS
+                if suppression_key.startswith("event:")
+                else PHASE4_ALERT_SUPPRESSION_SECONDS
+            )
             recent_alert = self.repository.recent_alert_for_suppression(
                 suppression_key=suppression_key,
-                since_time=_iso(datetime.now(timezone.utc) - timedelta(seconds=PHASE4_ALERT_SUPPRESSION_SECONDS)),
+                since_time=_iso(datetime.now(timezone.utc) - timedelta(seconds=suppression_seconds)),
             )
             if recent_alert is not None:
                 recent_severity_rank = SEVERITY_RANK.get(str(recent_alert.get("severity") or "").upper(), 0)
@@ -471,6 +508,23 @@ class Phase4AlertWorker:
             return payload
 
         self.summary.alerts_created += 1
+        delivery_block_reason = self._delivery_block_reason(severity=severity)
+        if delivery_block_reason is not None:
+            self.summary.alerts_delivery_suppressed += 1
+            self.repository.update_alert_status(
+                alert_id=alert_id,
+                alert_status="created_silent",
+                suppression_state=delivery_block_reason,
+            )
+            payload = {
+                "candidate_id": candidate["candidate_id"],
+                "alert_id": alert_id,
+                "severity": severity,
+                "status": "created_silent",
+                "delivery_block_reason": delivery_block_reason,
+            }
+            log.info(f"Phase 4 alert created without delivery: {payload}")
+            return payload
 
         delivery_results: list[dict[str, Any]] = []
         outbound_alert = {"alert_id": alert_id, **rendered_payload}
@@ -488,6 +542,7 @@ class Phase4AlertWorker:
             )
             self.summary.delivery_attempts_written += 1
             delivery_results.append(response)
+        self._deliveries_this_pass += 1
 
         payload = {
             "candidate_id": candidate["candidate_id"],
@@ -497,3 +552,10 @@ class Phase4AlertWorker:
         }
         log.info(f"Phase 4 alert created: {payload}")
         return payload
+
+    def _delivery_block_reason(self, *, severity: str) -> str | None:
+        if not is_delivery_eligible(severity):
+            return f"below_delivery_min_severity:{PHASE4_ALERT_DELIVERY_MIN_SEVERITY}"
+        if PHASE4_ALERT_MAX_DELIVERIES_PER_PASS > 0 and self._deliveries_this_pass >= PHASE4_ALERT_MAX_DELIVERIES_PER_PASS:
+            return f"delivery_budget_exhausted:{PHASE4_ALERT_MAX_DELIVERIES_PER_PASS}"
+        return None

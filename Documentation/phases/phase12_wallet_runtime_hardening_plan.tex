@@ -46,8 +46,9 @@ Archive reconciliation & \texttt{run\_phase12\_archive\_reconciliation.py} now p
 Evidence benchmark & Evidence workers and real-provider artifacts exist, but retrieval quality is not measured against a labeled case set. & A benchmark runner and 20--50 labeled cases produce precision-like agreement, latency, timeout, and error-rate metrics. \\
 Shadow ML scale & LightGBM exists, is registered as active shadow model, and beat baselines on a small held-out packet. It was \textbf{not} used for the Telegram alert; current alerts are Phase 3/4 rule-based. & Decide whether to enable Phase 6 live shadow scoring for the next proof. It must remain shadow-only, with no alert promotion, until a later model-promotion memo. \\
 Long organic proof & A 60-minute organic run passed after lock hardening, and a 3-minute post-reconciliation smoke passed. & After alert-link and archive reconciliation fixes, run a 3--6 hour organic proof with fresh raw/detector/candidate/evidence/alert deltas and clean shutdown. \\
-Provider/API backpressure & Runtime survives provider timeouts and WebSocket reconnects, but the latest connectivity gate is \texttt{blocked}: Gamma events, Gamma markets, CLOB time/book, and Data API trades all fail with connection reset by peer from this machine/network. & Keep configurable backoff/concurrency, but first fix network/VPN/DNS/provider reachability until \texttt{run\_phase12\_provider\_connectivity.py} passes. \\
+Provider/API backpressure & Runtime survives provider timeouts and WebSocket reconnects, and the latest connectivity gate passed for Gamma events, Gamma markets, CLOB time/book, and Data API trades. A 5-minute provider-healthy smoke produced fresh raw/detector/trade/candidate/evidence/alert deltas. & Keep configurable backoff/concurrency and re-run the connectivity gate before longer 24/7-style proofs. \\
 Live alert freshness & Telegram delivery works, but earlier smokes showed startup could flush old candidates and make them look like current alerts. & Live mode now uses \texttt{POLYMARKET\_PHASE4\_RUNTIME\_MAX\_CANDIDATE\_AGE\_MINUTES}; keep it at 120 minutes for 24/7 use and set it to 0 only for deliberate backlog/replay drains. \\
+Alert normalization & A 5-minute provider-healthy smoke created 10 alerts and 18 delivery attempts, proving the pipeline but exposing a Telegram noise risk. & Event-level cooldown, minimum delivery severity, and per-pass delivery budget are implemented and covered by \texttt{reports/phase12/alert\_normalization\_smoke.json}. Tune values after a 30--60 minute live run. \\
 \end{longtable}
 
 \section*{Final Finish Plan}
@@ -393,26 +394,25 @@ CLOB V2 changes fee handling and order signing. The current repo should:
 \section*{Recommended Execution Order}
 \begin{longtable}{p{0.10\linewidth}p{0.30\linewidth}p{0.48\linewidth}}
 \textbf{Step} & \textbf{Work} & \textbf{Reason} \\
-1 & Provider connectivity gate & The Telegram alert path works, but fresh collection is currently blocked by connection resets to Gamma/Data API/CLOB. \\
-2 & Telegram-enabled organic runtime proof & Re-run after provider connectivity passes to prove fresh 24/7-style behavior, not only backlog alert flushing. \\
-3 & Phase 6 shadow-live decision & Decide whether to enable LightGBM as shadow-only during the next proof, without using it to create alerts. \\
-4 & Wallet profile/position refresh decision & Completes or explicitly disables the remaining wallet-plane tables. \\
-5 & Evidence benchmark dataset + runner & Makes public-silence claims measurable. \\
-6 & SSD archive reconciliation and shadow ML expansion & Resume replay and larger ML dataset work when the SSD is attached again. \\
-7 & Final scope memo & Updates SRS truth: mature research v1 vs production future work. \\
+1 & Alert-normalized 30--60 minute runtime proof & Provider connectivity and a 5-minute provider-healthy smoke now pass; the next risk is Telegram noise/quality under longer organic runtime. \\
+2 & Phase 6 shadow-live decision & Decide whether to enable LightGBM as shadow-only during the next proof, without using it to create alerts. \\
+3 & Wallet profile/position refresh decision & Completes or explicitly disables the remaining wallet-plane tables. \\
+4 & Evidence benchmark dataset + runner & Makes public-silence claims measurable. \\
+5 & SSD archive reconciliation and shadow ML expansion & Resume replay and larger ML dataset work when the SSD is attached again. \\
+6 & Final scope memo & Updates SRS truth: mature research v1 vs production future work. \\
 \end{longtable}
 
 \section*{Next Implementation Slice}
-Start with the provider connectivity gate because the Telegram-enabled 2-minute smoke proved alert delivery over existing pending candidates, but fresh provider collection produced no new raw/trade deltas.
+Start with an alert-normalized 30--60 minute runtime proof. Provider connectivity now passes and the 5-minute provider-healthy smoke proved fresh collection through Phase 4, but it also showed why Telegram delivery needs cooldown and budget controls before a longer run.
 
 \textbf{Files to touch first:}
 \begin{itemize}[nosep]
-\item \texttt{run\_phase12\_provider\_connectivity.py}
-\item HTTP/WebSocket collector modules that call Gamma, Data API, CLOB books/prices, and market WebSocket feeds
+\item \texttt{phase4/alerts.py}
+\item \texttt{config/settings.py}
+\item \texttt{.env.runtime.example}
 \item \texttt{run\_phase12\_live\_smoke.py}
 \item \texttt{run\_runtime.py}
-\item \texttt{reports/phase12/provider\_connectivity.json}
-\item \texttt{reports/phase12/provider\_backpressure\_smoke.json}
+\item \texttt{reports/phase12/alert\_normalization\_smoke.json}
 \item \texttt{reports/phase12/organic\_runtime\_smoke\_telegram\_30min.json}
 \item \texttt{reports/phase12/delivery\_smoke.json}
 \end{itemize}

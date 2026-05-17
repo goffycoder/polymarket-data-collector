@@ -1,0 +1,105 @@
+{
+  "cases": [
+    {
+      "alert_statuses": [
+        "created",
+        "suppressed",
+        "suppressed",
+        "suppressed"
+      ],
+      "delivery_attempts": 1,
+      "name": "same_event_suppression",
+      "results": [
+        {
+          "alert_id": "fake-alert-1",
+          "candidate_id": "candidate-1",
+          "delivery_channels": [
+            "telegram"
+          ],
+          "severity": "ACTIONABLE"
+        },
+        {
+          "alert_id": "fake-alert-2",
+          "candidate_id": "candidate-2",
+          "severity": "ACTIONABLE",
+          "status": "suppressed",
+          "suppressed_by": "fake-alert-1"
+        },
+        {
+          "alert_id": "fake-alert-3",
+          "candidate_id": "candidate-3",
+          "severity": "ACTIONABLE",
+          "status": "suppressed",
+          "suppressed_by": "fake-alert-1"
+        },
+        {
+          "alert_id": "fake-alert-4",
+          "candidate_id": "candidate-4",
+          "severity": "ACTIONABLE",
+          "status": "suppressed",
+          "suppressed_by": "fake-alert-1"
+        }
+      ],
+      "summary": {
+        "alerts_created": 1,
+        "alerts_delivery_suppressed": 0,
+        "alerts_suppressed": 3,
+        "alerts_updated": 0,
+        "candidates_seen": 4,
+        "delivery_attempts_written": 1
+      }
+    },
+    {
+      "alert_statuses": [
+        "created",
+        "created",
+        "created",
+        "created_silent"
+      ],
+      "delivery_attempts": 3,
+      "name": "delivery_budget",
+      "results": [
+        {
+          "alert_id": "fake-alert-1",
+          "candidate_id": "candidate-1",
+          "delivery_channels": [
+            "telegram"
+          ],
+          "severity": "ACTIONABLE"
+        },
+        {
+          "alert_id": "fake-alert-2",
+          "candidate_id": "candidate-2",
+          "delivery_channels": [
+            "telegram"
+          ],
+          "severity": "ACTIONABLE"
+        },
+        {
+          "alert_id": "fake-alert-3",
+          "candidate_id": "candidate-3",
+          "delivery_channels": [
+            "telegram"
+          ],
+          "severity": "ACTIONABLE"
+        },
+        {
+          "alert_id": "fake-alert-4",
+          "candidate_id": "candidate-4",
+          "delivery_block_reason": "delivery_budget_exhausted:3",
+          "severity": "ACTIONABLE",
+          "status": "created_silent"
+        }
+      ],
+      "summary": {
+        "alerts_created": 4,
+        "alerts_delivery_suppressed": 1,
+        "alerts_suppressed": 0,
+        "alerts_updated": 0,
+        "candidates_seen": 4,
+        "delivery_attempts_written": 3
+      }
+    }
+  ],
+  "status": "passed"
+}

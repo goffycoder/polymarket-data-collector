@@ -141,7 +141,9 @@ def _print_runtime_plan(
         "Phase 4 runtime: "
         f"{_bool_label(settings.ENABLE_PHASE4_RUNTIME)} "
         f"(channels={_phase4_channels_label(settings)}, poll_seconds={settings.PHASE4_RUNTIME_POLL_SECONDS}, "
-        f"max_candidate_age_minutes={settings.PHASE4_RUNTIME_MAX_CANDIDATE_AGE_MINUTES})"
+        f"max_candidate_age_minutes={settings.PHASE4_RUNTIME_MAX_CANDIDATE_AGE_MINUTES}, "
+        f"delivery_min_severity={settings.PHASE4_ALERT_DELIVERY_MIN_SEVERITY}, "
+        f"max_deliveries_per_pass={settings.PHASE4_ALERT_MAX_DELIVERIES_PER_PASS})"
     )
     log.info(
         "Phase 6 runtime: "
