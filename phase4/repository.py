@@ -246,12 +246,19 @@ class Phase4Repository:
         *,
         limit: int = 10,
         include_existing_alerts: bool = False,
+        min_trigger_time: str | None = None,
     ) -> list[dict[str, str | float | None]]:
         conn = get_conn()
         try:
-            where_clause = ""
+            conditions: list[str] = []
+            params: list[Any] = []
             if not include_existing_alerts:
-                where_clause = "WHERE a.alert_id IS NULL"
+                conditions.append("a.alert_id IS NULL")
+            if min_trigger_time:
+                conditions.append("sc.trigger_time >= ?")
+                params.append(min_trigger_time)
+            where_clause = f"WHERE {' AND '.join(conditions)}" if conditions else ""
+            params.append(limit)
             rows = conn.execute(
                 f"""
                 SELECT
@@ -266,6 +273,8 @@ class Phase4Repository:
                     sc.triggering_rules,
                     sc.feature_snapshot,
                     m.question,
+                    m.slug AS market_slug,
+                    m.condition_id,
                     e.title AS event_title,
                     e.slug AS event_slug
                 FROM signal_candidates sc
@@ -276,7 +285,7 @@ class Phase4Repository:
                 ORDER BY sc.trigger_time DESC
                 LIMIT ?
                 """,
-                (limit,),
+                tuple(params),
             ).fetchall()
         finally:
             conn.close()
@@ -294,6 +303,8 @@ class Phase4Repository:
                 "triggering_rules": json.loads(row["triggering_rules"] or "[]"),
                 "feature_snapshot": json.loads(row["feature_snapshot"] or "{}"),
                 "question": row["question"],
+                "market_slug": row["market_slug"],
+                "condition_id": row["condition_id"],
                 "event_title": row["event_title"],
                 "event_slug": row["event_slug"],
             }

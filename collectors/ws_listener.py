@@ -20,6 +20,7 @@ from websockets.exceptions import ConnectionClosed, WebSocketException
 
 from collectors.trade_utils import make_trade_row, trade_row_to_detector_payload, upsert_trade_rows
 from collectors.universe_selector import TokenContext
+from config.settings import WS_MAX_BATCHES, WS_RECONNECT_MAX_SECONDS, WS_STAGGER_SECONDS
 from database.db_manager import get_conn
 from utils.event_log import archive_raw_event, publish_detector_input
 from utils.logger import get_logger
@@ -28,14 +29,14 @@ log = get_logger("ws_listener")
 
 WS_URL = "wss://ws-subscriptions-clob.polymarket.com/ws/market"
 RECONNECT_BASE = 2.0
-RECONNECT_MAX  = 60.0
+RECONNECT_MAX  = max(1.0, float(WS_RECONNECT_MAX_SECONDS))
 
 # Hard cap on simultaneous WS connections.
 # Beyond ~8 concurrent TLS handshakes the Cloudflare layer starts dropping
 # them (observed: 18 connections → 380 handshake timeout errors in logs).
 # 5 connections × 500 tokens = 2,500 markets live — the safe maximum.
-MAX_BATCHES     = 5
-WS_STAGGER_SECS = 3.0   # seconds between opening each new connection
+MAX_BATCHES     = max(1, int(WS_MAX_BATCHES))
+WS_STAGGER_SECS = max(0.0, float(WS_STAGGER_SECONDS))   # seconds between opening each new connection
 
 
 def _safe_float(val) -> float | None:

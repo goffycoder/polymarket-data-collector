@@ -1,0 +1,49 @@
+{
+  "accepted_roots": [],
+  "artifacts": {
+    "compaction_plan": "reports/phase12/compaction_plan_archive_reconciliation.json",
+    "runtime_storage_status": "reports/phase12/runtime_storage_status_archive_reconciliation.json",
+    "storage_audit": "reports/phase12/storage_audit_archive_reconciliation.json"
+  },
+  "audit_summary": {
+    "audit_scope": "phase12_archive_reconciliation",
+    "cold_candidate_count": 0,
+    "compact_candidate_count": 0,
+    "missing_file_count": 3075,
+    "output_path": "reports/phase12/storage_audit_archive_reconciliation.json",
+    "status": "completed",
+    "storage_audit_run_id": "f55e95e9c46c414cb8433272de4e40a8",
+    "total_bytes": 225628932180,
+    "total_partitions": 3153
+  },
+  "checked_roots": [],
+  "compaction_summary": {
+    "cold_archive_item_count": 0,
+    "compact_item_count": 0,
+    "compaction_plan_run_id": "06c692118cb74614b539fcf5cf22458b",
+    "output_path": "reports/phase12/compaction_plan_archive_reconciliation.json",
+    "plan_scope": "phase12_archive_reconciliation",
+    "status": "completed",
+    "storage_audit_run_id": "f55e95e9c46c414cb8433272de4e40a8",
+    "total_items": 0
+  },
+  "effective_external_archive_roots": [],
+  "env_file": "/Users/vrajpatel/All-projects/polymarket_arbitrage/.env.runtime",
+  "next_action": "Mount the SSD so it appears under /Volumes, or rerun with --external-root /absolute/path/to/archive.",
+  "status": "external_archive_not_visible",
+  "storage_status_summary": {
+    "free_gb": 119.78,
+    "free_percent": 26.015,
+    "latest_storage_audit_run_id": "f55e95e9c46c414cb8433272de4e40a8",
+    "managed_bytes": 38428431497,
+    "managed_gb": 35.789,
+    "output_path": "reports/phase12/runtime_storage_status_archive_reconciliation.json",
+    "prune_candidate_bytes": 0,
+    "prune_candidate_count": 0,
+    "reason": "missing_archive_files_detected",
+    "status": "warning"
+  },
+  "visible_volume_dirs": [
+    "/Volumes/Macintosh HD"
+  ]
+}

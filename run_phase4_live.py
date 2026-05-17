@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import json
 import sqlite3
+from datetime import datetime, timedelta, timezone
 
 from config.settings import (
     ENABLE_PHASE4_DISCORD,
@@ -11,6 +12,7 @@ from config.settings import (
     ENABLE_PHASE4_TELEGRAM,
     PHASE4_DISCORD_WEBHOOK_URL,
     PHASE4_RUNTIME_PENDING_LIMIT,
+    PHASE4_RUNTIME_MAX_CANDIDATE_AGE_MINUTES,
     PHASE4_RUNTIME_POLL_SECONDS,
     PHASE4_TELEGRAM_BOT_TOKEN,
     PHASE4_TELEGRAM_CHAT_ID,
@@ -45,16 +47,39 @@ def build_parser() -> argparse.ArgumentParser:
         default=0,
         help="Number of passes to run; 0 means forever.",
     )
+    parser.add_argument(
+        "--max-candidate-age-minutes",
+        type=int,
+        default=PHASE4_RUNTIME_MAX_CANDIDATE_AGE_MINUTES,
+        help="Ignore candidates older than this in live mode. Use 0 to disable the freshness guard.",
+    )
     parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON at exit.")
     return parser
 
 
-async def run_pipeline_iteration(repository: Phase4Repository, *, limit: int) -> dict[str, object]:
+def _min_trigger_time(max_age_minutes: int) -> str | None:
+    if max_age_minutes <= 0:
+        return None
+    return (datetime.now(timezone.utc) - timedelta(minutes=max_age_minutes)).isoformat()
+
+
+async def run_pipeline_iteration(
+    repository: Phase4Repository,
+    *,
+    limit: int,
+    min_trigger_time: str | None,
+) -> dict[str, object]:
     evidence_worker = Phase4EvidenceWorker(repository=repository)
-    evidence_results = await evidence_worker.process_pending_candidates(limit=max(0, limit))
+    evidence_results = await evidence_worker.process_pending_candidates(
+        limit=max(0, limit),
+        min_trigger_time=min_trigger_time,
+    )
 
     alert_worker = Phase4AlertWorker(repository=repository)
-    alert_results = alert_worker.process_pending_candidates(limit=max(0, limit))
+    alert_results = alert_worker.process_pending_candidates(
+        limit=max(0, limit),
+        min_trigger_time=min_trigger_time,
+    )
 
     return {
         "evidence_results": evidence_results,
@@ -98,8 +123,13 @@ async def _main() -> int:
     summaries: list[dict[str, object]] = []
     while True:
         iteration += 1
+        min_trigger_time = _min_trigger_time(int(args.max_candidate_age_minutes))
         try:
-            summary = await run_pipeline_iteration(repository, limit=args.limit)
+            summary = await run_pipeline_iteration(
+                repository,
+                limit=args.limit,
+                min_trigger_time=min_trigger_time,
+            )
         except sqlite3.OperationalError as exc:
             if not is_sqlite_lock_error(exc):
                 raise
@@ -114,6 +144,10 @@ async def _main() -> int:
                 "the next polling pass will retry."
             )
         summary["iteration"] = iteration
+        summary["candidate_freshness"] = {
+            "max_candidate_age_minutes": max(0, int(args.max_candidate_age_minutes)),
+            "min_trigger_time": min_trigger_time,
+        }
         summaries.append(summary)
         log.info(f"Phase 4 live summary: {json.dumps(summary, sort_keys=True, default=str)}")
 

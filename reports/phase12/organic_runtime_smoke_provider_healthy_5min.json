@@ -1,0 +1,82 @@
+{
+  "acceptance": {
+    "detector_input_bytes_increased": true,
+    "raw_archive_bytes_increased": true,
+    "runtime_completed_gracefully": true,
+    "trade_rows_increased": true
+  },
+  "after": {
+    "archive_roots": {
+      "archive_root_readonly": false,
+      "detector_input_root": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input",
+      "raw_archive_root": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw"
+    },
+    "archive_sizes": {
+      "detector_input_bytes": 2182456050,
+      "raw_archive_bytes": 8098188045
+    },
+    "captured_at": "2026-05-17T01:55:03.055147+00:00",
+    "db_counts": {
+      "alert_delivery_attempts": 336,
+      "alerts": 190,
+      "detector_input_manifests": 1298,
+      "evidence_snapshots": 1567,
+      "order_book_snapshots": 355938,
+      "raw_archive_manifests": 1866,
+      "shadow_model_scores": 1,
+      "signal_candidates": 1178,
+      "snapshots": 6554767,
+      "trades": 38660
+    }
+  },
+  "archive_size_delta": {
+    "detector_input_bytes": 58226280,
+    "raw_archive_bytes": 871280099
+  },
+  "before": {
+    "archive_roots": {
+      "archive_root_readonly": false,
+      "detector_input_root": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input",
+      "raw_archive_root": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw"
+    },
+    "archive_sizes": {
+      "detector_input_bytes": 2124229770,
+      "raw_archive_bytes": 7226907946
+    },
+    "captured_at": "2026-05-17T01:49:26.601920+00:00",
+    "db_counts": {
+      "alert_delivery_attempts": 318,
+      "alerts": 180,
+      "detector_input_manifests": 1293,
+      "evidence_snapshots": 1557,
+      "order_book_snapshots": 352826,
+      "raw_archive_manifests": 1860,
+      "shadow_model_scores": 1,
+      "signal_candidates": 1007,
+      "snapshots": 6492870,
+      "trades": 35550
+    }
+  },
+  "db_count_delta": {
+    "alert_delivery_attempts": 18,
+    "alerts": 10,
+    "detector_input_manifests": 5,
+    "evidence_snapshots": 10,
+    "order_book_snapshots": 3112,
+    "raw_archive_manifests": 6,
+    "shadow_model_scores": 0,
+    "signal_candidates": 171,
+    "snapshots": 61897,
+    "trades": 3110
+  },
+  "duration_seconds_requested": 300,
+  "env_file": "/Users/vrajpatel/All-projects/polymarket_arbitrage/.env.runtime",
+  "finished_at": "2026-05-17T01:55:23.443798+00:00",
+  "notes": [
+    "This bounded smoke intentionally terminates the canonical runtime after the requested duration.",
+    "A no-candidate result is acceptable for organic smoke if fresh raw/detector-input artifacts are written."
+  ],
+  "runtime_exit_code": 0,
+  "started_at": "2026-05-17T01:49:49.224918+00:00",
+  "status": "terminated_after_duration"
+}

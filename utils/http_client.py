@@ -13,6 +13,14 @@ import asyncio
 import gzip
 import json as _json
 import httpx
+from config.settings import (
+    HTTP_429_BASE_DELAY_SECONDS,
+    HTTP_BASE_DELAY_SECONDS,
+    HTTP_MAX_CONNECTIONS,
+    HTTP_MAX_KEEPALIVE_CONNECTIONS,
+    HTTP_RETRIES,
+    HTTP_TIMEOUT_SECONDS,
+)
 from utils.logger import get_logger
 
 log = get_logger("http_client")
@@ -35,21 +43,31 @@ DEFAULT_HEADERS = {
 }
 
 
-def make_client(timeout: float = 15.0) -> httpx.AsyncClient:
+def _error_label(exc: BaseException) -> str:
+    message = str(exc).strip()
+    if message:
+        return f"{type(exc).__name__}: {message}"
+    return repr(exc)
+
+
+def make_client(timeout: float | None = None) -> httpx.AsyncClient:
     """Create a shared async client with sensible defaults."""
     return httpx.AsyncClient(
         headers=DEFAULT_HEADERS,
-        timeout=timeout,
+        timeout=HTTP_TIMEOUT_SECONDS if timeout is None else timeout,
         follow_redirects=True,
-        limits=httpx.Limits(max_connections=50, max_keepalive_connections=20),
+        limits=httpx.Limits(
+            max_connections=max(1, int(HTTP_MAX_CONNECTIONS)),
+            max_keepalive_connections=max(0, int(HTTP_MAX_KEEPALIVE_CONNECTIONS)),
+        ),
     )
 
 
 async def safe_get(
     client: httpx.AsyncClient,
     url: str,
-    retries: int = 3,
-    base_delay: float = 1.0,
+    retries: int | None = None,
+    base_delay: float | None = None,
     params: dict = None,
 ) -> dict | list | None:
     """
@@ -58,7 +76,9 @@ async def safe_get(
     - 5xx → exponential backoff
     - Timeout → exponential backoff
     """
-    for attempt in range(retries):
+    retry_count = max(1, int(HTTP_RETRIES if retries is None else retries))
+    delay_base = float(HTTP_BASE_DELAY_SECONDS if base_delay is None else base_delay)
+    for attempt in range(retry_count):
         try:
             resp = await client.get(url, params=params)
 
@@ -75,13 +95,13 @@ async def safe_get(
                         return None
 
             if resp.status_code == 429:
-                wait = 30 * (attempt + 1)
+                wait = float(HTTP_429_BASE_DELAY_SECONDS) * (attempt + 1)
                 log.warning(f"429 Rate limited on {url}. Waiting {wait}s (attempt {attempt+1})")
                 await asyncio.sleep(wait)
                 continue
 
             if resp.status_code >= 500:
-                wait = base_delay * (2 ** attempt)
+                wait = delay_base * (2 ** attempt)
                 log.warning(f"HTTP {resp.status_code} on {url}. Retrying in {wait:.1f}s")
                 await asyncio.sleep(wait)
                 continue
@@ -91,16 +111,16 @@ async def safe_get(
             return None
 
         except httpx.TimeoutException:
-            wait = base_delay * (2 ** attempt)
+            wait = delay_base * (2 ** attempt)
             log.warning(f"Timeout on {url}. Retrying in {wait:.1f}s (attempt {attempt+1})")
             await asyncio.sleep(wait)
 
-        except (UnicodeDecodeError, Exception) as e:
-            wait = base_delay * (2 ** attempt)
-            log.warning(f"Error on GET {url}: {e}. Retrying in {wait:.1f}s")
+        except Exception as exc:
+            wait = delay_base * (2 ** attempt)
+            log.warning(f"Error on GET {url}: {_error_label(exc)}. Retrying in {wait:.1f}s")
             await asyncio.sleep(wait)
 
-    log.error(f"All {retries} retries failed for GET {url}")
+    log.error(f"All {retry_count} retries failed for GET {url}")
     return None
 
 
@@ -108,13 +128,15 @@ async def safe_post(
     client: httpx.AsyncClient,
     url: str,
     json_body: dict | list,
-    retries: int = 3,
-    base_delay: float = 1.0,
+    retries: int | None = None,
+    base_delay: float | None = None,
 ) -> dict | list | None:
     """
     POST with retry/backoff. Returns parsed JSON or None.
     """
-    for attempt in range(retries):
+    retry_count = max(1, int(HTTP_RETRIES if retries is None else retries))
+    delay_base = float(HTTP_BASE_DELAY_SECONDS if base_delay is None else base_delay)
+    for attempt in range(retry_count):
         try:
             resp = await client.post(url, json=json_body)
 
@@ -130,13 +152,13 @@ async def safe_post(
                         return None
 
             if resp.status_code == 429:
-                wait = 30 * (attempt + 1)
+                wait = float(HTTP_429_BASE_DELAY_SECONDS) * (attempt + 1)
                 log.warning(f"429 Rate limited on POST {url}. Waiting {wait}s")
                 await asyncio.sleep(wait)
                 continue
 
             if resp.status_code >= 500:
-                wait = base_delay * (2 ** attempt)
+                wait = delay_base * (2 ** attempt)
                 log.warning(f"HTTP {resp.status_code} on POST {url}. Retrying in {wait:.1f}s")
                 await asyncio.sleep(wait)
                 continue
@@ -145,13 +167,14 @@ async def safe_post(
             return None
 
         except httpx.TimeoutException:
-            wait = base_delay * (2 ** attempt)
+            wait = delay_base * (2 ** attempt)
             log.warning(f"Timeout on POST {url}. Retrying in {wait:.1f}s")
             await asyncio.sleep(wait)
 
-        except Exception as e:
-            log.error(f"Unexpected error on POST {url}: {e}")
-            return None
+        except Exception as exc:
+            wait = delay_base * (2 ** attempt)
+            log.warning(f"Error on POST {url}: {_error_label(exc)}. Retrying in {wait:.1f}s")
+            await asyncio.sleep(wait)
 
-    log.error(f"All {retries} retries failed for POST {url}")
+    log.error(f"All {retry_count} retries failed for POST {url}")
     return None

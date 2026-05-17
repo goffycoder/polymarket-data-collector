@@ -10,6 +10,7 @@ from typing import Sequence
 
 from collectors.trade_utils import make_trade_row, trade_row_to_detector_payload, upsert_trade_rows
 from collectors.universe_selector import MarketDescriptor
+from config.settings import DATA_API_TRADES_CONCURRENCY
 from database.db_manager import get_conn
 from utils.event_log import archive_raw_event, publish_detector_input
 from utils.http_client import make_client, safe_get
@@ -18,7 +19,7 @@ from utils.logger import get_logger
 log = get_logger("trades_collector")
 
 DATA_API_URL = "https://data-api.polymarket.com"
-SEMAPHORE = asyncio.Semaphore(3)
+SEMAPHORE = asyncio.Semaphore(max(1, int(DATA_API_TRADES_CONCURRENCY)))
 TRADES_PER_MARKET = 50  # Recent trades to fetch per market
 
 

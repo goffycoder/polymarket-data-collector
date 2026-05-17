@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from typing import Sequence
 
 from collectors.universe_selector import MarketDescriptor, TokenContext, build_token_context
+from config.settings import CLOB_BOOKS_BATCH_SIZE, CLOB_BOOKS_CONCURRENCY, CLOB_PRICES_BATCH_SIZE
 from database.db_manager import get_conn
 from utils.event_log import archive_raw_event, publish_detector_input
 from utils.http_client import make_client, safe_post
@@ -22,11 +23,11 @@ from utils.logger import get_logger
 log = get_logger("price_collector")
 
 CLOB_URL = "https://clob.polymarket.com"
-SEMAPHORE = asyncio.Semaphore(8)  # Max 8 concurrent CLOB batch calls
+SEMAPHORE = asyncio.Semaphore(max(1, int(CLOB_BOOKS_CONCURRENCY)))
 
 # Batch sizes for bulk endpoints
-BOOKS_BATCH = 50   # POST /books → up to 100 token_ids per call
-PRICES_BATCH = 200  # POST /prices → up to 500 token_ids per call
+BOOKS_BATCH = max(1, int(CLOB_BOOKS_BATCH_SIZE))   # POST /books → up to 100 token_ids per call
+PRICES_BATCH = max(1, int(CLOB_PRICES_BATCH_SIZE))  # POST /prices → up to 500 token_ids per call
 
 
 def _safe_float(val) -> float | None:

@@ -1,35 +1,4 @@
 {
-  "prune_payload": null,
-  "prune_summary": null,
-  "refreshed_artifacts": {
-    "compaction_plan": {
-      "output_path": "reports/phase12/compaction_plan.json",
-      "summary": {
-        "cold_archive_item_count": 0,
-        "compact_item_count": 0,
-        "compaction_plan_run_id": "f800f236d9954ebaaf7a544d5d888fdf",
-        "output_path": "reports/phase12/compaction_plan.json",
-        "plan_scope": "phase11_runtime_storage_status",
-        "status": "completed",
-        "storage_audit_run_id": "91ff003f3d6f4b2b8194b5e2a4622b61",
-        "total_items": 0
-      }
-    },
-    "storage_audit": {
-      "output_path": "reports/phase12/storage_audit.json",
-      "summary": {
-        "audit_scope": "phase11_runtime_storage_status",
-        "cold_candidate_count": 0,
-        "compact_candidate_count": 0,
-        "missing_file_count": 3075,
-        "output_path": "reports/phase12/storage_audit.json",
-        "status": "completed",
-        "storage_audit_run_id": "91ff003f3d6f4b2b8194b5e2a4622b61",
-        "total_bytes": 225628932180,
-        "total_partitions": 3153
-      }
-    }
-  },
   "storage_status": {
     "archive_reconciliation": {
       "archive_only_count": 0,
@@ -43,33 +12,33 @@
     },
     "disk_headroom": {
       "blockers": [],
-      "free_bytes": 128626442240,
-      "free_gb": 119.793,
-      "free_percent": 26.017,
+      "free_bytes": 128612454400,
+      "free_gb": 119.78,
+      "free_percent": 26.015,
       "min_free_bytes": 5368709120,
       "min_free_gb": 5,
       "min_free_percent": 5.0,
       "total_bytes": 494384795648,
-      "used_bytes": 365758353408
+      "used_bytes": 365772341248
     },
-    "generated_at": "2026-05-16T19:33:13.210957+00:00",
+    "generated_at": "2026-05-16T19:34:31.773659+00:00",
     "historical_loss_note": "Phase 11 records that the 2026-04 raw and detector-input archive tree was already deleted before this runtime revision work, so some older windows are no longer locally restorable.",
     "latest_storage_audit": {
-      "audit_scope": "phase11_runtime_storage_status",
+      "audit_scope": "phase12_archive_reconciliation",
       "cold_candidate_count": 0,
       "compact_candidate_count": 0,
-      "created_at": "2026-05-16 19:33:12",
+      "created_at": "2026-05-16 19:34:31",
       "missing_file_count": 3075,
-      "output_path": "reports/phase12/storage_audit.json",
-      "storage_audit_run_id": "91ff003f3d6f4b2b8194b5e2a4622b61",
+      "output_path": "reports/phase12/storage_audit_archive_reconciliation.json",
+      "storage_audit_run_id": "f55e95e9c46c414cb8433272de4e40a8",
       "summary_json": {
-        "audit_scope": "phase11_runtime_storage_status",
+        "audit_scope": "phase12_archive_reconciliation",
         "external_archive_roots": [],
-        "generated_at": "2026-05-16T19:33:12.883347+00:00",
+        "generated_at": "2026-05-16T19:34:31.356576+00:00",
         "largest_partitions": [
           {
             "actual_bytes": 1215873189,
-            "age_days": 0.656,
+            "age_days": 0.657,
             "availability": "local",
             "byte_count": 1215873189,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=16/hour=03/source_system=gamma_events/events.ndjson",
@@ -96,7 +65,7 @@
           },
           {
             "actual_bytes": 1056380660,
-            "age_days": 0.607,
+            "age_days": 0.608,
             "availability": "local",
             "byte_count": 1056380660,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=16/hour=04/source_system=gamma_events/events.ndjson",
@@ -123,7 +92,7 @@
           },
           {
             "actual_bytes": 974612099,
-            "age_days": 0.836,
+            "age_days": 0.837,
             "availability": "local",
             "byte_count": 974612099,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=15/hour=23/source_system=gamma_events/events.ndjson",
@@ -150,7 +119,7 @@
           },
           {
             "actual_bytes": 867631346,
-            "age_days": 0.482,
+            "age_days": 0.483,
             "availability": "local",
             "byte_count": 867631346,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=16/hour=07/source_system=gamma_events/events.ndjson",
@@ -177,7 +146,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.273,
+            "age_days": 20.274,
             "availability": "missing",
             "byte_count": 763804902,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=12/source_system=clob_ws_market/events.ndjson",
@@ -204,7 +173,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.315,
+            "age_days": 20.316,
             "availability": "missing",
             "byte_count": 754837879,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=11/source_system=clob_ws_market/events.ndjson",
@@ -231,7 +200,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.19,
+            "age_days": 9.191,
             "availability": "missing",
             "byte_count": 740964908,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=14/source_system=clob_books/events.ndjson",
@@ -258,7 +227,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.315,
+            "age_days": 9.316,
             "availability": "missing",
             "byte_count": 738596301,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=11/source_system=clob_books/events.ndjson",
@@ -285,7 +254,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.356,
+            "age_days": 20.357,
             "availability": "missing",
             "byte_count": 736563466,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=10/source_system=clob_ws_market/events.ndjson",
@@ -312,7 +281,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.273,
+            "age_days": 9.274,
             "availability": "missing",
             "byte_count": 726154949,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=12/source_system=clob_books/events.ndjson",
@@ -339,7 +308,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.69,
+            "age_days": 10.691,
             "availability": "missing",
             "byte_count": 720957628,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=02/source_system=clob_books/events.ndjson",
@@ -366,7 +335,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.231,
+            "age_days": 9.232,
             "availability": "missing",
             "byte_count": 719912314,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=13/source_system=clob_books/events.ndjson",
@@ -393,7 +362,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.648,
+            "age_days": 10.649,
             "availability": "missing",
             "byte_count": 716271177,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=03/source_system=clob_books/events.ndjson",
@@ -420,7 +389,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.482,
+            "age_days": 10.483,
             "availability": "missing",
             "byte_count": 716163655,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=07/source_system=clob_books/events.ndjson",
@@ -447,7 +416,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.524,
+            "age_days": 10.525,
             "availability": "missing",
             "byte_count": 713643211,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=06/source_system=clob_books/events.ndjson",
@@ -501,7 +470,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.398,
+            "age_days": 9.399,
             "availability": "missing",
             "byte_count": 711685459,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=09/source_system=clob_books/events.ndjson",
@@ -528,7 +497,7 @@
           },
           {
             "actual_bytes": 710790997,
-            "age_days": 0.648,
+            "age_days": 0.649,
             "availability": "local",
             "byte_count": 710790997,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=16/hour=03/source_system=clob_ws_market/events.ndjson",
@@ -555,7 +524,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.565,
+            "age_days": 10.566,
             "availability": "missing",
             "byte_count": 708831684,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=05/source_system=clob_books/events.ndjson",
@@ -582,7 +551,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.565,
+            "age_days": 9.566,
             "availability": "missing",
             "byte_count": 708622155,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=05/source_system=clob_books/events.ndjson",
@@ -609,7 +578,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.398,
+            "age_days": 10.399,
             "availability": "missing",
             "byte_count": 705108185,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=09/source_system=clob_books/events.ndjson",
@@ -636,7 +605,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.523,
+            "age_days": 9.524,
             "availability": "missing",
             "byte_count": 704923195,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=06/source_system=clob_books/events.ndjson",
@@ -663,7 +632,7 @@
           },
           {
             "actual_bytes": 701553490,
-            "age_days": 0.148,
+            "age_days": 0.149,
             "availability": "local",
             "byte_count": 701553490,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=16/hour=15/source_system=gamma_events/events.ndjson",
@@ -690,7 +659,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.69,
+            "age_days": 9.691,
             "availability": "missing",
             "byte_count": 698159242,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=02/source_system=clob_books/events.ndjson",
@@ -717,7 +686,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.357,
+            "age_days": 9.358,
             "availability": "missing",
             "byte_count": 696296893,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=10/source_system=clob_books/events.ndjson",
@@ -861,7 +830,7 @@
         "tiering_decisions": [
           {
             "actual_bytes": null,
-            "age_days": 121.606,
+            "age_days": 121.607,
             "availability": "missing",
             "byte_count": 26687,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
@@ -888,7 +857,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 121.606,
+            "age_days": 121.607,
             "availability": "missing",
             "byte_count": 26609,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_trades/events.ndjson",
@@ -915,7 +884,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 121.606,
+            "age_days": 121.607,
             "availability": "missing",
             "byte_count": 4061,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
@@ -942,7 +911,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 121.606,
+            "age_days": 121.607,
             "availability": "missing",
             "byte_count": 3989,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=01/day=15/hour=05/source_system=phase10_holdout_prices/events.ndjson",
@@ -969,7 +938,7 @@
           },
           {
             "actual_bytes": 1215873189,
-            "age_days": 0.656,
+            "age_days": 0.657,
             "availability": "local",
             "byte_count": 1215873189,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=16/hour=03/source_system=gamma_events/events.ndjson",
@@ -996,7 +965,7 @@
           },
           {
             "actual_bytes": 1056380660,
-            "age_days": 0.607,
+            "age_days": 0.608,
             "availability": "local",
             "byte_count": 1056380660,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=16/hour=04/source_system=gamma_events/events.ndjson",
@@ -1023,7 +992,7 @@
           },
           {
             "actual_bytes": 974612099,
-            "age_days": 0.836,
+            "age_days": 0.837,
             "availability": "local",
             "byte_count": 974612099,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=15/hour=23/source_system=gamma_events/events.ndjson",
@@ -1050,7 +1019,7 @@
           },
           {
             "actual_bytes": 867631346,
-            "age_days": 0.482,
+            "age_days": 0.483,
             "availability": "local",
             "byte_count": 867631346,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=16/hour=07/source_system=gamma_events/events.ndjson",
@@ -1077,7 +1046,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.273,
+            "age_days": 20.274,
             "availability": "missing",
             "byte_count": 763804902,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=12/source_system=clob_ws_market/events.ndjson",
@@ -1104,7 +1073,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.315,
+            "age_days": 20.316,
             "availability": "missing",
             "byte_count": 754837879,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=11/source_system=clob_ws_market/events.ndjson",
@@ -1131,7 +1100,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.19,
+            "age_days": 9.191,
             "availability": "missing",
             "byte_count": 740964908,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=14/source_system=clob_books/events.ndjson",
@@ -1158,7 +1127,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.315,
+            "age_days": 9.316,
             "availability": "missing",
             "byte_count": 738596301,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=11/source_system=clob_books/events.ndjson",
@@ -1185,7 +1154,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.356,
+            "age_days": 20.357,
             "availability": "missing",
             "byte_count": 736563466,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=10/source_system=clob_ws_market/events.ndjson",
@@ -1212,7 +1181,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.273,
+            "age_days": 9.274,
             "availability": "missing",
             "byte_count": 726154949,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=12/source_system=clob_books/events.ndjson",
@@ -1239,7 +1208,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.69,
+            "age_days": 10.691,
             "availability": "missing",
             "byte_count": 720957628,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=02/source_system=clob_books/events.ndjson",
@@ -1266,7 +1235,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.231,
+            "age_days": 9.232,
             "availability": "missing",
             "byte_count": 719912314,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=13/source_system=clob_books/events.ndjson",
@@ -1293,7 +1262,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.648,
+            "age_days": 10.649,
             "availability": "missing",
             "byte_count": 716271177,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=03/source_system=clob_books/events.ndjson",
@@ -1320,7 +1289,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.482,
+            "age_days": 10.483,
             "availability": "missing",
             "byte_count": 716163655,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=07/source_system=clob_books/events.ndjson",
@@ -1347,7 +1316,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.524,
+            "age_days": 10.525,
             "availability": "missing",
             "byte_count": 713643211,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=06/source_system=clob_books/events.ndjson",
@@ -1401,7 +1370,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.398,
+            "age_days": 9.399,
             "availability": "missing",
             "byte_count": 711685459,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=09/source_system=clob_books/events.ndjson",
@@ -1428,7 +1397,7 @@
           },
           {
             "actual_bytes": 710790997,
-            "age_days": 0.648,
+            "age_days": 0.649,
             "availability": "local",
             "byte_count": 710790997,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=16/hour=03/source_system=clob_ws_market/events.ndjson",
@@ -1455,7 +1424,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.565,
+            "age_days": 10.566,
             "availability": "missing",
             "byte_count": 708831684,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=05/source_system=clob_books/events.ndjson",
@@ -1482,7 +1451,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.565,
+            "age_days": 9.566,
             "availability": "missing",
             "byte_count": 708622155,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=05/source_system=clob_books/events.ndjson",
@@ -1509,7 +1478,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.398,
+            "age_days": 10.399,
             "availability": "missing",
             "byte_count": 705108185,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=09/source_system=clob_books/events.ndjson",
@@ -1536,7 +1505,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.523,
+            "age_days": 9.524,
             "availability": "missing",
             "byte_count": 704923195,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=06/source_system=clob_books/events.ndjson",
@@ -1563,7 +1532,7 @@
           },
           {
             "actual_bytes": 701553490,
-            "age_days": 0.148,
+            "age_days": 0.149,
             "availability": "local",
             "byte_count": 701553490,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=16/hour=15/source_system=gamma_events/events.ndjson",
@@ -1590,7 +1559,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.69,
+            "age_days": 9.691,
             "availability": "missing",
             "byte_count": 698159242,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=02/source_system=clob_books/events.ndjson",
@@ -1617,7 +1586,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.357,
+            "age_days": 9.358,
             "availability": "missing",
             "byte_count": 696296893,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=10/source_system=clob_books/events.ndjson",
@@ -1644,7 +1613,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.44,
+            "age_days": 10.441,
             "availability": "missing",
             "byte_count": 695916940,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=08/source_system=clob_books/events.ndjson",
@@ -1671,7 +1640,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.481,
+            "age_days": 9.482,
             "availability": "missing",
             "byte_count": 693668629,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=07/source_system=clob_books/events.ndjson",
@@ -1698,7 +1667,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.648,
+            "age_days": 9.649,
             "availability": "missing",
             "byte_count": 689622927,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=03/source_system=clob_books/events.ndjson",
@@ -1725,7 +1694,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.44,
+            "age_days": 9.441,
             "availability": "missing",
             "byte_count": 688715517,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=08/source_system=clob_books/events.ndjson",
@@ -1779,7 +1748,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.357,
+            "age_days": 10.358,
             "availability": "missing",
             "byte_count": 679962322,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=10/source_system=clob_books/events.ndjson",
@@ -1806,7 +1775,7 @@
           },
           {
             "actual_bytes": 661120907,
-            "age_days": 0.481,
+            "age_days": 0.482,
             "availability": "local",
             "byte_count": 661120907,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=16/hour=07/source_system=clob_ws_market/events.ndjson",
@@ -1833,7 +1802,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.773,
+            "age_days": 9.774,
             "availability": "missing",
             "byte_count": 655724134,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=00/source_system=clob_books/events.ndjson",
@@ -1860,7 +1829,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.731,
+            "age_days": 9.732,
             "availability": "missing",
             "byte_count": 655547602,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=01/source_system=clob_books/events.ndjson",
@@ -1887,7 +1856,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.363,
+            "age_days": 10.364,
             "availability": "missing",
             "byte_count": 650981512,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=10/source_system=gamma_markets/events.ndjson",
@@ -1914,7 +1883,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.445,
+            "age_days": 10.446,
             "availability": "missing",
             "byte_count": 649189432,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=08/source_system=gamma_markets/events.ndjson",
@@ -1941,7 +1910,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.525,
+            "age_days": 10.526,
             "availability": "missing",
             "byte_count": 646972312,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=06/source_system=gamma_markets/events.ndjson",
@@ -1968,7 +1937,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.95,
+            "age_days": 9.951,
             "availability": "missing",
             "byte_count": 646375634,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=20/source_system=gamma_events/events.ndjson",
@@ -2022,7 +1991,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.449,
+            "age_days": 10.45,
             "availability": "missing",
             "byte_count": 644340232,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=08/source_system=gamma_events/events.ndjson",
@@ -2049,7 +2018,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.94,
+            "age_days": 9.941,
             "availability": "missing",
             "byte_count": 644337390,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=20/source_system=clob_books/events.ndjson",
@@ -2076,7 +2045,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.538,
+            "age_days": 9.539,
             "availability": "missing",
             "byte_count": 644261987,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=06/source_system=gamma_events/events.ndjson",
@@ -2103,7 +2072,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.53,
+            "age_days": 10.531,
             "availability": "missing",
             "byte_count": 642521427,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=06/source_system=gamma_events/events.ndjson",
@@ -2130,7 +2099,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.484,
+            "age_days": 9.485,
             "availability": "missing",
             "byte_count": 641912505,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=07/source_system=gamma_events/events.ndjson",
@@ -2157,7 +2126,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.613,
+            "age_days": 9.614,
             "availability": "missing",
             "byte_count": 641783207,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=04/source_system=gamma_events/events.ndjson",
@@ -2211,7 +2180,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.773,
+            "age_days": 9.774,
             "availability": "missing",
             "byte_count": 641324414,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=00/source_system=gamma_events/events.ndjson",
@@ -2265,7 +2234,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.404,
+            "age_days": 9.405,
             "availability": "missing",
             "byte_count": 640904636,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=09/source_system=gamma_events/events.ndjson",
@@ -2292,7 +2261,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.276,
+            "age_days": 9.277,
             "availability": "missing",
             "byte_count": 640902460,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=12/source_system=gamma_events/events.ndjson",
@@ -2346,7 +2315,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.481,
+            "age_days": 18.482,
             "availability": "missing",
             "byte_count": 637992776,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=07/source_system=clob_ws_market/events.ndjson",
@@ -2373,7 +2342,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.692,
+            "age_days": 9.693,
             "availability": "missing",
             "byte_count": 637985561,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=02/source_system=gamma_events/events.ndjson",
@@ -2400,7 +2369,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.191,
+            "age_days": 9.192,
             "availability": "missing",
             "byte_count": 636355584,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=14/source_system=gamma_markets/events.ndjson",
@@ -2427,7 +2396,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.4,
+            "age_days": 9.401,
             "availability": "missing",
             "byte_count": 635930083,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=09/source_system=gamma_markets/events.ndjson",
@@ -2454,7 +2423,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.608,
+            "age_days": 9.609,
             "availability": "missing",
             "byte_count": 635667999,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=04/source_system=gamma_markets/events.ndjson",
@@ -2481,7 +2450,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.742,
+            "age_days": 9.743,
             "availability": "missing",
             "byte_count": 629928789,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=01/source_system=gamma_markets/events.ndjson",
@@ -2508,7 +2477,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.523,
+            "age_days": 18.524,
             "availability": "missing",
             "byte_count": 629147895,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=06/source_system=clob_ws_market/events.ndjson",
@@ -2535,7 +2504,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.398,
+            "age_days": 18.399,
             "availability": "missing",
             "byte_count": 605566987,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=09/source_system=clob_ws_market/events.ndjson",
@@ -2562,7 +2531,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.659,
+            "age_days": 10.66,
             "availability": "missing",
             "byte_count": 602690854,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=03/source_system=gamma_events/events.ndjson",
@@ -2589,7 +2558,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.44,
+            "age_days": 18.441,
             "availability": "missing",
             "byte_count": 599592620,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=08/source_system=clob_ws_market/events.ndjson",
@@ -2616,7 +2585,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.19,
+            "age_days": 18.191,
             "availability": "missing",
             "byte_count": 594459542,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=14/source_system=clob_ws_market/events.ndjson",
@@ -2643,7 +2612,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.231,
+            "age_days": 18.232,
             "availability": "missing",
             "byte_count": 586506369,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=13/source_system=clob_ws_market/events.ndjson",
@@ -2670,7 +2639,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.565,
+            "age_days": 18.566,
             "availability": "missing",
             "byte_count": 582847582,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=05/source_system=clob_ws_market/events.ndjson",
@@ -2697,7 +2666,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.243,
+            "age_days": 20.244,
             "availability": "missing",
             "byte_count": 557186464,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=13/source_system=clob_ws_market/events.ndjson",
@@ -2724,7 +2693,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.356,
+            "age_days": 18.357,
             "availability": "missing",
             "byte_count": 548412818,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=10/source_system=clob_ws_market/events.ndjson",
@@ -2751,7 +2720,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.606,
+            "age_days": 10.607,
             "availability": "missing",
             "byte_count": 545919923,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=04/source_system=gamma_markets/events.ndjson",
@@ -2778,7 +2747,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.565,
+            "age_days": 17.566,
             "availability": "missing",
             "byte_count": 529227309,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=29/hour=05/source_system=clob_ws_market/events.ndjson",
@@ -2805,7 +2774,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.981,
+            "age_days": 9.982,
             "availability": "missing",
             "byte_count": 525002007,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=19/source_system=clob_books/events.ndjson",
@@ -2832,7 +2801,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.273,
+            "age_days": 9.274,
             "availability": "missing",
             "byte_count": 521298307,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=12/source_system=gamma_markets/events.ndjson",
@@ -2859,7 +2828,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.773,
+            "age_days": 17.774,
             "availability": "missing",
             "byte_count": 512500971,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=29/hour=00/source_system=clob_ws_market/events.ndjson",
@@ -2886,7 +2855,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.315,
+            "age_days": 20.316,
             "availability": "missing",
             "byte_count": 509361624,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=26/hour=11/source_system=clob_ws_market/events.ndjson",
@@ -2913,7 +2882,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.273,
+            "age_days": 20.274,
             "availability": "missing",
             "byte_count": 509199211,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=26/hour=12/source_system=clob_ws_market/events.ndjson",
@@ -2940,7 +2909,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.481,
+            "age_days": 9.482,
             "availability": "missing",
             "byte_count": 508150487,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=07/source_system=gamma_markets/events.ndjson",
@@ -2967,7 +2936,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.69,
+            "age_days": 9.691,
             "availability": "missing",
             "byte_count": 507854309,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=02/source_system=gamma_markets/events.ndjson",
@@ -2994,7 +2963,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.815,
+            "age_days": 17.816,
             "availability": "missing",
             "byte_count": 503231051,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=23/source_system=clob_ws_market/events.ndjson",
@@ -3021,7 +2990,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.065,
+            "age_days": 18.066,
             "availability": "missing",
             "byte_count": 501866593,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=17/source_system=clob_ws_market/events.ndjson",
@@ -3048,7 +3017,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.398,
+            "age_days": 20.399,
             "availability": "missing",
             "byte_count": 499527388,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=09/source_system=clob_ws_market/events.ndjson",
@@ -3075,7 +3044,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.523,
+            "age_days": 17.524,
             "availability": "missing",
             "byte_count": 492838409,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=29/hour=06/source_system=clob_ws_market/events.ndjson",
@@ -3102,7 +3071,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.318,
+            "age_days": 18.319,
             "availability": "missing",
             "byte_count": 485580718,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=11/source_system=gamma_events/events.ndjson",
@@ -3129,7 +3098,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.606,
+            "age_days": 18.607,
             "availability": "missing",
             "byte_count": 484598329,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=04/source_system=clob_ws_market/events.ndjson",
@@ -3156,7 +3125,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.481,
+            "age_days": 17.482,
             "availability": "missing",
             "byte_count": 481019263,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=29/hour=07/source_system=clob_ws_market/events.ndjson",
@@ -3183,7 +3152,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.356,
+            "age_days": 20.357,
             "availability": "missing",
             "byte_count": 475659180,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=26/hour=10/source_system=clob_ws_market/events.ndjson",
@@ -3210,7 +3179,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.398,
+            "age_days": 17.399,
             "availability": "missing",
             "byte_count": 474206129,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=29/hour=09/source_system=clob_ws_market/events.ndjson",
@@ -3237,7 +3206,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.106,
+            "age_days": 21.107,
             "availability": "missing",
             "byte_count": 473714445,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=25/hour=16/source_system=clob_ws_market/events.ndjson",
@@ -3264,7 +3233,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.44,
+            "age_days": 17.441,
             "availability": "missing",
             "byte_count": 473272484,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=29/hour=08/source_system=clob_ws_market/events.ndjson",
@@ -3291,7 +3260,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.356,
+            "age_days": 17.357,
             "availability": "missing",
             "byte_count": 472095967,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=29/hour=10/source_system=clob_ws_market/events.ndjson",
@@ -3318,7 +3287,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.148,
+            "age_days": 20.149,
             "availability": "missing",
             "byte_count": 467931138,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=15/source_system=clob_ws_market/events.ndjson",
@@ -3345,7 +3314,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.148,
+            "age_days": 18.149,
             "availability": "missing",
             "byte_count": 467276358,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=15/source_system=clob_ws_market/events.ndjson",
@@ -3372,7 +3341,7 @@
           },
           {
             "actual_bytes": 467182554,
-            "age_days": 0.648,
+            "age_days": 0.649,
             "availability": "local",
             "byte_count": 467178093,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=16/hour=03/source_system=clob_ws_market/events.ndjson",
@@ -3399,7 +3368,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.905,
+            "age_days": 9.906,
             "availability": "missing",
             "byte_count": 466890865,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=21/source_system=clob_books/events.ndjson",
@@ -3426,7 +3395,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.732,
+            "age_days": 21.733,
             "availability": "missing",
             "byte_count": 465501177,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=25/hour=01/source_system=clob_ws_market/events.ndjson",
@@ -3453,7 +3422,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.69,
+            "age_days": 21.691,
             "availability": "missing",
             "byte_count": 461142551,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=25/hour=02/source_system=clob_ws_market/events.ndjson",
@@ -3480,7 +3449,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 22.898,
+            "age_days": 22.899,
             "availability": "missing",
             "byte_count": 454334565,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=23/hour=21/source_system=clob_ws_market/events.ndjson",
@@ -3507,7 +3476,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.856,
+            "age_days": 17.857,
             "availability": "missing",
             "byte_count": 453939788,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=22/source_system=clob_ws_market/events.ndjson",
@@ -3534,7 +3503,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.148,
+            "age_days": 21.149,
             "availability": "missing",
             "byte_count": 451373965,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=25/hour=15/source_system=clob_ws_market/events.ndjson",
@@ -3561,7 +3530,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.773,
+            "age_days": 21.774,
             "availability": "missing",
             "byte_count": 447385234,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=25/hour=00/source_system=clob_ws_market/events.ndjson",
@@ -3615,7 +3584,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.023,
+            "age_days": 18.024,
             "availability": "missing",
             "byte_count": 443414100,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=18/source_system=clob_ws_market/events.ndjson",
@@ -3642,7 +3611,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.731,
+            "age_days": 10.732,
             "availability": "missing",
             "byte_count": 435161377,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=01/source_system=clob_books/events.ndjson",
@@ -3669,7 +3638,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.661,
+            "age_days": 9.662,
             "availability": "missing",
             "byte_count": 434445904,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=03/source_system=gamma_markets/events.ndjson",
@@ -3696,7 +3665,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 22.648,
+            "age_days": 22.649,
             "availability": "missing",
             "byte_count": 434229770,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=24/hour=03/source_system=clob_ws_market/events.ndjson",
@@ -3723,7 +3692,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 22.815,
+            "age_days": 22.816,
             "availability": "missing",
             "byte_count": 434074381,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=23/hour=23/source_system=clob_ws_market/events.ndjson",
@@ -3750,7 +3719,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.245,
+            "age_days": 9.246,
             "availability": "missing",
             "byte_count": 432574414,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=13/source_system=gamma_markets/events.ndjson",
@@ -3777,7 +3746,7 @@
           },
           {
             "actual_bytes": 430383161,
-            "age_days": 0.481,
+            "age_days": 0.482,
             "availability": "local",
             "byte_count": 430383161,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=16/hour=07/source_system=clob_ws_market/events.ndjson",
@@ -3804,7 +3773,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.481,
+            "age_days": 18.482,
             "availability": "missing",
             "byte_count": 428022390,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=07/source_system=clob_ws_market/events.ndjson",
@@ -3831,7 +3800,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 22.773,
+            "age_days": 22.774,
             "availability": "missing",
             "byte_count": 425490001,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=24/hour=00/source_system=clob_ws_market/events.ndjson",
@@ -3858,7 +3827,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 2.901,
+            "age_days": 2.902,
             "availability": "missing",
             "byte_count": 421076058,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=13/hour=21/source_system=gamma_events/events.ndjson",
@@ -3885,7 +3854,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.106,
+            "age_days": 20.107,
             "availability": "missing",
             "byte_count": 417651457,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=16/source_system=clob_ws_market/events.ndjson",
@@ -3912,7 +3881,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.106,
+            "age_days": 18.107,
             "availability": "missing",
             "byte_count": 417377094,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=16/source_system=clob_ws_market/events.ndjson",
@@ -3939,7 +3908,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.94,
+            "age_days": 17.941,
             "availability": "missing",
             "byte_count": 416682070,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=20/source_system=clob_ws_market/events.ndjson",
@@ -3966,7 +3935,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.578,
+            "age_days": 10.579,
             "availability": "missing",
             "byte_count": 416652788,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=05/source_system=gamma_markets/events.ndjson",
@@ -3993,7 +3962,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.523,
+            "age_days": 18.524,
             "availability": "missing",
             "byte_count": 416074804,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=06/source_system=clob_ws_market/events.ndjson",
@@ -4020,7 +3989,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 22.107,
+            "age_days": 22.108,
             "availability": "missing",
             "byte_count": 415878157,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=24/hour=16/source_system=clob_ws_market/events.ndjson",
@@ -4047,7 +4016,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.94,
+            "age_days": 21.941,
             "availability": "missing",
             "byte_count": 414315227,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=24/hour=20/source_system=clob_ws_market/events.ndjson",
@@ -4074,7 +4043,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.107,
+            "age_days": 10.108,
             "availability": "missing",
             "byte_count": 411651361,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=16/source_system=clob_books/events.ndjson",
@@ -4101,7 +4070,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.44,
+            "age_days": 20.441,
             "availability": "missing",
             "byte_count": 410683861,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=08/source_system=clob_ws_market/events.ndjson",
@@ -4128,7 +4097,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.565,
+            "age_days": 20.566,
             "availability": "missing",
             "byte_count": 408596631,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=05/source_system=clob_ws_market/events.ndjson",
@@ -4155,7 +4124,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 24.606,
+            "age_days": 24.607,
             "availability": "missing",
             "byte_count": 407845104,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=22/hour=04/source_system=clob_ws_market/events.ndjson",
@@ -4182,7 +4151,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 22.148,
+            "age_days": 22.149,
             "availability": "missing",
             "byte_count": 401308417,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=24/hour=15/source_system=clob_ws_market/events.ndjson",
@@ -4209,7 +4178,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 23.856,
+            "age_days": 23.857,
             "availability": "missing",
             "byte_count": 399900645,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=22/hour=22/source_system=clob_ws_market/events.ndjson",
@@ -4236,7 +4205,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 25.023,
+            "age_days": 25.024,
             "availability": "missing",
             "byte_count": 398477873,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=21/hour=18/source_system=gamma_events/events.ndjson",
@@ -4263,7 +4232,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 2.898,
+            "age_days": 2.899,
             "availability": "missing",
             "byte_count": 396485282,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=13/hour=21/source_system=gamma_markets/events.ndjson",
@@ -4290,7 +4259,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.565,
+            "age_days": 18.566,
             "availability": "missing",
             "byte_count": 394657742,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=05/source_system=clob_ws_market/events.ndjson",
@@ -4317,7 +4286,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.398,
+            "age_days": 18.399,
             "availability": "missing",
             "byte_count": 393492463,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=09/source_system=clob_ws_market/events.ndjson",
@@ -4344,7 +4313,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 23.19,
+            "age_days": 23.191,
             "availability": "missing",
             "byte_count": 393143072,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=23/hour=14/source_system=clob_ws_market/events.ndjson",
@@ -4371,7 +4340,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.44,
+            "age_days": 18.441,
             "availability": "missing",
             "byte_count": 392195538,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=08/source_system=clob_ws_market/events.ndjson",
@@ -4398,7 +4367,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 24.856,
+            "age_days": 24.857,
             "availability": "missing",
             "byte_count": 392025718,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=21/hour=22/source_system=clob_ws_market/events.ndjson",
@@ -4425,7 +4394,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.815,
+            "age_days": 9.816,
             "availability": "missing",
             "byte_count": 389885906,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=23/source_system=clob_books/events.ndjson",
@@ -4452,7 +4421,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 19.606,
+            "age_days": 19.607,
             "availability": "missing",
             "byte_count": 389581916,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=27/hour=04/source_system=clob_ws_market/events.ndjson",
@@ -4479,7 +4448,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.981,
+            "age_days": 21.982,
             "availability": "missing",
             "byte_count": 385129569,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=24/hour=19/source_system=clob_ws_market/events.ndjson",
@@ -4506,7 +4475,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 23.731,
+            "age_days": 23.732,
             "availability": "missing",
             "byte_count": 384178996,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=23/hour=01/source_system=clob_ws_market/events.ndjson",
@@ -4533,7 +4502,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.19,
+            "age_days": 18.191,
             "availability": "missing",
             "byte_count": 383367654,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=14/source_system=clob_ws_market/events.ndjson",
@@ -4560,7 +4529,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 24.648,
+            "age_days": 24.649,
             "availability": "missing",
             "byte_count": 380410764,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=22/hour=03/source_system=clob_ws_market/events.ndjson",
@@ -4587,7 +4556,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 22.69,
+            "age_days": 22.691,
             "availability": "missing",
             "byte_count": 380283992,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=24/hour=02/source_system=clob_ws_market/events.ndjson",
@@ -4614,7 +4583,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.106,
+            "age_days": 9.107,
             "availability": "missing",
             "byte_count": 379670651,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=16/source_system=clob_books/events.ndjson",
@@ -4641,7 +4610,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.648,
+            "age_days": 18.649,
             "availability": "missing",
             "byte_count": 379333991,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=03/source_system=clob_ws_market/events.ndjson",
@@ -4668,7 +4637,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 24.065,
+            "age_days": 24.066,
             "availability": "missing",
             "byte_count": 373632628,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=22/hour=17/source_system=clob_ws_market/events.ndjson",
@@ -4695,7 +4664,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.231,
+            "age_days": 18.232,
             "availability": "missing",
             "byte_count": 372831292,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=13/source_system=clob_ws_market/events.ndjson",
@@ -4722,7 +4691,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 23.69,
+            "age_days": 23.691,
             "availability": "missing",
             "byte_count": 372260715,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=23/hour=02/source_system=clob_ws_market/events.ndjson",
@@ -4749,7 +4718,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 24.19,
+            "age_days": 24.191,
             "availability": "missing",
             "byte_count": 371668345,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=22/hour=14/source_system=clob_ws_market/events.ndjson",
@@ -4776,7 +4745,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.981,
+            "age_days": 17.982,
             "availability": "missing",
             "byte_count": 370239096,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=19/source_system=clob_ws_market/events.ndjson",
@@ -4803,7 +4772,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.904,
+            "age_days": 21.905,
             "availability": "missing",
             "byte_count": 369869159,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=24/hour=21/source_system=clob_ws_market/events.ndjson",
@@ -4830,7 +4799,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 24.981,
+            "age_days": 24.982,
             "availability": "missing",
             "byte_count": 369494276,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=21/hour=19/source_system=clob_ws_market/events.ndjson",
@@ -4857,7 +4826,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.243,
+            "age_days": 20.244,
             "availability": "missing",
             "byte_count": 368950354,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=26/hour=13/source_system=clob_ws_market/events.ndjson",
@@ -4884,7 +4853,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.315,
+            "age_days": 17.316,
             "availability": "missing",
             "byte_count": 367530305,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=29/hour=11/source_system=clob_ws_market/events.ndjson",
@@ -4911,7 +4880,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 24.943,
+            "age_days": 24.944,
             "availability": "missing",
             "byte_count": 366578143,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=21/hour=20/source_system=clob_ws_market/events.ndjson",
@@ -4938,7 +4907,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 25.026,
+            "age_days": 25.027,
             "availability": "missing",
             "byte_count": 365597050,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=21/hour=18/source_system=gamma_markets/events.ndjson",
@@ -4965,7 +4934,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 23.94,
+            "age_days": 23.941,
             "availability": "missing",
             "byte_count": 363616736,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=22/hour=20/source_system=clob_ws_market/events.ndjson",
@@ -4992,7 +4961,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 23.898,
+            "age_days": 23.899,
             "availability": "missing",
             "byte_count": 363061426,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=22/hour=21/source_system=clob_ws_market/events.ndjson",
@@ -5019,7 +4988,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 23.106,
+            "age_days": 23.107,
             "availability": "missing",
             "byte_count": 361329426,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=23/hour=16/source_system=clob_ws_market/events.ndjson",
@@ -5046,7 +5015,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.565,
+            "age_days": 17.566,
             "availability": "missing",
             "byte_count": 358160694,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=29/hour=05/source_system=clob_ws_market/events.ndjson",
@@ -5073,7 +5042,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.898,
+            "age_days": 17.899,
             "availability": "missing",
             "byte_count": 354737487,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=21/source_system=clob_ws_market/events.ndjson",
@@ -5100,7 +5069,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.44,
+            "age_days": 21.441,
             "availability": "missing",
             "byte_count": 353849320,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=25/hour=08/source_system=clob_ws_market/events.ndjson",
@@ -5154,7 +5123,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.065,
+            "age_days": 9.066,
             "availability": "missing",
             "byte_count": 352551561,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=17/source_system=clob_books/events.ndjson",
@@ -5181,7 +5150,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 24.565,
+            "age_days": 24.566,
             "availability": "missing",
             "byte_count": 352275953,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=22/hour=05/source_system=clob_ws_market/events.ndjson",
@@ -5208,7 +5177,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.356,
+            "age_days": 18.357,
             "availability": "missing",
             "byte_count": 352061849,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=10/source_system=clob_ws_market/events.ndjson",
@@ -5235,7 +5204,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.523,
+            "age_days": 20.524,
             "availability": "missing",
             "byte_count": 350616544,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=26/hour=06/source_system=clob_ws_market/events.ndjson",
@@ -5262,7 +5231,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 22.068,
+            "age_days": 22.069,
             "availability": "missing",
             "byte_count": 347268763,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=24/hour=17/source_system=clob_ws_market/events.ndjson",
@@ -5289,7 +5258,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.065,
+            "age_days": 18.066,
             "availability": "missing",
             "byte_count": 346031306,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=17/source_system=clob_ws_market/events.ndjson",
@@ -5316,7 +5285,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 24.106,
+            "age_days": 24.107,
             "availability": "missing",
             "byte_count": 344206082,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=22/hour=16/source_system=clob_ws_market/events.ndjson",
@@ -5343,7 +5312,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.523,
+            "age_days": 17.524,
             "availability": "missing",
             "byte_count": 344114043,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=29/hour=06/source_system=clob_ws_market/events.ndjson",
@@ -5370,7 +5339,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.446,
+            "age_days": 18.447,
             "availability": "missing",
             "byte_count": 340505607,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=08/source_system=gamma_events/events.ndjson",
@@ -5397,7 +5366,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.398,
+            "age_days": 20.399,
             "availability": "missing",
             "byte_count": 340485175,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=26/hour=09/source_system=clob_ws_market/events.ndjson",
@@ -5424,7 +5393,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.652,
+            "age_days": 21.653,
             "availability": "missing",
             "byte_count": 337931230,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=25/hour=03/source_system=clob_ws_market/events.ndjson",
@@ -5451,7 +5420,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 15.807,
+            "age_days": 15.808,
             "availability": "missing",
             "byte_count": 337153623,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=01/hour=00/source_system=gamma_markets/events.ndjson",
@@ -5478,7 +5447,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.273,
+            "age_days": 18.274,
             "availability": "missing",
             "byte_count": 336396553,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=12/source_system=clob_ws_market/events.ndjson",
@@ -5505,7 +5474,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 23.148,
+            "age_days": 23.149,
             "availability": "missing",
             "byte_count": 335674099,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=23/hour=15/source_system=clob_ws_market/events.ndjson",
@@ -5532,7 +5501,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.69,
+            "age_days": 18.691,
             "availability": "missing",
             "byte_count": 335278898,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=28/hour=02/source_system=clob_ws_market/events.ndjson",
@@ -5559,7 +5528,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 24.148,
+            "age_days": 24.149,
             "availability": "missing",
             "byte_count": 335120725,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=22/hour=15/source_system=clob_ws_market/events.ndjson",
@@ -5586,7 +5555,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.606,
+            "age_days": 18.607,
             "availability": "missing",
             "byte_count": 333120062,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=04/source_system=clob_ws_market/events.ndjson",
@@ -5613,7 +5582,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.815,
+            "age_days": 17.816,
             "availability": "missing",
             "byte_count": 332536347,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=23/source_system=clob_ws_market/events.ndjson",
@@ -5640,7 +5609,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.773,
+            "age_days": 17.774,
             "availability": "missing",
             "byte_count": 332527950,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=29/hour=00/source_system=clob_ws_market/events.ndjson",
@@ -5667,7 +5636,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 20.148,
+            "age_days": 20.149,
             "availability": "missing",
             "byte_count": 331078446,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=26/hour=15/source_system=clob_ws_market/events.ndjson",
@@ -5694,7 +5663,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 22.607,
+            "age_days": 22.608,
             "availability": "missing",
             "byte_count": 330861396,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=24/hour=04/source_system=clob_ws_market/events.ndjson",
@@ -5721,7 +5690,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.366,
+            "age_days": 18.367,
             "availability": "missing",
             "byte_count": 328147743,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=10/source_system=gamma_events/events.ndjson",
@@ -5748,7 +5717,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.732,
+            "age_days": 21.733,
             "availability": "missing",
             "byte_count": 326671425,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=25/hour=01/source_system=clob_ws_market/events.ndjson",
@@ -5775,7 +5744,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.481,
+            "age_days": 17.482,
             "availability": "missing",
             "byte_count": 326324213,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=29/hour=07/source_system=clob_ws_market/events.ndjson",
@@ -5802,7 +5771,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.417,
+            "age_days": 10.418,
             "availability": "missing",
             "byte_count": 325185149,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=09/source_system=gamma_markets/events.ndjson",
@@ -5829,7 +5798,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 25.231,
+            "age_days": 25.232,
             "availability": "missing",
             "byte_count": 324885787,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=21/hour=13/source_system=gamma_markets/events.ndjson",
@@ -5883,7 +5852,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.127,
+            "age_days": 10.128,
             "availability": "missing",
             "byte_count": 324713808,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=16/source_system=gamma_events/events.ndjson",
@@ -5910,7 +5879,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.498,
+            "age_days": 10.499,
             "availability": "missing",
             "byte_count": 324472319,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=07/source_system=gamma_markets/events.ndjson",
@@ -5937,7 +5906,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.084,
+            "age_days": 9.085,
             "availability": "missing",
             "byte_count": 324401764,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=17/source_system=gamma_events/events.ndjson",
@@ -5964,7 +5933,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.005,
+            "age_days": 10.006,
             "availability": "missing",
             "byte_count": 324148512,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=19/source_system=gamma_events/events.ndjson",
@@ -5991,7 +5960,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.121,
+            "age_days": 10.122,
             "availability": "missing",
             "byte_count": 324076666,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=16/source_system=gamma_markets/events.ndjson",
@@ -6018,7 +5987,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 22.898,
+            "age_days": 22.899,
             "availability": "missing",
             "byte_count": 324072627,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=23/hour=21/source_system=clob_ws_market/events.ndjson",
@@ -6072,7 +6041,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.0,
+            "age_days": 10.001,
             "availability": "missing",
             "byte_count": 322742459,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=19/source_system=gamma_markets/events.ndjson",
@@ -6099,7 +6068,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.586,
+            "age_days": 9.587,
             "availability": "missing",
             "byte_count": 322696510,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=05/source_system=gamma_events/events.ndjson",
@@ -6126,7 +6095,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.773,
+            "age_days": 21.774,
             "availability": "missing",
             "byte_count": 322413540,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=25/hour=00/source_system=clob_ws_market/events.ndjson",
@@ -6153,7 +6122,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.115,
+            "age_days": 9.116,
             "availability": "missing",
             "byte_count": 322301363,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=16/source_system=gamma_events/events.ndjson",
@@ -6207,7 +6176,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.923,
+            "age_days": 9.924,
             "availability": "missing",
             "byte_count": 321921494,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=21/source_system=gamma_events/events.ndjson",
@@ -6234,7 +6203,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.532,
+            "age_days": 9.533,
             "availability": "missing",
             "byte_count": 321605668,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=06/source_system=gamma_markets/events.ndjson",
@@ -6261,7 +6230,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.827,
+            "age_days": 9.828,
             "availability": "missing",
             "byte_count": 321280688,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=23/source_system=gamma_events/events.ndjson",
@@ -6288,7 +6257,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.44,
+            "age_days": 17.441,
             "availability": "missing",
             "byte_count": 321272705,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=29/hour=08/source_system=clob_ws_market/events.ndjson",
@@ -6315,7 +6284,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.106,
+            "age_days": 21.107,
             "availability": "missing",
             "byte_count": 320944442,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=25/hour=16/source_system=clob_ws_market/events.ndjson",
@@ -6369,7 +6338,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.457,
+            "age_days": 9.458,
             "availability": "missing",
             "byte_count": 320443544,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=08/source_system=gamma_events/events.ndjson",
@@ -6396,7 +6365,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.249,
+            "age_days": 9.25,
             "availability": "missing",
             "byte_count": 320361643,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=13/source_system=gamma_events/events.ndjson",
@@ -6423,7 +6392,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.735,
+            "age_days": 10.736,
             "availability": "missing",
             "byte_count": 320335923,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=01/source_system=gamma_markets/events.ndjson",
@@ -6450,7 +6419,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 25.235,
+            "age_days": 25.236,
             "availability": "missing",
             "byte_count": 320302494,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=21/hour=13/source_system=gamma_events/events.ndjson",
@@ -6477,7 +6446,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.583,
+            "age_days": 10.584,
             "availability": "missing",
             "byte_count": 320270768,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=05/source_system=gamma_events/events.ndjson",
@@ -6504,7 +6473,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.69,
+            "age_days": 21.691,
             "availability": "missing",
             "byte_count": 320044081,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=25/hour=02/source_system=clob_ws_market/events.ndjson",
@@ -6531,7 +6500,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.778,
+            "age_days": 10.779,
             "availability": "missing",
             "byte_count": 319996724,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=00/source_system=gamma_markets/events.ndjson",
@@ -6558,7 +6527,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.747,
+            "age_days": 9.748,
             "availability": "missing",
             "byte_count": 319942208,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=01/source_system=gamma_events/events.ndjson",
@@ -6585,7 +6554,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.329,
+            "age_days": 9.33,
             "availability": "missing",
             "byte_count": 319886926,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=11/source_system=gamma_events/events.ndjson",
@@ -6612,7 +6581,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.74,
+            "age_days": 10.741,
             "availability": "missing",
             "byte_count": 319867846,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=01/source_system=gamma_events/events.ndjson",
@@ -6639,7 +6608,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.713,
+            "age_days": 10.714,
             "availability": "missing",
             "byte_count": 319622276,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=02/source_system=gamma_events/events.ndjson",
@@ -6693,7 +6662,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.398,
+            "age_days": 17.399,
             "availability": "missing",
             "byte_count": 319461733,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=29/hour=09/source_system=clob_ws_market/events.ndjson",
@@ -6720,7 +6689,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 23.273,
+            "age_days": 23.274,
             "availability": "missing",
             "byte_count": 319378270,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=23/hour=12/source_system=clob_ws_market/events.ndjson",
@@ -6747,7 +6716,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.709,
+            "age_days": 10.71,
             "availability": "missing",
             "byte_count": 319357845,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=02/source_system=gamma_markets/events.ndjson",
@@ -6774,7 +6743,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.107,
+            "age_days": 9.108,
             "availability": "missing",
             "byte_count": 319221974,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=16/source_system=gamma_markets/events.ndjson",
@@ -6828,7 +6797,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 10.682,
+            "age_days": 10.683,
             "availability": "missing",
             "byte_count": 318316031,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=03/source_system=gamma_markets/events.ndjson",
@@ -6855,7 +6824,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.773,
+            "age_days": 9.774,
             "availability": "missing",
             "byte_count": 318228787,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=00/source_system=gamma_markets/events.ndjson",
@@ -6882,7 +6851,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.918,
+            "age_days": 9.919,
             "availability": "missing",
             "byte_count": 318098631,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=21/source_system=gamma_markets/events.ndjson",
@@ -6909,7 +6878,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.372,
+            "age_days": 9.373,
             "availability": "missing",
             "byte_count": 317476353,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=10/source_system=gamma_markets/events.ndjson",
@@ -6936,7 +6905,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.822,
+            "age_days": 9.823,
             "availability": "missing",
             "byte_count": 317459785,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=06/hour=23/source_system=gamma_markets/events.ndjson",
@@ -6963,7 +6932,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 9.324,
+            "age_days": 9.325,
             "availability": "missing",
             "byte_count": 317267873,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=05/day=07/hour=11/source_system=gamma_markets/events.ndjson",
@@ -6990,7 +6959,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 14.231,
+            "age_days": 14.232,
             "availability": "missing",
             "byte_count": 314655892,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=02/hour=13/source_system=clob_ws_market/events.ndjson",
@@ -7017,7 +6986,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 19.565,
+            "age_days": 19.566,
             "availability": "missing",
             "byte_count": 314525467,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=27/hour=05/source_system=clob_ws_market/events.ndjson",
@@ -7044,7 +7013,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 21.148,
+            "age_days": 21.149,
             "availability": "missing",
             "byte_count": 314054555,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=25/hour=15/source_system=clob_ws_market/events.ndjson",
@@ -7071,7 +7040,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 2.773,
+            "age_days": 2.774,
             "availability": "missing",
             "byte_count": 312802526,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=14/hour=00/source_system=clob_ws_market/events.ndjson",
@@ -7098,7 +7067,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.356,
+            "age_days": 17.357,
             "availability": "missing",
             "byte_count": 312465903,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=29/hour=10/source_system=clob_ws_market/events.ndjson",
@@ -7125,7 +7094,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 14.273,
+            "age_days": 14.274,
             "availability": "missing",
             "byte_count": 311958892,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=02/hour=12/source_system=clob_ws_market/events.ndjson",
@@ -7152,7 +7121,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 14.356,
+            "age_days": 14.357,
             "availability": "missing",
             "byte_count": 311146379,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=02/hour=10/source_system=clob_ws_market/events.ndjson",
@@ -7179,7 +7148,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 14.398,
+            "age_days": 14.399,
             "availability": "missing",
             "byte_count": 310493536,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=02/hour=09/source_system=clob_ws_market/events.ndjson",
@@ -7206,7 +7175,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 2.648,
+            "age_days": 2.649,
             "availability": "missing",
             "byte_count": 309834270,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=14/hour=03/source_system=clob_ws_market/events.ndjson",
@@ -7233,7 +7202,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.148,
+            "age_days": 18.149,
             "availability": "missing",
             "byte_count": 309409573,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=15/source_system=clob_ws_market/events.ndjson",
@@ -7260,7 +7229,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 14.19,
+            "age_days": 14.191,
             "availability": "missing",
             "byte_count": 309175218,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=02/hour=14/source_system=clob_ws_market/events.ndjson",
@@ -7287,7 +7256,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 2.69,
+            "age_days": 2.691,
             "availability": "missing",
             "byte_count": 308994724,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=14/hour=02/source_system=clob_ws_market/events.ndjson",
@@ -7314,7 +7283,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 19.69,
+            "age_days": 19.691,
             "availability": "missing",
             "byte_count": 308778359,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=27/hour=02/source_system=clob_ws_market/events.ndjson",
@@ -7341,7 +7310,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 19.648,
+            "age_days": 19.649,
             "availability": "missing",
             "byte_count": 308072596,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=04/day=27/hour=03/source_system=clob_ws_market/events.ndjson",
@@ -7368,7 +7337,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 18.023,
+            "age_days": 18.024,
             "availability": "missing",
             "byte_count": 307671065,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=18/source_system=clob_ws_market/events.ndjson",
@@ -7395,7 +7364,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 17.856,
+            "age_days": 17.857,
             "availability": "missing",
             "byte_count": 307168478,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=28/hour=22/source_system=clob_ws_market/events.ndjson",
@@ -7422,7 +7391,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 14.44,
+            "age_days": 14.441,
             "availability": "missing",
             "byte_count": 306774236,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=02/hour=08/source_system=clob_ws_market/events.ndjson",
@@ -7449,7 +7418,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 14.523,
+            "age_days": 14.524,
             "availability": "missing",
             "byte_count": 306379631,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=02/hour=06/source_system=clob_ws_market/events.ndjson",
@@ -7476,7 +7445,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 14.315,
+            "age_days": 14.316,
             "availability": "missing",
             "byte_count": 306162643,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=02/hour=11/source_system=clob_ws_market/events.ndjson",
@@ -7503,7 +7472,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 14.606,
+            "age_days": 14.607,
             "availability": "missing",
             "byte_count": 305974012,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=02/hour=04/source_system=clob_ws_market/events.ndjson",
@@ -7530,7 +7499,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 24.606,
+            "age_days": 24.607,
             "availability": "missing",
             "byte_count": 305774679,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=22/hour=04/source_system=clob_ws_market/events.ndjson",
@@ -7557,7 +7526,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 22.815,
+            "age_days": 22.816,
             "availability": "missing",
             "byte_count": 305620572,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/raw/year=2026/month=04/day=23/hour=23/source_system=clob_ws_market/events.ndjson",
@@ -7584,7 +7553,7 @@
           },
           {
             "actual_bytes": null,
-            "age_days": 14.481,
+            "age_days": 14.482,
             "availability": "missing",
             "byte_count": 305541670,
             "configured_path": "/Users/vrajpatel/All-projects/polymarket_arbitrage/data/detector_input/year=2026/month=05/day=02/hour=07/source_system=clob_ws_market/events.ndjson",
@@ -7789,12 +7758,12 @@
     "status_reason": "missing_archive_files_detected"
   },
   "storage_status_summary": {
-    "free_gb": 119.793,
-    "free_percent": 26.017,
-    "latest_storage_audit_run_id": "91ff003f3d6f4b2b8194b5e2a4622b61",
+    "free_gb": 119.78,
+    "free_percent": 26.015,
+    "latest_storage_audit_run_id": "f55e95e9c46c414cb8433272de4e40a8",
     "managed_bytes": 38428431497,
     "managed_gb": 35.789,
-    "output_path": "reports/phase12/runtime_storage_status_after_archive_reconciliation.json",
+    "output_path": "reports/phase12/runtime_storage_status_archive_reconciliation.json",
     "prune_candidate_bytes": 0,
     "prune_candidate_count": 0,
     "reason": "missing_archive_files_detected",

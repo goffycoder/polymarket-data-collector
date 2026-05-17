@@ -347,10 +347,16 @@ class Phase4EvidenceWorker:
         self.timeout_seconds = timeout_seconds
         self.summary = EvidenceWorkerSummary()
 
-    async def process_pending_candidates(self, *, limit: int = 10) -> list[dict[str, Any]]:
+    async def process_pending_candidates(
+        self,
+        *,
+        limit: int = 10,
+        min_trigger_time: str | None = None,
+    ) -> list[dict[str, Any]]:
         candidates = self.repository.pending_candidates(
             limit=limit,
             include_existing_alerts=True,
+            min_trigger_time=min_trigger_time,
         )
         self.summary.candidates_seen += len(candidates)
         outputs: list[dict[str, Any]] = []

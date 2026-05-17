@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 import urllib.error
+import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
@@ -27,6 +28,9 @@ from utils.logger import get_logger
 log = get_logger("phase4_alerts")
 
 WALLET_PATTERN = re.compile(r"\b0x[a-fA-F0-9]{8,}\b")
+PUBLIC_HEX_IDENTIFIER_KEYS = {
+    "condition_id",
+}
 
 SEVERITY_RANK = {
     "INFO": 1,
@@ -34,6 +38,7 @@ SEVERITY_RANK = {
     "ACTIONABLE": 3,
     "CRITICAL": 4,
 }
+POLYMARKET_EVENT_BASE_URL = "https://polymarket.com/event"
 
 
 def _iso(dt: datetime) -> str:
@@ -73,6 +78,13 @@ def should_resend_alert(
     return False
 
 
+def _slug_url(slug: Any) -> str | None:
+    text = str(slug or "").strip().strip("/")
+    if not text:
+        return None
+    return f"{POLYMARKET_EVENT_BASE_URL}/{urllib.parse.quote(text, safe='-')}"
+
+
 def render_alert_payload(
     candidate: dict[str, Any],
     evidence_snapshot: dict[str, Any] | None,
@@ -94,6 +106,8 @@ def render_alert_payload(
         or candidate.get("event_slug")
         or f"Market {candidate.get('market_id')}"
     )
+    event_url = _slug_url(candidate.get("event_slug"))
+    market_url = event_url or _slug_url(candidate.get("market_slug"))
 
     payload = {
         "title": title,
@@ -109,8 +123,20 @@ def render_alert_payload(
         "market_evidence": {
             "market_id": candidate.get("market_id"),
             "event_id": candidate.get("event_id"),
+            "condition_id": candidate.get("condition_id"),
+            "market_slug": candidate.get("market_slug"),
+            "event_slug": candidate.get("event_slug"),
+            "market_url": market_url,
+            "event_url": event_url,
+            "market_slug_url": _slug_url(candidate.get("market_slug")),
             "feature_snapshot": feature_preview,
         },
+        "market_url": market_url,
+        "event_url": event_url,
+        "market_slug_url": _slug_url(candidate.get("market_slug")),
+        "market_slug": candidate.get("market_slug"),
+        "event_slug": candidate.get("event_slug"),
+        "condition_id": candidate.get("condition_id"),
         "public_evidence_state": evidence_state,
         "provider_summary": provider_summary,
         "invalidates_it": "Material contrary public evidence or a weaker replay-reconciled interpretation.",
@@ -126,7 +152,13 @@ def _redact_wallet_identifiers(value: Any) -> Any:
     if isinstance(value, list):
         return [_redact_wallet_identifiers(item) for item in value]
     if isinstance(value, dict):
-        return {key: _redact_wallet_identifiers(item) for key, item in value.items()}
+        redacted: dict[str, Any] = {}
+        for key, item in value.items():
+            if str(key) in PUBLIC_HEX_IDENTIFIER_KEYS:
+                redacted[key] = item
+            else:
+                redacted[key] = _redact_wallet_identifiers(item)
+        return redacted
     return value
 
 
@@ -185,6 +217,9 @@ class TelegramDeliveryChannel:
                 f"[{alert['severity']}] {alert['title']}",
                 alert.get("what_changed", ""),
                 f"Triggered: {alert.get('trigger_time_display')}",
+                f"Market: {alert.get('market_url') or 'unavailable'}",
+                f"Outcome slug: {alert.get('market_slug') or 'unavailable'}",
+                f"Condition: {alert.get('condition_id') or 'unavailable'}",
                 alert.get("why_it_looks_informed", ""),
                 f"Public evidence: {alert.get('public_evidence_state')}",
                 f"Detector: {alert.get('detector_version')} / {alert.get('feature_schema_version')}",
@@ -225,6 +260,9 @@ class DiscordDeliveryChannel:
                 f"**[{alert['severity']}] {alert['title']}**",
                 alert.get("what_changed", ""),
                 f"Triggered: {alert.get('trigger_time_display')}",
+                f"Market: {alert.get('market_url') or 'unavailable'}",
+                f"Outcome slug: {alert.get('market_slug') or 'unavailable'}",
+                f"Condition: {alert.get('condition_id') or 'unavailable'}",
                 alert.get("why_it_looks_informed", ""),
                 f"Public evidence: {alert.get('public_evidence_state')}",
                 f"Alert ID: {alert.get('alert_id')}",
@@ -309,10 +347,16 @@ class Phase4AlertWorker:
         self.channels = channels or build_default_channels()
         self.summary = AlertWorkerSummary()
 
-    def process_pending_candidates(self, *, limit: int = 10) -> list[dict[str, Any]]:
+    def process_pending_candidates(
+        self,
+        *,
+        limit: int = 10,
+        min_trigger_time: str | None = None,
+    ) -> list[dict[str, Any]]:
         candidates = self.repository.pending_candidates(
             limit=limit,
             include_existing_alerts=True,
+            min_trigger_time=min_trigger_time,
         )
         self.summary.candidates_seen += len(candidates)
         outputs: list[dict[str, Any]] = []

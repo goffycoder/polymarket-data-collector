@@ -43,6 +43,7 @@ def _db_counts() -> dict[str, int | None]:
         "order_book_snapshots",
         "signal_candidates",
         "alerts",
+        "alert_delivery_attempts",
         "evidence_snapshots",
         "shadow_model_scores",
     ]

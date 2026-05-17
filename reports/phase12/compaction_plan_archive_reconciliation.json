@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-05-16T19:34:31.760883+00:00",
+  "plan_items": [],
+  "plan_scope": "phase12_archive_reconciliation",
+  "storage_audit_run_id": "f55e95e9c46c414cb8433272de4e40a8",
+  "totals": {
+    "cold_archive_item_count": 0,
+    "compact_item_count": 0,
+    "total_items": 0
+  }
+}

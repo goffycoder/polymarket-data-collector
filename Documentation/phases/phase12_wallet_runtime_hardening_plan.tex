@@ -26,10 +26,10 @@ The target is \textbf{not} to turn the project into an autonomous trading system
 \textbf{Area} & \textbf{Current truth} \\
 Trade wallet fields & \texttt{trades} has \texttt{proxy\_wallet}, \texttt{transaction\_hash}, \texttt{condition\_id}, \texttt{outcome\_side}, and \texttt{usdc\_notional}; \texttt{canonical\_trades} exposes these fields. \\
 Wallet entity plane & First-class SRS tables are now present in SQLite and Postgres schema. The first materialization produced 212 wallets, 212 activity rows, 212 first-seen rows, and 10 heuristic clusters. Profile/position enrichment is still provider-disabled/not implemented. \\
-Live proof & Phase 11 has bounded Phase 3/4 proof plus one Phase 6 shadow score. Phase 12 now has a clean 60-second organic runtime smoke after local hot-root restore; the remaining proof gap is a longer 30--60 minute or 3--6 hour organic window. \\
-Delivery proof & Phase 4 delivery classes exist for no-op, Telegram, and Discord; the current proof path used local/no-op delivery. \\
+Live proof & Phase 11 has bounded Phase 3/4 proof plus one Phase 6 shadow score. Phase 12 has multiple organic runtime smokes, including a 60-minute post-lock-hardening run; the remaining proof gap is a Telegram-enabled 3--6 hour organic window. \\
+Delivery proof & Phase 4 delivery classes exist for no-op, Telegram, and Discord. Telegram real delivery is now proven with HTTP 200 in \texttt{reports/phase12/delivery\_smoke.json}; Discord remains disabled. \\
 Evidence proof & Phase 10 has real-provider evidence artifacts; the latest bounded Phase 11 proof used local/no-op evidence. Retrieval quality is not benchmarked as a dataset. \\
-ML proof & Phase 10 LightGBM beats required baselines on a 96-row held-out packet; current runtime uses it as shadow-only guidance. \\
+ML proof & Phase 10 LightGBM beats required baselines on a 96-row held-out packet and is registered as active shadow model \texttt{phase10\_task4\_lightgbm\_v1}. Current live alerts do \textbf{not} use LightGBM: \texttt{POLYMARKET\_ENABLE\_PHASE6\_SHADOW\_MODE=false} and \texttt{POLYMARKET\_ENABLE\_PHASE6\_LIVE\_RUNTIME=false}. \\
 Replay storage & \texttt{data/raw} and \texttt{data/detector\_input} were copied to the attached SSD and pruned locally; local replay now needs SSD-aware archive paths or restore steps. \\
 CLOB V2 & Polymarket CLOB V2 is live. Current repo collection uses public CLOB/Data API/WebSocket endpoints rather than order signing, so the immediate risk is stale assumptions around fee metadata and smoke coverage rather than a trading SDK migration. \\
 \end{longtable}
@@ -39,18 +39,20 @@ This is the current authoritative list of what is \textbf{not fully done yet}. E
 
 \begin{longtable}{p{0.22\linewidth}p{0.31\linewidth}p{0.33\linewidth}}
 \textbf{Area} & \textbf{Current truth} & \textbf{Done means} \\
-Market traceability in alerts & Alerts can be joined back to \texttt{markets} and \texttt{events} through \texttt{signal\_candidates}, but rendered alert payloads currently carry mostly \texttt{market\_id}, \texttt{event\_id}, and feature snapshots. They do not consistently include a clickable Polymarket market URL. & Every alert payload includes \texttt{market\_slug}, \texttt{event\_slug}, \texttt{condition\_id}, \texttt{market\_url}, and \texttt{event\_url}; Telegram/Discord text shows the market URL. \\
-Telegram production path & Telegram and Discord delivery classes exist. The current runtime env has outbound delivery disabled, so recent live proof is local/no-provider by default. & A delivery smoke report proves a real Telegram send with secrets supplied outside git, or the final memo explicitly says production delivery is disabled. \\
+Market traceability in alerts & Implemented. \texttt{reports/phase12/alert\_market\_link\_smoke.json} proves a stored alert payload and Telegram/Discord preview include \texttt{market\_slug}, \texttt{event\_slug}, \texttt{condition\_id}, \texttt{market\_url}, and \texttt{event\_url}. The clickable \texttt{market\_url} now uses the stable event URL; the outcome slug remains separate. & Keep this covered in future alert changes and avoid using brittle market-slug frontend URLs as the primary click-through. \\
+Telegram production path & \texttt{reports/phase12/delivery\_smoke.json} now proves real Telegram delivery with \texttt{telegram\_configured=true}, \texttt{telegram\_sent=true}, and HTTP 200. \texttt{.env.runtime} enables Telegram and ignored \texttt{.env.runtime.secrets} supplies credentials. & Rotate the exposed bot token, keep secrets out of git, and run the next organic proof with Telegram delivery enabled. \\
 Wallet profiles and positions & Wallet entity/activity/cluster tables exist and are partially populated, but \texttt{wallet\_profiles} and \texttt{wallet\_positions} are still empty in the current DB. & Either profile/position refreshers populate provider-backed rows for top wallets, or the final scope memo states these are disabled because public provider/rate budget is unavailable. \\
-Archive reconciliation & Storage audit can now check configured and external archive roots, but the current shell did not see the SSD mount, so the latest refreshed audit still reports missing partitions. & With SSD visible, \texttt{POLYMARKET\_EXTERNAL\_ARCHIVE\_ROOTS} resolves archived partitions and the report separates \texttt{archive\_only} from genuinely missing files. \\
+Archive reconciliation & \texttt{run\_phase12\_archive\_reconciliation.py} now produces an explicit operator report. Current status is \texttt{external\_archive\_not\_visible}: this shell sees only \texttt{/Volumes/Macintosh HD}, no accepted SSD archive root, and 3{,}075 partitions remain missing. & With SSD visible, auto-discovery or \texttt{--external-root /absolute/path/to/archive} resolves archived partitions and the report separates \texttt{archive\_only} from genuinely missing files. \\
 Evidence benchmark & Evidence workers and real-provider artifacts exist, but retrieval quality is not measured against a labeled case set. & A benchmark runner and 20--50 labeled cases produce precision-like agreement, latency, timeout, and error-rate metrics. \\
-Shadow ML scale & LightGBM exists and beat baselines on a small held-out packet, but the proof dataset is still too small for production ranking claims. & SSD-backed replay creates a larger, split-safe dataset and compares wallet-aware vs wallet-unaware baselines while keeping ML shadow-only. \\
+Shadow ML scale & LightGBM exists, is registered as active shadow model, and beat baselines on a small held-out packet. It was \textbf{not} used for the Telegram alert; current alerts are Phase 3/4 rule-based. & Decide whether to enable Phase 6 live shadow scoring for the next proof. It must remain shadow-only, with no alert promotion, until a later model-promotion memo. \\
 Long organic proof & A 60-minute organic run passed after lock hardening, and a 3-minute post-reconciliation smoke passed. & After alert-link and archive reconciliation fixes, run a 3--6 hour organic proof with fresh raw/detector/candidate/evidence/alert deltas and clean shutdown. \\
-Provider/API backpressure & Runtime survives provider timeouts and WebSocket reconnects, but logs still show repeated CLOB/Data API retry failures. & Add configurable backoff/concurrency and report timeout rates in live-run artifacts. \\
+Provider/API backpressure & Runtime survives provider timeouts and WebSocket reconnects, but the latest connectivity gate is \texttt{blocked}: Gamma events, Gamma markets, CLOB time/book, and Data API trades all fail with connection reset by peer from this machine/network. & Keep configurable backoff/concurrency, but first fix network/VPN/DNS/provider reachability until \texttt{run\_phase12\_provider\_connectivity.py} passes. \\
+Live alert freshness & Telegram delivery works, but earlier smokes showed startup could flush old candidates and make them look like current alerts. & Live mode now uses \texttt{POLYMARKET\_PHASE4\_RUNTIME\_MAX\_CANDIDATE\_AGE\_MINUTES}; keep it at 120 minutes for 24/7 use and set it to 0 only for deliberate backlog/replay drains. \\
 \end{longtable}
 
 \section*{Final Finish Plan}
 \subsection*{P1 Alert Payload and Click-Through Market Links}
+\textbf{Status:} Implemented. Proof: \texttt{reports/phase12/alert\_market\_link\_smoke.json}.\\
 \textbf{Files:} \texttt{phase4/repository.py}, \texttt{phase4/alerts.py}, delivery smoke/report docs.
 
 \begin{enumerate}[nosep]
@@ -58,16 +60,18 @@ Provider/API backpressure & Runtime survives provider timeouts and WebSocket rec
 \item Add a small URL builder that emits:
 \begin{itemize}[nosep]
 \item \texttt{event\_url = https://polymarket.com/event/<event\_slug>}
-\item \texttt{market\_url = https://polymarket.com/event/<event\_slug>?tid=<market\_slug>} when both slugs exist, with a fallback to \texttt{event\_url}.
+\item \texttt{market\_url = event\_url} as the stable clickable frontend URL,
+\item \texttt{market\_slug\_url = https://polymarket.com/event/<market\_slug>} for diagnostics only when the market slug exists.
 \end{itemize}
 \item Add these fields into \texttt{render\_alert\_payload()}: \texttt{market\_slug}, \texttt{event\_slug}, \texttt{condition\_id}, \texttt{market\_url}, \texttt{event\_url}.
 \item Update Telegram and Discord text renderers to include \texttt{Market: <market\_url>} and \texttt{Condition: <condition\_id>}.
 \item Add or update a smoke report showing one stored alert payload with the clickable market URL.
 \end{enumerate}
 
-\textbf{Acceptance:} given an alert id, an operator can read the DB payload or Telegram message, tap the market URL, and land on the exact Polymarket event/market context without manually joining tables.
+\textbf{Acceptance:} given an alert id, an operator can read the DB payload or Telegram message, tap the event-backed market URL, and land on the Polymarket event while using the outcome slug and condition id to identify the exact outcome.
 
 \subsection*{P2 Real Telegram Delivery Proof}
+\textbf{Status:} Real Telegram proof complete. Proof: \texttt{reports/phase12/delivery\_smoke.json}.\\
 \textbf{Files:} \texttt{run\_phase4\_delivery\_smoke.py} or equivalent, \texttt{.env.runtime.example}, \texttt{reports/phase12/delivery\_smoke.json}.
 
 \begin{enumerate}[nosep]
@@ -75,9 +79,10 @@ Provider/API backpressure & Runtime survives provider timeouts and WebSocket rec
 \item Send one redacted test payload with a market URL through Telegram.
 \item Persist/report provider status, HTTP result, provider message id if available, and redacted request payload.
 \item If secrets are absent, produce an honest \texttt{provider\_disabled} report instead of claiming delivery.
+\item After the current exposed-token test, rotate the Telegram bot token before long-running use.
 \end{enumerate}
 
-\textbf{Acceptance:} the final report says either \texttt{telegram\_sent=true} or \texttt{telegram\_configured=false}; no ambiguous middle state.
+\textbf{Acceptance:} satisfied for Telegram: \texttt{telegram\_sent=true}. Keep Discord marked disabled unless configured later.
 
 \subsection*{P3 Wallet Profile and Position Completion}
 \textbf{Files:} \texttt{run\_wallet\_entity\_materializer.py}, new \texttt{run\_wallet\_profile\_refresh.py}, new \texttt{run\_wallet\_position\_refresh.py} if provider endpoints are reliable.
@@ -92,16 +97,16 @@ Provider/API backpressure & Runtime survives provider timeouts and WebSocket rec
 \textbf{Acceptance:} \texttt{wallet\_profiles} and \texttt{wallet\_positions} are either non-zero with a report, or explicitly documented as out of scope for this release.
 
 \subsection*{P4 Archive Reconciliation With SSD Visible}
-\textbf{Files:} \texttt{phase7/storage.py}, \texttt{phase7/runtime\_storage.py}, \texttt{.env.runtime}, \texttt{reports/phase12/runtime\_storage\_status\_after\_archive\_reconciliation.json}.
+\textbf{Files:} \texttt{run\_phase12\_archive\_reconciliation.py}, \texttt{phase7/storage.py}, \texttt{phase7/runtime\_storage.py}, \texttt{.env.runtime}, \texttt{reports/phase12/archive\_reconciliation.json}.
 
 \begin{enumerate}[nosep]
 \item Confirm the SSD is visible under \texttt{/Volumes/...} in the same shell that runs Codex.
-\item Set \texttt{POLYMARKET\_EXTERNAL\_ARCHIVE\_ROOTS} to the archive root if auto-discovery does not find it.
-\item Refresh the storage audit.
+\item Run \texttt{run\_phase12\_archive\_reconciliation.py --env-file .env.runtime --json}.
+\item If auto-discovery does not find the archive root, rerun with \texttt{--external-root /absolute/path/to/archive}.
 \item Verify the report distinguishes local, external-archive, and genuinely missing partitions.
 \end{enumerate}
 
-\textbf{Acceptance:} \texttt{missing\_file\_count} drops for partitions present on SSD, and \texttt{archive\_only\_count} rises instead of hiding the fact that files are external.
+\textbf{Acceptance:} \texttt{missing\_file\_count} drops for partitions present on SSD, and \texttt{archive\_only\_count} rises instead of hiding the fact that files are external. If the SSD is not visible, the report must remain \texttt{external\_archive\_not\_visible} rather than implying replay readiness.
 
 \subsection*{P5 Evidence Benchmark}
 \textbf{Files:} \texttt{config/evidence\_benchmark\_cases.json}, \texttt{run\_evidence\_benchmark.py}, \texttt{reports/phase12/evidence\_benchmark.json}.
@@ -358,7 +363,7 @@ Replay/storage tools should use configured archive roots:
 \item missing SSD mount produces a clear error, not silent zero-row replay.
 \end{itemize}
 
-\textbf{Current proof:} \texttt{reports/phase12/runtime\_storage\_status\_ssd\_ready.json} confirms default roots; \texttt{reports/phase12/runtime\_storage\_status\_external\_roots\_smoke.json} confirms external/read-only root configuration; \texttt{reports/phase12/storage\_audit\_t7\_archive.json} confirms the mounted T7 archive is read by the storage audit; \texttt{reports/phase12/runtime\_replay\_t7\_smoke.json} confirms a bounded archived replay can process detector-input envelopes from the mounted SSD; \texttt{reports/phase12/runtime\_replay\_t7\_30min\_bounded.json} processed 2{,}000 envelopes, 3{,}792 snapshots, and 3 trades with zero missing restore items.
+\textbf{Current proof:} \texttt{reports/phase12/runtime\_storage\_status\_ssd\_ready.json} confirms default roots; \texttt{reports/phase12/runtime\_storage\_status\_external\_roots\_smoke.json} confirms external/read-only root configuration; \texttt{reports/phase12/storage\_audit\_t7\_archive.json} confirms the mounted T7 archive is read by the storage audit; \texttt{reports/phase12/runtime\_replay\_t7\_smoke.json} confirms a bounded archived replay can process detector-input envelopes from the mounted SSD; \texttt{reports/phase12/runtime\_replay\_t7\_30min\_bounded.json} processed 2{,}000 envelopes, 3{,}792 snapshots, and 3 trades with zero missing restore items. The latest operator check, \texttt{reports/phase12/archive\_reconciliation.json}, is intentionally blocked because the SSD is not visible to the current shell.
 
 \section*{Workstream G: CLOB V2 Compatibility}
 \textbf{Goal:} Keep the runtime honest about Polymarket's CLOB V2 migration before relying on new live data proofs.
@@ -388,35 +393,36 @@ CLOB V2 changes fee handling and order signing. The current repo should:
 \section*{Recommended Execution Order}
 \begin{longtable}{p{0.10\linewidth}p{0.30\linewidth}p{0.48\linewidth}}
 \textbf{Step} & \textbf{Work} & \textbf{Reason} \\
-1 & Alert payload market links & Turns stored detections into operator-actionable alerts with exact market trace-back. \\
-2 & Telegram delivery smoke & Proves the production notification path or documents provider-disabled mode. \\
-3 & SSD archive reconciliation & Separates archive-only files from genuinely missing files before more replay claims. \\
+1 & Provider connectivity gate & The Telegram alert path works, but fresh collection is currently blocked by connection resets to Gamma/Data API/CLOB. \\
+2 & Telegram-enabled organic runtime proof & Re-run after provider connectivity passes to prove fresh 24/7-style behavior, not only backlog alert flushing. \\
+3 & Phase 6 shadow-live decision & Decide whether to enable LightGBM as shadow-only during the next proof, without using it to create alerts. \\
 4 & Wallet profile/position refresh decision & Completes or explicitly disables the remaining wallet-plane tables. \\
 5 & Evidence benchmark dataset + runner & Makes public-silence claims measurable. \\
-6 & Provider backpressure tuning & Reduces noisy CLOB/Data API retry failures before longer runtime proof. \\
-7 & 3--6 hour organic runtime run & Produces stronger live evidence after actionability and storage fixes pass. \\
-8 & Shadow ML expansion & Uses wallet plane and replay improvements for a larger dataset. \\
-9 & Final scope memo & Updates SRS truth: mature research v1 vs production future work. \\
+6 & SSD archive reconciliation and shadow ML expansion & Resume replay and larger ML dataset work when the SSD is attached again. \\
+7 & Final scope memo & Updates SRS truth: mature research v1 vs production future work. \\
 \end{longtable}
 
-\section*{First Implementation Slice}
-Start with Workstream A because it is the highest-leverage code change and does not require external credentials.
+\section*{Next Implementation Slice}
+Start with the provider connectivity gate because the Telegram-enabled 2-minute smoke proved alert delivery over existing pending candidates, but fresh provider collection produced no new raw/trade deltas.
 
 \textbf{Files to touch first:}
 \begin{itemize}[nosep]
-\item \texttt{database/schema.sql}
-\item \texttt{database/postgres\_schema.sql}
-\item new \texttt{wallets/} or \texttt{phase12/} module for materialization logic
-\item new \texttt{run\_wallet\_entity\_materializer.py}
-\item new \texttt{reports/phase12/wallet\_entity\_materialization.json}
+\item \texttt{run\_phase12\_provider\_connectivity.py}
+\item HTTP/WebSocket collector modules that call Gamma, Data API, CLOB books/prices, and market WebSocket feeds
+\item \texttt{run\_phase12\_live\_smoke.py}
+\item \texttt{run\_runtime.py}
+\item \texttt{reports/phase12/provider\_connectivity.json}
+\item \texttt{reports/phase12/provider\_backpressure\_smoke.json}
+\item \texttt{reports/phase12/organic\_runtime\_smoke\_telegram\_30min.json}
+\item \texttt{reports/phase12/delivery\_smoke.json}
 \end{itemize}
 
 \textbf{Do not start with:}
 \begin{itemize}[nosep]
-\item Telegram secrets,
+\item committing Telegram secrets,
 \item PostgreSQL migration,
-\item long collector restart,
-\item model promotion.
+\item model promotion,
+\item SSD replay until the SSD is attached again.
 \end{itemize}
 
 \section*{Final Claim Boundary}

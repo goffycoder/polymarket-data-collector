@@ -1,0 +1,50 @@
+{
+  "alert_id": "4e1f47e50d09492d979dc3687064461e",
+  "candidate_id": "8a4dd12c6ebe4fe295c766423e32982c",
+  "channels": [
+    {
+      "channel": "telegram",
+      "configured": true,
+      "enabled": true,
+      "preview_text": "[ACTIONABLE] Who will be the next Prime Minister of Israel after the next election?\nCandidate 8a4dd12c6ebe4fe295c766423e32982c triggered at May 16, 2026 11:59 AM ET\nTriggered: May 16, 2026 11:59 AM ET\nMarket: https://polymarket.com/event/who-will-be-the-next-prime-minister-of-israel-after-the-next-election\nOutcome slug: will-amir-ohana-be-the-next-prime-minister-of-israel\nCondition: 0x8cbdd0c4c6061c9e5c5a94d4a474c1880d0f2ab5ee4704a64af1e77c6d0e18d0\nRules=['concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=72.565112\nPublic evidence: pending_evidence\nDetector: phase3_detector_v1 / phase3_v1\nAlert ID: 4e1f47e50d09492d979dc3687064461e",
+      "provider_message_id_present": true,
+      "response": {
+        "channel": "telegram",
+        "http_status": 200,
+        "provider_message_id": "200",
+        "response_text_preview": "{\"ok\":true,\"result\":{\"message_id\":7,\"from\":{\"id\":8652156183,\"is_bot\":true,\"first_name\":\"ChasingAlpha\",\"username\":\"ChasingAlpha17_bot\"},\"chat\":{\"id\":8563512338,\"first_name\":\"vraj\",\"last_name\":\"patel\",\"type\":\"private\"},\"date\":1778960631,\"text\":\"[ACTIONABLE] Who will be the next Prime Minister of Israe",
+        "status": "sent"
+      },
+      "sent": true,
+      "status": "sent"
+    },
+    {
+      "channel": "discord",
+      "configured": false,
+      "enabled": false,
+      "preview_text": "**[ACTIONABLE] Who will be the next Prime Minister of Israel after the next election?**\nCandidate 8a4dd12c6ebe4fe295c766423e32982c triggered at May 16, 2026 11:59 AM ET\nTriggered: May 16, 2026 11:59 AM ET\nMarket: https://polymarket.com/event/who-will-be-the-next-prime-minister-of-israel-after-the-next-election\nOutcome slug: will-amir-ohana-be-the-next-prime-minister-of-israel\nCondition: 0x8cbdd0c4c6061c9e5c5a94d4a474c1880d0f2ab5ee4704a64af1e77c6d0e18d0\nRules=['concentrated_directional_flow', 'fast_repricing_with_wallet_support'] severity_score=72.565112\nPublic evidence: pending_evidence\nAlert ID: 4e1f47e50d09492d979dc3687064461e",
+      "sent": false,
+      "status": "provider_disabled"
+    }
+  ],
+  "discord_configured": false,
+  "discord_sent": false,
+  "generated_at": "2026-05-16T19:43:51.964280+00:00",
+  "market_trace": {
+    "condition_id": "0x8cbdd0c4c6061c9e5c5a94d4a474c1880d0f2ab5ee4704a64af1e77c6d0e18d0",
+    "event_id": "81557",
+    "event_slug": "who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
+    "event_url": "https://polymarket.com/event/who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
+    "market_id": "682721",
+    "market_slug": "will-amir-ohana-be-the-next-prime-minister-of-israel",
+    "market_slug_url": "https://polymarket.com/event/will-amir-ohana-be-the-next-prime-minister-of-israel",
+    "market_url": "https://polymarket.com/event/who-will-be-the-next-prime-minister-of-israel-after-the-next-election"
+  },
+  "notes": [
+    "Secrets are never printed or written by this smoke.",
+    "A provider_disabled status is an honest non-production-delivery result, not a failed runtime."
+  ],
+  "status": "sent",
+  "telegram_configured": true,
+  "telegram_sent": true
+}
