@@ -41,6 +41,7 @@
         }
       ],
       "summary": {
+        "alert_candidates_filtered_by_movement": 0,
         "alerts_created": 1,
         "alerts_delivery_suppressed": 0,
         "alerts_suppressed": 3,
@@ -91,6 +92,7 @@
         }
       ],
       "summary": {
+        "alert_candidates_filtered_by_movement": 0,
         "alerts_created": 4,
         "alerts_delivery_suppressed": 3,
         "alerts_suppressed": 0,
@@ -124,6 +126,7 @@
         }
       ],
       "summary": {
+        "alert_candidates_filtered_by_movement": 0,
         "alerts_created": 2,
         "alerts_delivery_suppressed": 2,
         "alerts_suppressed": 0,
@@ -132,6 +135,81 @@
         "delivery_attempts_written": 0
       },
       "total_delivery_attempts": 6
+    },
+    {
+      "alert_statuses": [
+        "created",
+        "created_silent",
+        "created_silent",
+        "created_silent",
+        "created_silent",
+        "created_silent",
+        "created_silent"
+      ],
+      "name": "movement_top_7",
+      "new_delivery_attempts": 1,
+      "results": [
+        {
+          "alert_id": "fake-alert-1",
+          "candidate_id": "candidate-9",
+          "delivery_channels": [
+            "telegram"
+          ],
+          "severity": "ACTIONABLE"
+        },
+        {
+          "alert_id": "fake-alert-2",
+          "candidate_id": "candidate-8",
+          "delivery_block_reason": "delivery_budget_exhausted:1",
+          "severity": "ACTIONABLE",
+          "status": "created_silent"
+        },
+        {
+          "alert_id": "fake-alert-3",
+          "candidate_id": "candidate-7",
+          "delivery_block_reason": "delivery_budget_exhausted:1",
+          "severity": "ACTIONABLE",
+          "status": "created_silent"
+        },
+        {
+          "alert_id": "fake-alert-4",
+          "candidate_id": "candidate-6",
+          "delivery_block_reason": "delivery_budget_exhausted:1",
+          "severity": "ACTIONABLE",
+          "status": "created_silent"
+        },
+        {
+          "alert_id": "fake-alert-5",
+          "candidate_id": "candidate-5",
+          "delivery_block_reason": "delivery_budget_exhausted:1",
+          "severity": "ACTIONABLE",
+          "status": "created_silent"
+        },
+        {
+          "alert_id": "fake-alert-6",
+          "candidate_id": "candidate-4",
+          "delivery_block_reason": "delivery_budget_exhausted:1",
+          "severity": "ACTIONABLE",
+          "status": "created_silent"
+        },
+        {
+          "alert_id": "fake-alert-7",
+          "candidate_id": "candidate-3",
+          "delivery_block_reason": "delivery_budget_exhausted:1",
+          "severity": "ACTIONABLE",
+          "status": "created_silent"
+        }
+      ],
+      "summary": {
+        "alert_candidates_filtered_by_movement": 2,
+        "alerts_created": 7,
+        "alerts_delivery_suppressed": 6,
+        "alerts_suppressed": 0,
+        "alerts_updated": 0,
+        "candidates_seen": 9,
+        "delivery_attempts_written": 1
+      },
+      "total_delivery_attempts": 1
     }
   ],
   "status": "passed"

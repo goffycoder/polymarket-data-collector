@@ -18,6 +18,8 @@ from config.settings import (
     PHASE4_ALERT_EVENT_SUPPRESSION_SECONDS,
     PHASE4_ALERT_MAX_DELIVERIES_PER_HOUR,
     PHASE4_ALERT_MAX_DELIVERIES_PER_PASS,
+    PHASE4_ALERT_MOVEMENT_RANKING_MIN_CANDIDATES,
+    PHASE4_ALERT_MOVEMENT_TOP_N,
     PHASE4_ALERT_INFO_THRESHOLD,
     PHASE4_ALERT_SUPPRESSION_SECONDS,
     PHASE4_ALERT_WATCH_THRESHOLD,
@@ -95,6 +97,41 @@ def _suppression_key(candidate: dict[str, Any]) -> str | None:
     if market_key:
         return f"market:{market_key}"
     return None
+
+
+def probability_movement_score(candidate: dict[str, Any]) -> float:
+    feature_snapshot = candidate.get("feature_snapshot") or {}
+    if not isinstance(feature_snapshot, dict):
+        return 0.0
+    try:
+        velocity = abs(float(feature_snapshot.get("probability_velocity") or 0.0))
+    except (TypeError, ValueError):
+        velocity = 0.0
+    try:
+        acceleration = abs(float(feature_snapshot.get("probability_acceleration") or 0.0))
+    except (TypeError, ValueError):
+        acceleration = 0.0
+    return velocity + acceleration
+
+
+def prioritize_candidates_by_probability_movement(
+    candidates: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], int]:
+    if PHASE4_ALERT_MOVEMENT_TOP_N <= 0:
+        return candidates, 0
+    if len(candidates) <= PHASE4_ALERT_MOVEMENT_RANKING_MIN_CANDIDATES:
+        return candidates, 0
+
+    ranked = sorted(
+        candidates,
+        key=lambda candidate: (
+            probability_movement_score(candidate),
+            float(candidate.get("severity_score") or 0.0),
+        ),
+        reverse=True,
+    )
+    selected = ranked[:PHASE4_ALERT_MOVEMENT_TOP_N]
+    return selected, max(0, len(candidates) - len(selected))
 
 
 def _slug_url(slug: Any) -> str | None:
@@ -344,6 +381,7 @@ class AlertWorkerSummary:
     alerts_updated: int = 0
     alerts_suppressed: int = 0
     alerts_delivery_suppressed: int = 0
+    alert_candidates_filtered_by_movement: int = 0
     delivery_attempts_written: int = 0
 
     def to_dict(self) -> dict[str, int]:
@@ -353,6 +391,7 @@ class AlertWorkerSummary:
             "alerts_updated": self.alerts_updated,
             "alerts_suppressed": self.alerts_suppressed,
             "alerts_delivery_suppressed": self.alerts_delivery_suppressed,
+            "alert_candidates_filtered_by_movement": self.alert_candidates_filtered_by_movement,
             "delivery_attempts_written": self.delivery_attempts_written,
         }
 
@@ -382,6 +421,8 @@ class Phase4AlertWorker:
         )
         self.summary.candidates_seen += len(candidates)
         self._deliveries_this_pass = 0
+        candidates, filtered_count = prioritize_candidates_by_probability_movement(candidates)
+        self.summary.alert_candidates_filtered_by_movement += filtered_count
         outputs: list[dict[str, Any]] = []
 
         for candidate in candidates:

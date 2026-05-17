@@ -138,7 +138,18 @@ class FakePhase4Repository:
         return attempt_id
 
 
-def _candidate(index: int, *, event_id: str, score: float = 100.0) -> dict[str, Any]:
+def _candidate(
+    index: int,
+    *,
+    event_id: str,
+    score: float = 100.0,
+    probability_velocity: float | None = None,
+    probability_acceleration: float | None = None,
+) -> dict[str, Any]:
+    velocity = float(probability_velocity if probability_velocity is not None else index / 100.0)
+    acceleration = float(
+        probability_acceleration if probability_acceleration is not None else index / 1000.0
+    )
     return {
         "candidate_id": f"candidate-{index}",
         "market_id": f"market-{index}",
@@ -152,7 +163,10 @@ def _candidate(index: int, *, event_id: str, score: float = 100.0) -> dict[str, 
         "feature_schema_version": "phase3_v1",
         "severity_score": score,
         "triggering_rules": ["normalization_smoke"],
-        "feature_snapshot": {},
+        "feature_snapshot": {
+            "probability_velocity": velocity,
+            "probability_acceleration": acceleration,
+        },
         "question": f"Candidate {index}",
         "event_title": f"Event {event_id}",
     }
@@ -197,15 +211,40 @@ def main() -> int:
         [_candidate(index, event_id=f"hourly-{index}") for index in range(1, 3)],
         existing_delivery_attempts=6,
     )
+    movement_ranking = _run_case(
+        "movement_top_7",
+        [
+            _candidate(
+                index,
+                event_id=f"movement-{index}",
+                probability_velocity=index / 100.0,
+                probability_acceleration=index / 1000.0,
+            )
+            for index in range(1, 10)
+        ],
+    )
+    movement_candidate_ids = [
+        result["candidate_id"] for result in movement_ranking["results"]
+    ]
     payload = {
         "status": "passed"
         if (
             same_event["new_delivery_attempts"] == 1
             and delivery_budget["new_delivery_attempts"] == 1
             and hourly_budget["new_delivery_attempts"] == 0
+            and movement_ranking["summary"]["alert_candidates_filtered_by_movement"] == 2
+            and movement_candidate_ids == [
+                "candidate-9",
+                "candidate-8",
+                "candidate-7",
+                "candidate-6",
+                "candidate-5",
+                "candidate-4",
+                "candidate-3",
+            ]
         )
         else "failed",
-        "cases": [same_event, delivery_budget, hourly_budget],
+        "cases": [same_event, delivery_budget, hourly_budget, movement_ranking],
     }
     output = Path("reports/phase12/alert_normalization_smoke.json")
     output.parent.mkdir(parents=True, exist_ok=True)

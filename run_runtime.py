@@ -144,7 +144,8 @@ def _print_runtime_plan(
         f"max_candidate_age_minutes={settings.PHASE4_RUNTIME_MAX_CANDIDATE_AGE_MINUTES}, "
         f"delivery_min_severity={settings.PHASE4_ALERT_DELIVERY_MIN_SEVERITY}, "
         f"max_deliveries_per_pass={settings.PHASE4_ALERT_MAX_DELIVERIES_PER_PASS}, "
-        f"max_deliveries_per_hour={settings.PHASE4_ALERT_MAX_DELIVERIES_PER_HOUR})"
+        f"max_deliveries_per_hour={settings.PHASE4_ALERT_MAX_DELIVERIES_PER_HOUR}, "
+        f"movement_top_n={settings.PHASE4_ALERT_MOVEMENT_TOP_N})"
     )
     log.info(
         "Phase 6 runtime: "
