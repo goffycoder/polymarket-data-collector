@@ -30,6 +30,14 @@ data/
 # Logs
 logs/
 
+# Generated live-runtime proof noise
+reports/phase6/live_shadow/*.json
+reports/phase6/training_datasets/
+reports/phase12/*.log
+reports/phase12/*.err
+reports/phase12/organic_runtime_12h_live_lightgbm*.json
+reports/phase12/runtime_live_direct.*
+
 # Documentation (track sources; ignore build artifacts)
 Documentation/build/
 Documentation/*.synctex.gz
