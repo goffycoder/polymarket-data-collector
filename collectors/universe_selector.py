@@ -14,6 +14,11 @@ from pathlib import Path
 
 import yaml
 
+from config.settings import (
+    PHASE4_ALERT_MAX_YES_OUTCOME_PROBABILITY,
+    PHASE4_ALERT_MIN_YES_OUTCOME_PROBABILITY,
+)
+
 
 WATCHLISTS_PATH = Path(__file__).resolve().parents[1] / "config" / "watchlists.yaml"
 
@@ -159,6 +164,8 @@ def select_runtime_universe(
             m.condition_id,
             m.yes_token_id,
             m.no_token_id,
+            m.outcomes,
+            m.outcome_prices,
             m.tier,
             COALESCE(m.volume, 0) AS market_volume,
             COALESCE(m.liquidity, 0) AS market_liquidity,
@@ -190,6 +197,9 @@ def select_runtime_universe(
 
         if _is_manual_override(market, policy.include):
             approved.append(market)
+            continue
+
+        if _is_outside_yes_probability_band(row):
             continue
 
         if _is_hard_excluded(market, context, tag_ids, policy.exclude):
@@ -313,6 +323,57 @@ def _decode_string_list(raw: str | None) -> tuple[str, ...]:
     if not isinstance(data, list):
         return ()
     return tuple(str(item) for item in data if item not in (None, ""))
+
+
+def _decode_float_list(raw: str | None) -> tuple[float, ...]:
+    """Parse a JSON string list of numeric values stored in SQLite."""
+    if not raw:
+        return ()
+    try:
+        data = json.loads(raw)
+    except (json.JSONDecodeError, TypeError, ValueError):
+        return ()
+    if not isinstance(data, list):
+        return ()
+    values: list[float] = []
+    for item in data:
+        try:
+            values.append(float(item))
+        except (TypeError, ValueError):
+            values.append(float("nan"))
+    return tuple(values)
+
+
+def _row_yes_probability(row: sqlite3.Row) -> float | None:
+    outcomes = _decode_string_list(row["outcomes"])
+    prices = _decode_float_list(row["outcome_prices"])
+    if not prices:
+        return None
+
+    outcome_index = 0
+    for idx, outcome in enumerate(outcomes):
+        if outcome.strip().lower() == "yes":
+            outcome_index = idx
+            break
+    if outcome_index >= len(prices):
+        return None
+
+    probability = prices[outcome_index]
+    if probability != probability:
+        return None
+    return probability
+
+
+def _is_outside_yes_probability_band(row: sqlite3.Row) -> bool:
+    yes_probability = _row_yes_probability(row)
+    if yes_probability is None:
+        return False
+    min_probability = PHASE4_ALERT_MIN_YES_OUTCOME_PROBABILITY
+    max_probability = PHASE4_ALERT_MAX_YES_OUTCOME_PROBABILITY
+    return (
+        (min_probability > 0 and yes_probability < min_probability)
+        or (max_probability < 1 and yes_probability > max_probability)
+    )
 
 
 def _row_to_market_descriptor(row: sqlite3.Row) -> MarketDescriptor:

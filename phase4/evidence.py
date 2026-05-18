@@ -22,6 +22,7 @@ from config.settings import (
     PHASE4_GOOGLE_NEWS_RSS_MONTHLY_QUERY_CAP,
     PHASE4_GOOGLE_NEWS_RSS_URL,
 )
+from phase4.alerts import candidate_probability_filter_reason
 from phase4.repository import Phase4Repository
 from utils.http_client import make_client
 from utils.logger import get_logger
@@ -362,6 +363,16 @@ class Phase4EvidenceWorker:
         outputs: list[dict[str, Any]] = []
 
         for candidate in candidates:
+            probability_filter_reason = candidate_probability_filter_reason(candidate)
+            if probability_filter_reason is not None:
+                payload = {
+                    "candidate_id": candidate["candidate_id"],
+                    "status": "probability_filtered",
+                    "delivery_block_reason": probability_filter_reason,
+                }
+                log.info(f"Phase 4 evidence candidate probability-filtered: {payload}")
+                outputs.append(payload)
+                continue
             outputs.append(await self.process_candidate(candidate))
 
         return outputs

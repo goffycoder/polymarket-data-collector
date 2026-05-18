@@ -9,6 +9,8 @@ from typing import Any, Iterable
 from uuid import uuid4
 
 from config.settings import (
+    PHASE4_ALERT_MAX_YES_OUTCOME_PROBABILITY,
+    PHASE4_ALERT_MIN_YES_OUTCOME_PROBABILITY,
     PHASE3_COOLDOWN_SECONDS,
     PHASE3_DETECTOR_VERSION,
     PHASE3_FEATURE_SCHEMA_VERSION,
@@ -203,6 +205,8 @@ class Phase3Repository:
                     m.event_id,
                     m.question,
                     m.condition_id,
+                    m.outcomes,
+                    m.outcome_prices,
                     e.slug AS event_slug,
                     e.title AS event_title
                 FROM markets m
@@ -219,6 +223,8 @@ class Phase3Repository:
             "event_id": row["event_id"] if row else None,
             "event_family_id": row["event_id"] if row else None,
             "condition_id": row["condition_id"] if row else None,
+            "outcomes": json.loads(row["outcomes"] or "[]") if row else [],
+            "outcome_prices": json.loads(row["outcome_prices"] or "[]") if row else [],
             "question": row["question"] if row else None,
             "event_slug": row["event_slug"] if row else None,
             "event_title": row["event_title"] if row else None,
@@ -709,6 +715,16 @@ class Phase3Detector:
         if not rule_families:
             return
 
+        metadata = self.repository.market_metadata(market_id)
+        probability_filter_reason = self._candidate_probability_filter_reason(metadata)
+        if probability_filter_reason is not None:
+            self.summary.candidates_suppressed += 1
+            log.info(
+                "Phase 3 candidate probability-filtered "
+                f"market={market_id} reason={probability_filter_reason}"
+            )
+            return
+
         last_candidate = await self.store.get_last_candidate(market_id)
         suppressed, cooldown_state = self._cooldown_decision(
             features=features,
@@ -720,7 +736,6 @@ class Phase3Detector:
             self.summary.candidates_suppressed += 1
             return
 
-        metadata = self.repository.market_metadata(market_id)
         candidate = {
             "candidate_id": uuid4().hex,
             "episode_id": uuid4().hex,
@@ -824,6 +839,18 @@ class Phase3Detector:
             if str(point.get("side") or "").upper() == "SELL"
         )
         directional_imbalance = abs(buy_notional - sell_notional) / current_notional if current_notional else 0.0
+        outcome_notional: dict[str, float] = defaultdict(float)
+        for point in current_trades:
+            outcome_side = str(point.get("outcome_side") or "").upper()
+            if outcome_side:
+                outcome_notional[outcome_side] += float(point.get("notional") or 0)
+        active_outcome_side = None
+        active_outcome_notional = 0.0
+        if outcome_notional:
+            active_outcome_side, active_outcome_notional = max(
+                outcome_notional.items(),
+                key=lambda item: item[1],
+            )
 
         wallet_totals: dict[str, float] = defaultdict(float)
         fresh_wallets: set[str] = set()
@@ -874,6 +901,10 @@ class Phase3Detector:
             "previous_window_notional": round(previous_notional, 6),
             "buy_notional": round(buy_notional, 6),
             "sell_notional": round(sell_notional, 6),
+            "yes_trade_notional": round(outcome_notional.get("YES", 0.0), 6),
+            "no_trade_notional": round(outcome_notional.get("NO", 0.0), 6),
+            "active_outcome_side": active_outcome_side,
+            "active_outcome_notional": round(active_outcome_notional, 6),
             "wallet_count": len(wallet_totals),
             "trade_count": len(current_trades),
             "price_point_count": len(current_prices),
@@ -960,6 +991,38 @@ class Phase3Detector:
             rules.append("fast_repricing_with_wallet_support")
 
         return rules
+
+    @staticmethod
+    def _yes_probability(metadata: dict[str, Any]) -> float | None:
+        outcomes = metadata.get("outcomes") or []
+        prices = metadata.get("outcome_prices") or []
+        if not isinstance(outcomes, list) or not isinstance(prices, list) or not prices:
+            return None
+
+        outcome_index = 0
+        for idx, outcome in enumerate(outcomes):
+            if str(outcome).strip().lower() == "yes":
+                outcome_index = idx
+                break
+        if outcome_index >= len(prices):
+            return None
+        try:
+            return float(prices[outcome_index])
+        except (TypeError, ValueError):
+            return None
+
+    @classmethod
+    def _candidate_probability_filter_reason(cls, metadata: dict[str, Any]) -> str | None:
+        yes_probability = cls._yes_probability(metadata)
+        if yes_probability is None:
+            return None
+        min_probability = PHASE4_ALERT_MIN_YES_OUTCOME_PROBABILITY
+        max_probability = PHASE4_ALERT_MAX_YES_OUTCOME_PROBABILITY
+        if min_probability > 0 and yes_probability < min_probability:
+            return f"below_min_yes_probability:{yes_probability:.4f}<{min_probability:.4f}"
+        if max_probability < 1 and yes_probability > max_probability:
+            return f"above_max_yes_probability:{yes_probability:.4f}>{max_probability:.4f}"
+        return None
 
     @staticmethod
     def _cooldown_decision(

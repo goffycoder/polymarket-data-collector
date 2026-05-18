@@ -13,11 +13,15 @@ from config.settings import (
     ENABLE_PHASE4_DISCORD,
     ENABLE_PHASE4_TELEGRAM,
     PHASE4_ALERT_ACTIONABLE_THRESHOLD,
+    PHASE4_ALERT_ALLOWED_DOMAINS,
     PHASE4_ALERT_CHANNELS,
     PHASE4_ALERT_DELIVERY_MIN_SEVERITY,
     PHASE4_ALERT_EVENT_SUPPRESSION_SECONDS,
+    PHASE4_ALERT_EXCLUDED_DOMAINS,
     PHASE4_ALERT_MAX_DELIVERIES_PER_HOUR,
     PHASE4_ALERT_MAX_DELIVERIES_PER_PASS,
+    PHASE4_ALERT_MAX_YES_OUTCOME_PROBABILITY,
+    PHASE4_ALERT_MIN_YES_OUTCOME_PROBABILITY,
     PHASE4_ALERT_MOVEMENT_RANKING_MIN_CANDIDATES,
     PHASE4_ALERT_MOVEMENT_TOP_N,
     PHASE4_ALERT_INFO_THRESHOLD,
@@ -72,12 +76,8 @@ def should_resend_alert(
 ) -> bool:
     previous_payload = previous_alert.get("rendered_payload") or {}
     previous_severity = str(previous_alert.get("severity") or "").upper()
-    previous_evidence_state = previous_payload.get("public_evidence_state")
-    new_evidence_state = new_payload.get("public_evidence_state")
 
     if SEVERITY_RANK.get(new_severity, 0) > SEVERITY_RANK.get(previous_severity, 0):
-        return True
-    if previous_evidence_state != new_evidence_state:
         return True
     if previous_payload.get("why_it_looks_informed") != new_payload.get("why_it_looks_informed"):
         return True
@@ -97,6 +97,37 @@ def _suppression_key(candidate: dict[str, Any]) -> str | None:
     if market_key:
         return f"market:{market_key}"
     return None
+
+
+def _candidate_domain_text(candidate: dict[str, Any]) -> str:
+    parts = [
+        candidate.get("event_category"),
+        candidate.get("event_title"),
+        candidate.get("event_slug"),
+        candidate.get("question"),
+        candidate.get("market_slug"),
+    ]
+    tags = candidate.get("event_tags") or []
+    if isinstance(tags, list):
+        parts.extend(str(tag) for tag in tags)
+    tag_ids = candidate.get("event_tag_ids") or []
+    if isinstance(tag_ids, list):
+        parts.extend(str(tag_id) for tag_id in tag_ids)
+    return " ".join(str(part).lower() for part in parts if part)
+
+
+def candidate_domain_filter_reason(candidate: dict[str, Any]) -> str | None:
+    domain_text = _candidate_domain_text(candidate)
+    if not domain_text:
+        return None
+    for excluded in PHASE4_ALERT_EXCLUDED_DOMAINS:
+        if excluded and excluded in domain_text:
+            return f"excluded_domain:{excluded}"
+    if not PHASE4_ALERT_ALLOWED_DOMAINS:
+        return None
+    if any(allowed and allowed in domain_text for allowed in PHASE4_ALERT_ALLOWED_DOMAINS):
+        return None
+    return "outside_allowed_domains"
 
 
 def probability_movement_score(candidate: dict[str, Any]) -> float:
@@ -134,6 +165,73 @@ def prioritize_candidates_by_probability_movement(
     return selected, max(0, len(candidates) - len(selected))
 
 
+def candidate_outcome_probability(candidate: dict[str, Any], outcome_side: str) -> float | None:
+    outcomes = candidate.get("outcomes") or []
+    prices = candidate.get("outcome_prices") or []
+    if not isinstance(outcomes, list) or not isinstance(prices, list) or not prices:
+        return None
+
+    requested = str(outcome_side or "").strip().lower()
+    outcome_index = 0
+    for idx, outcome in enumerate(outcomes):
+        if str(outcome).strip().lower() == requested:
+            outcome_index = idx
+            break
+    if outcome_index >= len(prices):
+        return None
+    try:
+        return float(prices[outcome_index])
+    except (TypeError, ValueError):
+        return None
+
+
+def candidate_active_outcome_side(candidate: dict[str, Any]) -> str | None:
+    feature_snapshot = candidate.get("feature_snapshot") or {}
+    if isinstance(feature_snapshot, dict):
+        active_side = str(feature_snapshot.get("active_outcome_side") or "").upper()
+        if active_side in {"YES", "NO"}:
+            return active_side
+        try:
+            probability_velocity = float(feature_snapshot.get("probability_velocity") or 0.0)
+        except (TypeError, ValueError):
+            probability_velocity = 0.0
+        if probability_velocity < 0:
+            return "NO"
+    return "YES"
+
+
+def candidate_active_outcome_probability(candidate: dict[str, Any]) -> float | None:
+    active_side = candidate_active_outcome_side(candidate)
+    if not active_side:
+        return None
+    return candidate_outcome_probability(candidate, active_side)
+
+
+def candidate_yes_probability(candidate: dict[str, Any]) -> float | None:
+    return candidate_outcome_probability(candidate, "YES")
+
+
+def candidate_probability_filter_reason(candidate: dict[str, Any]) -> str | None:
+    min_probability = PHASE4_ALERT_MIN_YES_OUTCOME_PROBABILITY
+    max_probability = PHASE4_ALERT_MAX_YES_OUTCOME_PROBABILITY
+    if min_probability <= 0 and max_probability >= 1:
+        return None
+    yes_probability = candidate_yes_probability(candidate)
+    if yes_probability is None:
+        return None
+    if min_probability > 0 and yes_probability < min_probability:
+        return (
+            "below_min_yes_probability:"
+            f"{yes_probability:.4f}<{min_probability:.4f}"
+        )
+    if max_probability < 1 and yes_probability > max_probability:
+        return (
+            "above_max_yes_probability:"
+            f"{yes_probability:.4f}>{max_probability:.4f}"
+        )
+    return None
+
+
 def _slug_url(slug: Any) -> str | None:
     text = str(slug or "").strip().strip("/")
     if not text:
@@ -146,6 +244,7 @@ def render_alert_payload(
     evidence_snapshot: dict[str, Any] | None,
     *,
     severity: str,
+    shadow_score: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     feature_snapshot = candidate.get("feature_snapshot")
     if isinstance(feature_snapshot, str):
@@ -193,13 +292,53 @@ def render_alert_payload(
         "market_slug": candidate.get("market_slug"),
         "event_slug": candidate.get("event_slug"),
         "condition_id": candidate.get("condition_id"),
+        "active_outcome_side": candidate_active_outcome_side(candidate),
+        "active_outcome_probability": candidate_active_outcome_probability(candidate),
         "public_evidence_state": evidence_state,
         "provider_summary": provider_summary,
+        "ml_shadow_score": _render_shadow_score_payload(shadow_score),
         "invalidates_it": "Material contrary public evidence or a weaker replay-reconciled interpretation.",
         "detector_version": candidate.get("detector_version"),
         "feature_schema_version": candidate.get("feature_schema_version"),
     }
     return _redact_wallet_identifiers(payload)
+
+
+def _render_shadow_score_payload(shadow_score: dict[str, Any] | None) -> dict[str, Any]:
+    if not shadow_score:
+        return {
+            "state": "pending",
+            "model_version": None,
+            "score_label": None,
+            "score_value": None,
+            "scored_at": None,
+        }
+    score_value = shadow_score.get("score_value")
+    try:
+        normalized_score = round(float(score_value), 6)
+    except (TypeError, ValueError):
+        normalized_score = None
+    return {
+        "state": "scored",
+        "model_version": shadow_score.get("model_version"),
+        "score_label": shadow_score.get("score_label"),
+        "score_value": normalized_score,
+        "scored_at": shadow_score.get("scored_at"),
+    }
+
+
+def _render_shadow_score_text(alert: dict[str, Any]) -> str:
+    shadow_score = alert.get("ml_shadow_score") or {}
+    if shadow_score.get("state") != "scored":
+        return "ML shadow: pending"
+    score_value = shadow_score.get("score_value")
+    score_text = "unavailable" if score_value is None else f"{float(score_value):.3f}"
+    return (
+        "ML shadow: "
+        f"{shadow_score.get('score_label') or 'unlabeled'} "
+        f"{score_text} "
+        f"({shadow_score.get('model_version') or 'unknown_model'})"
+    )
 
 
 def _redact_wallet_identifiers(value: Any) -> Any:
@@ -278,6 +417,7 @@ class TelegramDeliveryChannel:
                 f"Condition: {alert.get('condition_id') or 'unavailable'}",
                 alert.get("why_it_looks_informed", ""),
                 f"Public evidence: {alert.get('public_evidence_state')}",
+                _render_shadow_score_text(alert),
                 f"Detector: {alert.get('detector_version')} / {alert.get('feature_schema_version')}",
                 f"Alert ID: {alert.get('alert_id')}",
             ]
@@ -321,6 +461,7 @@ class DiscordDeliveryChannel:
                 f"Condition: {alert.get('condition_id') or 'unavailable'}",
                 alert.get("why_it_looks_informed", ""),
                 f"Public evidence: {alert.get('public_evidence_state')}",
+                _render_shadow_score_text(alert),
                 f"Alert ID: {alert.get('alert_id')}",
             ]
         ).strip()
@@ -431,8 +572,35 @@ class Phase4AlertWorker:
         return outputs
 
     def process_candidate(self, candidate: dict[str, Any]) -> dict[str, Any]:
+        domain_filter_reason = candidate_domain_filter_reason(candidate)
+        if domain_filter_reason is not None:
+            self.summary.alerts_suppressed += 1
+            payload = {
+                "candidate_id": candidate["candidate_id"],
+                "severity": "UNCLASSIFIED",
+                "status": "domain_filtered",
+                "delivery_block_reason": domain_filter_reason,
+            }
+            log.info(f"Phase 4 candidate domain-filtered: {payload}")
+            return payload
+
+        probability_filter_reason = candidate_probability_filter_reason(candidate)
+        if probability_filter_reason is not None:
+            self.summary.alerts_suppressed += 1
+            payload = {
+                "candidate_id": candidate["candidate_id"],
+                "severity": "UNCLASSIFIED",
+                "status": "probability_filtered",
+                "delivery_block_reason": probability_filter_reason,
+            }
+            log.info(f"Phase 4 candidate probability-filtered: {payload}")
+            return payload
+
         existing_alert = self.repository.alert_for_candidate(str(candidate["candidate_id"]))
         evidence_snapshot = self.repository.latest_evidence_snapshot_for_candidate(
+            str(candidate["candidate_id"])
+        )
+        shadow_score = self.repository.latest_shadow_score_for_candidate(
             str(candidate["candidate_id"])
         )
         severity = derive_severity(
@@ -443,6 +611,7 @@ class Phase4AlertWorker:
             candidate,
             evidence_snapshot,
             severity=severity,
+            shadow_score=shadow_score,
         )
         title = str(rendered_payload["title"])
 
@@ -518,9 +687,7 @@ class Phase4AlertWorker:
             if recent_alert is not None:
                 recent_severity_rank = SEVERITY_RANK.get(str(recent_alert.get("severity") or "").upper(), 0)
                 current_severity_rank = SEVERITY_RANK.get(severity, 0)
-                recent_evidence_state = recent_alert.get("public_evidence_state")
-                current_evidence_state = rendered_payload.get("public_evidence_state")
-                if current_severity_rank <= recent_severity_rank and current_evidence_state == recent_evidence_state:
+                if current_severity_rank <= recent_severity_rank:
                     suppressed_by = str(recent_alert["alert_id"])
 
         alert_status = "suppressed" if suppressed_by else "created"

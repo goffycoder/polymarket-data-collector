@@ -215,6 +215,59 @@ PHASE4_ALERT_MOVEMENT_TOP_N = _env_int(
     "POLYMARKET_PHASE4_ALERT_MOVEMENT_TOP_N",
     7,
 )
+PHASE4_ALERT_MIN_YES_OUTCOME_PROBABILITY = _env_float(
+    "POLYMARKET_PHASE4_ALERT_MIN_YES_OUTCOME_PROBABILITY",
+    _env_float("POLYMARKET_PHASE4_ALERT_MIN_ACTIVE_OUTCOME_PROBABILITY", 0.10),
+)
+PHASE4_ALERT_MAX_YES_OUTCOME_PROBABILITY = _env_float(
+    "POLYMARKET_PHASE4_ALERT_MAX_YES_OUTCOME_PROBABILITY",
+    _env_float("POLYMARKET_PHASE4_ALERT_MAX_ACTIVE_OUTCOME_PROBABILITY", 0.95),
+)
+PHASE4_ALERT_ALLOWED_DOMAINS = tuple(item.lower() for item in _env_csv(
+    "POLYMARKET_PHASE4_ALERT_ALLOWED_DOMAINS",
+    (
+        "breaking",
+        "trending",
+        "new",
+        "politics",
+        "elections",
+        "crypto",
+        "finance",
+        "economy",
+        "geopolitics",
+        "iran",
+        "tech",
+        "macro",
+        "commodity",
+    ),
+))
+PHASE4_ALERT_EXCLUDED_DOMAINS = tuple(item.lower() for item in _env_csv(
+    "POLYMARKET_PHASE4_ALERT_EXCLUDED_DOMAINS",
+    (
+        "sports",
+        "sport",
+        "esports",
+        "games",
+        "soccer",
+        "basketball",
+        "baseball",
+        "hockey",
+        "football",
+        "tennis",
+        "cricket",
+        "golf",
+        "boxing",
+        "mma",
+        "ufc",
+        "culture",
+        "weather",
+        "entertainment",
+        "celebrity",
+        "awards",
+        "music",
+        "movie",
+    ),
+))
 PHASE4_ALERT_CHANNELS = _env_csv(
     "POLYMARKET_PHASE4_ALERT_CHANNELS",
     ("telegram", "discord"),
