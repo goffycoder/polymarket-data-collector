@@ -26,7 +26,9 @@ placement, pUSD collateral handling, builder attribution, or settlement.
 ```bash
 venv/bin/python run_wallet_trade_refresh.py --env-file .env.runtime --market-limit 10 --json
 venv/bin/python run_wallet_entity_materializer.py --env-file .env.runtime --json
+venv/bin/python run_wallet_position_refresh.py --env-file .env.runtime --json
 venv/bin/python run_wallet_cluster_materializer.py --env-file .env.runtime --json
+venv/bin/python run_wallet_profile_refresh.py --env-file .env.runtime --json
 ```
 
 ## Replay and Storage

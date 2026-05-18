@@ -86,6 +86,8 @@ def build_shadow_scores(
     kind = str(model_spec.get("kind") or "phase6_linear_ranker_v1")
     feature_order = [str(item) for item in model_spec.get("feature_order", [])]
     prepared = prepare_model_input_frame(frame, feature_order=feature_order)
+    if prepared.empty:
+        return []
     thresholds = model_spec.get("thresholds")
     if not isinstance(thresholds, dict):
         thresholds = {"watch": 0.5, "actionable": 0.75, "critical": 0.9}

@@ -1,0 +1,103 @@
+{
+  "acceptance": {
+    "profile_source_is_explicitly_trade_derived": "canonical_wallet_activity_profile_v1",
+    "profiles_nonzero": true,
+    "provider_profile_claimed": false
+  },
+  "summary": {
+    "cluster_summary_rows": 12026,
+    "completed_at": "2026-05-18T21:13:46.865228+00:00",
+    "profile_rows": 12066,
+    "profile_source": "canonical_wallet_activity_profile_v1",
+    "profiles_with_positions": 11481,
+    "run_id": "eebd884535ba4759b6bd2b99c1d60ede",
+    "started_at": "2026-05-18T21:13:46.592369+00:00",
+    "status": "completed",
+    "top_positions_per_wallet": 5,
+    "top_profiles_by_24h_notional": [
+      {
+        "notional_24h": 38356.33866,
+        "notional_total": 45074.38186,
+        "top_condition_id": "0xe2b63be146846dbf6b13b0a003131666e20fcd8a9e0c3d8323f856a0770d2ce5",
+        "top_market_id": "1910961",
+        "trade_count": 44,
+        "wallet_id": "0xc8ab97a9089a9ff7e6ef0688e6e591a066946418"
+      },
+      {
+        "notional_24h": 32347.6497,
+        "notional_total": 32347.6497,
+        "top_condition_id": "0x0443a503a38b90446c8a3826db5ee1323144197ef2b4ed09bcdf545ac104dfcb",
+        "top_market_id": "1652690",
+        "trade_count": 1,
+        "wallet_id": "0xa80e3fe5e7a445fa047fe6de1e27f9a15217b94b"
+      },
+      {
+        "notional_24h": 29670.0,
+        "notional_total": 29670.0,
+        "top_condition_id": "0x789c947a9415600d30d56a4aae88d4111996679b0caed166d0c96242fdce92a2",
+        "top_market_id": "1707932",
+        "trade_count": 2,
+        "wallet_id": "0x39b0e53147e8d495d4eb138852772a7c72a207d1"
+      },
+      {
+        "notional_24h": 28758.91871,
+        "notional_total": 66061.054001,
+        "top_condition_id": "0x8bf1c1536ecb1c08fe13c6b71e8ab1f58bf3461c4cb79f5f1679f869a06aef86",
+        "top_market_id": "1654958",
+        "trade_count": 596,
+        "wallet_id": "0xd49b42bce7ea10bac53e2901c188cae20ea4bdf9"
+      },
+      {
+        "notional_24h": 24255.6,
+        "notional_total": 71812.6,
+        "top_condition_id": "0xbcacd5a055f5a9ced6f69f122216c073dd6987d08253fc07bbcc168fa5b81d55",
+        "top_market_id": "1808970",
+        "trade_count": 2,
+        "wallet_id": "0x2e0b70d482e6b389e81dea528be57d825dd48070"
+      },
+      {
+        "notional_24h": 19000.0,
+        "notional_total": 19000.0,
+        "top_condition_id": "0xbcacd5a055f5a9ced6f69f122216c073dd6987d08253fc07bbcc168fa5b81d55",
+        "top_market_id": "1808970",
+        "trade_count": 1,
+        "wallet_id": "0x58f4d3b7dc4ed3bba763c620264b987cc75812a9"
+      },
+      {
+        "notional_24h": 16809.62995,
+        "notional_total": 16809.62995,
+        "top_condition_id": "0x789c947a9415600d30d56a4aae88d4111996679b0caed166d0c96242fdce92a2",
+        "top_market_id": "1707932",
+        "trade_count": 1,
+        "wallet_id": "0x0a417d8a68c3b17e61f8e5c0a42eeaa1b75a492a"
+      },
+      {
+        "notional_24h": 16590.2856,
+        "notional_total": 21340.2856,
+        "top_condition_id": "0x789c947a9415600d30d56a4aae88d4111996679b0caed166d0c96242fdce92a2",
+        "top_market_id": "1707932",
+        "trade_count": 4,
+        "wallet_id": "0x3eae57986be5e0ca435102ffe1f14206ffa2e2ed"
+      },
+      {
+        "notional_24h": 16360.362992,
+        "notional_total": 16430.542352,
+        "top_condition_id": "0x9ae555e3e87e14fcc60750f652dc035fed5d56407e487dc91788aafb58b14ebe",
+        "top_market_id": "1910467",
+        "trade_count": 16,
+        "wallet_id": "0xe71d94b0c62faafdc88e744c96ad82c1646b7359"
+      },
+      {
+        "notional_24h": 13950.0,
+        "notional_total": 13950.0,
+        "top_condition_id": "0xbcacd5a055f5a9ced6f69f122216c073dd6987d08253fc07bbcc168fa5b81d55",
+        "top_market_id": "1808970",
+        "trade_count": 1,
+        "wallet_id": "0xa72aa09e0377b68615e00b6dd1db0c3edb0193fd"
+      }
+    ],
+    "wallet_activity_rows": 12066,
+    "wallet_limit": 0,
+    "wallet_position_summary_rows": 11481
+  }
+}

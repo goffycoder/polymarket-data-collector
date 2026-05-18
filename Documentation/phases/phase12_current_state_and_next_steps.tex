@@ -6,7 +6,7 @@
 
 \section*{Phase 12 Current State and Next Steps}
 
-\textbf{Date:} May 16, 2026\\
+\textbf{Date:} May 17, 2026\\
 \textbf{Purpose:} Give a plain project-status answer after wallet-plane, SSD, CLOB V2, archive reconciliation, and organic runtime-smoke work.
 
 \section*{Current State}
@@ -15,8 +15,8 @@ The project is now a working local-first Polymarket research/runtime system with
 \item public-data collection through CLOB/Data API/WebSocket paths,
 \item Phase 3 rule-based candidate detection,
 \item Phase 4 evidence and alert generation with Telegram delivery proven when runtime secrets are present,
-\item Phase 6 LightGBM registered for shadow-only scoring, but not used for current live alert decisions,
-\item first-class wallet/activity/cluster database tables,
+\item Phase 6 LightGBM registered for shadow-only scoring and now shown inside live alert payloads when a candidate has a shadow score, but not used for current live alert decisions,
+\item first-class wallet/activity/profile/position/cluster database tables,
 \item SSD-backed archived replay,
 \item bounded organic live runtime proof after local hot-root restore and storage-lock hardening.
 \end{itemize}
@@ -24,7 +24,7 @@ The project is now a working local-first Polymarket research/runtime system with
 \section*{Latest Proof}
 \begin{longtable}{p{0.30\linewidth}p{0.56\linewidth}}
 \textbf{Proof} & \textbf{Result} \\
-Wallet materialization & 212 wallets, 212 wallet activity rows, 212 first-seen rows, and 10 heuristic clusters. \\
+Wallet materialization & Refreshed on May 18: 12{,}066 wallets, 12{,}066 wallet activity rows, 24{,}595 trade-derived position rows, 12{,}066 trade-derived profile rows, and 12{,}026 heuristic cluster memberships. Position/profile rows are explicitly labeled as trade-derived estimates, not provider snapshots. \\
 CLOB V2 smoke & Public data endpoints and market WebSocket subscription shape passed. Fee-rate payloads were captured for active tokens. \\
 SSD replay & T7 archive replay processed 2{,}000 detector-input envelopes, 3{,}792 snapshots, and 3 trades with zero missing restore items. \\
 60-minute organic live smoke & \texttt{reports/phase12/organic\_runtime\_smoke\_60min\_after\_lock\_hardening.json} passed: controlled shutdown, runtime exit code 0, raw archive +1{,}635{,}850{,}582 bytes, detector input +898{,}675{,}302 bytes, 2{,}738 trades, 224 signal candidates, 590 evidence snapshots, and 29 alerts. \\
@@ -32,7 +32,7 @@ Archive reconciliation smoke & \texttt{reports/phase12/archive\_reconciliation.j
 3-minute post-reconciliation smoke & \texttt{reports/phase12/organic\_runtime\_smoke\_3min\_after\_archive\_reconciliation.json} passed: controlled shutdown, runtime exit code 0, raw archive +814{,}694{,}158 bytes, detector input +35{,}079{,}539 bytes, 1{,}386 trades, 52 signal candidates, and 30 evidence snapshots. \\
 Alert market-link smoke & \texttt{reports/phase12/alert\_market\_link\_smoke.json} passed: stored alert payloads now include \texttt{market\_slug}, \texttt{event\_slug}, \texttt{condition\_id}, \texttt{market\_url}, and \texttt{event\_url}. The clickable URL now uses the stable event slug; the outcome slug and condition id remain in the message for exact traceability. \\
 Delivery smoke & \texttt{reports/phase12/delivery\_smoke.json} now proves real Telegram delivery: \texttt{telegram\_configured=true}, \texttt{telegram\_sent=true}, and Telegram returned HTTP 200. Discord remains disabled. \\
-Runtime preflight & \texttt{run\_runtime.py --env-file .env.runtime --check-only} passed with Phase 3 detector enabled, Phase 4 runtime enabled, Telegram configured through ignored runtime secrets, and Phase 6 live runtime disabled. \\
+Runtime preflight & \texttt{run\_runtime.py --env-file .env.runtime --check-only} passed with Phase 3 detector enabled, Phase 4 runtime enabled, Telegram configured through ignored runtime secrets, and Phase 6 live runtime enabled in shadow-only mode. \\
 2-minute Telegram runtime smoke & \texttt{reports/phase12/organic\_runtime\_smoke\_telegram\_2min.json} shut down cleanly and proved the live Phase 4 path over existing pending candidates: +20 evidence snapshots, +9 alert rows, and 4 Telegram delivery attempts with \texttt{sent} status. It did not collect fresh raw/trade data because Polymarket API/WebSocket calls were failing in this environment. \\
 Provider connectivity gate & \texttt{reports/phase12/provider\_connectivity.json} passed after backpressure tuning: Gamma events, Gamma markets, CLOB time/book, and Data API trades were reachable from the runtime network. \\
 5-minute provider-healthy runtime smoke & \texttt{reports/phase12/organic\_runtime\_smoke\_provider\_healthy\_5min.json} passed: controlled shutdown, runtime exit code 0, raw archive +871{,}280{,}099 bytes, detector input +58{,}226{,}280 bytes, 3{,}110 trades, 171 signal candidates, 10 alerts, and 18 delivery-attempt rows. This proves fresh provider ingestion can reach Phase 3/4, but it also exposed a Telegram noise risk. \\
@@ -41,18 +41,20 @@ Alert normalization smoke & \texttt{reports/phase12/alert\_normalization\_smoke.
 Aborted alert-normalized runtime proof & A 30-minute smoke was started after provider connectivity passed, but was stopped early because 7 Telegram sends in the first live window showed that the original \texttt{max\_deliveries\_per\_pass=3} was still too noisy. Runtime processes were stopped; the next run should use the stricter defaults \texttt{max\_deliveries\_per\_pass=1} and \texttt{max\_deliveries\_per\_hour=6}. \\
 3-minute hourly-budget smoke & \texttt{reports/phase12/organic\_runtime\_smoke\_alert\_hourly\_budget\_3min.json} passed with controlled shutdown, fresh raw/detector/trade/candidate deltas, 13 signal candidates, 30 evidence snapshots, and \texttt{alert\_delivery\_attempts} delta 0. This proves the hourly delivery cap can prevent further Telegram sends after a burst while collection and detection continue. \\
 Phase 6 live shadow scoring & \texttt{reports/phase6/live\_shadow/phase10\_task4\_lightgbm\_v1\_2026-05-17T01-25-47+00-00\_2026-05-17T03-25-47+00-00.json} scored 36 recent live candidates with the active \texttt{phase10\_task4\_lightgbm\_v1} shadow model. The artifact is strict JSON and all scores remained \texttt{INFO}; ML still does not control alerts. \\
+Live alert ML enrichment & Phase 4 alert rendering now includes \texttt{ml\_shadow\_score} in stored payloads and Telegram/Discord text when Phase 6 has scored the candidate. The rule detector remains authoritative; ML is visible to the operator but cannot create, suppress, or promote an alert. \\
+ML live alert review & \texttt{reports/phase12/ml\_live\_alert\_review.json} and \texttt{reports/phase12/ml\_live\_alert\_review.md} reviewed the latest 24-hour alert window after live-shadow and model-coarseness fixes: 96 alerts reviewed, 96 with ML scores, 100.0\% coverage, 22 delivered alerts reviewed, 22 delivered alerts with ML score, 8 distinct score values from \texttt{0.222149} to \texttt{0.777851}, and readiness \texttt{review\_for\_priority\_only}. ML remains shadow-only and must not suppress or autonomously promote alerts yet. \\
 \end{longtable}
 
 \section*{What Is Still Left}
 \begin{enumerate}[nosep]
 \item Keep Telegram secrets in \texttt{.env.runtime.secrets} or shell env only; rotate the bot token after the exposed-token smoke test.
-\item Decide whether the next 30--60 minute runtime proof should include Phase 6 live shadow scoring. Current alerts are still Phase 3/4 rule-based; LightGBM is now proven on a recent live window but remains non-authoritative.
-\item Populate or honestly disable \texttt{wallet\_profiles} and \texttt{wallet\_positions}; current counts are zero.
+\item Keep Phase 6 live shadow scoring enabled for observation. The current review supports human priority review only; do not let it suppress or autonomously promote delivery.
+\item Keep wallet profiles and positions refreshed before demos. They now populate from \texttt{canonical\_trades}, but remain trade-derived estimates until a provider-backed endpoint is enabled.
 \item Re-run \texttt{run\_phase12\_archive\_reconciliation.py} after the SSD is visible to the shell, or pass \texttt{--external-root /absolute/path/to/archive}; the current report is honestly blocked at \texttt{external\_archive\_not\_visible}.
 \item Add evidence retrieval benchmarking with a small labeled case file.
 \item Keep provider backpressure/error telemetry because earlier live smokes showed repeated Gamma/Data API/CLOB/WS failures.
 \item Re-run alert-normalized 30--60 minute live proof after the current hourly budget cools down; the 3-minute budget smoke proved no additional Telegram delivery while the hourly cap was full.
-\item Expand shadow-ML training/evaluation data beyond the 96-row packet when SSD-backed replay is available again; the current live shadow proof is scoring-only, not a larger training set.
+\item Expand shadow-ML training/evaluation data beyond the 96-row packet when SSD-backed replay is available again; current live-shadow coverage and score separation are improved, but the model still needs more real held-out evidence before decision authority.
 \item Run a 3--6 hour organic live window with Telegram enabled and Phase 6 either explicitly disabled or enabled as shadow-only.
 \item Decide whether to keep, archive, or delete \texttt{Old-content/}; it is not a blocker.
 \end{enumerate}
@@ -67,13 +69,14 @@ Day 4 & Expand shadow-ML replay dataset from SSD, refresh final docs, and prepar
 \end{longtable}
 
 \section*{Recommended Immediate Next Implementation}
-Because no SSD is attached now, the immediate next step is not archive replay or ML. Provider connectivity and a 5-minute fresh live proof have passed; next, re-run a longer live window with the stricter alert budget and measure Telegram volume.
+Because no SSD is attached now, the immediate next step is not archive replay. Provider connectivity and a 5-minute fresh live proof have passed; next, keep Phase 6 in shadow mode during a longer live window and use the ML live alert review to measure coverage and score separation before any promotion.
 \begin{enumerate}[nosep]
 \item Keep \texttt{POLYMARKET\_ENABLE\_PHASE4\_TELEGRAM=true} in \texttt{.env.runtime}; keep the token/chat id only in \texttt{.env.runtime.secrets}.
 \item Keep \texttt{POLYMARKET\_PHASE4\_RUNTIME\_MAX\_CANDIDATE\_AGE\_MINUTES=120} unless deliberately replaying or draining backlog.
 \item Keep \texttt{POLYMARKET\_PHASE4\_ALERT\_DELIVERY\_MIN\_SEVERITY=ACTIONABLE}, \texttt{POLYMARKET\_PHASE4\_ALERT\_MAX\_DELIVERIES\_PER\_PASS=1}, and \texttt{POLYMARKET\_PHASE4\_ALERT\_MAX\_DELIVERIES\_PER\_HOUR=6} for the next live run.
 \item Run a 30--60 minute organic live smoke and confirm fresh raw/detector/trade/candidate/evidence/alert deltas plus acceptable Telegram volume.
-\item Leave \texttt{POLYMARKET\_ENABLE\_PHASE6\_LIVE\_RUNTIME=false} unless we explicitly want shadow scores during the proof.
+\item Keep \texttt{POLYMARKET\_ENABLE\_PHASE6\_LIVE\_RUNTIME=true} only as shadow scoring; ML must remain non-authoritative until a review report shows high coverage and useful score separation.
+\item After the run, execute \texttt{python run\_phase12\_ml\_live\_review.py --env-file .env.runtime --lookback-hours 24} and inspect \texttt{reports/phase12/ml\_live\_alert\_review.md}.
 \end{enumerate}
 
 \end{document}

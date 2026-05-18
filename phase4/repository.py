@@ -275,8 +275,13 @@ class Phase4Repository:
                     m.question,
                     m.slug AS market_slug,
                     m.condition_id,
+                    m.outcomes,
+                    m.outcome_prices,
                     e.title AS event_title,
-                    e.slug AS event_slug
+                    e.slug AS event_slug,
+                    e.category AS event_category,
+                    e.tags AS event_tags,
+                    e.tag_ids AS event_tag_ids
                 FROM signal_candidates sc
                 LEFT JOIN markets m ON m.market_id = sc.market_id
                 LEFT JOIN events e ON e.event_id = sc.event_id
@@ -305,11 +310,59 @@ class Phase4Repository:
                 "question": row["question"],
                 "market_slug": row["market_slug"],
                 "condition_id": row["condition_id"],
+                "outcomes": json.loads(row["outcomes"] or "[]"),
+                "outcome_prices": json.loads(row["outcome_prices"] or "[]"),
                 "event_title": row["event_title"],
                 "event_slug": row["event_slug"],
+                "event_category": row["event_category"],
+                "event_tags": json.loads(row["event_tags"] or "[]"),
+                "event_tag_ids": json.loads(row["event_tag_ids"] or "[]"),
             }
             for row in rows
         ]
+
+    def latest_shadow_score_for_candidate(self, candidate_id: str) -> dict[str, Any] | None:
+        conn = get_conn()
+        try:
+            row = conn.execute(
+                """
+                SELECT
+                    shadow_score_id,
+                    model_version,
+                    feature_schema_version,
+                    candidate_id,
+                    alert_id,
+                    market_id,
+                    score_value,
+                    score_label,
+                    score_metadata,
+                    scored_at,
+                    created_at
+                FROM shadow_model_scores
+                WHERE candidate_id = ?
+                ORDER BY scored_at DESC, created_at DESC, shadow_score_id DESC
+                LIMIT 1
+                """,
+                (candidate_id,),
+            ).fetchone()
+        finally:
+            conn.close()
+
+        if row is None:
+            return None
+        return {
+            "shadow_score_id": row["shadow_score_id"],
+            "model_version": row["model_version"],
+            "feature_schema_version": row["feature_schema_version"],
+            "candidate_id": row["candidate_id"],
+            "alert_id": row["alert_id"],
+            "market_id": row["market_id"],
+            "score_value": _safe_float(row["score_value"]),
+            "score_label": row["score_label"],
+            "score_metadata": json.loads(row["score_metadata"] or "{}"),
+            "scored_at": row["scored_at"],
+            "created_at": row["created_at"],
+        }
 
     def record_evidence_query(
         self,

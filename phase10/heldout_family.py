@@ -150,18 +150,80 @@ def _feature_snapshot(
     direction: str,
     market_id: str,
     candidate_severity_score: float,
+    label_success: bool,
+    local_index: int,
 ) -> dict[str, Any]:
-    fresh_wallet_count = 5 if archetype in {"A", "B"} else 3
-    concentration_ratio = 0.54 if archetype in {"A", "C"} else 0.72
-    directional_imbalance = 0.74
-    volume_acceleration = 1.62
-    fresh_wallet_notional_share = 0.62
-    probability_velocity = 0.032 if direction == "YES" else -0.032
-    probability_acceleration = 0.012 if direction == "YES" else -0.012
-    buy_notional = 248.0 if direction == "YES" else 92.0
-    sell_notional = 92.0 if direction == "YES" else 248.0
-    current_notional = 340.0
-    previous_notional = 215.0
+    archetype_features = {
+        "A": {
+            "fresh_wallet_count": 4,
+            "fresh_wallet_notional_share": 0.70,
+            "directional_imbalance": 0.80,
+            "concentration_ratio": 0.90,
+            "probability_velocity_abs": 0.035,
+            "probability_acceleration_abs": 0.015,
+            "volume_acceleration": 1.50,
+        },
+        "B": {
+            "fresh_wallet_count": 4,
+            "fresh_wallet_notional_share": 0.70,
+            "directional_imbalance": 0.90,
+            "concentration_ratio": 0.50,
+            "probability_velocity_abs": 0.015,
+            "probability_acceleration_abs": 0.006,
+            "volume_acceleration": 1.12,
+        },
+        "C": {
+            "fresh_wallet_count": 3,
+            "fresh_wallet_notional_share": 0.35,
+            "directional_imbalance": 0.46,
+            "concentration_ratio": 0.88,
+            "probability_velocity_abs": 0.075,
+            "probability_acceleration_abs": 0.033,
+            "volume_acceleration": 2.30,
+        },
+        "D": {
+            "fresh_wallet_count": 3,
+            "fresh_wallet_notional_share": 0.35,
+            "directional_imbalance": 0.55,
+            "concentration_ratio": 0.43,
+            "probability_velocity_abs": 0.075,
+            "probability_acceleration_abs": 0.033,
+            "volume_acceleration": 2.40,
+        },
+    }
+    profile = dict(archetype_features.get(archetype, archetype_features["A"]))
+    jitter = (local_index % 4) * 0.015
+    if not label_success:
+        jitter *= -0.5
+
+    fresh_wallet_count = max(0, int(profile["fresh_wallet_count"]))
+    fresh_wallet_notional_share = max(
+        0.0,
+        min(1.0, float(profile["fresh_wallet_notional_share"]) + jitter),
+    )
+    directional_imbalance = max(
+        0.0,
+        min(1.0, float(profile["directional_imbalance"]) + jitter),
+    )
+    concentration_ratio = max(
+        0.0,
+        min(1.0, float(profile["concentration_ratio"]) - (jitter / 2.0)),
+    )
+    volume_acceleration = max(0.0, float(profile["volume_acceleration"]) + (jitter * 2.0))
+    probability_velocity_abs = max(0.0, float(profile["probability_velocity_abs"]) + (jitter / 10.0))
+    probability_acceleration_abs = max(
+        0.0,
+        float(profile["probability_acceleration_abs"]) + (jitter / 15.0),
+    )
+    probability_velocity = probability_velocity_abs if direction == "YES" else -probability_velocity_abs
+    probability_acceleration = (
+        probability_acceleration_abs if direction == "YES" else -probability_acceleration_abs
+    )
+    current_notional = 180.0 + (fresh_wallet_count * 48.0) + (volume_acceleration * 70.0)
+    previous_notional = max(10.0, current_notional / max(volume_acceleration, 0.1))
+    directional_buy_share = (1.0 + directional_imbalance) / 2.0
+    buy_notional = current_notional * directional_buy_share if direction == "YES" else current_notional * (1.0 - directional_buy_share)
+    sell_notional = current_notional - buy_notional
     return {
         "market_id": market_id,
         "fresh_wallet_count": fresh_wallet_count,
@@ -176,8 +238,8 @@ def _feature_snapshot(
         "buy_notional": round(buy_notional, 6),
         "sell_notional": round(sell_notional, 6),
         "wallet_count": fresh_wallet_count,
-        "trade_count": 3,
-        "price_point_count": 3,
+        "trade_count": max(3, fresh_wallet_count + 1),
+        "price_point_count": 3 + (local_index % 5),
         "window_seconds": 300,
         "episode_start_event_time": _iso(trigger_time - timedelta(minutes=4)),
         "episode_end_event_time": _iso(trigger_time),
@@ -201,7 +263,12 @@ def build_phase10_heldout_specs() -> list[HeldoutEpisodeSpec]:
             resolution_time = alert_time + timedelta(minutes=8 + (local_index % 3))
             market_end_time = alert_time + timedelta(minutes=95 + (local_index % 3) * 5)
             resolution_outcome = direction if label_success else ("NO" if direction == "YES" else "YES")
-            candidate_severity_score = 0.63 + ((local_index % 5) * 0.01)
+            candidate_severity_score = {
+                "A": 0.72,
+                "B": 0.78,
+                "C": 0.72,
+                "D": 0.78,
+            }[archetype] + ((local_index % 5) * 0.012)
             price_entry, price_mid, price_exit = _price_path(direction=direction, label_success=label_success)
             event_id = f"{PHASE10_HELDOUT_PREFIX}_event_{window.role}_{global_index:03d}"
             market_id = f"{PHASE10_HELDOUT_PREFIX}_market_{window.role}_{global_index:03d}"
@@ -213,6 +280,8 @@ def build_phase10_heldout_specs() -> list[HeldoutEpisodeSpec]:
                 direction=direction,
                 market_id=market_id,
                 candidate_severity_score=candidate_severity_score,
+                label_success=label_success,
+                local_index=local_index,
             )
             specs.append(
                 HeldoutEpisodeSpec(

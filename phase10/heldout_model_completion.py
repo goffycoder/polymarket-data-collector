@@ -19,7 +19,12 @@ from phase6 import (
     fit_lightgbm_ranker,
     score_training_frame,
 )
-from phase10.heldout_family import PHASE10_HELDOUT_OVERALL_END, PHASE10_HELDOUT_OVERALL_START, materialize_phase10_heldout_family
+from phase10.heldout_family import (
+    PHASE10_HELDOUT_OVERALL_END,
+    PHASE10_HELDOUT_OVERALL_START,
+    PHASE10_HELDOUT_PREFIX,
+    materialize_phase10_heldout_family,
+)
 
 
 PHASE10_TASK4_CONTRACT_VERSION = "phase10_task4_heldout_model_completion_v1"
@@ -63,6 +68,9 @@ def run_phase10_task4_heldout_model_completion() -> dict[str, Any]:
         start=PHASE10_HELDOUT_OVERALL_START,
         end=PHASE10_HELDOUT_OVERALL_END,
     )
+    evaluation_rows = [
+        row for row in evaluation_rows if str(row.market_id).startswith(PHASE10_HELDOUT_PREFIX)
+    ]
     training_frame, dataset_summary = build_training_frame(evaluation_rows, repository=phase5_repository)
     model_spec, fit_summary = fit_lightgbm_ranker(
         training_frame,

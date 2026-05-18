@@ -41,7 +41,7 @@ This is the current authoritative list of what is \textbf{not fully done yet}. E
 \textbf{Area} & \textbf{Current truth} & \textbf{Done means} \\
 Market traceability in alerts & Implemented. \texttt{reports/phase12/alert\_market\_link\_smoke.json} proves a stored alert payload and Telegram/Discord preview include \texttt{market\_slug}, \texttt{event\_slug}, \texttt{condition\_id}, \texttt{market\_url}, and \texttt{event\_url}. The clickable \texttt{market\_url} now uses the stable event URL; the outcome slug remains separate. & Keep this covered in future alert changes and avoid using brittle market-slug frontend URLs as the primary click-through. \\
 Telegram production path & \texttt{reports/phase12/delivery\_smoke.json} now proves real Telegram delivery with \texttt{telegram\_configured=true}, \texttt{telegram\_sent=true}, and HTTP 200. \texttt{.env.runtime} enables Telegram and ignored \texttt{.env.runtime.secrets} supplies credentials. & Rotate the exposed bot token, keep secrets out of git, and run the next organic proof with Telegram delivery enabled. \\
-Wallet profiles and positions & Wallet entity/activity/cluster tables exist and are partially populated, but \texttt{wallet\_profiles} and \texttt{wallet\_positions} are still empty in the current DB. & Either profile/position refreshers populate provider-backed rows for top wallets, or the final scope memo states these are disabled because public provider/rate budget is unavailable. \\
+Wallet profiles and positions & Wallet entity/activity/cluster tables exist. \texttt{run\_wallet\_position\_refresh.py} and \texttt{run\_wallet\_profile\_refresh.py} now populate trade-derived estimates from \texttt{canonical\_trades}; these are explicitly labeled as estimates rather than provider snapshots. & Keep provider-backed wallet endpoints behind explicit future flags, and use the trade-derived reports for the final presentation unless a reliable provider budget is available. \\
 Archive reconciliation & \texttt{run\_phase12\_archive\_reconciliation.py} now produces an explicit operator report. Current status is \texttt{external\_archive\_not\_visible}: this shell sees only \texttt{/Volumes/Macintosh HD}, no accepted SSD archive root, and 3{,}075 partitions remain missing. & With SSD visible, auto-discovery or \texttt{--external-root /absolute/path/to/archive} resolves archived partitions and the report separates \texttt{archive\_only} from genuinely missing files. \\
 Evidence benchmark & Evidence workers and real-provider artifacts exist, but retrieval quality is not measured against a labeled case set. & A benchmark runner and 20--50 labeled cases produce precision-like agreement, latency, timeout, and error-rate metrics. \\
 Shadow ML scale & LightGBM exists, is registered as active shadow model, beat baselines on a small held-out packet, and has now scored 36 recent live candidates in shadow-only mode. It was \textbf{not} used for the Telegram alert; current alerts are Phase 3/4 rule-based. & Decide whether to include Phase 6 live shadow scoring in the next longer proof. It must remain shadow-only, with no alert promotion, until a later model-promotion memo. \\
@@ -86,16 +86,17 @@ Alert normalization & A 5-minute provider-healthy smoke created 10 alerts and 18
 \textbf{Acceptance:} satisfied for Telegram: \texttt{telegram\_sent=true}. Keep Discord marked disabled unless configured later.
 
 \subsection*{P3 Wallet Profile and Position Completion}
-\textbf{Files:} \texttt{run\_wallet\_entity\_materializer.py}, new \texttt{run\_wallet\_profile\_refresh.py}, new \texttt{run\_wallet\_position\_refresh.py} if provider endpoints are reliable.
+\textbf{Files:} \texttt{run\_wallet\_entity\_materializer.py}, \texttt{run\_wallet\_position\_refresh.py}, \texttt{run\_wallet\_profile\_refresh.py}, \texttt{run\_wallet\_cluster\_materializer.py}.
 
 \begin{enumerate}[nosep]
-\item Re-run wallet entity and cluster materializers after the newest live data.
-\item Select top wallets by recent notional, candidate involvement, and cluster centrality.
-\item Try public profile/position endpoints only behind explicit enable flags and rate limits.
-\item Store provider responses in \texttt{wallet\_profiles} and \texttt{wallet\_positions}, or write a report explaining provider-disabled status.
+\item Re-run wallet entity materialization after the newest live data.
+\item Refresh trade-derived position estimates from \texttt{canonical\_trades}.
+\item Re-run cluster materialization from refreshed wallet activity.
+\item Refresh trade-derived wallet profiles from wallet activity, positions, and clusters.
+\item Try public profile/position endpoints only in a future provider-backed mode behind explicit enable flags and rate limits.
 \end{enumerate}
 
-\textbf{Acceptance:} \texttt{wallet\_profiles} and \texttt{wallet\_positions} are either non-zero with a report, or explicitly documented as out of scope for this release.
+\textbf{Acceptance:} \texttt{wallet\_profiles} and \texttt{wallet\_positions} are non-zero after the refresh, and both reports state that the values are trade-derived estimates rather than provider snapshots.
 
 \subsection*{P4 Archive Reconciliation With SSD Visible}
 \textbf{Files:} \texttt{run\_phase12\_archive\_reconciliation.py}, \texttt{phase7/storage.py}, \texttt{phase7/runtime\_storage.py}, \texttt{.env.runtime}, \texttt{reports/phase12/archive\_reconciliation.json}.

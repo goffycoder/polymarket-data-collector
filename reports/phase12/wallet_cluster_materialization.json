@@ -5,76 +5,76 @@
     "wallet_activity_available": true
   },
   "summary": {
-    "cluster_count": 10,
+    "cluster_count": 519,
     "cluster_version": "wallet_cluster_heuristic_v1",
-    "completed_at": "2026-05-15T22:35:35.894995+00:00",
-    "membership_count": 212,
+    "completed_at": "2026-05-18T21:13:43.317751+00:00",
+    "membership_count": 12026,
     "min_wallets": 2,
-    "run_id": "4d0f77a719f5412d9780cc6ae17018f9",
-    "started_at": "2026-05-15T22:35:35.890371+00:00",
+    "run_id": "41988c49cc9b46b8be9395ee1b937c76",
+    "started_at": "2026-05-18T21:13:43.224073+00:00",
     "status": "completed",
     "top_clusters": [
       {
-        "cluster_id": "condition_overlap_393d3f77a4e3",
-        "condition_id": "0xbca3d70ec52a5a441ccc365a3b1b48b9cd0f08dfff4bc5871e2cd92d0d92caa1",
-        "notional_total": 5626.55243,
-        "wallet_count": 30
+        "cluster_id": "condition_overlap_2921fc821728",
+        "condition_id": "0xbcacd5a055f5a9ced6f69f122216c073dd6987d08253fc07bbcc168fa5b81d55",
+        "notional_total": 301769.25990091,
+        "wallet_count": 286
       },
       {
-        "cluster_id": "condition_overlap_a9ead890a9af",
-        "condition_id": "0xd0536d9612e041312235baceac52bde48821e8aad4607533513b3782904b7d49",
-        "notional_total": 5529.807385,
-        "wallet_count": 20
+        "cluster_id": "condition_overlap_758467fe9875",
+        "condition_id": "0x789c947a9415600d30d56a4aae88d4111996679b0caed166d0c96242fdce92a2",
+        "notional_total": 253086.846822,
+        "wallet_count": 394
       },
       {
-        "cluster_id": "condition_overlap_607f7c6bd3ca",
-        "condition_id": "0xafd3f96b7b6084509e625270538ff0699003fafc042263c1216e7f084cef753a",
-        "notional_total": 3530.101417,
-        "wallet_count": 29
+        "cluster_id": "condition_overlap_7b9c9f4c53a6",
+        "condition_id": "0x0e4a0c937b8934c2475613b6322b3f8edc8dedc24762e01e42b0e6f87424a089",
+        "notional_total": 227050.820836,
+        "wallet_count": 575
       },
       {
-        "cluster_id": "condition_overlap_bd26faf69890",
-        "condition_id": "0xea649be6ea3447f3c145a173883c68a89faf4edda1f85109b76baa93b3ee7a87",
-        "notional_total": 3014.145617,
-        "wallet_count": 27
-      },
-      {
-        "cluster_id": "condition_overlap_ddeaedadcfbb",
-        "condition_id": "0x83d00d2378c0f5bb34a3a8e9b009bde54f0ab34668bf6a456aec1e66bf961481",
-        "notional_total": 2705.961904,
-        "wallet_count": 11
-      },
-      {
-        "cluster_id": "condition_overlap_9d18b74243f1",
-        "condition_id": "0x101d084cd035070abde58d8a3113b78e11ba68028b0d9e7e38ea7d780797aecc",
-        "notional_total": 2508.390887,
-        "wallet_count": 16
-      },
-      {
-        "cluster_id": "condition_overlap_f646cc392fb2",
-        "condition_id": "0x054725b2a7971376f7924a7021221b12acc50fe78d97817824fe411704d5b5a2",
-        "notional_total": 2066.794035,
-        "wallet_count": 41
-      },
-      {
-        "cluster_id": "condition_overlap_806a0aff7ae6",
-        "condition_id": "0x5f3b3456b2d6ef0d6f15d7492162725057be78d738d2465456e2835f1d89046c",
-        "notional_total": 1997.146033,
-        "wallet_count": 14
+        "cluster_id": "condition_overlap_20806f8006a2",
+        "condition_id": "0x518a5b030b205706b8ffe6bbad9bd3de59548348e5c0471827f5de21e513333c",
+        "notional_total": 153486.612781,
+        "wallet_count": 572
       },
       {
         "cluster_id": "condition_overlap_d72cca1ee87f",
         "condition_id": "0xf2cb33c6634ee4676b642e728715c68441fb8d8c90f730ba0b5c3cd1f436a4be",
-        "notional_total": 1470.246594,
-        "wallet_count": 12
+        "notional_total": 138240.504849,
+        "wallet_count": 209
       },
       {
-        "cluster_id": "condition_overlap_86af0adb466e",
-        "condition_id": "0x70f1a7d2cd490b640676d5e31470bcbe16fef40087de1af8b6f6e44e299b5784",
-        "notional_total": 682.78887,
-        "wallet_count": 12
+        "cluster_id": "condition_overlap_4d161496b0b5",
+        "condition_id": "0x0443a503a38b90446c8a3826db5ee1323144197ef2b4ed09bcdf545ac104dfcb",
+        "notional_total": 115467.240118,
+        "wallet_count": 63
+      },
+      {
+        "cluster_id": "condition_overlap_1e9c09b579c5",
+        "condition_id": "0x8bf1c1536ecb1c08fe13c6b71e8ab1f58bf3461c4cb79f5f1679f869a06aef86",
+        "notional_total": 113115.16659146,
+        "wallet_count": 51
+      },
+      {
+        "cluster_id": "condition_overlap_07f74141e93f",
+        "condition_id": "0xa1d97efb8a19de58d995edf58b882c4f99ef356c8a564af8daf888a7610edea1",
+        "notional_total": 83862.629715,
+        "wallet_count": 463
+      },
+      {
+        "cluster_id": "condition_overlap_89aaa4f2e4b5",
+        "condition_id": "0x1a79328ec8dacec06ca77e364bb9da538e529744a601a94fbb7cf78825dbe9e6",
+        "notional_total": 80750.243489,
+        "wallet_count": 181
+      },
+      {
+        "cluster_id": "condition_overlap_806a0aff7ae6",
+        "condition_id": "0x5f3b3456b2d6ef0d6f15d7492162725057be78d738d2465456e2835f1d89046c",
+        "notional_total": 72864.107392,
+        "wallet_count": 175
       }
     ],
-    "wallet_activity_rows": 212
+    "wallet_activity_rows": 12066
   }
 }

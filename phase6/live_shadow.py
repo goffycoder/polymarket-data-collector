@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from config.settings import PHASE6_FEATURE_SCHEMA_VERSION
+from database.db_manager import get_conn
 from ml_pipeline.feature_builder import build_features
 from phase5.repository import Phase5Repository
 from phase6 import Phase6Repository, build_shadow_scores, load_model_spec
@@ -36,6 +37,37 @@ def _iso(value: datetime) -> str:
     return value.astimezone(timezone.utc).replace(microsecond=0).isoformat()
 
 
+def _candidate_ids_for_live_shadow_window(*, start: str, end: str) -> tuple[set[str], str]:
+    conn = get_conn()
+    try:
+        rows = conn.execute(
+            """
+            SELECT DISTINCT
+                sc.candidate_id,
+                sc.trigger_time
+            FROM signal_candidates sc
+            LEFT JOIN alerts a ON a.candidate_id = sc.candidate_id
+            WHERE (sc.trigger_time >= ? AND sc.trigger_time < ?)
+               OR (a.updated_at >= ? AND a.updated_at < ?)
+            """,
+            (start, end, start, end),
+        ).fetchall()
+    finally:
+        conn.close()
+
+    candidate_ids = {
+        str(row["candidate_id"])
+        for row in rows
+        if row["candidate_id"] is not None
+    }
+    trigger_times = [
+        str(row["trigger_time"])
+        for row in rows
+        if row["trigger_time"] is not None
+    ]
+    return candidate_ids, min(trigger_times) if trigger_times else start
+
+
 def run_live_shadow_window(
     *,
     lookback_minutes: int,
@@ -56,7 +88,10 @@ def run_live_shadow_window(
     start = _iso(window_start_dt)
     end = _iso(window_end_dt)
 
-    rows = Phase5Repository().load_evaluation_rows(start=start, end=end)
+    candidate_ids, query_start = _candidate_ids_for_live_shadow_window(start=start, end=end)
+    rows = Phase5Repository().load_evaluation_rows(start=query_start, end=end)
+    if candidate_ids:
+        rows = [row for row in rows if row.candidate_id in candidate_ids]
     frame = build_features(rows, feature_schema_version=PHASE6_FEATURE_SCHEMA_VERSION)
     model_spec = load_model_spec(str(model_entry["artifact_path"]))
     score_rows = build_shadow_scores(frame, model_spec=model_spec)
@@ -69,6 +104,11 @@ def run_live_shadow_window(
         "model_version": model_entry["model_version"],
         "feature_schema_version": PHASE6_FEATURE_SCHEMA_VERSION,
         "window": {"start": start, "end": end},
+        "candidate_selection": {
+            "source": "candidate_trigger_time_or_alert_updated_at",
+            "candidate_count": len(candidate_ids),
+            "query_start": query_start,
+        },
         "score_rows": score_rows,
     }
     artifact_path.write_text(

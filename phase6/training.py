@@ -89,6 +89,13 @@ def prepare_model_input_frame(
     feature_order: list[str] | None = None,
 ) -> pd.DataFrame:
     prepared = frame.copy()
+    if "candidate_severity_score" in prepared.columns:
+        severity = prepared["candidate_severity_score"].fillna(0.0).astype(float)
+        prepared["candidate_severity_score"] = severity.map(
+            lambda value: max(0.0, min(1.0, float(value) / 100.0))
+            if float(value) > 1.0
+            else float(value)
+        )
     if "probability_velocity_abs" not in prepared.columns and "probability_velocity" in prepared.columns:
         prepared["probability_velocity_abs"] = prepared["probability_velocity"].fillna(0.0).astype(float).abs()
     if "probability_acceleration_abs" not in prepared.columns and "probability_acceleration" in prepared.columns:
@@ -358,9 +365,9 @@ def fit_lightgbm_ranker(
         params={
             "objective": "binary",
             "metric": ["binary_logloss"],
-            "learning_rate": 0.15,
+            "learning_rate": 0.05,
             "num_leaves": 4,
-            "min_data_in_leaf": 1,
+            "min_data_in_leaf": 2,
             "min_sum_hessian_in_leaf": 0.0,
             "feature_pre_filter": False,
             "verbosity": -1,
@@ -369,7 +376,7 @@ def fit_lightgbm_ranker(
             "force_col_wise": True,
         },
         train_set=train_dataset,
-        num_boost_round=max(8, min(32, len(train.index) * 8)),
+        num_boost_round=max(8, min(16, len(train.index) * 4)),
     )
 
     base_rate = float(labels.mean())
