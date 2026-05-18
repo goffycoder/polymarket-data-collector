@@ -37,6 +37,10 @@ reports/phase12/*.log
 reports/phase12/*.err
 reports/phase12/organic_runtime_12h_live_lightgbm*.json
 reports/phase12/runtime_live_direct.*
+reports/phase12/ml_live_alert_review.*
+reports/phase12/organic_runtime_smoke_highres_telegram_15min.json
+reports/phase12/organic_runtime_smoke_phase6_alert_payload_2min.json
+reports/phase12/organic_runtime_smoke_phase6_shadow_3min.json
 
 # Documentation (track sources; ignore build artifacts)
 Documentation/build/
